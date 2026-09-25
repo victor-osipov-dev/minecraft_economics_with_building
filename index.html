@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Воксельная тюрьма</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; overflow: hidden; background: #000; }
+    #scene { width: 100%; height: 100%; display: block; cursor: crosshair; }
+    #hud {
+      position: fixed;
+      top: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #fff;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      font-size: 13px;
+      background: rgba(0, 0, 0, 0.5);
+      padding: 8px 18px;
+      border-radius: 20px;
+      pointer-events: none;
+      user-select: none;
+      white-space: nowrap;
+      letter-spacing: 0.3px;
+      text-align: center;
+    }
+    #hud .block { color: #aaffaa; }
+    #statbar {
+      position: fixed;
+      top: 12px;
+      left: 12px;
+      width: 230px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font: 12px 'Segoe UI', Arial, sans-serif;
+      color: #fff;
+      pointer-events: none;
+      user-select: none;
+      z-index: 12;
+      text-shadow: 0 1px 2px #000;
+    }
+    .stat { display: flex; align-items: center; gap: 8px; }
+    .stat .lbl { width: 42px; opacity: 0.95; }
+    .track { flex: 1; height: 12px; background: rgba(0, 0, 0, 0.55); border: 1px solid rgba(255, 255, 255, 0.25); border-radius: 6px; overflow: hidden; }
+    .fill { height: 100%; width: 100%; border-radius: 6px; transition: width 80ms linear; }
+    #handsWarn { color: #ff6b6b; font-weight: 700; }
+    #breakWrap {
+      position: fixed;
+      bottom: 86px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 190px;
+      height: 8px;
+      background: rgba(0, 0, 0, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      border-radius: 4px;
+      visibility: hidden;
+      pointer-events: none;
+      z-index: 12;
+    }
+    #breakBar { height: 100%; width: 0%; background: #ffd54a; border-radius: 3px; }
+    #msg {
+      position: fixed;
+      bottom: 130px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.65);
+      color: #fff;
+      font: 14px 'Segoe UI', Arial, sans-serif;
+      padding: 7px 16px;
+      border-radius: 7px;
+      opacity: 0;
+      transition: opacity 0.3s;
+      pointer-events: none;
+      user-select: none;
+      z-index: 13;
+      white-space: nowrap;
+    }
+    #msg.show { opacity: 1; }
+    #hotbar {
+      position: fixed;
+      bottom: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 6px;
+      pointer-events: none;
+      user-select: none;
+      z-index: 12;
+    }
+    .hslot {
+      width: 58px;
+      height: 58px;
+      background: rgba(0, 0, 0, 0.55);
+      border: 2px solid rgba(255, 255, 255, 0.25);
+      border-radius: 7px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      position: relative;
+      color: #eee;
+      font: 13px 'Segoe UI', Arial, sans-serif;
+      font-weight: 700;
+    }
+    .hslot.active { border-color: #ffd54a; box-shadow: 0 0 10px rgba(255, 213, 74, 0.6); }
+    .hslot .sw { position: absolute; top: 6px; left: 6px; width: 14px; height: 14px; border-radius: 3px; border: 1px solid rgba(255, 255, 255, 0.35); }
+    .hslot .cnt { padding-bottom: 3px; }
+    .hslot .nm { font-size: 9px; font-weight: 400; opacity: 0.9; padding: 0 2px 4px; text-align: center; line-height: 1.15; }
+    #crosshair {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      width: 6px;
+      height: 6px;
+      margin: -3px 0 0 -3px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.9);
+      pointer-events: none;
+      z-index: 10;
+    }
+    #loadBtn {
+      position: fixed;
+      top: 12px;
+      right: 12px;
+      background: rgba(0, 0, 0, 0.55);
+      color: #fff;
+      font: 12px 'Segoe UI', Arial, sans-serif;
+      border: 1px dashed rgba(255, 255, 255, 0.45);
+      border-radius: 6px;
+      padding: 6px 12px;
+      cursor: pointer;
+      z-index: 14;
+      user-select: none;
+    }
+    #loadBtn:hover { background: rgba(255, 213, 74, 0.25); border-color: #ffd54a; }
+    #dropOverlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.45);
+      border: 3px dashed #ffd54a;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      color: #ffd54a;
+      font: 18px 'Segoe UI', Arial, sans-serif;
+      letter-spacing: 1px;
+      z-index: 20;
+      pointer-events: none;
+    }
+    #dropOverlay.show { display: flex; }
+  </style>
+</head>
+<body>
+  <div id="hud">
+    ЛКМ (держать) - ломать &middot; ПКМ - поставить &middot; 1-9 - предмет: <span class="block" id="selBlock">руки</span><br />
+    WASD - движение &middot; Мышь - камера &middot; Space - прыжок &middot; Shift - бег &middot; Клик - захват мыши
+  </div>
+  <div id="statbar">
+    <div class="stat"><span class="lbl">Руки</span><div class="track"><div class="fill" id="handsFill"></div></div></div>
+    <div class="stat"><span class="lbl">Шум</span><div class="track"><div class="fill" id="noiseFill"></div></div><span id="handsWarn"></span></div>
+  </div>
+  <div id="breakWrap"><div id="breakBar"></div></div>
+  <div id="hotbar"></div>
+  <div id="crosshair"></div>
+  <div id="msg"></div>
+  <button id="loadBtn" title="Загрузить постройку из Minecraft (.schem / .schematic / .nbt)">Загрузить схему</button>
+  <input type="file" id="schemFile" accept=".schem,.schematic,.nbt" hidden />
+  <div id="dropOverlay">Перетащите файл схемы (.schem / .schematic / .nbt)</div>
+  <canvas id="scene"></canvas>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
