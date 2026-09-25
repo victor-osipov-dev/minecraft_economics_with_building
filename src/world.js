@@ -377,48 +377,69 @@ function torchLean(data) {
   return [0, 0];
 }
 
+// Арт факела в тайле (доли, должно совпадать с paintTorch в blocks.js):
+// палка x28..36/y27..55 (0.1 толщиной), пламя x23..41/y8..34.
+const STICK_CROP = [28 / 64, 36 / 64, 27 / 64, 55 / 64];
+const FLAME_CROP = [23 / 64, 41 / 64, 8 / 64, 34 / 64];
+
 function emitTorch(gd, wx, wy, wz, def, COLS, ROWS, INSET, data) {
-  // Torch / redstone torch: narrow crossed quads.  Напольный стоит строго по
-  // центру клетки и высотой 0.7 (как в майнкрафте ~10px, а не во весь блок).
-  // Настенный прислонён к стене: низ слегка утоплен в опору (перекрывается
-  // её гранью по глубине), верх отклонён наружу — как wall_torch.
+  // Torch / redstone torch как в майнкрафте: тонкая палка (0.1) от опоры
+  // плюс ВЕРТИКАЛЬНОЕ пламя, центрированное на её конце. Пламя всегда стоит
+  // ровно и полностью сидит на палке — ничего не висит рядом в воздухе.
+  // Напольная: палка 0..0.5 по центру, пламя 0.45..0.75. Настенная: палка от
+  // стены (низ утоплен в опору) до (0.5, 0.78), пламя upright на конце.
   const tile = tileFor(def, [0, 1, 0]);
   const [lx, lz] = torchLean(data);
   const floor = data === TORCH_FLOOR;
-  // Напольный: 0..0.7 по центру. Настенный: короткий (0.15..0.85), низ утоплен
-  // в опору — основание визуально касается стены, а не висит в воздухе.
-  const yB = floor ? 0 : 0.15;
-  const yT = floor ? 0.7 : 0.85;
-  const sx0 = floor ? 0 : -lx * 0.3;
-  const sz0 = floor ? 0 : -lz * 0.3;
-  const sx1 = floor ? 0 : lx * 0.02;
-  const sz1 = floor ? 0 : lz * 0.02;
-  const lean = (corners) => corners.map(([x, y, z]) => [x + (y === 0 ? sx0 : sx1), y === 0 ? yB : yT, z + (y === 0 ? sz0 : sz1)]);
-  const a = 0.25;
-  const b = 0.75;
-  pushPlane(gd, wx, wy, wz, lean([[0.5, 0, a], [0.5, 1, a], [0.5, 1, b], [0.5, 0, b]]), [1, 0, 0], 0.78, tile, COLS, ROWS, INSET, false);
-  pushPlane(gd, wx, wy, wz, lean([[a, 0, 0.5], [a, 1, 0.5], [b, 1, 0.5], [b, 0, 0.5]]), [0, 0, 1], 0.86, tile, COLS, ROWS, INSET, false);
+  const hw = 0.05; // полуширина палки
+  const b = floor ? [0.5, 0, 0.5] : [0.5 - lx * 0.52, 0.22, 0.5 - lz * 0.52];
+  const t = floor ? [0.5, 0.5, 0.5] : [0.5, 0.78, 0.5];
+  const c = floor ? [0.5, 0.6, 0.5] : [0.5 + lx * 0.02, 0.83, 0.5 + lz * 0.02];
+  // Крест палки вдоль оси base->tip: квад A шириной по горизонтальной
+  // перпендикуляре к lean, квад B — вдоль lean (оба невырождены).
+  const wA = floor ? [0, 0, hw] : [lz * hw, 0, lx * hw];
+  const wB = floor ? [hw, 0, 0] : [lx * hw, 0, lz * hw];
+  const sub = (p, w) => [p[0] - w[0], p[1] - w[1], p[2] - w[2]];
+  const add = (p, w) => [p[0] + w[0], p[1] + w[1], p[2] + w[2]];
+  const nA = lz === 1 ? [0, 0, 1] : [1, 0, 0];
+  const nB = lz === 1 ? [1, 0, 0] : [0, 0, 1];
+  pushPlane(gd, wx, wy, wz, [sub(b, wA), sub(t, wA), add(t, wA), add(b, wA)], nA, 0.85, tile, COLS, ROWS, INSET, false, STICK_CROP);
+  pushPlane(gd, wx, wy, wz, [sub(b, wB), sub(t, wB), add(t, wB), add(b, wB)], nB, 0.85, tile, COLS, ROWS, INSET, false, STICK_CROP);
+  // Вертикальный крест пламени 0.24x0.3 на конце палки (перекрытие ~0.1).
+  const fw = 0.12;
+  const fh = 0.15;
+  pushPlane(gd, wx, wy, wz,
+    [[c[0] - fw, c[1] - fh, c[2]], [c[0] - fw, c[1] + fh, c[2]], [c[0] + fw, c[1] + fh, c[2]], [c[0] + fw, c[1] - fh, c[2]]],
+    [0, 0, 1], 1, tile, COLS, ROWS, INSET, false, FLAME_CROP);
+  pushPlane(gd, wx, wy, wz,
+    [[c[0], c[1] - fh, c[2] - fw], [c[0], c[1] + fh, c[2] - fw], [c[0], c[1] + fh, c[2] + fw], [c[0], c[1] - fh, c[2] + fw]],
+    [1, 0, 0], 1, tile, COLS, ROWS, INSET, false, FLAME_CROP);
 }
 
 function emitSign(gd, wx, wy, wz, def, COLS, ROWS, INSET, data) {
   const tile = tileFor(def, [0, 1, 0]);
-  // Настенная табличка: одна доска у грани блока, лицевой стороной наружу.
-  // data 1/2 смотрит в +X/-X, 3/4 в +Z/-Z. Видимость с обеих сторон даёт
-  // cutout-материал (culling выключен), коллизия остаётся non-solid.
+  // Настенная табличка: доска на грани СВОЕЙ опоры, лицевой стороной наружу.
+  // facing +X (data 1): опора западнее (x-1), доска у западной грани своей
+  // клетки (x≈0), смотрит на восток. Раньше было зеркально — доска висела у
+  // противоположной грани. Видимость с обеих сторон даёт cutout-материал
+  // (culling выключен), коллизия остаётся non-solid.
   if (data >= 1 && data <= 4) {
     const y0 = 0.3;
     const y1 = 0.8;
     const s0 = 0.125;
     const s1 = 0.875;
     const off = 1 / 16;
+    // Углы идут так, чтобы левый край арта (u=0) оказывался слева при взгляде
+    // на доску спереди, иначе текст зеркалится (слева = +Z с востока, −Z
+    // с запада, −X с юга, +X с севера).
     if (data === 1) {
-      pushPlane(gd, wx, wy, wz, [[1 - off, y0, s0], [1 - off, y1, s0], [1 - off, y1, s1], [1 - off, y0, s1]], [1, 0, 0], 0.78, tile, COLS, ROWS, INSET);
+      pushPlane(gd, wx, wy, wz, [[off, y0, s1], [off, y1, s1], [off, y1, s0], [off, y0, s0]], [1, 0, 0], 0.78, tile, COLS, ROWS, INSET);
     } else if (data === 2) {
-      pushPlane(gd, wx, wy, wz, [[off, y0, s1], [off, y1, s1], [off, y1, s0], [off, y0, s0]], [-1, 0, 0], 0.78, tile, COLS, ROWS, INSET);
+      pushPlane(gd, wx, wy, wz, [[1 - off, y0, s0], [1 - off, y1, s0], [1 - off, y1, s1], [1 - off, y0, s1]], [-1, 0, 0], 0.78, tile, COLS, ROWS, INSET);
     } else if (data === 3) {
-      pushPlane(gd, wx, wy, wz, [[s0, y0, 1 - off], [s0, y1, 1 - off], [s1, y1, 1 - off], [s1, y0, 1 - off]], [0, 0, 1], 0.86, tile, COLS, ROWS, INSET);
+      pushPlane(gd, wx, wy, wz, [[s0, y0, off], [s0, y1, off], [s1, y1, off], [s1, y0, off]], [0, 0, 1], 0.86, tile, COLS, ROWS, INSET);
     } else {
-      pushPlane(gd, wx, wy, wz, [[s1, y0, off], [s1, y1, off], [s0, y1, off], [s0, y0, off]], [0, 0, -1], 0.68, tile, COLS, ROWS, INSET);
+      pushPlane(gd, wx, wy, wz, [[s1, y0, 1 - off], [s1, y1, 1 - off], [s0, y1, 1 - off], [s0, y0, 1 - off]], [0, 0, -1], 0.68, tile, COLS, ROWS, INSET);
     }
     return;
   }
@@ -494,11 +515,16 @@ function emitBars(gd, world, wx, wy, wz, def, COLS, ROWS, INSET) {
   }
 }
 
-function pushPlane(gd, bx, by, bz, corners, n, shade, tile, COLS, ROWS, INSET, bake = true) {
+function pushPlane(gd, bx, by, bz, corners, n, shade, tile, COLS, ROWS, INSET, bake = true, crop = null) {
   const tu = (tile % COLS) / COLS;
   const tv = Math.floor(tile / COLS) / ROWS;
-  const aU = INSET / COLS;
-  const aV = INSET / ROWS;
+  // crop [cu0, cu1, cv0, cv1]: доля тайла с реальным артом (без прозрачных
+  // полей). Квад маппится ровно на арт: основание факела оказывается точно на
+  // опоре, а не висит в воздухе на высоте поля. Без crop — весь тайл.
+  const cu0 = crop ? crop[0] : 0;
+  const cu1 = crop ? crop[1] : 1;
+  const cv0 = crop ? crop[2] : 0;
+  const cv1 = crop ? crop[3] : 1;
   const base = gd.positions.length / 3;
   for (let k = 0; k < 4; k++) {
     const c = corners[k];
@@ -507,13 +533,13 @@ function pushPlane(gd, bx, by, bz, corners, n, shade, tile, COLS, ROWS, INSET, b
     const pz = bz + c[2];
     gd.positions.push(px, py, pz);
     gd.normals.push(n[0], n[1], n[2]);
-    const u = UV[k][0] === 0 ? tu + aU : tu + 1 / COLS - aU;
+    const u = UV[k][0] === 0 ? tu + (cu0 + INSET) / COLS : tu + (cu1 - INSET) / COLS;
     // Atlas is uploaded with update(false), i.e. UNPACK_FLIP_Y off, so v=0 is
     // the canvas TOP.  Tile art is painted upright on the canvas (flame at the
     // top of the torch tile), therefore the block BOTTOM must sample the tile
     // BOTTOM (tv + 1/ROWS), not tv.  The old mapping showed every directional
     // texture upside down (torch flame at the base, grass strip at the foot).
-    const v = UV[k][1] === 0 ? tv + 1 / ROWS - aV : tv + aV;
+    const v = UV[k][1] === 0 ? tv + (cv1 - INSET) / ROWS : tv + (cv0 + INSET) / ROWS;
     gd.uvs.push(u, v);
     // Пламя факела — источник света, а не приёмник: без bake (иначе выгорит).
     if (bake) pushBakedColor(gd, px, py, pz, shade);
@@ -548,7 +574,8 @@ function collectTorchGlow(world, ox, oy, oz) {
       for (let x = ox - BAKE_RADIUS; x < ox + CHUNK + BAKE_RADIUS; x++) {
         const id = world.getBlock(x, y, z);
         if (id !== TORCH && id !== REDSTONE_TORCH) continue;
-        list.push({ x: x + 0.5, y: y + 0.55, z: z + 0.5, i: id === TORCH ? 1 : 0.7 });
+        const floorTorch = world.getState(x, y, z) === TORCH_FLOOR;
+        list.push({ x: x + 0.5, y: y + (floorTorch ? 0.6 : 0.83), z: z + 0.5, i: id === TORCH ? 1 : 0.7 });
       }
     }
   }
