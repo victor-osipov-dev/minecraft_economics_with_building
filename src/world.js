@@ -17,6 +17,10 @@ const FACES = [
 ];
 const UV = [[0, 0], [0, 1], [1, 1], [1, 0]];
 
+// Простой greedy-merge для opaque-слоя (см. buildGreedyOpaque ниже).
+// true = схлопывать видимые грани одинаковых блоков в один прямоугольник.
+export const meshSettings = { greedyOpaqueMerge: true };
+
 const levelKey = (cx, cy, cz) => `${cx},${cy},${cz}`;
 
 function tileFor(def, n) {
@@ -326,7 +330,7 @@ function renderLayer(def) {
   return "opaque";
 }
 
-function buildChunkGeometry(world, cx, cy, cz) {
+export function buildChunkGeometry(world, cx, cy, cz) {
   const layers = {
     opaque: emptyGeometry(),
     cutout: emptyGeometry(),
@@ -336,6 +340,7 @@ function buildChunkGeometry(world, cx, cy, cz) {
   const ox = cx * CHUNK;
   const oy = cy * CHUNK;
   const oz = cz * CHUNK;
+  const greedy = meshSettings.greedyOpaqueMerge;
 
   for (let ly = 0; ly < CHUNK; ly++) {
     for (let lz = 0; lz < CHUNK; lz++) {
@@ -362,6 +367,8 @@ function buildChunkGeometry(world, cx, cy, cz) {
           emitBars(gd, world, wx, wy, wz, def, ATL_COLS, ATL_ROWS, INSET);
           continue;
         }
+        // Opaque-кубы при включённом флаге рисует buildGreedyOpaque ниже.
+        if (greedy && isOpaqueBlock(def)) continue;
 
         for (let f = 0; f < FACES.length; f++) {
           const face = FACES[f];
@@ -378,6 +385,8 @@ function buildChunkGeometry(world, cx, cy, cz) {
       }
     }
   }
+
+  if (greedy) buildGreedyOpaque(world, layers.opaque, cx, cy, cz);
 
   return layers;
 }
@@ -396,6 +405,125 @@ function pushFace(gd, bx, by, bz, face, tile, shade, COLS, ROWS, INSET) {
     const u = UV[k][0] === 0 ? tu + aU : tu + 1 / COLS - aU;
     // Same v convention as pushPlane: v=0 is the canvas top (see above), so
     // the block bottom samples the tile bottom.
+    const v = UV[k][1] === 0 ? tv + 1 / ROWS - aV : tv + aV;
+    gd.uvs.push(u, v);
+    gd.colors.push(shade, shade, shade, 1);
+  }
+  gd.indices.push(base, base + 2, base + 1, base, base + 3, base + 2);
+}
+
+// Простой greedy-merge только для opaque-кубов: видимые грани одинаковых
+// блоков, лежащие в одной плоскости чанка, объединяются в один прямоугольник
+// (1 квад вместо w*h). Условие видимости то же, что и в buildChunkGeometry:
+// грань есть тогда и только тогда, когда сосед НЕ opaque.
+// ВАЖНО: текстура при этом РАСТЯГИВАЕТСЯ на весь прямоугольник (UV покрывает
+// тайл один раз), а не повторяется. Настоящий repeat внутри общего атласа
+// невозможен со StandardMaterial: атлас в CLAMP-режиме, и UV за пределами
+// тайла засэмплируют соседние тайлы. Для шумовых текстур (бетон, земля,
+// шерсть, терракота) растяжка почти незаметна; у узорных (пол, кирпичи,
+// книжные полки, песчаник) швы pattern'а потянутся вместе с гранью.
+// Следующий шаг, если понадобится именно repeat "как было": отдельные
+// повторяемые текстуры на частые блоки или кастомный шейдер с fract() внутри
+// тайла. Cutout/alpha/torch/sign/bars сюда не входят и рисуются как раньше.
+function buildGreedyOpaque(world, gd, cx, cy, cz) {
+  const origin = [cx * CHUNK, cy * CHUNK, cz * CHUNK];
+  for (let f = 0; f < FACES.length; f++) {
+    const face = FACES[f];
+    const n = face.n;
+    const axis = n[0] !== 0 ? 0 : (n[1] !== 0 ? 1 : 2);
+    const sign = n[axis];
+    // Базис плоскости грани выводим из её углов, чтобы порядок обхода и
+    // winding совпали с pushFace: U = v3-v0, V = v1-v0 (каждый +-1 по одной оси).
+    const U = [
+      face.v[3][0] - face.v[0][0],
+      face.v[3][1] - face.v[0][1],
+      face.v[3][2] - face.v[0][2],
+    ];
+    const V = [
+      face.v[1][0] - face.v[0][0],
+      face.v[1][1] - face.v[0][1],
+      face.v[1][2] - face.v[0][2],
+    ];
+    const uAxis = U[0] !== 0 ? 0 : (U[1] !== 0 ? 1 : 2);
+    const vAxis = V[0] !== 0 ? 0 : (V[1] !== 0 ? 1 : 2);
+    const uSign = U[uAxis];
+    const vSign = V[vAxis];
+    for (let slice = 0; slice < CHUNK; slice++) {
+      const mask = new Uint16Array(CHUNK * CHUNK);
+      const axisCoord = origin[axis] + slice;
+      for (let v = 0; v < CHUNK; v++) {
+        const vCoord = origin[vAxis] + (vSign > 0 ? v : CHUNK - 1 - v);
+        for (let u = 0; u < CHUNK; u++) {
+          const uCoord = origin[uAxis] + (uSign > 0 ? u : CHUNK - 1 - u);
+          const px = axis === 0 ? axisCoord : (uAxis === 0 ? uCoord : vCoord);
+          const py = axis === 1 ? axisCoord : (uAxis === 1 ? uCoord : vCoord);
+          const pz = axis === 2 ? axisCoord : (uAxis === 2 ? uCoord : vCoord);
+          const id = world.getBlock(px, py, pz);
+          const def = BLOCKS[id];
+          if (!isOpaqueBlock(def)) continue;
+          const nbDef = BLOCKS[world.getBlock(px + n[0], py + n[1], pz + n[2])];
+          if (isOpaqueBlock(nbDef)) continue;
+          mask[v * CHUNK + u] = id;
+        }
+      }
+      for (let v = 0; v < CHUNK; v++) {
+        for (let u = 0; u < CHUNK; u++) {
+          const id = mask[v * CHUNK + u];
+          if (id === 0) continue;
+          let w = 1;
+          while (u + w < CHUNK && mask[v * CHUNK + u + w] === id) w++;
+          let h = 1;
+          let canGrow = true;
+          while (v + h < CHUNK && canGrow) {
+            for (let k = 0; k < w; k++) {
+              if (mask[(v + h) * CHUNK + u + k] !== id) {
+                canGrow = false;
+                break;
+              }
+            }
+            if (canGrow) h++;
+          }
+          for (let dv = 0; dv < h; dv++) {
+            for (let du = 0; du < w; du++) mask[(v + dv) * CHUNK + u + du] = 0;
+          }
+          const boxMin = [0, 0, 0];
+          const boxMax = [0, 0, 0];
+          const plane = axisCoord + (sign > 0 ? 1 : 0);
+          boxMin[axis] = plane;
+          boxMax[axis] = plane;
+          const uLo = uSign > 0 ? origin[uAxis] + u : origin[uAxis] + CHUNK - u - w;
+          const vLo = vSign > 0 ? origin[vAxis] + v : origin[vAxis] + CHUNK - v - h;
+          boxMin[uAxis] = uLo;
+          boxMax[uAxis] = uLo + w;
+          boxMin[vAxis] = vLo;
+          boxMax[vAxis] = vLo + h;
+          const def = BLOCKS[id];
+          pushMergedFace(gd, boxMin, boxMax, face, tileFor(def, n), face.shade, ATL_COLS, ATL_ROWS, INSET);
+        }
+      }
+    }
+  }
+}
+
+// Как pushFace, но углы берутся из бокса merged-прямоугольника: компонента 0
+// угла грани -> boxMin, 1 -> boxMax. Для прямоугольника 1x1 совпадает с
+// pushFace один в один. UV покрывают тайл целиком один раз (stretch).
+function pushMergedFace(gd, boxMin, boxMax, face, tile, shade, COLS, ROWS, INSET) {
+  const tu = (tile % COLS) / COLS;
+  const tv = Math.floor(tile / COLS) / ROWS;
+  const aU = INSET / COLS;
+  const aV = INSET / ROWS;
+  const n = face.n;
+  const base = gd.positions.length / 3;
+  for (let k = 0; k < 4; k++) {
+    const c = face.v[k];
+    gd.positions.push(
+      c[0] ? boxMax[0] : boxMin[0],
+      c[1] ? boxMax[1] : boxMin[1],
+      c[2] ? boxMax[2] : boxMin[2]
+    );
+    gd.normals.push(n[0], n[1], n[2]);
+    const u = UV[k][0] === 0 ? tu + aU : tu + 1 / COLS - aU;
     const v = UV[k][1] === 0 ? tv + 1 / ROWS - aV : tv + aV;
     gd.uvs.push(u, v);
     gd.colors.push(shade, shade, shade, 1);
