@@ -144,7 +144,7 @@ function placeSchematic(plan, cx, cz, floorY = 1, replaceWorld = false) {
     oldWorld.clear();
     for (const guard of oldGuards) guard.dispose();
     clearPointLights();
-    addTorchLights(targetWorld, result, plan, spawn);
+    addTorchLights(targetWorld, result, plan);
     resetMapTransientState();
   }
 
@@ -1036,12 +1036,58 @@ function addPointLights(lights, opts = {}) {
 }
 
 // Torch glow for imported maps.  The block defs carry light:8 / light:5 but
-// the renderer never consumed it, so torches were dark.  A forward renderer
-// pays per light in every shader, therefore only the MAX_TORCH_LIGHTS nearest
-// to the spawn get a real PointLight.  Runtime break/place of torches does not
-// update lights (static on import).
-const MAX_TORCH_LIGHTS = 16;
-function addTorchLights(targetWorld, result, plan, spawn) {
+// the renderer never consumed it, so torches were dark.  Static lights only
+// near the spawn left distant torches dark, therefore a small persistent pool
+// of PointLights keeps following the player and snaps to the nearest live
+// torches 4x per second.  The pool size is fixed (forward renderer pays per
+// light in every shader); broken torches are filtered out on every retarget,
+// placed torches are picked up on the next import.
+const TORCH_POOL_SIZE = 6;
+const TORCH_POOL_RANGE = 20;
+const TORCH_RETARGET_INTERVAL = 0.25;
+let torchPool = [];
+let torchSpots = [];
+let torchTimer = 0;
+function ensureTorchPool() {
+  while (torchPool.length < TORCH_POOL_SIZE) {
+    const i = torchPool.length;
+    const p = new BABYLON.PointLight(`torchPool_${i}`, new BABYLON.Vector3(0, -10, 0), scene);
+    p.diffuse = new BABYLON.Color3(1, 0.72, 0.42);
+    p.intensity = 8;
+    p.range = 14;
+    p.setEnabled(false);
+    torchPool.push(p);
+  }
+}
+function retargetTorchLights() {
+  ensureTorchPool();
+  torchSpots = torchSpots.filter((s) => {
+    const id = world.getBlock(s.bx, s.by, s.bz);
+    return id === TORCH || id === REDSTONE_TORCH;
+  });
+  const px = player.x;
+  const py = player.y;
+  const pz = player.z;
+  const near = [];
+  for (const s of torchSpots) {
+    const dx = s.x - px;
+    const dy = s.y - py;
+    const dz = s.z - pz;
+    const d2 = dx * dx + dy * dy + dz * dz;
+    if (d2 > TORCH_POOL_RANGE * TORCH_POOL_RANGE) continue;
+    near.push({ s, d2 });
+  }
+  near.sort((a, b) => a.d2 - b.d2);
+  for (let i = 0; i < torchPool.length; i++) {
+    if (i < near.length) {
+      torchPool[i].position.set(near[i].s.x, near[i].s.y, near[i].s.z);
+      torchPool[i].setEnabled(true);
+    } else {
+      torchPool[i].setEnabled(false);
+    }
+  }
+}
+function addTorchLights(targetWorld, result, plan) {
   const spots = [];
   const topY = Math.min(WORLD_H - 1, Math.max(0, result.topY));
   for (let x = result.x0; x < result.x0 + plan.W; x++) {
@@ -1049,17 +1095,13 @@ function addTorchLights(targetWorld, result, plan, spawn) {
       for (let y = 0; y <= topY; y++) {
         const id = targetWorld.getBlock(x, y, z);
         if (id !== TORCH && id !== REDSTONE_TORCH) continue;
-        const px = x + 0.5;
-        const pz = z + 0.5;
-        spots.push({
-          pos: [px, y + 0.7, pz],
-          d: (px - spawn.x) ** 2 + (pz - spawn.z) ** 2,
-        });
+        spots.push({ x: x + 0.5, y: y + 0.7, z: z + 0.5, bx: x, by: y, bz: z });
       }
     }
   }
-  spots.sort((a, b) => a.d - b.d);
-  addPointLights(spots.slice(0, MAX_TORCH_LIGHTS), { intensity: 6, range: 12 });
+  torchSpots = spots;
+  console.info(`torch spots: ${spots.length}`);
+  retargetTorchLights();
 }
 
 function buildFallbackWorld(error) {
@@ -1083,6 +1125,8 @@ function buildFallbackWorld(error) {
   player.grounded = false;
   clampPlayerToWorld();
   resetMapTransientState();
+  torchSpots = [];
+  retargetTorchLights();
   createGuards(FALLBACK_GUARD_ROUTES);
   showMsg("Схема по умолчанию недоступна — загружена резервная тюрьма");
 }
