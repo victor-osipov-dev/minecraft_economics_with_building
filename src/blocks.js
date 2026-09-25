@@ -94,7 +94,31 @@ const T = {
   redstoneTorch: { up: 43, side: 43, down: 43 },
   tripwireHook: { up: 44, side: 44, down: 44 },
   water: { up: 45, side: 45, down: 45 },
+  // Верх и бок нажимной плиты (вид сверху/сбоку). Используются только плитами.
+  oakPlateTop: { up: 46, side: 46, down: 46 },
+  oakPlateSide: { up: 47, side: 47, down: 47 },
+  stonePlateTop: { up: 48, side: 48, down: 48 },
+  stonePlateSide: { up: 49, side: 49, down: 49 },
 };
+
+// Состояния неполных блоков (data-байт клетки, см. World.getState/setState).
+// Факел: 0 стоит на полу, 1..4 прислонён к стене и наклонён в сторону +X/-X/+Z/-Z.
+export const TORCH_FLOOR = 0;
+export const TORCH_PX = 1;
+export const TORCH_NX = 2;
+export const TORCH_PZ = 3;
+export const TORCH_NZ = 4;
+// Табличка: 0 стоит на ножке, 1..4 висит на стене и смотрит в +X/-X/+Z/-Z.
+export const SIGN_STANDING = 0;
+export const SIGN_PX = 1;
+export const SIGN_NX = 2;
+export const SIGN_PZ = 3;
+export const SIGN_NZ = 4;
+// Плита (slab): 0 двойная/полный куб (вид старых построек без data),
+// 1 нижняя половина, 2 верхняя половина.
+export const SLAB_DOUBLE = 0;
+export const SLAB_BOTTOM = 1;
+export const SLAB_TOP = 2;
 
 const block = (name, options = {}) => {
   const result = {
@@ -143,10 +167,10 @@ export const BLOCKS = [
   block("Железная дверь", { tiles: T.ironDoor, hardness: 7, toolPower: 2.1, color: "#aeb5ba" }),
   block("Кирпичный забор", { bars: true, transparent: true, tiles: T.netherFence, hardness: 4, toolPower: 1.5, color: "#382027" }),
   block("Адский кирпич", { tiles: T.netherBrick, hardness: 5, toolPower: 1.7, color: "#382027" }),
-  block("Плита из адского кирпича", { tiles: T.netherBrickSlab, hardness: 5, toolPower: 1.7, color: "#382027" }),
+  block("Плита из адского кирпича", { shape: "slab", tiles: T.netherBrickSlab, hardness: 5, toolPower: 1.7, color: "#382027" }),
   block("Дубовая кнопка", { solid: false, transparent: true, tiles: T.button, hardness: 0.3, color: "#9a713f" }),
   block("Дубовый забор", { bars: true, transparent: true, tiles: T.oakFence, hardness: 2, toolPower: 1.1, color: "#7a5833" }),
-  block("Нажимная плита", { solid: false, transparent: true, tiles: T.oakPressurePlate, hardness: 0.4, color: "#9a713f" }),
+  block("Нажимная плита", { solid: false, transparent: true, shape: "plate", tiles: { up: 46, side: 47, down: 46 }, hardness: 0.4, color: "#9a713f" }),
   block("Табличка", { solid: false, transparent: true, shape: "sign", tiles: T.sign, hardness: 0.5, color: "#9a713f" }),
   block("Дубовые ступени", { tiles: T.oakStairs, hardness: 3, toolPower: 1.2, color: "#7a5833" }),
   block("Дубовой люк", { solid: false, transparent: true, tiles: T.trapdoor, hardness: 1, toolPower: 1.1, color: "#7a5833" }),
@@ -155,9 +179,9 @@ export const BLOCKS = [
   block("Красная кровать", { solid: false, transparent: true, tiles: T.bed, hardness: 0.5, color: "#8f2025" }),
   block("Красная терракота", { tiles: T.redTerracotta, hardness: 1.4, toolPower: 1.1, color: "#963b32" }),
   block("Песчаник", { tiles: T.sandstone, hardness: 2.5, toolPower: 1.2, color: "#d8c78e" }),
-  block("Гладкая каменная плита", { tiles: T.smoothSlab, hardness: 3, toolPower: 1.3, color: "#a0a3a3" }),
+  block("Гладкая каменная плита", { shape: "slab", tiles: T.smoothSlab, hardness: 3, toolPower: 1.3, color: "#a0a3a3" }),
   block("Каменные кирпичи", { tiles: T.stoneBricks, hardness: 5, toolPower: 1.7, color: "#7b7e7c" }),
-  block("Каменная нажимная плита", { solid: false, transparent: true, tiles: T.stonePressurePlate, hardness: 0.5, color: "#8d9090" }),
+  block("Каменная нажимная плита", { solid: false, transparent: true, shape: "plate", tiles: { up: 48, side: 49, down: 48 }, hardness: 0.5, color: "#8d9090" }),
   block("Факел", { solid: false, transparent: true, shape: "torch", tiles: T.torch, hardness: 0.1, color: "#f5c65a", light: 8 }),
   block("Красный камень", { solid: false, transparent: true, shape: "torch", tiles: T.redstoneTorch, hardness: 0.1, color: "#d43c35", light: 5 }),
   block("Крюк натянутой проволоки", { solid: false, transparent: true, tiles: T.tripwireHook, hardness: 0.4, color: "#a7a9aa" }),
@@ -166,7 +190,10 @@ export const BLOCKS = [
 
 const TILE = 64;
 export const ATLAS_COLS = 4;
-export const ATLAS_ROWS = Math.ceil(BLOCKS.length / ATLAS_COLS);
+// Тайлы 46..49 (верх/бок нажимных плит) живут за пределами BLOCKS, поэтому
+// высота атласа считается от максимального индекса тайла, а не от числа блоков.
+const MAX_TILE_INDEX = 49;
+export const ATLAS_ROWS = Math.ceil((MAX_TILE_INDEX + 1) / ATLAS_COLS);
 // Keep the physical texture dimensions in lockstep with the UV grid.  A
 // 1024px square with 4x12 UVs would sample only the top-left quarter of
 // every tile and makes the atlas effectively unreadable.
@@ -644,6 +671,31 @@ function paintTripwireHook(ctx, ox, oy) {
   ctx.fillRect(ox + 15, oy + 15, 8, 8);
 }
 
+function paintPlateTop(ctx, ox, oy, hex) {
+  // Вид нажимной плиты сверху: почти во весь тайл, тонкая рамка по краю.
+  ctx.clearRect(ox, oy, TILE, TILE);
+  const rgb = hexRgb(hex);
+  ctx.fillStyle = hex;
+  ctx.fillRect(ox + 4, oy + 4, TILE - 8, TILE - 8);
+  noiseFill(ctx, ox + 4, oy + 4, rgb, 16, 0.7);
+  ctx.strokeStyle = "rgba(0,0,0,0.45)";
+  ctx.lineWidth = 2;
+  ctx.strokeRect(ox + 4.5, oy + 4.5, TILE - 9, TILE - 9);
+  ctx.fillStyle = "rgba(255,255,255,0.22)";
+  ctx.fillRect(ox + 8, oy + 8, TILE - 16, 3);
+}
+
+function paintPlateSide(ctx, ox, oy, hex) {
+  // Бок тонкой плиты: нижняя полоса в цвет материала + светлая кромка сверху.
+  ctx.clearRect(ox, oy, TILE, TILE);
+  ctx.fillStyle = "rgba(0,0,0,0)";
+  ctx.fillRect(ox, oy, TILE, TILE);
+  ctx.fillStyle = hex;
+  ctx.fillRect(ox, oy + TILE - 12, TILE, 12);
+  ctx.fillStyle = "rgba(255,255,255,0.28)";
+  ctx.fillRect(ox, oy + TILE - 12, TILE, 3);
+}
+
 function paintWater(ctx, ox, oy) {
   ctx.clearRect(ox, oy, TILE, TILE);
   ctx.fillStyle = "rgba(52,126,194,0.72)";
@@ -716,6 +768,10 @@ export function createAtlas(scene) {
   paintTorch(ctx, 192, 640, true);
   paintTripwireHook(ctx, 0, 704);
   paintWater(ctx, 64, 704);
+  paintPlateTop(ctx, 128, 704, "#9a713f");
+  paintPlateSide(ctx, 192, 704, "#7a562e");
+  paintPlateTop(ctx, 0, 768, "#8d9090");
+  paintPlateSide(ctx, 64, 768, "#6f7272");
   dt.update(false);
   dt.hasAlpha = true;
   dt.wrapU = BABYLON.Texture.CLAMP_ADDRESSMODE;

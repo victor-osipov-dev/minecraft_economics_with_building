@@ -46,6 +46,11 @@ import {
   TRIPWIRE_HOOK,
   WATER,
   BLOCKS,
+  TORCH_FLOOR,
+  SIGN_STANDING,
+  SLAB_DOUBLE,
+  SLAB_BOTTOM,
+  SLAB_TOP,
 } from "./blocks.js";
 import { WORLD_H } from "./world.js";
 
@@ -637,108 +642,173 @@ function markIgnored(stats, name) {
   addMappingName(stats, "ignored", name || "unknown");
 }
 
-function mapBlockState(rawName, properties, stats) {
+// Свойства из скобочной записи "wall_torch[facing=east,lit=true]".
+function parseBracketProps(rawName) {
+  const props = Object.create(null);
+  if (typeof rawName !== "string") return props;
+  const open = rawName.indexOf("[");
+  const close = rawName.lastIndexOf("]");
+  if (open < 0 || close < open) return props;
+  for (const part of rawName.slice(open + 1, close).split(",")) {
+    const eq = part.indexOf("=");
+    if (eq <= 0) continue;
+    const key = part.slice(0, eq).trim().toLowerCase();
+    const value = part.slice(eq + 1).trim().toLowerCase();
+    if (key) props[key] = value;
+  }
+  return props;
+}
+
+// Свойства из NBT-компаунда Properties ({facing: "east"}).
+function compoundProps(value) {
+  const props = Object.create(null);
+  if (!isCompound(value)) return props;
+  for (const key of Object.keys(value)) {
+    const v = value[key];
+    const k = key.trim().toLowerCase();
+    if (!k) continue;
+    if (typeof v === "string") props[k] = v.trim().toLowerCase();
+    else if (typeof v === "number" && Number.isSafeInteger(v)) props[k] = String(v);
+  }
+  return props;
+}
+
+// facing майнкрафта -> data факела/таблички: east=+X(1), west=-X(2),
+// south=+Z(3), north=-Z(4).
+function facingData(facing, fallback) {
+  switch (facing) {
+    case "east": return 1;
+    case "west": return 2;
+    case "south": return 3;
+    case "north": return 4;
+    default: return fallback;
+  }
+}
+
+// type плиты (slab) -> data: bottom=1, top=2, double/нет данных=0 (полный куб).
+function slabData(type) {
+  if (type === "bottom") return SLAB_BOTTOM;
+  if (type === "top") return SLAB_TOP;
+  return SLAB_DOUBLE;
+}
+
+export function mapBlockState(rawName, properties, stats) {
   if (properties != null && !isCompound(properties)) {
     throw new Error("палитра: некорректные свойства блока");
   }
   const name = normalizeBlockName(rawName);
   if (!name) {
     markUnsupported(stats, String(rawName ?? ""));
-    return AIR;
+    return { id: AIR, data: 0 };
   }
+  // Скобочные свойства дополняются NBT-компаундом Properties (он точнее).
+  const props = { ...parseBracketProps(rawName), ...compoundProps(properties) };
 
   if (name === "structure_void" || name === "air" || name === "cave_air" || name === "void_air") {
-    return AIR;
-  }
-  if (EXACT_BLOCKS.has(name)) {
-    if (COMPLEX_BLOCK_RE.test(name)) markSimplified(stats, name);
-    return EXACT_BLOCKS.get(name);
+    return { id: AIR, data: 0 };
   }
 
-  // Complex Minecraft forms are intentionally represented by a simple full
-  // block/plane.  These are known simplifications, not unknown blocks.
+  // Факелы: напольный и настенный (наклон в сторону facing).
+  if (name === "torch") return { id: TORCH, data: TORCH_FLOOR };
+  if (name === "wall_torch") return { id: TORCH, data: facingData(props.facing, TORCH_FLOOR) };
+  if (name === "redstone_torch") return { id: REDSTONE_TORCH, data: TORCH_FLOOR };
+  if (name === "redstone_wall_torch") return { id: REDSTONE_TORCH, data: facingData(props.facing, TORCH_FLOOR) };
+
+  // Таблички: стоячая и настенная (доска смотрит в сторону facing).
+  if (name === "oak_wall_sign" || (name.includes("wall_sign") && name.includes("sign"))) {
+    return { id: OAK_SIGN, data: facingData(props.facing, 4) };
+  }
+  if (name === "oak_sign") return { id: OAK_SIGN, data: SIGN_STANDING };
+
+  // Плиты (slabs): нижняя/верхняя/двойная. Проверяем ДО EXACT_BLOCKS,
+  // иначе точные совпадения ("smooth_stone_slab") съедят type=half.
+  if (name === "nether_brick_slab") return { id: NETHER_BRICK_SLAB, data: slabData(props.type) };
   if (/_slab$|_step$/.test(name)) {
     markSimplified(stats, name);
-    return SMOOTH_STONE_SLAB;
+    return { id: SMOOTH_STONE_SLAB, data: slabData(props.type) };
+  }
+
+  if (EXACT_BLOCKS.has(name)) {
+    if (COMPLEX_BLOCK_RE.test(name)) markSimplified(stats, name);
+    return { id: EXACT_BLOCKS.get(name), data: 0 };
   }
   if (/_stairs$/.test(name)) {
     markSimplified(stats, name);
-    return OAK_STAIRS;
+    return { id: OAK_STAIRS, data: 0 };
   }
   if (/_door$/.test(name)) {
     markSimplified(stats, name);
-    return IRON_DOOR;
+    return { id: IRON_DOOR, data: 0 };
   }
   if (/_trapdoor$/.test(name)) {
     markSimplified(stats, name);
-    return OAK_TRAPDOOR;
+    return { id: OAK_TRAPDOOR, data: 0 };
   }
   if (/_fence(_gate)?$/.test(name)) {
     markSimplified(stats, name);
-    return OAK_FENCE;
+    return { id: OAK_FENCE, data: 0 };
   }
   if (/_pane$/.test(name)) {
     markSimplified(stats, name);
-    return GLASS_PANE;
+    return { id: GLASS_PANE, data: 0 };
   }
-  if (name.includes("glass")) return GLASS;
-  if (name === "water" || name === "flowing_water") return WATER;
+  if (name.includes("glass")) return { id: GLASS, data: 0 };
+  if (name === "water" || name === "flowing_water") return { id: WATER, data: 0 };
   if (name.includes("leaves") || name.includes("lava") || name.includes("flower") ||
       name.includes("tall_grass") || name.includes("dead_bush") || name.includes("vine") ||
       name.includes("rail") || name.includes("carpet") || name.includes("sapling") ||
       name.includes("mushroom") || name.includes("seagrass") || name.includes("kelp")) {
     markIgnored(stats, name);
-    return AIR;
+    return { id: AIR, data: 0 };
   }
   if (name.includes("concrete") || name.includes("terracotta")) {
-    if (name === "cyan_terracotta") return CYAN_TERRACOTTA;
-    if (name === "red_terracotta") return RED_TERRACOTTA;
-    return WALL_CONCRETE;
+    if (name === "cyan_terracotta") return { id: CYAN_TERRACOTTA, data: 0 };
+    if (name === "red_terracotta") return { id: RED_TERRACOTTA, data: 0 };
+    return { id: WALL_CONCRETE, data: 0 };
   }
-  if (name.includes("stone_brick")) return STONE_BRICKS;
+  if (name.includes("stone_brick")) return { id: STONE_BRICKS, data: 0 };
   if (name.includes("cobblestone") || name.includes("deepslate") ||
       name.includes("blackstone") || name.includes("andesite") || name.includes("diorite") ||
       name.includes("granite") || name.includes("netherrack") || name.includes("end_stone") ||
       name.includes("calcite") || name.includes("tuff") || name.includes("basalt") ||
-      name.includes("obsidian") || name.includes("ore") || name === "stone") return STONE;
-  if (name.includes("quartz")) return QUARTZ_BLOCK;
-  if (name.includes("sandstone")) return SANDSTONE;
+      name.includes("obsidian") || name.includes("ore") || name === "stone") return { id: STONE, data: 0 };
+  if (name.includes("quartz")) return { id: QUARTZ_BLOCK, data: 0 };
+  if (name.includes("sandstone")) return { id: SANDSTONE, data: 0 };
   if (name.includes("dirt") || name.includes("sand") || name.includes("gravel") ||
-      name === "podzol" || name.includes("mud")) return DIRT;
-  if (name.includes("plank") || name.includes("_log") || name.includes("_wood")) return WOOD;
-  if (name.includes("black_wool")) return BLACK_WOOL;
-  if (name.includes("blue_wool")) return BLUE_WOOL;
-  if (name.includes("red_wool")) return RED_WOOL;
-  if (name.includes("yellow_wool")) return YELLOW_WOOL;
-  if (name.includes("wool") || name.includes("shulker")) return WALL_CONCRETE;
-  if (name.includes("bookshelf")) return BOOKSHELF;
-  if (name.includes("cauldron")) return CAULDRON;
-  if (name.includes("ender_chest")) return ENDER_CHEST;
-  if (name.includes("chest")) return CHEST;
-  if (name.includes("hopper")) return HOPPER;
-  if (name.includes("piston")) return PISTON;
-  if (name.includes("iron_door")) return IRON_DOOR;
-  if (name.includes("iron_block")) return IRON_BLOCK;
-  if (name.includes("bed")) return RED_BED;
-  if (name.includes("web")) return COBWEB;
-  if (name.includes("fence") || name.includes("bars")) return BARS;
-  if (name.includes("button")) return OAK_BUTTON;
-  if (name.includes("pressure_plate")) return name.includes("stone") ? STONE_PRESSURE_PLATE : OAK_PRESSURE_PLATE;
-  if (name.includes("sign")) return OAK_SIGN;
-  if (name.includes("redstone_torch")) return REDSTONE_TORCH;
-  if (name.includes("torch")) return TORCH;
-  if (name.includes("tripwire")) return TRIPWIRE_HOOK;
+      name === "podzol" || name.includes("mud")) return { id: DIRT, data: 0 };
+  if (name.includes("plank") || name.includes("_log") || name.includes("_wood")) return { id: WOOD, data: 0 };
+  if (name.includes("black_wool")) return { id: BLACK_WOOL, data: 0 };
+  if (name.includes("blue_wool")) return { id: BLUE_WOOL, data: 0 };
+  if (name.includes("red_wool")) return { id: RED_WOOL, data: 0 };
+  if (name.includes("yellow_wool")) return { id: YELLOW_WOOL, data: 0 };
+  if (name.includes("wool") || name.includes("shulker")) return { id: WALL_CONCRETE, data: 0 };
+  if (name.includes("bookshelf")) return { id: BOOKSHELF, data: 0 };
+  if (name.includes("cauldron")) return { id: CAULDRON, data: 0 };
+  if (name.includes("ender_chest")) return { id: ENDER_CHEST, data: 0 };
+  if (name.includes("chest")) return { id: CHEST, data: 0 };
+  if (name.includes("hopper")) return { id: HOPPER, data: 0 };
+  if (name.includes("piston")) return { id: PISTON, data: 0 };
+  if (name.includes("iron_door")) return { id: IRON_DOOR, data: 0 };
+  if (name.includes("iron_block")) return { id: IRON_BLOCK, data: 0 };
+  if (name.includes("bed")) return { id: RED_BED, data: 0 };
+  if (name.includes("web")) return { id: COBWEB, data: 0 };
+  if (name.includes("fence") || name.includes("bars")) return { id: BARS, data: 0 };
+  if (name.includes("button")) return { id: OAK_BUTTON, data: 0 };
+  if (name.includes("pressure_plate")) return { id: name.includes("stone") ? STONE_PRESSURE_PLATE : OAK_PRESSURE_PLATE, data: 0 };
+  if (name.includes("sign")) {
+    if (name.includes("wall_") || props.facing) return { id: OAK_SIGN, data: facingData(props.facing, 4) };
+    return { id: OAK_SIGN, data: SIGN_STANDING };
+  }
+  if (name.includes("redstone_torch")) return { id: REDSTONE_TORCH, data: TORCH_FLOOR };
+  if (name.includes("torch")) return { id: TORCH, data: TORCH_FLOOR };
+  if (name.includes("tripwire")) return { id: TRIPWIRE_HOOK, data: 0 };
   if (name.includes("metal") || name.includes("iron") || name.includes("copper") ||
-      name.includes("gold_block") || name.includes("netherite")) return DARK_METAL;
+      name.includes("gold_block") || name.includes("netherite")) return { id: DARK_METAL, data: 0 };
 
   // Unknown names are deliberately not concrete.  A corrupt/custom block
   // must not silently turn a doorway into a wall or poison a prison layout.
   markUnsupported(stats, name);
-  return AIR;
-}
-
-function mapBlockName(name) {
-  return mapBlockState(name, null, null);
+  return { id: AIR, data: 0 };
 }
 
 function planResult(format, W, H, L, blocks, stats) {
@@ -783,14 +853,17 @@ function paletteNameAndIndex(entry, implicitIndex, mode, label) {
   if (typeof name !== "string" || name.length === 0) {
     throw new Error(`${label}: отсутствует имя блока`);
   }
-  if (entry != null && isCompound(entry) && hasOwn(entry, "Properties") &&
-      !isCompound(entry.Properties)) {
-    throw new Error(`${label}: некорректные свойства блока`);
+  let properties;
+  if (entry != null && isCompound(entry) && hasOwn(entry, "Properties")) {
+    if (!isCompound(entry.Properties)) {
+      throw new Error(`${label}: некорректные свойства блока`);
+    }
+    properties = entry.Properties;
   }
   if (mode === "v3" && rawIndex !== implicitIndex) {
     throw new Error(`${label}: палитра v3 должна иметь непрерывные индексы`);
   }
-  return { name, index: checkedPaletteIndex(rawIndex, `${label}: индекс`) };
+  return { name, index: checkedPaletteIndex(rawIndex, `${label}: индекс`), properties };
 }
 
 function paletteEntries(raw, mode, label, stats = null) {
@@ -892,6 +965,12 @@ function parseSponge(scm, stats) {
     if (!palette.has(safe)) throw new Error("схема .schem: индекс не найден в палитре");
     return palette.get(safe);
   };
+  const pushBlock = (x, y, z, entry) => {
+    if (entry.id !== AIR) {
+      blocks.push([x, y, z, entry.id, entry.data]);
+      checkBlockLimit(blocks.length);
+    }
+  };
 
   if (version === 2) {
     if (!(rawData instanceof Uint8Array || rawData instanceof Int8Array || Array.isArray(rawData))) {
@@ -908,11 +987,7 @@ function parseSponge(scm, stats) {
       for (let z = 0; z < L; z++) {
         for (let x = 0; x < W; x++) {
           const index = parseVarInt(rawData, offset);
-          const id = blockAt(index);
-          if (id !== AIR) {
-            blocks.push([x, y, z, id]);
-            checkBlockLimit(blocks.length);
-          }
+          pushBlock(x, y, z, blockAt(index));
         }
       }
     }
@@ -928,11 +1003,7 @@ function parseSponge(scm, stats) {
     for (let y = 0; y < H; y++) {
       for (let z = 0; z < L; z++) {
         for (let x = 0; x < W; x++) {
-          const id = blockAt(rawData[y * W * L + z * W + x]);
-          if (id !== AIR) {
-            blocks.push([x, y, z, id]);
-            checkBlockLimit(blocks.length);
-          }
+          pushBlock(x, y, z, blockAt(rawData[y * W * L + z * W + x]));
         }
       }
     }
@@ -1012,7 +1083,7 @@ function parseVanillaPalette(raw, label, stats = null) {
         throw new Error(`${label}: дублирующееся имя блока`);
       }
       names.add(key);
-      ids.set(entry.index, mapBlockState(entry.name, null, stats));
+      ids.set(entry.index, mapBlockState(entry.name, entry.properties, stats));
     }
     return ids;
   }
@@ -1079,9 +1150,9 @@ function parseVanilla(scm, stats) {
     positions.add(key);
     const state = checkedPaletteIndex(stateField.value, "структура .nbt: state");
     if (!palette.has(state)) throw new Error("структура .nbt: неизвестное состояние блока");
-    const id = palette.get(state);
-    if (id !== AIR) {
-      blocks.push([x, y, z, id]);
+    const entry = palette.get(state);
+    if (entry.id !== AIR) {
+      blocks.push([x, y, z, entry.id, entry.data]);
       checkBlockLimit(blocks.length);
     }
   }
@@ -1267,21 +1338,48 @@ const LEGACY_NAMES = {
   176: "black_terracotta",
 };
 
+// Ориентация факела в legacy Data: 1=east(+X), 2=west(-X), 3=south(+Z),
+// 4=north(-Z), иначе стоит на полу.
+function legacyTorchData(data) {
+  if (data === 1) return 1;
+  if (data === 2) return 2;
+  if (data === 3) return 3;
+  if (data === 4) return 4;
+  return TORCH_FLOOR;
+}
+
+// Ориентация настенной таблички в legacy Data: 2=north, 3=south, 4=west, 5=east.
+function legacyWallSignData(data) {
+  if (data === 2) return 4;
+  if (data === 3) return 3;
+  if (data === 4) return 2;
+  if (data === 5) return 1;
+  return 4;
+}
+
 function mapLegacyId(id, data, stats) {
   if (!Number.isSafeInteger(id) || id < 0 || id > SCHEMATIC_LIMITS.maxLegacyId) {
     markUnsupported(stats, `legacy:${id}`);
-    return AIR;
+    return { id: AIR, data: 0 };
   }
+  const meta = Number.isSafeInteger(data) ? data & 0xff : 0;
+  // Факелы и редстоун-факелы несут направление в метаданных.
+  if (id === 50) return { id: TORCH, data: legacyTorchData(meta) };
+  if (id === 75 || id === 76) return { id: REDSTONE_TORCH, data: legacyTorchData(meta) };
+  if (id === 63) return { id: OAK_SIGN, data: SIGN_STANDING };
+  if (id === 68) return { id: OAK_SIGN, data: legacyWallSignData(meta) };
+  // 43 двойная плита (полный куб), 44 одинарная: бит 0x08 верхняя половина.
+  if (id === 43) return { id: SMOOTH_STONE_SLAB, data: SLAB_DOUBLE };
+  if (id === 44) return { id: SMOOTH_STONE_SLAB, data: (meta & 0x08) ? SLAB_TOP : SLAB_BOTTOM };
   const name = LEGACY_NAMES[id];
   if (!name) {
     markUnsupported(stats, `legacy:${id}`);
-    return AIR;
+    return { id: AIR, data: 0 };
   }
   // Metadata is intentionally used only to choose a known simplification.  A
   // missing Data tag is common in old exports and remains valid.
   const mapped = mapBlockState(name, null, stats);
-  if (id === 20) return GLASS;
-  if ((id === 43 || id === 44) && (data & 0x08)) return SMOOTH_STONE_SLAB;
+  if (id === 20) return { id: GLASS, data: 0 };
   return mapped;
 }
 
@@ -1350,8 +1448,8 @@ function parseLegacy(scm, stats) {
         }
         const metadata = data ? data[i] & 0xff : 0;
         const mapped = mapLegacyId(id, metadata, stats);
-        if (mapped !== AIR) {
-          blocks.push([x, y, z, mapped]);
+        if (mapped.id !== AIR) {
+          blocks.push([x, y, z, mapped.id, mapped.data]);
           checkBlockLimit(blocks.length);
         }
       }
@@ -1472,18 +1570,22 @@ export function pasteSchematic(world, plan, cx, cz, floorY = 1, options = {}) {
   let clipped = 0;
   let highestPlaced = -1;
   for (const tuple of plan.blocks) {
-    if (!Array.isArray(tuple) || tuple.length !== 4) {
+    if (!Array.isArray(tuple) || (tuple.length !== 4 && tuple.length !== 5)) {
       throw new Error("схема для вставки: некорректная запись блока");
     }
     const x = asSafeInt(tuple[0], "схема: x");
     const y = asSafeInt(tuple[1], "схема: y");
     const z = asSafeInt(tuple[2], "схема: z");
     const id = asSafeInt(tuple[3], "схема: id");
+    const data = tuple.length === 5 ? asSafeInt(tuple[4], "схема: data") : 0;
     validPlanCoordinate(x, W, "x");
     validPlanCoordinate(y, H, "y");
     validPlanCoordinate(z, L, "z");
     if (id < 0 || id >= BLOCKS.length || !BLOCKS[id]) {
       throw new Error(`схема: неизвестный ID блока ${id}`);
+    }
+    if (data < 0 || data > 255) {
+      throw new Error("схема: состояние блока вне допустимого диапазона");
     }
     const key = `${x},${y},${z}`;
     if (seen.has(key)) throw new Error("схема: дублирующаяся позиция блока");
@@ -1499,7 +1601,7 @@ export function pasteSchematic(world, plan, cx, cz, floorY = 1, options = {}) {
       const wz = z0 + z;
       validPlacementCoord(wx, "wx");
       validPlacementCoord(wz, "wz");
-      prepared.push([wx, wy, wz, id]);
+      prepared.push([wx, wy, wz, id, data]);
       placeable++;
       highestPlaced = Math.max(highestPlaced, wy);
       checkBlockLimit(placeable);
@@ -1522,7 +1624,7 @@ export function pasteSchematic(world, plan, cx, cz, floorY = 1, options = {}) {
       for (let bz = z0; bz < z0 + L; bz++) {
         for (let by = 0; by < WORLD_H; by++) {
           const prev = world.getBlock(bx, by, bz);
-          if (prev !== AIR) backup.push([bx, by, bz, prev]);
+          if (prev !== AIR) backup.push([bx, by, bz, prev, world.getState(bx, by, bz)]);
         }
       }
     }
@@ -1540,16 +1642,16 @@ export function pasteSchematic(world, plan, cx, cz, floorY = 1, options = {}) {
       }
     }
     if (!cleared) {
-      for (const [x, y, z, id] of backup) world.setBlock(x, y, z, id);
+      for (const [x, y, z, id, data] of backup) world.setBlock(x, y, z, id, data);
       throw new Error("схема для вставки: не удалось очистить область");
     }
   }
 
-  for (const [x, y, z, id] of prepared) {
-    if (!world.setBlock(x, y, z, id)) {
+  for (const [x, y, z, id, data] of prepared) {
+    if (!world.setBlock(x, y, z, id, data)) {
       if (backup) {
         if (typeof world.clearRegion === "function") world.clearRegion(x0, 0, z0, W, WORLD_H, L);
-        for (const [bx, by, bz, prev] of backup) world.setBlock(bx, by, bz, prev);
+        for (const [bx, by, bz, prev, prevData] of backup) world.setBlock(bx, by, bz, prev, prevData);
       } else {
         for (const [px, py, pz] of prepared) {
           if (px === x && py === y && pz === z) break;

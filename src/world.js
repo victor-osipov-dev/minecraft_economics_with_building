@@ -1,5 +1,18 @@
 import * as BABYLON from "@babylonjs/core";
-import { AIR, ATLAS_COLS as ATL_COLS, ATLAS_ROWS as ATL_ROWS, STONE, BLOCKS } from "./blocks.js";
+import {
+  AIR,
+  ATLAS_COLS as ATL_COLS,
+  ATLAS_ROWS as ATL_ROWS,
+  STONE,
+  BLOCKS,
+  TORCH,
+  REDSTONE_TORCH,
+  TORCH_FLOOR,
+  SIGN_STANDING,
+  SLAB_DOUBLE,
+  SLAB_BOTTOM,
+  SLAB_TOP,
+} from "./blocks.js";
 
 export const CHUNK = 16;
 export const WORLD_H = 64;
@@ -32,6 +45,10 @@ function tileFor(def, n) {
 export class World {
   constructor() {
     this.chunks = new Map();
+    // Состояния неполных блоков (ориентация факела/таблички, половина плиты):
+    // data-байт на клетку, трактовка зависит от id блока. 0 = вид по умолчанию
+    // (факел на полу, стоячая табличка, двойная плита = полный куб).
+    this.states = new Map();
     this.dirty = new Set();
     this.meshes = new Map();
   }
@@ -71,11 +88,12 @@ export class World {
     return !!b && b.solid;
   }
 
-  setBlock(x, y, z, id) {
+  setBlock(x, y, z, id, data = 0) {
     if (!Number.isFinite(x) || !Number.isFinite(y) || !Number.isFinite(z) ||
         !Number.isInteger(id) || id < 0 || id >= BLOCKS.length || !BLOCKS[id]) {
       return false;
     }
+    if (!Number.isInteger(data) || data < 0 || data > 255) return false;
     x = Math.floor(x);
     y = Math.floor(y);
     z = Math.floor(z);
@@ -86,8 +104,113 @@ export class World {
     const cy = Math.floor(y / CHUNK);
     const cz = Math.floor(z / CHUNK);
     const c = this.ensureChunk(cx, cy, cz);
-    c[this._idx(x, y, z, cx, cy, cz)] = id;
+    const idx = this._idx(x, y, z, cx, cy, cz);
+    const prev = c[idx];
+    c[idx] = id;
+    if (data === 0) {
+      const st = this.states.get(levelKey(cx, cy, cz));
+      if (st) st[idx] = 0;
+    } else {
+      this.ensureState(cx, cy, cz)[idx] = data;
+    }
 
+    this.touch(x, y, z, cx, cy, cz);
+    // Запечённый свет пересекает границы чанков: появление/удаление факела
+    // меняет glow в радиусе BAKE_RADIUS, поэтому пачкаем все чанки в округе,
+    // а не только соседей по границе.
+    if (prev === TORCH || prev === REDSTONE_TORCH || id === TORCH || id === REDSTONE_TORCH) {
+      const ccx0 = Math.floor((x - BAKE_RADIUS) / CHUNK);
+      const ccx1 = Math.floor((x + BAKE_RADIUS) / CHUNK);
+      const ccz0 = Math.floor((z - BAKE_RADIUS) / CHUNK);
+      const ccz1 = Math.floor((z + BAKE_RADIUS) / CHUNK);
+      const ccy0 = Math.floor((y - BAKE_RADIUS) / CHUNK);
+      const ccy1 = Math.floor((y + BAKE_RADIUS) / CHUNK);
+      for (let dcy = ccy0; dcy <= ccy1; dcy++) {
+        if (dcy < 0 || dcy * CHUNK >= WORLD_H) continue;
+        for (let dcx = ccx0; dcx <= ccx1; dcx++) {
+          for (let dcz = ccz0; dcz <= ccz1; dcz++) {
+            this.dirty.add(levelKey(dcx, dcy, dcz));
+          }
+        }
+      }
+    }
+    return true;
+  }
+
+  // Меняет только состояние (ориентацию/половину), блок остаётся тем же.
+  // Нужна инвалидация мешей, т.к. геометрия неполных блоков зависит от data.
+  setState(x, y, z, data) {
+    if (!Number.isFinite(x) || !Number.isFinite(y) || !Number.isFinite(z)) return false;
+    if (!Number.isInteger(data) || data < 0 || data > 255) return false;
+    x = Math.floor(x);
+    y = Math.floor(y);
+    z = Math.floor(z);
+    if (!Number.isSafeInteger(x) || !Number.isSafeInteger(z) || y < 0 || y >= WORLD_H) {
+      return false;
+    }
+    const cx = Math.floor(x / CHUNK);
+    const cy = Math.floor(y / CHUNK);
+    const cz = Math.floor(z / CHUNK);
+    const key = levelKey(cx, cy, cz);
+    if (!this.chunks.has(key)) return false;
+    if (data === 0) {
+      const st = this.states.get(key);
+      if (st) st[this._idx(x, y, z, cx, cy, cz)] = 0;
+    } else {
+      this.ensureState(cx, cy, cz)[this._idx(x, y, z, cx, cy, cz)] = data;
+    }
+    this.touch(x, y, z, cx, cy, cz);
+    return true;
+  }
+
+  getState(x, y, z) {
+    if (!Number.isFinite(x) || !Number.isFinite(y) || !Number.isFinite(z)) return 0;
+    x = Math.floor(x);
+    y = Math.floor(y);
+    z = Math.floor(z);
+    if (!Number.isSafeInteger(x) || !Number.isSafeInteger(z) || y < 0 || y >= WORLD_H) {
+      return 0;
+    }
+    const cx = Math.floor(x / CHUNK);
+    const cy = Math.floor(y / CHUNK);
+    const cz = Math.floor(z / CHUNK);
+    const st = this.states.get(levelKey(cx, cy, cz));
+    if (!st) return 0;
+    return st[this._idx(x, y, z, cx, cy, cz)];
+  }
+
+  // Верхняя поверхность блока для физики: null у нематериальных
+  // (воздух, факел, табличка, плита нажимная), 0.5 у нижней половины плиты.
+  solidTop(x, y, z) {
+    const id = this.getBlock(x, y, z);
+    const def = BLOCKS[id];
+    if (!def || !def.solid) return null;
+    const by = Math.floor(y);
+    if (def.shape === "slab" && this.getState(x, y, z) === SLAB_BOTTOM) return by + 0.5;
+    return by + 1;
+  }
+
+  // Нижняя поверхность блока для физики: 0.5 у верхней половины плиты.
+  solidBottom(x, y, z) {
+    const id = this.getBlock(x, y, z);
+    const def = BLOCKS[id];
+    if (!def || !def.solid) return null;
+    const by = Math.floor(y);
+    if (def.shape === "slab" && this.getState(x, y, z) === SLAB_TOP) return by + 0.5;
+    return by;
+  }
+
+  ensureState(cx, cy, cz) {
+    const key = levelKey(cx, cy, cz);
+    let s = this.states.get(key);
+    if (!s) {
+      s = new Uint8Array(CHUNK * CHUNK * CHUNK);
+      this.states.set(key, s);
+    }
+    return s;
+  }
+
+  touch(x, y, z, cx, cy, cz) {
     const lx = x - cx * CHUNK;
     const ly = y - cy * CHUNK;
     const lz = z - cz * CHUNK;
@@ -103,7 +226,6 @@ export class World {
     }
     if (lz === 0) this.dirty.add(levelKey(cx, cy, cz - 1));
     if (lz === CHUNK - 1) this.dirty.add(levelKey(cx, cy, cz + 1));
-    return true;
   }
 
   markAll() {
@@ -148,11 +270,14 @@ export class World {
           const maxY = Math.min(cy1, (cy + 1) * CHUNK);
           const minZ = Math.max(z, cz * CHUNK);
           const maxZ = Math.min(z1, (cz + 1) * CHUNK);
+          const st = this.states.get(key);
           for (let wy = minY; wy < maxY; wy++) {
             for (let wz = minZ; wz < maxZ; wz++) {
               for (let wx = minX; wx < maxX; wx++) {
-                chunk[(wy - cy * CHUNK) * CHUNK * CHUNK +
-                  (wz - cz * CHUNK) * CHUNK + (wx - cx * CHUNK)] = AIR;
+                const idx = (wy - cy * CHUNK) * CHUNK * CHUNK +
+                  (wz - cz * CHUNK) * CHUNK + (wx - cx * CHUNK);
+                chunk[idx] = AIR;
+                if (st) st[idx] = 0;
               }
             }
           }
@@ -160,15 +285,14 @@ export class World {
       }
     }
 
-    // Mark the one-voxel perimeter as well.  This covers both horizontal
-    // chunk seams and the 16/32/48 vertical seams without relying on which
-    // side happened to contain the last non-air block.
-    const dirtyCx0 = Math.floor((x - 1) / CHUNK);
-    const dirtyCx1 = Math.floor(x1 / CHUNK);
-    const dirtyCy0 = Math.floor((cy0 - 1) / CHUNK);
-    const dirtyCy1 = Math.floor(cy1 / CHUNK);
-    const dirtyCz0 = Math.floor((z - 1) / CHUNK);
-    const dirtyCz1 = Math.floor(z1 / CHUNK);
+    // Mark the perimeter as well: one voxel for chunk seams plus BAKE_RADIUS
+    // for baked torch glow (clearing torches changes light beyond the seam).
+    const dirtyCx0 = Math.floor((x - BAKE_RADIUS) / CHUNK);
+    const dirtyCx1 = Math.floor((x1 + BAKE_RADIUS) / CHUNK);
+    const dirtyCy0 = Math.floor((cy0 - BAKE_RADIUS) / CHUNK);
+    const dirtyCy1 = Math.floor((cy1 + BAKE_RADIUS) / CHUNK);
+    const dirtyCz0 = Math.floor((z - BAKE_RADIUS) / CHUNK);
+    const dirtyCz1 = Math.floor((z1 + BAKE_RADIUS) / CHUNK);
     for (let cx = dirtyCx0; cx <= dirtyCx1; cx++) {
       for (let cy = dirtyCy0; cy <= dirtyCy1; cy++) {
         if (cy < 0 || cy * CHUNK >= WORLD_H) continue;
@@ -184,6 +308,7 @@ export class World {
     for (const mesh of this.meshes.values()) mesh.dispose();
     this.meshes.clear();
     this.chunks.clear();
+    this.states.clear();
     this.dirty.clear();
   }
 
@@ -242,29 +367,111 @@ function planeCorners(axis, v) {
   return [[0, 0, v], [0, 1, v], [1, 1, v], [1, 0, v]];
 }
 
-function emitTorch(gd, wx, wy, wz, def, COLS, ROWS, INSET) {
-  // Torch / redstone torch: narrow crossed quads through the cell center.
-  // The tile art (stick + flame on transparent background) is alpha-tested,
-  // so a full cube would show a floating textured box; the narrow quad reads
-  // as a post with a flame from any horizontal side.
-  const tile = tileFor(def, [0, 1, 0]);
-  const a = 0.25;
-  const b = 0.75;
-  pushPlane(gd, wx, wy, wz, [[0.5, 0, a], [0.5, 1, a], [0.5, 1, b], [0.5, 0, b]], [1, 0, 0], 0.78, tile, COLS, ROWS, INSET);
-  pushPlane(gd, wx, wy, wz, [[a, 0, 0.5], [a, 1, 0.5], [b, 1, 0.5], [b, 0, 0.5]], [0, 0, 1], 0.86, tile, COLS, ROWS, INSET);
+// Направление наклона настенного факела: data 1=+X, 2=-X, 3=+Z, 4=-Z.
+function torchLean(data) {
+  if (data === 1) return [1, 0];
+  if (data === 2) return [-1, 0];
+  if (data === 3) return [0, 1];
+  if (data === 4) return [0, -1];
+  return [0, 0];
 }
 
-function emitSign(gd, wx, wy, wz, def, COLS, ROWS, INSET) {
-  // Wall-sign placeholder without orientation state: two crossed thin boards
-  // in the upper-center of the cell.  Visible from any side; collision stays
-  // non-solid, guards keep seeing through it.
+function emitTorch(gd, wx, wy, wz, def, COLS, ROWS, INSET, data) {
+  // Torch / redstone torch: narrow crossed quads.  Напольный стоит строго по
+  // центру клетки и высотой 0.7 (как в майнкрафте ~10px, а не во весь блок).
+  // Настенный прислонён к стене: низ слегка утоплен в опору (перекрывается
+  // её гранью по глубине), верх отклонён наружу — как wall_torch.
   const tile = tileFor(def, [0, 1, 0]);
+  const [lx, lz] = torchLean(data);
+  const floor = data === TORCH_FLOOR;
+  // Напольный: 0..0.7 по центру. Настенный: короткий (0.15..0.85), низ утоплен
+  // в опору — основание визуально касается стены, а не висит в воздухе.
+  const yB = floor ? 0 : 0.15;
+  const yT = floor ? 0.7 : 0.85;
+  const sx0 = floor ? 0 : -lx * 0.3;
+  const sz0 = floor ? 0 : -lz * 0.3;
+  const sx1 = floor ? 0 : lx * 0.02;
+  const sz1 = floor ? 0 : lz * 0.02;
+  const lean = (corners) => corners.map(([x, y, z]) => [x + (y === 0 ? sx0 : sx1), y === 0 ? yB : yT, z + (y === 0 ? sz0 : sz1)]);
+  const a = 0.25;
+  const b = 0.75;
+  pushPlane(gd, wx, wy, wz, lean([[0.5, 0, a], [0.5, 1, a], [0.5, 1, b], [0.5, 0, b]]), [1, 0, 0], 0.78, tile, COLS, ROWS, INSET, false);
+  pushPlane(gd, wx, wy, wz, lean([[a, 0, 0.5], [a, 1, 0.5], [b, 1, 0.5], [b, 0, 0.5]]), [0, 0, 1], 0.86, tile, COLS, ROWS, INSET, false);
+}
+
+function emitSign(gd, wx, wy, wz, def, COLS, ROWS, INSET, data) {
+  const tile = tileFor(def, [0, 1, 0]);
+  // Настенная табличка: одна доска у грани блока, лицевой стороной наружу.
+  // data 1/2 смотрит в +X/-X, 3/4 в +Z/-Z. Видимость с обеих сторон даёт
+  // cutout-материал (culling выключен), коллизия остаётся non-solid.
+  if (data >= 1 && data <= 4) {
+    const y0 = 0.3;
+    const y1 = 0.8;
+    const s0 = 0.125;
+    const s1 = 0.875;
+    const off = 1 / 16;
+    if (data === 1) {
+      pushPlane(gd, wx, wy, wz, [[1 - off, y0, s0], [1 - off, y1, s0], [1 - off, y1, s1], [1 - off, y0, s1]], [1, 0, 0], 0.78, tile, COLS, ROWS, INSET);
+    } else if (data === 2) {
+      pushPlane(gd, wx, wy, wz, [[off, y0, s1], [off, y1, s1], [off, y1, s0], [off, y0, s0]], [-1, 0, 0], 0.78, tile, COLS, ROWS, INSET);
+    } else if (data === 3) {
+      pushPlane(gd, wx, wy, wz, [[s0, y0, 1 - off], [s0, y1, 1 - off], [s1, y1, 1 - off], [s1, y0, 1 - off]], [0, 0, 1], 0.86, tile, COLS, ROWS, INSET);
+    } else {
+      pushPlane(gd, wx, wy, wz, [[s1, y0, off], [s1, y1, off], [s0, y1, off], [s0, y0, off]], [0, 0, -1], 0.68, tile, COLS, ROWS, INSET);
+    }
+    return;
+  }
+  // Standing sign: two crossed thin boards in the upper-center of the cell.
   const x0 = 0.125;
   const x1 = 0.875;
   const y0 = 0.1875;
   const y1 = 0.8125;
   pushPlane(gd, wx, wy, wz, [[0.5, y0, x0], [0.5, y1, x0], [0.5, y1, x1], [0.5, y0, x1]], [1, 0, 0], 0.78, tile, COLS, ROWS, INSET);
   pushPlane(gd, wx, wy, wz, [[x0, y0, 0.5], [x0, y1, 0.5], [x1, y1, 0.5], [x1, y0, 0.5]], [0, 0, 1], 0.86, tile, COLS, ROWS, INSET);
+}
+
+// Плита (slab) как в майнкрафте: нижняя/верхняя половина или двойная.
+// Бока показывают соответствующую половину текстуры (низ плиты = низ тайла).
+function emitSlab(gd, world, wx, wy, wz, def, COLS, ROWS, INSET, data) {
+  if (data === SLAB_TOP) {
+    emitPartialBox(gd, world, wx, wy, wz, def, COLS, ROWS, INSET,
+      0, 0.5, 0, 1, 1, 1, [0.5, 0]);
+  } else if (data === SLAB_BOTTOM) {
+    emitPartialBox(gd, world, wx, wy, wz, def, COLS, ROWS, INSET,
+      0, 0, 0, 1, 0.5, 1, [1, 0.5]);
+  } else {
+    emitPartialBox(gd, world, wx, wy, wz, def, COLS, ROWS, INSET,
+      0, 0, 0, 1, 1, 1, null);
+  }
+}
+
+// Произвольный бокс внутри клетки: 6 граней с кulling'ом по opaque-соседям.
+// sideFrac [fBot, fTop] — какую долю тайла (от верха) показывают боковые
+// грани: null = весь тайл. Верх/низ бокса всегда с полным тайлом.
+function emitPartialBox(gd, world, wx, wy, wz, def, COLS, ROWS, INSET,
+    x0, y0, z0, x1, y1, z1, sideFrac) {
+  const boxMin = [wx + x0, wy + y0, wz + z0];
+  const boxMax = [wx + x1, wy + y1, wz + z1];
+  for (let f = 0; f < FACES.length; f++) {
+    const face = FACES[f];
+    const n = face.n;
+    const nx = wx + n[0];
+    const ny = wy + n[1];
+    const nz = wz + n[2];
+    const nbDef = BLOCKS[world.getBlock(nx, ny, nz)];
+    // Свой бокс меньше куба: соседнюю половину плиты не прячем целиком,
+    // иначе между разными половинами останутся щели без граней.
+    const nbState = nbDef && nbDef.shape === "slab" ? world.getState(nx, ny, nz) : 0;
+    if (faceHiddenByNeighbor(n[1], y0, y1, nbDef, nbState)) continue;
+    let fBot = 1;
+    let fTop = 0;
+    if (sideFrac && n[1] === 0) {
+      fBot = sideFrac[0];
+      fTop = sideFrac[1];
+    }
+    pushMergedFace(gd, boxMin, boxMax, face, tileFor(def, n), face.shade,
+      COLS, ROWS, INSET, fBot, fTop);
+  }
 }
 
 function emitBars(gd, world, wx, wy, wz, def, COLS, ROWS, INSET) {
@@ -286,7 +493,7 @@ function emitBars(gd, world, wx, wy, wz, def, COLS, ROWS, INSET) {
   }
 }
 
-function pushPlane(gd, bx, by, bz, corners, n, shade, tile, COLS, ROWS, INSET) {
+function pushPlane(gd, bx, by, bz, corners, n, shade, tile, COLS, ROWS, INSET, bake = true) {
   const tu = (tile % COLS) / COLS;
   const tv = Math.floor(tile / COLS) / ROWS;
   const aU = INSET / COLS;
@@ -294,7 +501,10 @@ function pushPlane(gd, bx, by, bz, corners, n, shade, tile, COLS, ROWS, INSET) {
   const base = gd.positions.length / 3;
   for (let k = 0; k < 4; k++) {
     const c = corners[k];
-    gd.positions.push(bx + c[0], by + c[1], bz + c[2]);
+    const px = bx + c[0];
+    const py = by + c[1];
+    const pz = bz + c[2];
+    gd.positions.push(px, py, pz);
     gd.normals.push(n[0], n[1], n[2]);
     const u = UV[k][0] === 0 ? tu + aU : tu + 1 / COLS - aU;
     // Atlas is uploaded with update(false), i.e. UNPACK_FLIP_Y off, so v=0 is
@@ -304,17 +514,100 @@ function pushPlane(gd, bx, by, bz, corners, n, shade, tile, COLS, ROWS, INSET) {
     // texture upside down (torch flame at the base, grass strip at the foot).
     const v = UV[k][1] === 0 ? tv + 1 / ROWS - aV : tv + aV;
     gd.uvs.push(u, v);
-    gd.colors.push(shade, shade, shade, 1);
+    // Пламя факела — источник света, а не приёмник: без bake (иначе выгорит).
+    if (bake) pushBakedColor(gd, px, py, pz, shade);
+    else gd.colors.push(shade, shade, shade, 1);
   }
   gd.indices.push(base, base + 2, base + 1, base, base + 3, base + 2);
 }
 
 function emptyGeometry() {
-  return { positions: [], normals: [], uvs: [], colors: [], indices: [] };
+  return { positions: [], normals: [], uvs: [], colors: [], indices: [], torches: null };
+}
+
+// Запечённый свет факелов: вместо пула PointLight (который не масштабируется
+// дальше десятка огней) свечение считается при построении меша и пишется
+// прямо в vertex colors. Светят ВСЕ факелы на любом расстоянии, щелчков при
+// ходьбе нет в принципе, шейдеры легчают (меньше огней). Цена: свет статичен
+// в пределах чанка (обновляется при его перестройке — сломал/поставил факел),
+// шаг сетки 1 блок и NPC не подсвечиваются.
+const BAKE_RADIUS = 9;
+const BAKE_INTENSITY = 2.2;
+const BAKE_WARM_G = 0.62;
+const BAKE_WARM_B = 0.3;
+const BAKE_MAX = 2.2;
+
+// Все факелы в чанке плюс окрестность радиуса: {x, y, z, i} (i — яркость).
+function collectTorchGlow(world, ox, oy, oz) {
+  const list = [];
+  const y0 = Math.max(0, oy - BAKE_RADIUS);
+  const y1 = Math.min(WORLD_H, oy + CHUNK + BAKE_RADIUS);
+  for (let y = y0; y < y1; y++) {
+    for (let z = oz - BAKE_RADIUS; z < oz + CHUNK + BAKE_RADIUS; z++) {
+      for (let x = ox - BAKE_RADIUS; x < ox + CHUNK + BAKE_RADIUS; x++) {
+        const id = world.getBlock(x, y, z);
+        if (id !== TORCH && id !== REDSTONE_TORCH) continue;
+        list.push({ x: x + 0.5, y: y + 0.55, z: z + 0.5, i: id === TORCH ? 1 : 0.7 });
+      }
+    }
+  }
+  return list;
+}
+
+// Тёплое свечение в точке: сумма по факелам с квадратичным спадом до радиуса.
+// Возвращает добавки [r, g, b] к единице (умножаются на shade грани).
+function glowAt(torches, x, y, z) {
+  let r = 0;
+  let g = 0;
+  let b = 0;
+  for (let i = 0; i < torches.length; i++) {
+    const t = torches[i];
+    const dx = x - t.x;
+    const dy = y - t.y;
+    const dz = z - t.z;
+    const d2 = dx * dx + dy * dy + dz * dz;
+    if (d2 >= BAKE_RADIUS * BAKE_RADIUS) continue;
+    const f = 1 - Math.sqrt(d2) / BAKE_RADIUS;
+    const gl = t.i * BAKE_INTENSITY * f * f;
+    r += gl;
+    g += gl * BAKE_WARM_G;
+    b += gl * BAKE_WARM_B;
+  }
+  if (r > BAKE_MAX) r = BAKE_MAX;
+  if (g > BAKE_MAX) g = BAKE_MAX;
+  if (b > BAKE_MAX) b = BAKE_MAX;
+  return [r, g, b];
+}
+
+function pushBakedColor(gd, x, y, z, shade) {
+  const t = gd.torches;
+  if (!t || t.length === 0) {
+    gd.colors.push(shade, shade, shade, 1);
+    return;
+  }
+  const gl = glowAt(t, x, y, z);
+  gd.colors.push(shade * (1 + gl[0]), shade * (1 + gl[1]), shade * (1 + gl[2]), 1);
 }
 
 function isOpaqueBlock(def) {
   return !!def && def.solid && !def.transparent && !def.bars;
+}
+
+// Закрывает ли соседний блок грань целиком. Полный куб/двойная плита — да;
+// половина плиты закрывает только свою половину: боковая грань видна, если
+// наш диапазон по Y не входит в диапазон соседа; верхняя грань видна, если
+// сверху верхняя плита (щель), нижняя — если снизу нижняя плита.
+// Без этого рядом с плитами появляются дыры: грань полного блока пряталась
+// целиком, хотя сосед закрывал лишь её половину.
+function faceHiddenByNeighbor(nY, ourY0, ourY1, nbDef, nbState) {
+  if (!isOpaqueBlock(nbDef)) return false;
+  if (nbDef.shape !== "slab") return true;
+  if (nbState !== SLAB_BOTTOM && nbState !== SLAB_TOP) return true; // double = куб
+  if (nY === 1) return nbState === SLAB_BOTTOM; // сосед сверху: закрывает своим низом
+  if (nY === -1) return nbState === SLAB_TOP; // сосед снизу: закрывает своим верхом
+  const lo = nbState === SLAB_BOTTOM ? 0 : 0.5;
+  const hi = nbState === SLAB_BOTTOM ? 0.5 : 1;
+  return lo <= ourY0 && ourY1 <= hi;
 }
 
 function renderLayer(def) {
@@ -341,6 +634,23 @@ export function buildChunkGeometry(world, cx, cy, cz) {
   const oy = cy * CHUNK;
   const oz = cz * CHUNK;
   const greedy = meshSettings.greedyOpaqueMerge;
+  // Один список факелов на чанк для запекания света во все слои.
+  // Пустой/отсутствующий чанк геометрии не даёт — скан ни к чему.
+  const home = world.chunks.get(levelKey(cx, cy, cz));
+  let hasBlocks = false;
+  if (home) {
+    for (let i = 0; i < home.length; i++) {
+      if (home[i] !== AIR) {
+        hasBlocks = true;
+        break;
+      }
+    }
+  }
+  const glow = hasBlocks ? collectTorchGlow(world, ox, oy, oz) : [];
+  layers.opaque.torches = glow;
+  layers.cutout.torches = glow;
+  layers.alpha.torches = glow;
+  layers.torch.torches = glow;
 
   for (let ly = 0; ly < CHUNK; ly++) {
     for (let lz = 0; lz < CHUNK; lz++) {
@@ -356,15 +666,29 @@ export function buildChunkGeometry(world, cx, cy, cz) {
         const gd = layers[layer];
 
         if (def.shape === "torch") {
-          emitTorch(gd, wx, wy, wz, def, ATL_COLS, ATL_ROWS, INSET);
+          emitTorch(gd, wx, wy, wz, def, ATL_COLS, ATL_ROWS, INSET, world.getState(wx, wy, wz));
           continue;
         }
         if (def.shape === "sign") {
-          emitSign(gd, wx, wy, wz, def, ATL_COLS, ATL_ROWS, INSET);
+          emitSign(gd, wx, wy, wz, def, ATL_COLS, ATL_ROWS, INSET, world.getState(wx, wy, wz));
           continue;
         }
         if (def.bars) {
           emitBars(gd, world, wx, wy, wz, def, ATL_COLS, ATL_ROWS, INSET);
+          continue;
+        }
+        if (def.shape === "slab") {
+          const data = world.getState(wx, wy, wz);
+          // Двойная плита геометрией равна полному кубу — её схлопывает
+          // greedy-проход ниже вместе с обычными блоками.
+          if (greedy && data === SLAB_DOUBLE) continue;
+          emitSlab(gd, world, wx, wy, wz, def, ATL_COLS, ATL_ROWS, INSET, data);
+          continue;
+        }
+        if (def.shape === "plate") {
+          // Нажимная плита как в майнкрафте: тонкая пластина 14/16 x 1/16 у пола.
+          emitPartialBox(gd, world, wx, wy, wz, def, ATL_COLS, ATL_ROWS, INSET,
+            1 / 16, 0, 1 / 16, 15 / 16, 1 / 16, 15 / 16);
           continue;
         }
         // Opaque-кубы при включённом флаге рисует buildGreedyOpaque ниже.
@@ -373,13 +697,20 @@ export function buildChunkGeometry(world, cx, cy, cz) {
         for (let f = 0; f < FACES.length; f++) {
           const face = FACES[f];
           const n = face.n;
-          const nb = world.getBlock(wx + n[0], wy + n[1], wz + n[2]);
+          const nx = wx + n[0];
+          const ny = wy + n[1];
+          const nz = wz + n[2];
+          const nb = world.getBlock(nx, ny, nz);
           const nbDef = BLOCKS[nb];
           // Не рисуем внутренние грани соседних прозрачных блоков.
           // Это особенно важно для стекла и воды: иначе при выключенном
           // back-face culling появляются z-fighting и мерцание.
           if (layer === "alpha" && nb === id) continue;
-          if (isOpaqueBlock(def) && isOpaqueBlock(nbDef)) continue;
+          if (isOpaqueBlock(def)) {
+            // Половина плиты не закрывает грань целиком (см. faceHiddenByNeighbor).
+            const nbState = nbDef && nbDef.shape === "slab" ? world.getState(nx, ny, nz) : 0;
+            if (faceHiddenByNeighbor(n[1], 0, 1, nbDef, nbState)) continue;
+          }
           pushFace(gd, wx, wy, wz, face, tileFor(def, n), face.shade, ATL_COLS, ATL_ROWS, INSET);
         }
       }
@@ -400,14 +731,17 @@ function pushFace(gd, bx, by, bz, face, tile, shade, COLS, ROWS, INSET) {
   const base = gd.positions.length / 3;
   for (let k = 0; k < 4; k++) {
     const c = face.v[k];
-    gd.positions.push(bx + c[0], by + c[1], bz + c[2]);
+    const px = bx + c[0];
+    const py = by + c[1];
+    const pz = bz + c[2];
+    gd.positions.push(px, py, pz);
     gd.normals.push(n[0], n[1], n[2]);
     const u = UV[k][0] === 0 ? tu + aU : tu + 1 / COLS - aU;
     // Same v convention as pushPlane: v=0 is the canvas top (see above), so
     // the block bottom samples the tile bottom.
     const v = UV[k][1] === 0 ? tv + 1 / ROWS - aV : tv + aV;
     gd.uvs.push(u, v);
-    gd.colors.push(shade, shade, shade, 1);
+    pushBakedColor(gd, px, py, pz, shade);
   }
   gd.indices.push(base, base + 2, base + 1, base, base + 3, base + 2);
 }
@@ -461,8 +795,20 @@ function buildGreedyOpaque(world, gd, cx, cy, cz) {
           const id = world.getBlock(px, py, pz);
           const def = BLOCKS[id];
           if (!isOpaqueBlock(def)) continue;
-          const nbDef = BLOCKS[world.getBlock(px + n[0], py + n[1], pz + n[2])];
-          if (isOpaqueBlock(nbDef)) continue;
+          // Мержим полные кубы и двойные плиты (геометрия та же).
+          // Половины плит, факелы и таблички рисуются отдельно: их
+          // геометрия зависит от data и в merge не участвует.
+          if (def.shape !== "cube" &&
+              !(def.shape === "slab" && world.getState(px, py, pz) === SLAB_DOUBLE)) continue;
+          const nbx = px + n[0];
+          const nby = py + n[1];
+          const nbz = pz + n[2];
+          const nbDef = BLOCKS[world.getBlock(nbx, nby, nbz)];
+          // Внутренняя грань между полными кубами не нужна. Рядом с половиной
+          // плиты грань видна хотя бы частично — клетку включаем в merge,
+          // перекрытая часть закроется соседом по глубине.
+          const nbState = nbDef && nbDef.shape === "slab" ? world.getState(nbx, nby, nbz) : 0;
+          if (faceHiddenByNeighbor(n[1], 0, 1, nbDef, nbState)) continue;
           mask[v * CHUNK + u] = id;
         }
       }
@@ -508,25 +854,27 @@ function buildGreedyOpaque(world, gd, cx, cy, cz) {
 // Как pushFace, но углы берутся из бокса merged-прямоугольника: компонента 0
 // угла грани -> boxMin, 1 -> boxMax. Для прямоугольника 1x1 совпадает с
 // pushFace один в один. UV покрывают тайл целиком один раз (stretch).
-function pushMergedFace(gd, boxMin, boxMax, face, tile, shade, COLS, ROWS, INSET) {
+// fBot/fTop задают долю тайла (от верха, 0..1) на нижней/верхней кромке грани:
+// по умолчанию весь тайл, для боков плит — его половину.
+function pushMergedFace(gd, boxMin, boxMax, face, tile, shade, COLS, ROWS, INSET, fBot = 1, fTop = 0) {
   const tu = (tile % COLS) / COLS;
   const tv = Math.floor(tile / COLS) / ROWS;
   const aU = INSET / COLS;
-  const aV = INSET / ROWS;
+  const fB = fBot + (fBot < fTop ? INSET : -INSET);
+  const fT = fTop + (fTop < fBot ? INSET : -INSET);
   const n = face.n;
   const base = gd.positions.length / 3;
   for (let k = 0; k < 4; k++) {
     const c = face.v[k];
-    gd.positions.push(
-      c[0] ? boxMax[0] : boxMin[0],
-      c[1] ? boxMax[1] : boxMin[1],
-      c[2] ? boxMax[2] : boxMin[2]
-    );
+    const px = c[0] ? boxMax[0] : boxMin[0];
+    const py = c[1] ? boxMax[1] : boxMin[1];
+    const pz = c[2] ? boxMax[2] : boxMin[2];
+    gd.positions.push(px, py, pz);
     gd.normals.push(n[0], n[1], n[2]);
     const u = UV[k][0] === 0 ? tu + aU : tu + 1 / COLS - aU;
-    const v = UV[k][1] === 0 ? tv + 1 / ROWS - aV : tv + aV;
+    const v = UV[k][1] === 0 ? tv + fB / ROWS : tv + fT / ROWS;
     gd.uvs.push(u, v);
-    gd.colors.push(shade, shade, shade, 1);
+    pushBakedColor(gd, px, py, pz, shade);
   }
   gd.indices.push(base, base + 2, base + 1, base, base + 3, base + 2);
 }

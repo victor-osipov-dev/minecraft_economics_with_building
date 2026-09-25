@@ -1,6 +1,26 @@
 import * as BABYLON from "@babylonjs/core";
 import defaultSchematicUrl from "../schemes/high-security-jail.schem?url";
-import { AIR, BLOCKS, TORCH, REDSTONE_TORCH, createAtlas } from "./blocks.js";
+import {
+  AIR,
+  BLOCKS,
+  TORCH,
+  REDSTONE_TORCH,
+  OAK_SIGN,
+  createAtlas,
+  TORCH_FLOOR,
+  TORCH_PX,
+  TORCH_NX,
+  TORCH_PZ,
+  TORCH_NZ,
+  SIGN_STANDING,
+  SIGN_PX,
+  SIGN_NX,
+  SIGN_PZ,
+  SIGN_NZ,
+  SLAB_BOTTOM,
+  SLAB_TOP,
+  SLAB_DOUBLE,
+} from "./blocks.js";
 import { World, WORLD_H } from "./world.js";
 import { buildPrison, SPAWN } from "./prison.js";
 import { Guard } from "./npcs.js";
@@ -144,7 +164,8 @@ function placeSchematic(plan, cx, cz, floorY = 1, replaceWorld = false) {
     oldWorld.clear();
     for (const guard of oldGuards) guard.dispose();
     clearPointLights();
-    addTorchLights(targetWorld, result, plan);
+    // Свет факелов запечён в вершины мешей при flushMeshes выше — отдельные
+    // источники света не нужны.
     resetMapTransientState();
   }
 
@@ -760,18 +781,57 @@ outline.isVisible = false;
 let lastHit = null;
 
 // ---------- interactions ----------
+// Состояние для установки неполного блока по грани, в которую кликнули:
+// факел/табличка крепятся к ней, плита кладётся вверх/вниз.
+function placeData(id, hit) {
+  const def = BLOCKS[id];
+  if (!def) return 0;
+  if (def.shape === "slab") return hit.ny === -1 ? SLAB_TOP : SLAB_BOTTOM;
+  if (id === TORCH || id === REDSTONE_TORCH) {
+    if (hit.nx === 1) return TORCH_PX;
+    if (hit.nx === -1) return TORCH_NX;
+    if (hit.nz === 1) return TORCH_PZ;
+    if (hit.nz === -1) return TORCH_NZ;
+    return TORCH_FLOOR;
+  }
+  if (id === OAK_SIGN) {
+    if (hit.nx === 1) return SIGN_PX;
+    if (hit.nx === -1) return SIGN_NX;
+    if (hit.nz === 1) return SIGN_PZ;
+    if (hit.nz === -1) return SIGN_NZ;
+    return SIGN_STANDING;
+  }
+  return 0;
+}
+
 function handlePlace() {
   const hit = lastHit;
   if (!hit) return;
   const entry = activeEntry();
   if (!entry) return;
+  const def = BLOCKS[entry.id];
+  // Дабл-слэб как в майнкрафте: клик по верхней грани нижней плиты той же
+  // породы собирает её в полный блок вместо установки нового.
+  if (def && def.shape === "slab" && hit.ny === 1 &&
+      world.getBlock(hit.x, hit.y, hit.z) === entry.id &&
+      world.getState(hit.x, hit.y, hit.z) === SLAB_BOTTOM) {
+    if (!world.setState(hit.x, hit.y, hit.z, SLAB_DOUBLE)) return;
+    world.flushMeshes(scene, blockMat, cutoutMat, alphaMat, torchMat);
+    entry.count--;
+    emitNoise(hit.x, hit.y, hit.z, 20);
+    noiseLevel = Math.min(1, noiseLevel + 0.22);
+    updateHotbar();
+    return;
+  }
   const px = hit.x + hit.nx;
   const py = hit.y + hit.ny;
   const pz = hit.z + hit.nz;
   if (!isInsideWorldBounds(px, py, pz)) return;
   if (world.getBlock(px, py, pz) !== AIR) return;
   if (boxIntersectsPlayer(px, py, pz)) return;
-  if (!world.setBlock(px, py, pz, entry.id)) return;
+  if (!world.setBlock(px, py, pz, entry.id, placeData(entry.id, hit))) return;
+  // Поставленный факел засветится сам: setBlock пометил чанк грязным,
+  // flushMeshes ниже перестроит меш уже с запечённым светом.
   world.flushMeshes(scene, blockMat, cutoutMat, alphaMat, torchMat);
   entry.count--;
   emitNoise(px, py, pz, 20);
@@ -871,7 +931,9 @@ function moveAxis(axis, delta) {
       for (let zz = z0; zz <= z1; zz++) {
         for (let xx = x0; xx <= x1; xx++) {
           if (!world.isSolid(xx, yy, zz)) continue;
-          return yy + 1 + 1e-3;
+          // Садимся на реальный верх блока: 0.5 у нижней плиты, иначе целый.
+          const top = world.solidTop(xx, yy, zz);
+          return (top ?? yy + 1) + 1e-3;
         }
       }
     }
@@ -881,8 +943,26 @@ function moveAxis(axis, delta) {
     for (let zz = z0; zz <= z1; zz++) {
       for (let xx = x0; xx <= x1; xx++) {
         if (!world.isSolid(xx, yy, zz)) continue;
+        const top = world.solidTop(xx, yy, zz);
+        // Поверхность под ногами (стоим на плите) — не препятствие.
+        if (axis !== "y" && top != null && top <= box.y0 + 1e-3) continue;
+        if (axis !== "y" && (player.grounded || player.vy <= 0.01)) {
+          // Auto-step как в майнкрафте: зашагиваем на препятствие до 0.6
+          // (плита, нажимная пластина не в счёт — она нематериальна),
+          // если наверху свободно.
+          const surface = top ?? yy + 1;
+          const step = surface - player.y;
+          if (step > 0 && step <= 0.6001 && canStandAt(axis, c, surface)) {
+            player.y = surface + 1e-3;
+            player.vy = Math.max(0, player.vy);
+            player.grounded = true;
+            continue;
+          }
+        }
         if (axis === "y") {
-          c = sign > 0 ? yy - HEIGHT - 1e-3 : yy + 1 + 1e-3;
+          // Удар головой: учитываем низ верхней плиты.
+          const bot = world.solidBottom(xx, yy, zz);
+          c = sign > 0 ? (bot ?? yy) - HEIGHT - 1e-3 : (top ?? yy + 1) + 1e-3;
           return c;
         } else {
           const v = axis === "x" ? xx : zz;
@@ -893,6 +973,47 @@ function moveAxis(axis, delta) {
     }
   }
   return c;
+}
+
+// Свободен ли бокс от твёрдых частей блоков (с учётом половин плит).
+function isBoxFree(x0, x1, y0, y1, z0, z1) {
+  const cx0 = Math.floor(x0);
+  const cx1 = Math.floor(x1 - 1e-6);
+  const cy0 = Math.floor(y0);
+  const cy1 = Math.floor(y1 - 1e-6);
+  const cz0 = Math.floor(z0);
+  const cz1 = Math.floor(z1 - 1e-6);
+  for (let yy = cy0; yy <= cy1; yy++) {
+    for (let zz = cz0; zz <= cz1; zz++) {
+      for (let xx = cx0; xx <= cx1; xx++) {
+        const top = world.solidTop(xx, yy, zz);
+        if (top == null) continue;
+        if (top <= y0 + 1e-3) continue;
+        const bot = world.solidBottom(xx, yy, zz);
+        if (bot != null && bot >= y1 - 1e-3) continue;
+        return false;
+      }
+    }
+  }
+  return true;
+}
+
+function canStandAt(axis, c, surface) {
+  const y0 = surface + 1e-3;
+  const y1 = y0 + HEIGHT;
+  let x0, x1, z0, z1;
+  if (axis === "x") {
+    x0 = c - HALF;
+    x1 = c + HALF;
+    z0 = player.z - HALF;
+    z1 = player.z + HALF;
+  } else {
+    z0 = c - HALF;
+    z1 = c + HALF;
+    x0 = player.x - HALF;
+    x1 = player.x + HALF;
+  }
+  return isBoxFree(x0, x1, y0, y1, z0, z1);
 }
 
 function updateGrounded() {
@@ -1035,75 +1156,9 @@ function addPointLights(lights, opts = {}) {
   }
 }
 
-// Torch glow for imported maps.  The block defs carry light:8 / light:5 but
-// the renderer never consumed it, so torches were dark.  Static lights only
-// near the spawn left distant torches dark, therefore a small persistent pool
-// of PointLights keeps following the player and snaps to the nearest live
-// torches 4x per second.  The pool size is fixed (forward renderer pays per
-// light in every shader); broken torches are filtered out on every retarget,
-// placed torches are picked up on the next import.
-const TORCH_POOL_SIZE = 6;
-const TORCH_POOL_RANGE = 20;
-const TORCH_RETARGET_INTERVAL = 0.25;
-let torchPool = [];
-let torchSpots = [];
-let torchTimer = 0;
-function ensureTorchPool() {
-  while (torchPool.length < TORCH_POOL_SIZE) {
-    const i = torchPool.length;
-    const p = new BABYLON.PointLight(`torchPool_${i}`, new BABYLON.Vector3(0, -10, 0), scene);
-    p.diffuse = new BABYLON.Color3(1, 0.72, 0.42);
-    p.intensity = 8;
-    p.range = 14;
-    p.setEnabled(false);
-    torchPool.push(p);
-  }
-}
-function retargetTorchLights() {
-  ensureTorchPool();
-  torchSpots = torchSpots.filter((s) => {
-    const id = world.getBlock(s.bx, s.by, s.bz);
-    return id === TORCH || id === REDSTONE_TORCH;
-  });
-  const px = player.x;
-  const py = player.y;
-  const pz = player.z;
-  const near = [];
-  for (const s of torchSpots) {
-    const dx = s.x - px;
-    const dy = s.y - py;
-    const dz = s.z - pz;
-    const d2 = dx * dx + dy * dy + dz * dz;
-    if (d2 > TORCH_POOL_RANGE * TORCH_POOL_RANGE) continue;
-    near.push({ s, d2 });
-  }
-  near.sort((a, b) => a.d2 - b.d2);
-  for (let i = 0; i < torchPool.length; i++) {
-    if (i < near.length) {
-      torchPool[i].position.set(near[i].s.x, near[i].s.y, near[i].s.z);
-      torchPool[i].setEnabled(true);
-    } else {
-      torchPool[i].setEnabled(false);
-    }
-  }
-}
-function addTorchLights(targetWorld, result, plan) {
-  const spots = [];
-  const topY = Math.min(WORLD_H - 1, Math.max(0, result.topY));
-  for (let x = result.x0; x < result.x0 + plan.W; x++) {
-    for (let z = result.z0; z < result.z0 + plan.L; z++) {
-      for (let y = 0; y <= topY; y++) {
-        const id = targetWorld.getBlock(x, y, z);
-        if (id !== TORCH && id !== REDSTONE_TORCH) continue;
-        spots.push({ x: x + 0.5, y: y + 0.7, z: z + 0.5, bx: x, by: y, bz: z });
-      }
-    }
-  }
-  torchSpots = spots;
-  console.info(`torch spots: ${spots.length}`);
-  retargetTorchLights();
-}
-
+// Свет факелов запекается в vertex colors при построении мешей чанка
+// (см. collectTorchGlow/pushBakedColor в world.js): светят все факелы на
+// любом расстоянии без пула PointLight и щелчков при ходьбе.
 function buildFallbackWorld(error) {
   console.error("Не удалось загрузить схему по умолчанию", error);
   const fallbackWorld = new World();
@@ -1125,8 +1180,6 @@ function buildFallbackWorld(error) {
   player.grounded = false;
   clampPlayerToWorld();
   resetMapTransientState();
-  torchSpots = [];
-  retargetTorchLights();
   createGuards(FALLBACK_GUARD_ROUTES);
   showMsg("Схема по умолчанию недоступна — загружена резервная тюрьма");
 }
