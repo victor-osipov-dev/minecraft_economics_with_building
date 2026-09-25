@@ -1,4 +1,5 @@
 import * as BABYLON from "@babylonjs/core";
+import { CustomMaterial } from "@babylonjs/materials/custom/customMaterial";
 import defaultSchematicUrl from "../schemes/high-security-jail.schem?url";
 import {
   AIR,
@@ -6,6 +7,8 @@ import {
   TORCH,
   REDSTONE_TORCH,
   OAK_SIGN,
+  ATLAS_COLS,
+  ATLAS_ROWS,
   createAtlas,
   TORCH_FLOOR,
   TORCH_PX,
@@ -57,10 +60,43 @@ let fallbackLights = [];
 
 // ---------- block materials ----------
 const atlas = createAtlas(scene);
-const blockMat = new BABYLON.StandardMaterial("blockMat", scene);
+// Opaque-слой на CustomMaterial: merged-грани greedy-меша повторяют тайл
+// fract()'ом внутри его границ вместо растяжки (см. tileInfo в world.js).
+// Свет, туман и всё остальное — обычный StandardMaterial: инъекция стоит
+// ровно в точке сэмплирования диффуза (CUSTOM_FRAGMENT_UPDATE_DIFFUSE).
+const blockMat = new CustomMaterial("blockMat", scene);
 blockMat.diffuseTexture = atlas;
 blockMat.specularColor = new BABYLON.Color3(0.04, 0.04, 0.04);
 blockMat.backFaceCulling = true;
+blockMat.AddAttribute("tileInfo");
+{
+  // Константы атласа в GLSL-литералах (0.03 — INSET из world.js).
+  const tileU = String(1 / ATLAS_COLS);
+  const tileV = String(1 / ATLAS_ROWS);
+  const insetU = String(0.03 / ATLAS_COLS);
+  const insetV = String(0.03 / ATLAS_ROWS);
+  blockMat.Vertex_Definitions("attribute vec4 tileInfo;\nvarying vec4 vTileInfo;");
+  blockMat.Vertex_MainEnd("vTileInfo = tileInfo;");
+  blockMat.Fragment_Definitions("varying vec4 vTileInfo;");
+  blockMat.Fragment_Custom_Diffuse(`
+#ifdef DIFFUSE
+{
+vec2 repOrigin = vTileInfo.xy;
+vec2 repCount = vTileInfo.zw;
+vec2 repSize = vec2(${tileU}, ${tileV});
+vec2 repInset = vec2(${insetU}, ${insetV});
+vec2 repInner = repSize - 2.0 * repInset;
+vec2 local01 = (vDiffuseUV + uvOffset - (repOrigin + repInset)) / repInner;
+vec2 wrappedUV = repOrigin + repInset + fract(local01 * repCount) * repInner;
+baseColor = texture2D(diffuseSampler, wrappedUV);
+baseColor.rgb *= vDiffuseInfos.y;
+#if defined(VERTEXCOLOR) || defined(INSTANCESCOLOR) && defined(INSTANCES)
+baseColor.rgb *= vColor.rgb;
+#endif
+}
+#endif
+`);
+}
 
 // Cut-out blocks (fences, panes, cobwebs and small decorations) use binary
 // alpha testing.  Glass and water are kept in a distinct blended material so

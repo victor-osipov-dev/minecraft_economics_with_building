@@ -349,6 +349,7 @@ function applyGeometry(mesh, gd) {
   mesh.setVerticesData(BABYLON.VertexBuffer.NormalKind, gd.normals);
   mesh.setVerticesData(BABYLON.VertexBuffer.UVKind, gd.uvs);
   mesh.setVerticesData(BABYLON.VertexBuffer.ColorKind, gd.colors);
+  if (gd.tileInfo && gd.tileInfo.length) mesh.setVerticesData("tileInfo", gd.tileInfo, false, 4);
   mesh.setIndices(gd.indices);
 }
 
@@ -630,6 +631,10 @@ export function buildChunkGeometry(world, cx, cy, cz) {
     alpha: emptyGeometry(),
     torch: emptyGeometry(),
   };
+  // tileInfo только у opaque-слоя: (originU, originV тайла, repeatU, repeatV).
+  // Кастомный шейдер повторяет тайл fract()'ом внутри его границ вместо
+  // растяжки merged-квада. У одиночных квадов repeat 1,1 (шейдер — identity).
+  layers.opaque.tileInfo = [];
   const ox = cx * CHUNK;
   const oy = cy * CHUNK;
   const oz = cz * CHUNK;
@@ -742,6 +747,8 @@ function pushFace(gd, bx, by, bz, face, tile, shade, COLS, ROWS, INSET) {
     const v = UV[k][1] === 0 ? tv + 1 / ROWS - aV : tv + aV;
     gd.uvs.push(u, v);
     pushBakedColor(gd, px, py, pz, shade);
+    // Одиночный квад: repeat 1,1 — шейдер повторяет тождественно.
+    if (gd.tileInfo) gd.tileInfo.push(tu, tv, 1, 1);
   }
   gd.indices.push(base, base + 2, base + 1, base, base + 3, base + 2);
 }
@@ -750,15 +757,10 @@ function pushFace(gd, bx, by, bz, face, tile, shade, COLS, ROWS, INSET) {
 // блоков, лежащие в одной плоскости чанка, объединяются в один прямоугольник
 // (1 квад вместо w*h). Условие видимости то же, что и в buildChunkGeometry:
 // грань есть тогда и только тогда, когда сосед НЕ opaque.
-// ВАЖНО: текстура при этом РАСТЯГИВАЕТСЯ на весь прямоугольник (UV покрывает
-// тайл один раз), а не повторяется. Настоящий repeat внутри общего атласа
-// невозможен со StandardMaterial: атлас в CLAMP-режиме, и UV за пределами
-// тайла засэмплируют соседние тайлы. Для шумовых текстур (бетон, земля,
-// шерсть, терракота) растяжка почти незаметна; у узорных (пол, кирпичи,
-// книжные полки, песчаник) швы pattern'а потянутся вместе с гранью.
-// Следующий шаг, если понадобится именно repeat "как было": отдельные
-// повторяемые текстуры на частые блоки или кастомный шейдер с fract() внутри
-// тайла. Cutout/alpha/torch/sign/bars сюда не входят и рисуются как раньше.
+// Текстура НЕ растягивается: UV покрывают тайл один раз, а кастомный шейдер
+// opaque-слоя (blockMat в main.js) повторяет тайл fract()'ом внутри его
+// границ tileInfo — merged-грань выглядит как отдельные блоки.
+// Cutout/alpha/torch/sign/bars сюда не входят и рисуются как раньше.
 function buildGreedyOpaque(world, gd, cx, cy, cz) {
   const origin = [cx * CHUNK, cy * CHUNK, cz * CHUNK];
   for (let f = 0; f < FACES.length; f++) {
@@ -844,7 +846,8 @@ function buildGreedyOpaque(world, gd, cx, cy, cz) {
           boxMin[vAxis] = vLo;
           boxMax[vAxis] = vLo + h;
           const def = BLOCKS[id];
-          pushMergedFace(gd, boxMin, boxMax, face, tileFor(def, n), face.shade, ATL_COLS, ATL_ROWS, INSET);
+          // Прямоугольник w*h блоков: шейдер повторит тайл w раз по U и h по V.
+          pushMergedFace(gd, boxMin, boxMax, face, tileFor(def, n), face.shade, ATL_COLS, ATL_ROWS, INSET, 1, 0, w, h);
         }
       }
     }
@@ -853,10 +856,12 @@ function buildGreedyOpaque(world, gd, cx, cy, cz) {
 
 // Как pushFace, но углы берутся из бокса merged-прямоугольника: компонента 0
 // угла грани -> boxMin, 1 -> boxMax. Для прямоугольника 1x1 совпадает с
-// pushFace один в один. UV покрывают тайл целиком один раз (stretch).
+// pushFace один в один. UV покрывают тайл целиком один раз; сколько раз его
+// повторить (в блоках вдоль U/V грани) говорит repU/repV — кастомный шейдер
+// делает fract() внутри тайла, и merged-грань выглядит как отдельные блоки.
 // fBot/fTop задают долю тайла (от верха, 0..1) на нижней/верхней кромке грани:
 // по умолчанию весь тайл, для боков плит — его половину.
-function pushMergedFace(gd, boxMin, boxMax, face, tile, shade, COLS, ROWS, INSET, fBot = 1, fTop = 0) {
+function pushMergedFace(gd, boxMin, boxMax, face, tile, shade, COLS, ROWS, INSET, fBot = 1, fTop = 0, repU = 1, repV = 1) {
   const tu = (tile % COLS) / COLS;
   const tv = Math.floor(tile / COLS) / ROWS;
   const aU = INSET / COLS;
@@ -875,6 +880,7 @@ function pushMergedFace(gd, boxMin, boxMax, face, tile, shade, COLS, ROWS, INSET
     const v = UV[k][1] === 0 ? tv + fB / ROWS : tv + fT / ROWS;
     gd.uvs.push(u, v);
     pushBakedColor(gd, px, py, pz, shade);
+    if (gd.tileInfo) gd.tileInfo.push(tu, tv, repU, repV);
   }
   gd.indices.push(base, base + 2, base + 1, base, base + 3, base + 2);
 }
