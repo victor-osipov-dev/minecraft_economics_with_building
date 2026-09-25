@@ -1,5 +1,6 @@
 import * as BABYLON from "@babylonjs/core";
-import { AIR, BLOCKS, createAtlas } from "./blocks.js";
+import defaultSchematicUrl from "../schemes/high-security-jail.schem?url";
+import { AIR, BLOCKS, TORCH, REDSTONE_TORCH, createAtlas } from "./blocks.js";
 import { World, WORLD_H } from "./world.js";
 import { buildPrison, SPAWN } from "./prison.js";
 import { Guard } from "./npcs.js";
@@ -26,27 +27,53 @@ sun.intensity = 0.75;
 sun.diffuse = new BABYLON.Color3(1, 0.96, 0.9);
 
 // ---------- world ----------
-const world = new World();
-const lights = buildPrison(world);
-for (const l of lights) {
-  const p = new BABYLON.PointLight(`lamp_${l.pos.join("_")}`, new BABYLON.Vector3(l.pos[0], l.pos[1], l.pos[2]), scene);
-  p.diffuse = new BABYLON.Color3(1, 0.78, 0.55);
-  p.intensity = 2.4;
-  p.range = 16;
-}
+// The reference is replaced only after a complete staged import has passed
+// parsing, placement, route and spawn validation.  A failed import therefore
+// leaves the currently playable world untouched.
+let world = new World();
+let respawnPoint = { ...SPAWN };
+let worldBounds = { minX: -57, maxX: 57, minZ: -57, maxZ: 57 };
+let fallbackLights = [];
 
-// ---------- block material ----------
+// ---------- block materials ----------
 const atlas = createAtlas(scene);
 const blockMat = new BABYLON.StandardMaterial("blockMat", scene);
 blockMat.diffuseTexture = atlas;
-blockMat.useAlphaFromDiffuseTexture = true;
-blockMat.transparencyMode = BABYLON.Material.MATERIAL_ALPHATEST;
-blockMat.alphaCutOff = 0.5;
 blockMat.specularColor = new BABYLON.Color3(0.04, 0.04, 0.04);
-blockMat.backFaceCulling = false;
+blockMat.backFaceCulling = true;
 
-world.markAll();
-world.flushMeshes(scene, blockMat);
+// Cut-out blocks (fences, panes, cobwebs and small decorations) use binary
+// alpha testing.  Glass and water are kept in a distinct blended material so
+// their partial alpha is not converted into a hard cutout.
+const cutoutMat = new BABYLON.StandardMaterial("cutoutBlockMat", scene);
+cutoutMat.diffuseTexture = atlas;
+cutoutMat.useAlphaFromDiffuseTexture = true;
+cutoutMat.transparencyMode = BABYLON.Material.MATERIAL_ALPHATEST;
+cutoutMat.alphaCutOff = 0.5;
+cutoutMat.specularColor = new BABYLON.Color3(0.04, 0.04, 0.04);
+cutoutMat.backFaceCulling = false;
+
+const alphaMat = new BABYLON.StandardMaterial("alphaBlockMat", scene);
+alphaMat.diffuseTexture = atlas;
+alphaMat.useAlphaFromDiffuseTexture = true;
+alphaMat.transparencyMode = BABYLON.Material.MATERIAL_ALPHABLEND;
+alphaMat.specularColor = new BABYLON.Color3(0.04, 0.04, 0.04);
+alphaMat.backFaceCulling = false;
+alphaMat.needDepthPrePass = false;
+alphaMat.separateCullingPass = true;
+
+// Torches share the atlas but need to glow: same alpha-tested cutout plus an
+// emissive term from the same texture, so the flame is fullbright even in
+// daylight while the stick only warms up slightly.
+const torchMat = new BABYLON.StandardMaterial("torchMat", scene);
+torchMat.diffuseTexture = atlas;
+torchMat.useAlphaFromDiffuseTexture = true;
+torchMat.transparencyMode = BABYLON.Material.MATERIAL_ALPHATEST;
+torchMat.alphaCutOff = 0.5;
+torchMat.specularColor = new BABYLON.Color3(0, 0, 0);
+torchMat.emissiveTexture = atlas;
+torchMat.emissiveColor = new BABYLON.Color3(1.0, 0.82, 0.55);
+torchMat.backFaceCulling = false;
 
 // ---------- message toast ----------
 const msgEl = document.getElementById("msg");
@@ -59,35 +86,119 @@ function showMsg(text) {
 }
 
 // ---------- импорт построек Minecraft (схематики) ----------
+const DEFAULT_SCHEMATIC_NAME = "high-security-jail.schem";
+const DEFAULT_BUILD_CENTER = { x: 0, z: 0, floorY: 1 };
 const loadBtnEl = document.getElementById("loadBtn");
 const schemInputEl = document.getElementById("schemFile");
 const dropOverlayEl = document.getElementById("dropOverlay");
+let mapReady = false;
+
+function placeSchematic(plan, cx, cz, floorY = 1, replaceWorld = false) {
+  // Manual imports replace the complete world.  Build that replacement in a
+  // detached World first; no live chunk, mesh, guard or player state is
+  // touched until every potentially failing operation below succeeds.
+  const targetWorld = replaceWorld ? new World() : world;
+  const result = pasteSchematic(targetWorld, plan, cx, cz, floorY, {
+    clear: !replaceWorld,
+  });
+  const spawn = findSafePlayerSpawn(result, plan, targetWorld);
+  if (!spawn) {
+    if (replaceWorld) targetWorld.clear();
+    throw new Error("в схеме нет безопасной поддерживаемой точки появления");
+  }
+  const routes = routesForSchematic(result, plan, targetWorld);
+
+  // Flush the detached meshes before swapping the world reference.  This
+  // keeps a Babylon allocation/geometry failure from publishing a half-loaded
+  // map.  The old world is still intact while this happens.
+  try {
+    targetWorld.flushMeshes(scene, blockMat, cutoutMat, alphaMat, torchMat);
+  } catch (error) {
+    if (replaceWorld) targetWorld.clear();
+    throw error;
+  }
+
+  if (replaceWorld) {
+    // Stage guards against the detached world so a Guard allocation failure
+    // discards the staged world instead of publishing a world without guards.
+    let stagedGuards = [];
+    try {
+      for (const route of routes) {
+        if (!Array.isArray(route) || route.length === 0) continue;
+        const first = route[0];
+        if (!first || !Number.isFinite(first.x) || !Number.isFinite(first.z)) continue;
+        const startY = Number.isFinite(first.y) ? first.y : 1;
+        stagedGuards.push(new Guard(scene, targetWorld, route, () => playerCaught(), startY));
+      }
+    } catch (error) {
+      for (const guard of stagedGuards) {
+        try { guard.dispose(); } catch { /* ignore */ }
+      }
+      targetWorld.clear();
+      throw error;
+    }
+    const oldWorld = world;
+    const oldGuards = guards;
+    world = targetWorld;
+    guards = stagedGuards;
+    oldWorld.clear();
+    for (const guard of oldGuards) guard.dispose();
+    clearPointLights();
+    addTorchLights(targetWorld, result, plan, spawn);
+    resetMapTransientState();
+  }
+
+  worldBounds = {
+    minX: result.x0,
+    maxX: result.x0 + plan.W,
+    minZ: result.z0,
+    maxZ: result.z0 + plan.L,
+  };
+  respawnPoint = spawn;
+  player.x = respawnPoint.x;
+  player.y = respawnPoint.y;
+  player.z = respawnPoint.z;
+  player.vy = 0;
+  player.grounded = false;
+  breaking = null;
+  return { ...result, spawn, routes };
+}
 
 function importSchematicBytes(bytes, fileName) {
+  if (!mapReady) {
+    showMsg("Дождитесь загрузки карты по умолчанию");
+    return;
+  }
   try {
     const plan = parseSchematicFile(bytes);
     if (!plan || plan.blocks.length === 0) {
       showMsg("В схеме нет распознанных блоков");
       return;
     }
-    const res = pasteSchematic(world, plan, Math.round(player.x), Math.round(player.z), 1);
-    player.x = res.x0 + plan.W / 2;
-    player.z = res.z0 + plan.L / 2;
-    player.y = res.topY + 2;
-    player.vy = 0;
-    breaking = null;
-    world.flushMeshes(scene, blockMat);
+    const res = placeSchematic(plan, Math.round(player.x), Math.round(player.z), 1, true);
+    // Guards are already staged inside placeSchematic against the new world;
+    // do not recreate them here to avoid a second failure window after swap.
     showMsg(`Схема «${fileName}» (${plan.format}) · поставлено ${res.placed} блоков · ${plan.W}×${plan.H}×${plan.L}`);
   } catch (err) {
+    console.error("Не удалось загрузить схему", err);
     showMsg(`Ошибка загрузки схемы: ${err.message}`);
   }
+}
+
+function readSchematicFile(file) {
+  if (!file) return;
+  file.arrayBuffer()
+    .then((buf) => importSchematicBytes(new Uint8Array(buf), file.name))
+    .catch((error) => {
+      console.error("Не удалось прочитать файл схемы", error);
+      showMsg(`Ошибка чтения схемы: ${error.message || "неизвестная ошибка"}`);
+    });
 }
 
 loadBtnEl.addEventListener("click", () => schemInputEl.click());
 
 schemInputEl.addEventListener("change", () => {
-  const f = schemInputEl.files?.[0];
-  if (f) f.arrayBuffer().then((buf) => importSchematicBytes(new Uint8Array(buf), f.name));
+  readSchematicFile(schemInputEl.files?.[0]);
   schemInputEl.value = "";
 });
 
@@ -98,41 +209,290 @@ window.addEventListener("drop", (e) => {
   e.preventDefault();
   dropOverlayEl.classList.remove("show");
   const f = e.dataTransfer?.files?.[0];
-  if (f) f.arrayBuffer().then((buf) => importSchematicBytes(new Uint8Array(buf), f.name));
+  readSchematicFile(f);
 });
 
 // ---------- guards (Фаза 3: патруль / шум / погоня) ----------
 let noiseEvents = [];
 let noiseTime = 0;
+function resetMapTransientState() {
+  noiseEvents = [];
+  noiseTime = 0;
+  noiseLevel = 0;
+  lastHit = null;
+  mouseDown = { 0: false, 2: false };
+  breaking = null;
+}
 function emitNoise(x, y, z, value) {
   noiseEvents.push({ x, y, z, value, time: noiseTime, acquired: false });
 }
-const guards = [
-  new Guard(
-    scene,
-    world,
-    [{ x: -24, z: -4 }, { x: 24, z: -4 }, { x: 24, z: -26 }, { x: -24, z: -26 }],
-    () => playerCaught()
-  ),
-  new Guard(
-    scene,
-    world,
-    [{ x: -16, z: 2 }, { x: 16, z: 2 }, { x: 16, z: -18 }, { x: -16, z: -18 }],
-    () => playerCaught()
-  ),
-  new Guard(
-    scene,
-    world,
-    [{ x: -29, z: -2 }, { x: -29, z: 16 }, { x: -29, z: -8 }],
-    () => playerCaught()
-  ),
+const FALLBACK_GUARD_ROUTES = [
+  [{ x: -24, z: -4 }, { x: 24, z: -4 }, { x: 24, z: -26 }, { x: -24, z: -26 }],
+  [{ x: -16, z: 2 }, { x: 16, z: 2 }, { x: 16, z: -18 }, { x: -16, z: -18 }],
+  [{ x: -29, z: -2 }, { x: -29, z: 16 }, { x: -29, z: -8 }],
 ];
+let guards = [];
+
+function guardSurfaceY(x, z, targetWorld = world) {
+  if (!Number.isFinite(x) || !Number.isFinite(z)) return null;
+  // A guard needs the same vertical room as the player.  The old upper bound
+  // could return y=63, putting a 1.8-block body above WORLD_H.
+  for (let y = WORLD_H - 3; y >= 0; y--) {
+    if (!targetWorld.isSolid(x, y, z)) continue;
+    const surface = y + 1;
+    if (surface + 1.8 > WORLD_H + 1e-6) continue;
+    if (targetWorld.isSolid(x, surface, z) || targetWorld.isSolid(x, surface + 1, z)) continue;
+    return surface;
+  }
+  return null;
+}
+
+function guardBodyClear(x, y, z, targetWorld = world) {
+  if (![x, y, z].every(Number.isFinite)) return false;
+  const h1 = Math.floor(y + 0.05);
+  const h2 = Math.floor(y + 1.7 - 1e-6);
+  const xs = [x - 0.35, x + 0.35];
+  const zs = [z - 0.35, z + 0.35];
+  for (let yy = h1; yy <= h2; yy++) {
+    for (const xx of xs) {
+      for (const zz of zs) {
+        if (targetWorld.isSolid(xx, yy, zz)) return false;
+      }
+    }
+  }
+  return true;
+}
+
+function guardNodeAt(x, z, targetWorld = world) {
+  const y = guardSurfaceY(x, z, targetWorld);
+  if (y == null || !guardBodyClear(x, y, z, targetWorld)) return null;
+  return { x, z, y };
+}
+
+function guardNodeKey(x, z) {
+  return `${x},${z}`;
+}
+
+function buildGuardNodes(result, plan, targetWorld = world) {
+  const nodes = new Map();
+  for (let z = result.z0; z < result.z0 + plan.L; z++) {
+    for (let x = result.x0; x < result.x0 + plan.W; x++) {
+      const node = guardNodeAt(x, z, targetWorld);
+      if (node) nodes.set(guardNodeKey(x, z), node);
+    }
+  }
+  return nodes;
+}
+
+function nearestGuardNode(nodes, x, z) {
+  if (!Number.isFinite(x) || !Number.isFinite(z)) return null;
+  const px = Math.round(x);
+  const pz = Math.round(z);
+  if (!Number.isSafeInteger(px) || !Number.isSafeInteger(pz)) return null;
+  const direct = nodes.get(guardNodeKey(px, pz));
+  if (direct) return direct;
+
+  let best = null;
+  let bestDistance = Infinity;
+  for (const node of nodes.values()) {
+    const distance = (node.x - px) ** 2 + (node.z - pz) ** 2;
+    if (distance < bestDistance) {
+      best = node;
+      bestDistance = distance;
+    }
+  }
+  return best;
+}
+
+function guardEdgeClear(a, b, targetWorld = world) {
+  // Проверяем не только концы отрезка, но и промежуточную позицию: так
+  // маршрут не пытается протащить Guard через блок на повороте.
+  const steps = Math.max(4, Math.min(64, Math.ceil(Math.hypot(b.x - a.x, b.z - a.z) * 4)));
+  for (let i = 0; i <= steps; i++) {
+    const t = i / steps;
+    const x = a.x + (b.x - a.x) * t;
+    const z = a.z + (b.z - a.z) * t;
+    const y = a.y + (b.y - a.y) * t;
+    if (!guardBodyClear(x, y, z, targetWorld)) return false;
+  }
+  return true;
+}
+
+function findGuardPath(nodes, start, goal, targetWorld = world) {
+  if (!start || !goal) return null;
+  const startKey = guardNodeKey(start.x, start.z);
+  const goalKey = guardNodeKey(goal.x, goal.z);
+  if (!nodes.has(startKey) || !nodes.has(goalKey)) return null;
+  if (startKey === goalKey) return [start];
+
+  const queue = [startKey];
+  const distance = new Map([[startKey, 0]]);
+  const previous = new Map();
+  const directions = [[1, 0], [-1, 0], [0, 1], [0, -1]];
+  let head = 0;
+
+  while (head < queue.length) {
+    const currentKey = queue[head++];
+    if (currentKey === goalKey) break;
+    const current = nodes.get(currentKey);
+    for (const [dx, dz] of directions) {
+      const next = nodes.get(guardNodeKey(current.x + dx, current.z + dz));
+      if (!next) continue;
+      const nextKey = guardNodeKey(next.x, next.z);
+      if (distance.has(nextKey)) continue;
+      if (!guardEdgeClear(current, next, targetWorld)) continue;
+      distance.set(nextKey, distance.get(currentKey) + 1);
+      previous.set(nextKey, currentKey);
+      queue.push(nextKey);
+    }
+  }
+
+  if (!previous.has(goalKey)) return null;
+  const path = [];
+  for (let key = goalKey; key != null; key = previous.get(key)) {
+    path.push(nodes.get(key));
+  }
+  path.reverse();
+  return path;
+}
+
+function compressGuardPath(path) {
+  if (path.length < 3) return path;
+  const result = [path[0]];
+  for (let i = 1; i < path.length; i++) {
+    const point = path[i];
+    const last = result[result.length - 1];
+    const before = result[result.length - 2];
+    if (before) {
+      const straightX = (last.x - before.x) * (point.z - last.z);
+      const straightZ = (last.z - before.z) * (point.x - last.x);
+      if (straightX === straightZ) {
+        result[result.length - 1] = point;
+        continue;
+      }
+    }
+    result.push(point);
+  }
+  return result;
+}
+
+function routeThrough(nodes, anchors, targetWorld = world) {
+  if (!Array.isArray(anchors) || anchors.length === 0) return [];
+  const points = anchors.map((point) => nearestGuardNode(nodes, point.x, point.z));
+  if (points.some((point) => !point)) return [];
+
+  const route = [points[0]];
+  for (let i = 1; i < points.length; i++) {
+    const leg = findGuardPath(nodes, points[i - 1], points[i], targetWorld);
+    if (!leg) return [];
+    route.push(...leg.slice(1));
+  }
+  return compressGuardPath(route);
+}
+
+function snapGuardWaypoint(x, z, nodes = null, targetWorld = world) {
+  if (nodes) return nearestGuardNode(nodes, x, z);
+  const px = Math.round(x);
+  const pz = Math.round(z);
+  return guardNodeAt(px, pz, targetWorld);
+}
+
+function routesForSchematic(result, plan, targetWorld = world) {
+  // В high-security-jail открытый двор образует внешнее кольцо вокруг
+  // центральных корпусов. Путь между опорными точками строится по реальной
+  // сетке после вставки схемы, поэтому Guard огибает стены и проломы.
+  const leftX = result.x0 + 20;
+  const rightX = result.x0 + plan.W - 33;
+  const innerLeftX = result.x0 + 27;
+  const plazaX = result.x0 + 90;
+  const topZ = result.z0 + 15;
+  const bottomZ = result.z0 + plan.L - 14;
+  const middleZ = result.z0 + Math.floor((plan.L + 1) / 2);
+
+  const requestedRoutes = [
+    [
+      { x: leftX, z: topZ },
+      { x: rightX, z: topZ },
+      { x: rightX, z: bottomZ },
+      { x: leftX, z: bottomZ },
+    ],
+    [
+      { x: leftX, z: topZ },
+      { x: leftX, z: middleZ },
+      { x: leftX, z: bottomZ },
+      { x: innerLeftX, z: bottomZ },
+      { x: innerLeftX, z: topZ },
+    ],
+    [
+      { x: rightX, z: topZ },
+      { x: plazaX, z: middleZ },
+      { x: rightX, z: bottomZ },
+    ],
+  ];
+
+  const nodes = buildGuardNodes(result, plan, targetWorld);
+  const routed = requestedRoutes
+    .map((anchors) => routeThrough(nodes, anchors, targetWorld))
+    .filter((route) => route.length > 0);
+  if (routed.length > 0) return routed;
+
+  // Импортированная маленькая схема может не иметь полноценной сетки
+  // маршрута.  Сначала пытаемся собрать маршруты только из реальных узлов;
+  // неvalidated точки никогда не попадают в Guard.
+  const fallback = [];
+  for (const anchors of requestedRoutes) {
+    const route = [];
+    for (const anchor of anchors) {
+      const point = nearestGuardNode(nodes, anchor.x, anchor.z);
+      if (!point) continue;
+      const previous = route[route.length - 1];
+      if (previous && previous.x === point.x && previous.z === point.z) continue;
+      const leg = previous ? findGuardPath(nodes, previous, point, targetWorld) : [point];
+      if (!leg) continue;
+      route.push(...(previous ? leg.slice(1) : leg));
+    }
+    if (route.length > 0) fallback.push(compressGuardPath(route));
+  }
+  if (fallback.length > 0) return fallback;
+
+  // A one-node patrol is still preferable to spawning a Guard inside a wall;
+  // if even that is impossible there are simply no guards for this tiny map.
+  const allNodes = [...nodes.values()];
+  if (allNodes.length === 0) return [];
+  const centerX = result.x0 + plan.W / 2;
+  const centerZ = result.z0 + plan.L / 2;
+  const first = nearestGuardNode(nodes, centerX, centerZ) || allNodes[0];
+  return [[first]];
+}
+
+function createGuards(routes, worldRef = world) {
+  if (!Array.isArray(routes)) routes = [];
+  const staged = [];
+  try {
+    for (const route of routes) {
+      if (!Array.isArray(route) || route.length === 0) continue;
+      const first = route[0];
+      if (!first || !Number.isFinite(first.x) || !Number.isFinite(first.z)) continue;
+      const startY = Number.isFinite(first.y) ? first.y : 1;
+      staged.push(new Guard(scene, worldRef, route, () => playerCaught(), startY));
+    }
+  } catch (error) {
+    for (const guard of staged) {
+      try { guard.dispose(); } catch { /* ignore cleanup errors */ }
+    }
+    throw error;
+  }
+  for (const guard of guards) guard.dispose();
+  guards = staged;
+}
 
 function respawnPlayer() {
-  player.x = SPAWN.x;
-  player.y = SPAWN.y;
-  player.z = SPAWN.z;
+  player.x = respawnPoint.x;
+  player.y = respawnPoint.y;
+  player.z = respawnPoint.z;
   player.vy = 0;
+  player.grounded = false;
+  clampPlayerToWorld();
   breaking = null;
 }
 function playerCaught() {
@@ -158,7 +518,91 @@ const HEIGHT = 1.8;
 const EYE = 1.7;
 const REACH = 6;
 
-const player = { x: SPAWN.x, y: SPAWN.y, z: SPAWN.z, vy: 0, grounded: false };
+function playerHorizontalBounds() {
+  let minX = worldBounds.minX + HALF + 1e-3;
+  let maxX = worldBounds.maxX - HALF - 1e-3;
+  let minZ = worldBounds.minZ + HALF + 1e-3;
+  let maxZ = worldBounds.maxZ - HALF - 1e-3;
+  if (minX > maxX) {
+    const center = (worldBounds.minX + worldBounds.maxX) / 2;
+    minX = maxX = center;
+  }
+  if (minZ > maxZ) {
+    const center = (worldBounds.minZ + worldBounds.maxZ) / 2;
+    minZ = maxZ = center;
+  }
+  return { minX, maxX, minZ, maxZ };
+}
+
+function isInsideWorldBounds(x, y, z) {
+  return Number.isFinite(x) && Number.isFinite(y) && Number.isFinite(z) &&
+    x >= worldBounds.minX && x < worldBounds.maxX &&
+    z >= worldBounds.minZ && z < worldBounds.maxZ &&
+    y >= 0 && y < WORLD_H;
+}
+
+function clampPlayerToWorld() {
+  const bounds = playerHorizontalBounds();
+  player.x = Math.max(bounds.minX, Math.min(bounds.maxX, player.x));
+  player.z = Math.max(bounds.minZ, Math.min(bounds.maxZ, player.z));
+  const maxY = Math.max(0, WORLD_H - HEIGHT);
+  if (player.y < 0) {
+    player.y = 0;
+    if (player.vy < 0) player.vy = 0;
+  } else if (player.y > maxY) {
+    player.y = maxY;
+    if (player.vy > 0) player.vy = 0;
+  }
+}
+
+function playerSpawnClear(x, y, z, targetWorld = world) {
+  if (![x, y, z].every(Number.isFinite) || y < 0 || y + HEIGHT > WORLD_H + 1e-6) {
+    return false;
+  }
+  const x0 = Math.floor(x - HALF);
+  const x1 = Math.floor(x + HALF - 1e-6);
+  const y0 = Math.floor(y + 1e-6);
+  const y1 = Math.floor(y + HEIGHT - 1e-6);
+  const z0 = Math.floor(z - HALF);
+  const z1 = Math.floor(z + HALF - 1e-6);
+  for (let yy = y0; yy <= y1; yy++) {
+    for (let zz = z0; zz <= z1; zz++) {
+      for (let xx = x0; xx <= x1; xx++) {
+        if (targetWorld.isSolid(xx, yy, zz)) return false;
+      }
+    }
+  }
+  return true;
+}
+
+function findSafePlayerSpawn(result, plan, targetWorld = world) {
+  // A one-voxel-wide map cannot contain the player's 0.6-block-wide body.
+  // Reject it instead of returning a position that the physics bounds would
+  // immediately clamp into a wall or outside the imported map.
+  if (plan.W < 1 || plan.L < 1 || plan.W < 2 * HALF || plan.L < 2 * HALF) return null;
+  const centerX = Math.floor(result.x0 + plan.W / 2);
+  const centerZ = Math.floor(result.z0 + plan.L / 2);
+  let best = null;
+  let bestDistance = Infinity;
+
+  const consider = (x, z) => {
+    const y = guardSurfaceY(x, z, targetWorld);
+    if (y == null || !playerSpawnClear(x + 0.5, y, z + 0.5, targetWorld)) return;
+    const distance = (x - centerX) ** 2 + (z - centerZ) ** 2;
+    if (distance < bestDistance || (distance === bestDistance && y > best.y)) {
+      best = { x: x + 0.5, y, z: z + 0.5 };
+      bestDistance = distance;
+    }
+  };
+
+  consider(centerX, centerZ);
+  for (let z = result.z0; z < result.z0 + plan.L; z++) {
+    for (let x = result.x0; x < result.x0 + plan.W; x++) consider(x, z);
+  }
+  return best;
+}
+
+const player = { x: respawnPoint.x, y: respawnPoint.y, z: respawnPoint.z, vy: 0, grounded: false };
 let camYaw = 0;
 let camPitch = -0.06;
 
@@ -324,11 +768,11 @@ function handlePlace() {
   const px = hit.x + hit.nx;
   const py = hit.y + hit.ny;
   const pz = hit.z + hit.nz;
-  if (py < 0 || py >= WORLD_H) return;
+  if (!isInsideWorldBounds(px, py, pz)) return;
   if (world.getBlock(px, py, pz) !== AIR) return;
   if (boxIntersectsPlayer(px, py, pz)) return;
-  world.setBlock(px, py, pz, entry.id);
-  world.flushMeshes(scene, blockMat);
+  if (!world.setBlock(px, py, pz, entry.id)) return;
+  world.flushMeshes(scene, blockMat, cutoutMat, alphaMat, torchMat);
   entry.count--;
   emitNoise(px, py, pz, 20);
   noiseLevel = Math.min(1, noiseLevel + 0.22);
@@ -336,10 +780,11 @@ function handlePlace() {
 }
 
 function doBreak(x, y, z, toolId) {
+  if (!isInsideWorldBounds(x, y, z)) return;
   const id = world.getBlock(x, y, z);
   if (id === AIR) return;
-  world.setBlock(x, y, z, AIR);
-  world.flushMeshes(scene, blockMat);
+  if (!world.setBlock(x, y, z, AIR)) return;
+  world.flushMeshes(scene, blockMat, cutoutMat, alphaMat, torchMat);
   let entry = inventory.get(id);
   if (!entry) {
     entry = { id, count: 0 };
@@ -361,6 +806,7 @@ function boxIntersectsPlayer(x, y, z) {
 
 // ---------- voxel raycast (DDA) ----------
 function raycast(ox, oy, oz, dx, dy, dz, maxD) {
+  if (![ox, oy, oz, dx, dy, dz, maxD].every(Number.isFinite)) return null;
   let x = Math.floor(ox);
   let y = Math.floor(oy);
   let z = Math.floor(oz);
@@ -379,6 +825,7 @@ function raycast(ox, oy, oz, dx, dy, dz, maxD) {
 
   for (let i = 0; i < 512; i++) {
     if (Math.min(tX, tY, tZ) > maxD) return null;
+    if (!isInsideWorldBounds(x, y, z)) return null;
     const id = world.getBlock(x, y, z);
     if (id !== AIR) return { x, y, z, nx, ny, nz, id };
     if (tX < tY && tX < tZ) {
@@ -462,6 +909,9 @@ const rgt = new BABYLON.Vector3();
 const rayDir = new BABYLON.Vector3();
 
 scene.registerBeforeRender(() => {
+  // During the initial fetch the canvas can already render, but physics and
+  // NPC updates wait until either the imported map or fallback is committed.
+  if (!mapReady) return;
   const dt = Math.min(engine.getDeltaTime() / 1000, 0.05);
   const speed = keys.shift ? SPRINT_SPEED : WALK_SPEED;
 
@@ -501,11 +951,10 @@ scene.registerBeforeRender(() => {
   updateGrounded();
   if (player.grounded && player.vy <= 0) player.vy = 0;
 
-  // clamp to the world region / respawn in the void
-  const limit = 57;
-  if (Math.abs(player.x) > limit) player.x = Math.sign(player.x) * limit;
-  if (Math.abs(player.z) > limit) player.z = Math.sign(player.z) * limit;
+  // Ограничиваем игрока фактическими границами текущей схемы, а не
+  // предположением, что любая карта центрирована в начале координат.
   if (player.y < -20) respawnPlayer();
+  clampPlayerToWorld();
 
   camera.position.set(player.x, player.y + EYE, player.z);
 
@@ -514,7 +963,7 @@ scene.registerBeforeRender(() => {
   while (noiseEvents.length > 0 && noiseTime - noiseEvents[0].time > 5) noiseEvents.shift();
   for (const g of guards) g.update(dt, player, noiseEvents, noiseTime);
 
-  // ---- targeting ---- 
+  // ---- targeting ----
   camera.getDirectionToRef(new BABYLON.Vector3(0, 0, 1), rayDir);
   const locked = document.pointerLockElement === canvas;
   lastHit = raycast(camera.position.x, camera.position.y, camera.position.z, rayDir.x, rayDir.y, rayDir.z, REACH);
@@ -564,5 +1013,117 @@ scene.registerBeforeRender(() => {
   updateBreakBar();
 });
 
+// ---------- построение мира по умолчанию ----------
+function clearPointLights() {
+  for (const light of fallbackLights) light.dispose();
+  fallbackLights = [];
+}
+
+function addPointLights(lights, opts = {}) {
+  clearPointLights();
+  const { intensity = 2.4, range = 16, color = [1, 0.78, 0.55] } = opts;
+  for (const light of lights) {
+    const point = new BABYLON.PointLight(
+      `lamp_${light.pos.join("_")}`,
+      new BABYLON.Vector3(light.pos[0], light.pos[1], light.pos[2]),
+      scene
+    );
+    point.diffuse = new BABYLON.Color3(color[0], color[1], color[2]);
+    point.intensity = intensity;
+    point.range = range;
+    fallbackLights.push(point);
+  }
+}
+
+// Torch glow for imported maps.  The block defs carry light:8 / light:5 but
+// the renderer never consumed it, so torches were dark.  A forward renderer
+// pays per light in every shader, therefore only the MAX_TORCH_LIGHTS nearest
+// to the spawn get a real PointLight.  Runtime break/place of torches does not
+// update lights (static on import).
+const MAX_TORCH_LIGHTS = 16;
+function addTorchLights(targetWorld, result, plan, spawn) {
+  const spots = [];
+  const topY = Math.min(WORLD_H - 1, Math.max(0, result.topY));
+  for (let x = result.x0; x < result.x0 + plan.W; x++) {
+    for (let z = result.z0; z < result.z0 + plan.L; z++) {
+      for (let y = 0; y <= topY; y++) {
+        const id = targetWorld.getBlock(x, y, z);
+        if (id !== TORCH && id !== REDSTONE_TORCH) continue;
+        const px = x + 0.5;
+        const pz = z + 0.5;
+        spots.push({
+          pos: [px, y + 0.7, pz],
+          d: (px - spawn.x) ** 2 + (pz - spawn.z) ** 2,
+        });
+      }
+    }
+  }
+  spots.sort((a, b) => a.d - b.d);
+  addPointLights(spots.slice(0, MAX_TORCH_LIGHTS), { intensity: 6, range: 12 });
+}
+
+function buildFallbackWorld(error) {
+  console.error("Не удалось загрузить схему по умолчанию", error);
+  const fallbackWorld = new World();
+  const lights = buildPrison(fallbackWorld);
+  fallbackWorld.markAll();
+  fallbackWorld.flushMeshes(scene, blockMat, cutoutMat, alphaMat, torchMat);
+
+  const oldWorld = world;
+  world = fallbackWorld;
+  oldWorld.clear();
+  clearPointLights();
+  worldBounds = { minX: -56, maxX: 57, minZ: -56, maxZ: 57 };
+  addPointLights(lights);
+  respawnPoint = { ...SPAWN };
+  player.x = respawnPoint.x;
+  player.y = respawnPoint.y;
+  player.z = respawnPoint.z;
+  player.vy = 0;
+  player.grounded = false;
+  clampPlayerToWorld();
+  resetMapTransientState();
+  createGuards(FALLBACK_GUARD_ROUTES);
+  showMsg("Схема по умолчанию недоступна — загружена резервная тюрьма");
+}
+
+async function loadDefaultWorld() {
+  loadBtnEl.disabled = true;
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 15000);
+  try {
+    const response = await fetch(defaultSchematicUrl, { signal: controller.signal });
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const bytes = new Uint8Array(await response.arrayBuffer());
+    const plan = parseSchematicFile(bytes);
+    if (!plan || plan.blocks.length === 0) throw new Error("в схеме нет распознанных блоков");
+
+    const result = placeSchematic(
+      plan,
+      DEFAULT_BUILD_CENTER.x,
+      DEFAULT_BUILD_CENTER.z,
+      DEFAULT_BUILD_CENTER.floorY,
+      true
+    );
+    // placeSchematic already staged guards; see importSchematicBytes.
+    showMsg(`Тюрьма «${DEFAULT_SCHEMATIC_NAME}» загружена · ${result.placed} блоков · ${plan.W}×${plan.H}×${plan.L}`);
+  } catch (error) {
+    buildFallbackWorld(error);
+  } finally {
+    clearTimeout(timeoutId);
+    mapReady = true;
+    loadBtnEl.disabled = false;
+    camera.position.set(player.x, player.y + EYE, player.z);
+  }
+}
+
+// Рендер стартует сразу, поэтому медленная/зависшая загрузка не оставляет
+// страницу с пустым canvas. Физика всё ещё ждёт mapReady.
 engine.runRenderLoop(() => scene.render());
+void loadDefaultWorld().catch((error) => {
+  // На случай ошибки самого fallback-пути: не оставляем кнопку заблокированной.
+  console.error("Критическая ошибка загрузки мира", error);
+  mapReady = true;
+  loadBtnEl.disabled = false;
+});
 window.addEventListener("resize", () => engine.resize());

@@ -1,4 +1,4 @@
-import { gunzipSync, unzlibSync } from "fflate";
+import { Gunzip, Unzlib } from "fflate";
 import {
   AIR,
   WALL_CONCRETE,
@@ -8,302 +8,1556 @@ import {
   DIRT,
   STONE,
   WOOD,
+  BLACK_WOOL,
+  BLUE_WOOL,
+  RED_WOOL,
+  YELLOW_WOOL,
+  BOOKSHELF,
+  CAULDRON,
+  CHEST,
+  ENDER_CHEST,
+  COBWEB,
+  CYAN_TERRACOTTA,
+  GRASS_BLOCK,
+  HOPPER,
+  GLASS,
+  GLASS_PANE,
+  IRON_BLOCK,
+  IRON_DOOR,
+  NETHER_BRICK_FENCE,
+  NETHER_BRICK,
+  NETHER_BRICK_SLAB,
+  OAK_BUTTON,
+  OAK_FENCE,
+  OAK_PRESSURE_PLATE,
+  OAK_SIGN,
+  OAK_STAIRS,
+  OAK_TRAPDOOR,
+  PISTON,
+  QUARTZ_BLOCK,
+  RED_BED,
+  RED_TERRACOTTA,
+  SANDSTONE,
+  SMOOTH_STONE_SLAB,
+  STONE_BRICKS,
+  STONE_PRESSURE_PLATE,
+  TORCH,
+  REDSTONE_TORCH,
+  TRIPWIRE_HOOK,
+  WATER,
+  BLOCKS,
 } from "./blocks.js";
 import { WORLD_H } from "./world.js";
 
-// ============================================================
-// Минимальный NBT-ридер (Big-Endian). Покрывает нужные теги.
-// ============================================================
-const T_END = 0, T_BYTE = 1, T_SHORT = 2, T_INT = 3, T_LONG = 4,
-      T_FLOAT = 5, T_DOUBLE = 6, T_BYTEARR = 7, T_STRING = 8,
-      T_LIST = 9, T_COMPOUND = 10, T_INTARR = 11, T_LONGARR = 12;
+// The importer runs synchronously on the main thread.  These limits are
+// intentionally conservative: a valid file is small enough to parse and mesh
+// without locking the UI for minutes, while a corrupt/decompression-bomb file
+// is rejected before a giant allocation is made.
+export const SCHEMATIC_LIMITS = Object.freeze({
+  maxDimension: 2048,
+  maxVoxels: 1_200_000,
+  maxBlocks: 4_000_000,
+  maxCompressedBytes: 32 * 1024 * 1024,
+  maxDecodedBytes: 64 * 1024 * 1024,
+  maxNbtDepth: 64,
+  maxNbtTags: 2_000_000,
+  maxNbtElements: 8_000_000,
+  maxNbtStringBytes: 1_048_576,
+  maxPaletteIndex: 1_000_000,
+  maxPaletteEntries: 1_000_000,
+  maxLegacyId: 4095,
+  maxPlacementCoordinate: 1_000_000,
+});
 
-function dv(u8) {
-  return new DataView(u8.buffer, u8.byteOffset, u8.byteLength);
+const MAX_DIMENSION = SCHEMATIC_LIMITS.maxDimension;
+const MAX_VOXELS = SCHEMATIC_LIMITS.maxVoxels;
+const MAX_PALETTE_INDEX = SCHEMATIC_LIMITS.maxPaletteIndex;
+const MAX_BLOCKS = SCHEMATIC_LIMITS.maxBlocks;
+const MAX_COMPRESSED_BYTES = SCHEMATIC_LIMITS.maxCompressedBytes;
+const MAX_DECODED_BYTES = SCHEMATIC_LIMITS.maxDecodedBytes;
+const MAX_NBT_DEPTH = SCHEMATIC_LIMITS.maxNbtDepth;
+const MAX_NBT_TAGS = SCHEMATIC_LIMITS.maxNbtTags;
+const MAX_NBT_ELEMENTS = SCHEMATIC_LIMITS.maxNbtElements;
+const MAX_NBT_STRING_BYTES = SCHEMATIC_LIMITS.maxNbtStringBytes;
+const MAX_PALETTE_ENTRIES = SCHEMATIC_LIMITS.maxPaletteEntries;
+const MAX_PLACEMENT_COORD = SCHEMATIC_LIMITS.maxPlacementCoordinate;
+
+function checkedDimensions(rawW, rawH, rawL, label) {
+  const W = asSafeInt(rawW, `${label}: ширина`);
+  const H = asSafeInt(rawH, `${label}: высота`);
+  const L = asSafeInt(rawL, `${label}: длина`);
+  if (W <= 0 || H <= 0 || L <= 0) {
+    throw new Error(`${label}: некорректный размер`);
+  }
+  if (W > MAX_DIMENSION || H > MAX_DIMENSION || L > MAX_DIMENSION) {
+    throw new Error(`${label}: размер превышает допустимый предел`);
+  }
+  const volume = W * H * L;
+  if (!Number.isSafeInteger(volume) || volume > MAX_VOXELS) {
+    throw new Error(`${label}: слишком большой объём`);
+  }
+  return { W, H, L, volume };
 }
 
-function readRawString(u8, off) {
-  const len = dv(u8).getUint16(off.o);
-  off.o += 2;
-  const s = new TextDecoder().decode(u8.subarray(off.o, off.o + len));
-  off.o += len;
-  return s;
+function asSafeInt(value, label = "значение") {
+  if (typeof value === "bigint") {
+    if (value > BigInt(Number.MAX_SAFE_INTEGER) || value < BigInt(Number.MIN_SAFE_INTEGER)) {
+      throw new Error(`${label}: небезопасное целое число`);
+    }
+    return Number(value);
+  }
+  if (!Number.isSafeInteger(value)) {
+    throw new Error(`${label}: некорректное целое число`);
+  }
+  return value;
 }
 
-function readValue(u8, off, type) {
-  const buf = dv(u8);
-  switch (type) {
-    case T_BYTE: return u8[off.o++] << 24 >> 24;
-    case T_SHORT: { const v = buf.getInt16(off.o); off.o += 2; return v; }
-    case T_INT: { const v = buf.getInt32(off.o); off.o += 4; return v; }
-    case T_LONG: { const v = Number(buf.getBigInt64(off.o)); off.o += 8; return v; }
-    case T_FLOAT: { const v = buf.getFloat32(off.o); off.o += 4; return v; }
-    case T_DOUBLE: { const v = buf.getFloat64(off.o); off.o += 8; return v; }
-    case T_BYTEARR: {
-      const len = buf.getInt32(off.o); off.o += 4;
-      const v = u8.slice(off.o, off.o + len);
-      off.o += len;
-      return v;
-    }
-    case T_INTARR: {
-      const len = buf.getInt32(off.o); off.o += 4;
-      const v = new Int32Array(len);
-      for (let i = 0; i < len; i++) { v[i] = buf.getInt32(off.o); off.o += 4; }
-      return v;
-    }
-    case T_STRING: return readRawString(u8, off);
-    case T_LIST: {
-      const et = u8[off.o++];
-      const len = buf.getInt32(off.o); off.o += 4;
-      const out = [];
-      for (let i = 0; i < len; i++) out.push(readValue(u8, off, et));
-      return out;
-    }
-    case T_COMPOUND: {
-      const out = {};
-      for (;;) {
-        const t = u8[off.o];
-        if (t === T_END) { off.o++; break; }
-        const type2 = t;
-        off.o++;
-        const name = readRawString(u8, off);
-        out[name] = readValue(u8, off, type2);
-      }
-      return out;
-    }
-    case T_LONGARR: {
-      const len = buf.getInt32(off.o); off.o += 4;
-      off.o += len * 8;
-      return null;
-    }
-    default: throw new Error(`NBT: неизвестный тип тега ${type}`);
+function checkedPaletteIndex(value, label = "схема .schem: индекс палитры") {
+  const index = asSafeInt(value, label);
+  if (index < 0 || index > MAX_PALETTE_INDEX) {
+    throw new Error(`${label}: вне допустимого диапазона`);
+  }
+  return index;
+}
+
+function checkBlockLimit(count, label = "схема: слишком много блоков") {
+  if (!Number.isSafeInteger(count) || count < 0 || count > MAX_BLOCKS) {
+    throw new Error(label);
   }
 }
 
-function readNbt(u8) {
-  let off = { o: 0 };
-  while (off.o < u8.length && u8[off.o] === T_END) off.o++;
-  const t = u8[off.o];
-  off.o++;
-  const name = readRawString(u8, off);
-  void name;
-  return readValue(u8, off, t);
+function hasOwn(value, key) {
+  return value != null && typeof value === "object" &&
+    Object.prototype.hasOwnProperty.call(value, key);
+}
+
+function isCompound(value) {
+  return value != null && typeof value === "object" &&
+    !Array.isArray(value) && !ArrayBuffer.isView(value);
+}
+
+function isList(value) {
+  return Array.isArray(value);
+}
+
+function isSequence(value) {
+  return Array.isArray(value) ||
+    (ArrayBuffer.isView(value) && !(value instanceof DataView));
+}
+
+function isByteSequence(value) {
+  if (value instanceof Uint8Array || value instanceof Int8Array) return true;
+  return Array.isArray(value);
+}
+
+function sequenceLength(value, label) {
+  if (!isSequence(value)) throw new Error(`${label}: ожидается массив`);
+  return value.length;
+}
+
+function exactSequence(value, expected, label) {
+  const length = sequenceLength(value, label);
+  if (length !== expected) {
+    throw new Error(`${label}: некорректная длина (${length} вместо ${expected})`);
+  }
+  return value;
+}
+
+function selectField(container, names, label) {
+  const found = [];
+  for (const name of names) {
+    if (hasOwn(container, name)) found.push({ name, value: container[name] });
+  }
+  if (found.length > 1) {
+    throw new Error(`${label}: неоднозначные поля (${found.map((v) => v.name).join(", ")})`);
+  }
+  return found.length ? found[0] : null;
+}
+
+function selectSpongeField(scm, names, label) {
+  const found = [];
+  const blocks = isCompound(scm.Blocks) ? scm.Blocks : null;
+  if (blocks) {
+    for (const name of names) {
+      if (hasOwn(blocks, name)) found.push({ name: `Blocks.${name}`, value: blocks[name] });
+    }
+  }
+  for (const name of names) {
+    if (hasOwn(scm, name)) found.push({ name, value: scm[name] });
+  }
+  if (found.length > 1) {
+    throw new Error(`${label}: неоднозначные поля (${found.map((v) => v.name).join(", ")})`);
+  }
+  return found.length ? found[0] : null;
 }
 
 // ============================================================
-// Маппинг имён блоков Minecraft -> наши ID
+// Bounded NBT reader
 // ============================================================
-function mapBaseName(n) {
-  const stripped = n.replace(/_stairs$|_slab$|_step$|_wall$/, "");
-  if (stripped !== n) return mapBaseName(stripped);
+const T_END = 0;
+const T_BYTE = 1;
+const T_SHORT = 2;
+const T_INT = 3;
+const T_LONG = 4;
+const T_FLOAT = 5;
+const T_DOUBLE = 6;
+const T_BYTEARR = 7;
+const T_STRING = 8;
+const T_LIST = 9;
+const T_COMPOUND = 10;
+const T_INTARR = 11;
+const T_LONGARR = 12;
 
-  if (n === "air" || n === "cave_air" || n === "void_air") return AIR;
-  if (n === "water" || n === "lava" || n === "flowing_water" || n === "flowing_lava") return AIR;
-  if (n.endsWith("_leaves")) return AIR;
-  if (["torch", "lantern", "lever", "button", "rail", "redstone", "grass", "flower",
-       "fern", "snow", "vine", "lily", "carpet", "mushroom", "sculk", "cactus",
-       "dead_bush", "tall_seagrass", "seagrass", "kelp"].some((d) => n.includes(d))) return AIR;
+const UTF8 = new TextDecoder("utf-8", { fatal: true });
 
-  if (n.endsWith("_door") || n.includes("_door")) return WALL_CONCRETE;
-  if (n.endsWith("_bars") || n.includes("bars") || n.includes("fence") || n === "chain") return BARS;
-  if (n.includes("glass")) return BARS;
+function nbtError(message) {
+  return new Error(`NBT: ${message}`);
+}
 
-  if (n.includes("plank") || n.includes("_log") || n.includes("_wood")) return WOOD;
+function createNbtState(u8, littleEndian) {
+  return {
+    u8,
+    view: new DataView(u8.buffer, u8.byteOffset, u8.byteLength),
+    offset: 0,
+    littleEndian,
+    tags: 0,
+    elements: 0,
+  };
+}
 
-  if (n.includes("concrete") || n.includes("terracotta")) return WALL_CONCRETE;
-  if (n === "brick" || n === "bricks") return WALL_CONCRETE;
+function need(state, count) {
+  if (!Number.isSafeInteger(count) || count < 0 ||
+      state.offset > state.u8.length - count) {
+    throw nbtError("обрезанные данные");
+  }
+}
 
-  if (["cobblestone", "stone_brick", "stone", "deepslate", "blackstone", "andesite",
-       "diorite", "granite", "netherrack", "end_stone", "calcite", "tuff", "basalt",
-       "quartz", "obsidian"].some((s) => n.includes(s))) return STONE;
+function advance(state, count) {
+  need(state, count);
+  state.offset += count;
+  if (state.offset > MAX_DECODED_BYTES) {
+    throw nbtError("слишком много данных");
+  }
+}
 
-  if (n.includes("dirt") || n.includes("sand") || n.includes("gravel") ||
-      n === "podzol" || n.includes("mud") || n === "grass_block") return DIRT;
+function countTag(state) {
+  state.tags++;
+  if (state.tags > MAX_NBT_TAGS) throw nbtError("слишком много тегов");
+}
 
-  if (n.includes("wool") || n.includes("shulker")) return WALL_CONCRETE;
-  return WALL_CONCRETE;
+function countElements(state, count) {
+  if (!Number.isSafeInteger(count) || count < 0) throw nbtError("некорректная длина коллекции");
+  state.elements += count;
+  if (state.elements > MAX_NBT_ELEMENTS) throw nbtError("слишком много элементов");
+}
+
+function readU16(state) {
+  need(state, 2);
+  const value = state.view.getUint16(state.offset, state.littleEndian);
+  advance(state, 2);
+  return value;
+}
+
+function readI32(state) {
+  need(state, 4);
+  const value = state.view.getInt32(state.offset, state.littleEndian);
+  advance(state, 4);
+  return value;
+}
+
+function readString(state) {
+  const length = readU16(state);
+  if (length > MAX_NBT_STRING_BYTES) throw nbtError("слишком длинная строка");
+  need(state, length);
+  const bytes = state.u8.subarray(state.offset, state.offset + length);
+  advance(state, length);
+  try {
+    return UTF8.decode(bytes);
+  } catch {
+    throw nbtError("некорректная UTF-8 строка");
+  }
+}
+
+function readLongValue(state) {
+  need(state, 8);
+  const value = state.view.getBigInt64(state.offset, state.littleEndian);
+  advance(state, 8);
+  if (value >= BigInt(Number.MIN_SAFE_INTEGER) && value <= BigInt(Number.MAX_SAFE_INTEGER)) {
+    return Number(value);
+  }
+  // Keep unsafe longs lossless.  Format readers reject them where an integer
+  // dimension/index is required instead of silently rounding it.
+  return value;
+}
+
+function readArrayLength(state, bytesPerElement, label) {
+  const length = readI32(state);
+  if (length < 0) throw nbtError(`${label}: отрицательная длина`);
+  if (length > SCHEMATIC_LIMITS.maxPaletteIndex * 4) {
+    // This is still below the general element ceiling, but avoids a huge
+    // multiplication/allocation for a hostile length header.
+    throw nbtError(`${label}: слишком большая длина`);
+  }
+  countElements(state, length);
+  if (bytesPerElement > 0 && length > Math.floor((state.u8.length - state.offset) / bytesPerElement)) {
+    throw nbtError(`${label}: обрезанный массив`);
+  }
+  return length;
+}
+
+function readValue(state, type, depth) {
+  if (depth > MAX_NBT_DEPTH) throw nbtError("слишком глубокая вложенность");
+  switch (type) {
+    case T_BYTE: {
+      need(state, 1);
+      const value = (state.u8[state.offset] << 24) >> 24;
+      advance(state, 1);
+      return value;
+    }
+    case T_SHORT: {
+      need(state, 2);
+      const value = state.view.getInt16(state.offset, state.littleEndian);
+      advance(state, 2);
+      return value;
+    }
+    case T_INT:
+      return readI32(state);
+    case T_LONG:
+      return readLongValue(state);
+    case T_FLOAT: {
+      need(state, 4);
+      const value = state.view.getFloat32(state.offset, state.littleEndian);
+      advance(state, 4);
+      if (!Number.isFinite(value)) throw nbtError("недопустимое число с плавающей точкой");
+      return value;
+    }
+    case T_DOUBLE: {
+      need(state, 8);
+      const value = state.view.getFloat64(state.offset, state.littleEndian);
+      advance(state, 8);
+      if (!Number.isFinite(value)) throw nbtError("недопустимое число с плавающей точкой");
+      return value;
+    }
+    case T_BYTEARR: {
+      const length = readArrayLength(state, 1, "byte array");
+      const value = state.u8.slice(state.offset, state.offset + length);
+      advance(state, length);
+      return value;
+    }
+    case T_STRING:
+      return readString(state);
+    case T_LIST: {
+      need(state, 1);
+      const elementType = state.u8[state.offset];
+      advance(state, 1);
+      const length = readI32(state);
+      if (length < 0) throw nbtError("отрицательная длина списка");
+      if (length === 0 && elementType === T_END) return [];
+      if (elementType < T_BYTE || elementType > T_LONGARR) {
+        throw nbtError(`неизвестный тип элемента списка ${elementType}`);
+      }
+      if (length > SCHEMATIC_LIMITS.maxPaletteIndex) {
+        throw nbtError("слишком длинный список");
+      }
+      countElements(state, length);
+      const result = [];
+      for (let i = 0; i < length; i++) {
+        countTag(state);
+        result.push(readValue(state, elementType, depth + 1));
+      }
+      return result;
+    }
+    case T_COMPOUND: {
+      const result = Object.create(null);
+      for (;;) {
+        need(state, 1);
+        const childType = state.u8[state.offset];
+        if (childType === T_END) {
+          advance(state, 1);
+          break;
+        }
+        if (childType < T_BYTE || childType > T_LONGARR) {
+          throw nbtError(`неизвестный тип тега ${childType}`);
+        }
+        advance(state, 1);
+        const name = readString(state);
+        if (hasOwn(result, name)) throw nbtError(`дублирующийся тег ${JSON.stringify(name)}`);
+        countTag(state);
+        result[name] = readValue(state, childType, depth + 1);
+      }
+      return result;
+    }
+    case T_INTARR: {
+      const length = readArrayLength(state, 4, "int array");
+      const value = new Int32Array(length);
+      for (let i = 0; i < length; i++) value[i] = readI32(state);
+      return value;
+    }
+    case T_LONGARR: {
+      const length = readArrayLength(state, 8, "long array");
+      const value = new Array(length);
+      for (let i = 0; i < length; i++) value[i] = readLongValue(state);
+      return value;
+    }
+    default:
+      throw nbtError(`неизвестный тип тега ${type}`);
+  }
+}
+
+function readNbt(u8, littleEndian = false) {
+  if (!(u8 instanceof Uint8Array)) u8 = new Uint8Array(u8);
+  if (u8.length > MAX_DECODED_BYTES) throw nbtError("файл слишком большой");
+  const state = createNbtState(u8, littleEndian);
+
+  // A few old NBT writers emitted one or more empty root tags.  Accept only
+  // a small, bounded prefix; all bytes after the actual root remain strict.
+  let leadingEnds = 0;
+  while (state.offset < u8.length && u8[state.offset] === T_END) {
+    state.offset++;
+    if (++leadingEnds > 8) throw nbtError("слишком много пустых корневых тегов");
+  }
+  if (state.offset >= u8.length) throw nbtError("отсутствует корневой тег");
+
+  const rootType = u8[state.offset++];
+  if (rootType === T_END) throw nbtError("отсутствует корневой тег");
+  if (rootType < T_BYTE || rootType > T_LONGARR) {
+    throw nbtError(`неизвестный тип корневого тега ${rootType}`);
+  }
+  readString(state);
+  countTag(state);
+  const root = readValue(state, rootType, 0);
+  if (state.offset !== u8.length) throw nbtError("лишние данные после корневого тега");
+  if (rootType !== T_COMPOUND) throw nbtError("корень должен быть compound");
+  return root;
+}
+
+// ============================================================
+// Bounded gzip/zlib handling and format detection
+// ============================================================
+function readLeU16(bytes, offset, label) {
+  if (offset < 0 || offset + 2 > bytes.length) throw new Error(`${label}: обрезанный заголовок`);
+  return bytes[offset] | (bytes[offset + 1] << 8);
+}
+
+function readLeU32(bytes, offset, label) {
+  if (offset < 0 || offset + 4 > bytes.length) throw new Error(`${label}: обрезанный размер`);
+  return (bytes[offset] |
+    (bytes[offset + 1] << 8) |
+    (bytes[offset + 2] << 16) |
+    (bytes[offset + 3] << 24)) >>> 0;
+}
+
+function validateGzipHeader(bytes) {
+  if (bytes.length < 18) throw new Error("gzip: обрезанный файл");
+  if (bytes[0] !== 0x1f || bytes[1] !== 0x8b || bytes[2] !== 0x08) {
+    throw new Error("gzip: неверная сигнатура");
+  }
+  const flags = bytes[3];
+  if ((flags & 0xe0) !== 0) throw new Error("gzip: зарезервированные флаги установлены");
+  let offset = 10;
+  if (flags & 0x04) {
+    const extraLength = readLeU16(bytes, offset, "gzip");
+    offset += 2;
+    if (offset + extraLength > bytes.length - 8) throw new Error("gzip: обрезанное extra-поле");
+    offset += extraLength;
+  }
+  for (const flag of [0x08, 0x10]) {
+    if (!(flags & flag)) continue;
+    while (offset < bytes.length - 8 && bytes[offset] !== 0) offset++;
+    if (offset >= bytes.length - 8) throw new Error("gzip: обрезанное строковое поле");
+    offset++;
+  }
+  if (flags & 0x02) {
+    if (offset + 2 > bytes.length - 8) throw new Error("gzip: обрезанная контрольная сумма заголовка");
+    offset += 2;
+  }
+  if (offset > bytes.length - 8) throw new Error("gzip: неверная длина заголовка");
+  const declaredSize = readLeU32(bytes, bytes.length - 4, "gzip");
+  if (declaredSize > MAX_DECODED_BYTES) {
+    throw new Error("gzip: распакованный файл превышает предел");
+  }
+  return declaredSize;
+}
+
+function validateZlibHeader(bytes) {
+  if (bytes.length < 6) throw new Error("zlib: обрезанный файл");
+  const cmf = bytes[0];
+  const flg = bytes[1];
+  if ((cmf & 0x0f) !== 8 || (cmf >> 4) > 7) throw new Error("zlib: неверный метод сжатия");
+  if (((cmf << 8) | flg) % 31 !== 0) throw new Error("zlib: неверная контрольная сумма заголовка");
+  if ((flg & 0x20) !== 0) throw new Error("zlib: словари не поддерживаются");
+  if ((flg >> 6) > 3) throw new Error("zlib: неверный уровень сжатия");
+}
+
+function collectDecoded(Decoder, bytes) {
+  const chunks = [];
+  let total = 0;
+  try {
+    const decoder = new Decoder((chunk) => {
+      if (!chunk || typeof chunk.length !== "number") return;
+      total += chunk.length;
+      if (!Number.isSafeInteger(total) || total > MAX_DECODED_BYTES) {
+        throw new Error("распакованный файл превышает предел");
+      }
+      chunks.push(chunk.slice());
+    });
+    decoder.push(bytes, true);
+  } catch (error) {
+    const message = error?.message || "повреждённый поток сжатия";
+    throw new Error(`не удалось распаковать: ${message}`);
+  }
+  const output = new Uint8Array(total);
+  let offset = 0;
+  for (const chunk of chunks) {
+    output.set(chunk, offset);
+    offset += chunk.length;
+  }
+  return output;
+}
+
+function inflateMaybe(bytes) {
+  if (bytes.length > MAX_COMPRESSED_BYTES) {
+    throw new Error("сжатый файл превышает предел");
+  }
+  if (bytes.length >= 3 && bytes[0] === 0x1f && bytes[1] === 0x8b) {
+    validateGzipHeader(bytes);
+    return collectDecoded(Gunzip, bytes);
+  }
+  // A valid zlib header has CM=8 and a legal CINFO.  Do not classify an
+  // invalid 0x78-like byte sequence as raw NBT: report it as bad zlib.
+  if (bytes.length >= 2 && (bytes[0] & 0x0f) === 8 && (bytes[0] >> 4) <= 7) {
+    validateZlibHeader(bytes);
+    return collectDecoded(Unzlib, bytes);
+  }
+  if (bytes.length > MAX_DECODED_BYTES) throw new Error("файл слишком большой");
+  return bytes;
+}
+
+// ============================================================
+// Minecraft block-name mapping
+// ============================================================
+const EXACT_BLOCKS = new Map([
+  ["air", AIR],
+  ["cave_air", AIR],
+  ["void_air", AIR],
+  ["black_wool", BLACK_WOOL],
+  ["blue_wool", BLUE_WOOL],
+  ["red_wool", RED_WOOL],
+  ["yellow_wool", YELLOW_WOOL],
+  ["bookshelf", BOOKSHELF],
+  ["cauldron", CAULDRON],
+  ["chest", CHEST],
+  ["ender_chest", ENDER_CHEST],
+  ["cobweb", COBWEB],
+  ["cyan_terracotta", CYAN_TERRACOTTA],
+  ["red_terracotta", RED_TERRACOTTA],
+  ["grass_block", GRASS_BLOCK],
+  ["hopper", HOPPER],
+  ["glass", GLASS],
+  ["glass_pane", GLASS_PANE],
+  ["iron_block", IRON_BLOCK],
+  ["iron_door", IRON_DOOR],
+  ["nether_brick_fence", NETHER_BRICK_FENCE],
+  ["nether_bricks", NETHER_BRICK],
+  ["nether_brick_slab", NETHER_BRICK_SLAB],
+  ["oak_button", OAK_BUTTON],
+  ["oak_fence", OAK_FENCE],
+  ["oak_pressure_plate", OAK_PRESSURE_PLATE],
+  ["oak_sign", OAK_SIGN],
+  ["oak_wall_sign", OAK_SIGN],
+  ["oak_stairs", OAK_STAIRS],
+  ["oak_trapdoor", OAK_TRAPDOOR],
+  ["piston", PISTON],
+  ["piston_head", PISTON],
+  ["quartz_block", QUARTZ_BLOCK],
+  ["red_bed", RED_BED],
+  ["sandstone", SANDSTONE],
+  ["smooth_stone", STONE],
+  ["smooth_stone_slab", SMOOTH_STONE_SLAB],
+  ["stone_bricks", STONE_BRICKS],
+  ["stone_pressure_plate", STONE_PRESSURE_PLATE],
+  ["torch", TORCH],
+  ["wall_torch", TORCH],
+  ["redstone_torch", REDSTONE_TORCH],
+  ["redstone_wall_torch", REDSTONE_TORCH],
+  ["tripwire_hook", TRIPWIRE_HOOK],
+  ["water", WATER],
+  ["flowing_water", WATER],
+]);
+
+const COMPLEX_BLOCK_RE = /_(slab|stairs|step|door|trapdoor|fence|fence_gate|pane)$/;
+
+function makeMappingStats() {
+  return {
+    simplified: new Set(),
+    unsupported: new Set(),
+    ignored: new Set(),
+    simplifiedCount: 0,
+    unsupportedCount: 0,
+    ignoredCount: 0,
+  };
+}
+
+function addMappingName(stats, setName, name) {
+  if (!stats) return;
+  const set = stats[setName];
+  stats[`${setName}Count`]++;
+  if (set.size < 256) set.add(name);
+}
+
+function normalizeBlockName(rawName) {
+  if (typeof rawName !== "string") return "";
+  let name = rawName.trim().toLowerCase();
+  if (name.startsWith("minecraft:")) name = name.slice("minecraft:".length);
+  const bracket = name.indexOf("[");
+  if (bracket >= 0) name = name.slice(0, bracket);
+  return name;
+}
+
+// Canonical palette key keeps blockstate properties.  Sponge/vanilla palettes
+// legitimately contain one entry per blockstate
+// ("oak_stairs[facing=north]" vs "oak_stairs[facing=south]"); deduping on the
+// stripped base name would falsely reject every real-world map.
+function canonicalPaletteKey(rawName) {
+  if (typeof rawName !== "string") return "";
+  let name = rawName.trim().toLowerCase();
+  if (name.startsWith("minecraft:")) name = name.slice("minecraft:".length);
+  return name;
+}
+
+function markSimplified(stats, name) {
+  addMappingName(stats, "simplified", name || "unknown");
+}
+
+function markUnsupported(stats, name) {
+  addMappingName(stats, "unsupported", name || "unknown");
+}
+
+function markIgnored(stats, name) {
+  addMappingName(stats, "ignored", name || "unknown");
+}
+
+function mapBlockState(rawName, properties, stats) {
+  if (properties != null && !isCompound(properties)) {
+    throw new Error("палитра: некорректные свойства блока");
+  }
+  const name = normalizeBlockName(rawName);
+  if (!name) {
+    markUnsupported(stats, String(rawName ?? ""));
+    return AIR;
+  }
+
+  if (name === "structure_void" || name === "air" || name === "cave_air" || name === "void_air") {
+    return AIR;
+  }
+  if (EXACT_BLOCKS.has(name)) {
+    if (COMPLEX_BLOCK_RE.test(name)) markSimplified(stats, name);
+    return EXACT_BLOCKS.get(name);
+  }
+
+  // Complex Minecraft forms are intentionally represented by a simple full
+  // block/plane.  These are known simplifications, not unknown blocks.
+  if (/_slab$|_step$/.test(name)) {
+    markSimplified(stats, name);
+    return SMOOTH_STONE_SLAB;
+  }
+  if (/_stairs$/.test(name)) {
+    markSimplified(stats, name);
+    return OAK_STAIRS;
+  }
+  if (/_door$/.test(name)) {
+    markSimplified(stats, name);
+    return IRON_DOOR;
+  }
+  if (/_trapdoor$/.test(name)) {
+    markSimplified(stats, name);
+    return OAK_TRAPDOOR;
+  }
+  if (/_fence(_gate)?$/.test(name)) {
+    markSimplified(stats, name);
+    return OAK_FENCE;
+  }
+  if (/_pane$/.test(name)) {
+    markSimplified(stats, name);
+    return GLASS_PANE;
+  }
+  if (name.includes("glass")) return GLASS;
+  if (name === "water" || name === "flowing_water") return WATER;
+  if (name.includes("leaves") || name.includes("lava") || name.includes("flower") ||
+      name.includes("tall_grass") || name.includes("dead_bush") || name.includes("vine") ||
+      name.includes("rail") || name.includes("carpet") || name.includes("sapling") ||
+      name.includes("mushroom") || name.includes("seagrass") || name.includes("kelp")) {
+    markIgnored(stats, name);
+    return AIR;
+  }
+  if (name.includes("concrete") || name.includes("terracotta")) {
+    if (name === "cyan_terracotta") return CYAN_TERRACOTTA;
+    if (name === "red_terracotta") return RED_TERRACOTTA;
+    return WALL_CONCRETE;
+  }
+  if (name.includes("stone_brick")) return STONE_BRICKS;
+  if (name.includes("cobblestone") || name.includes("deepslate") ||
+      name.includes("blackstone") || name.includes("andesite") || name.includes("diorite") ||
+      name.includes("granite") || name.includes("netherrack") || name.includes("end_stone") ||
+      name.includes("calcite") || name.includes("tuff") || name.includes("basalt") ||
+      name.includes("obsidian") || name.includes("ore") || name === "stone") return STONE;
+  if (name.includes("quartz")) return QUARTZ_BLOCK;
+  if (name.includes("sandstone")) return SANDSTONE;
+  if (name.includes("dirt") || name.includes("sand") || name.includes("gravel") ||
+      name === "podzol" || name.includes("mud")) return DIRT;
+  if (name.includes("plank") || name.includes("_log") || name.includes("_wood")) return WOOD;
+  if (name.includes("black_wool")) return BLACK_WOOL;
+  if (name.includes("blue_wool")) return BLUE_WOOL;
+  if (name.includes("red_wool")) return RED_WOOL;
+  if (name.includes("yellow_wool")) return YELLOW_WOOL;
+  if (name.includes("wool") || name.includes("shulker")) return WALL_CONCRETE;
+  if (name.includes("bookshelf")) return BOOKSHELF;
+  if (name.includes("cauldron")) return CAULDRON;
+  if (name.includes("ender_chest")) return ENDER_CHEST;
+  if (name.includes("chest")) return CHEST;
+  if (name.includes("hopper")) return HOPPER;
+  if (name.includes("piston")) return PISTON;
+  if (name.includes("iron_door")) return IRON_DOOR;
+  if (name.includes("iron_block")) return IRON_BLOCK;
+  if (name.includes("bed")) return RED_BED;
+  if (name.includes("web")) return COBWEB;
+  if (name.includes("fence") || name.includes("bars")) return BARS;
+  if (name.includes("button")) return OAK_BUTTON;
+  if (name.includes("pressure_plate")) return name.includes("stone") ? STONE_PRESSURE_PLATE : OAK_PRESSURE_PLATE;
+  if (name.includes("sign")) return OAK_SIGN;
+  if (name.includes("redstone_torch")) return REDSTONE_TORCH;
+  if (name.includes("torch")) return TORCH;
+  if (name.includes("tripwire")) return TRIPWIRE_HOOK;
+  if (name.includes("metal") || name.includes("iron") || name.includes("copper") ||
+      name.includes("gold_block") || name.includes("netherite")) return DARK_METAL;
+
+  // Unknown names are deliberately not concrete.  A corrupt/custom block
+  // must not silently turn a doorway into a wall or poison a prison layout.
+  markUnsupported(stats, name);
+  return AIR;
 }
 
 function mapBlockName(name) {
-  if (!name) return WALL_CONCRETE;
-  let n = String(name).replace(/^minecraft:/, "").toLowerCase();
-  const br = n.indexOf("[");
-  if (br >= 0) n = n.slice(0, br);
-  return mapBaseName(n);
+  return mapBlockState(name, null, null);
 }
 
-const LEGACY_ID = {
-  0: AIR, 1: STONE, 2: DIRT, 3: DIRT, 4: STONE, 5: WOOD, 6: AIR,
-  7: WALL_CONCRETE, 8: WALL_CONCRETE, 9: WALL_CONCRETE, 10: DARK_METAL,
-  11: AIR, 12: DIRT, 13: DIRT, 14: WALL_CONCRETE, 17: WOOD, 18: WOOD,
-  20: WALL_CONCRETE, 21: WALL_CONCRETE, 22: STONE, 24: WALL_CONCRETE,
-  26: WALL_CONCRETE, 27: AIR, 28: AIR, 31: AIR, 32: AIR, 35: WALL_CONCRETE,
-  37: AIR, 38: AIR, 39: AIR, 40: AIR, 42: WALL_CONCRETE, 43: WALL_CONCRETE,
-  44: WALL_CONCRETE, 45: WALL_CONCRETE, 48: STONE, 49: WALL_CONCRETE,
-  50: AIR, 51: AIR, 55: AIR, 59: AIR, 61: RUST_METAL, 62: RUST_METAL,
-  64: WALL_CONCRETE, 65: BARS, 66: AIR, 67: STONE, 68: AIR, 69: AIR,
-  71: WALL_CONCRETE, 75: AIR, 76: AIR, 77: AIR, 78: AIR, 79: AIR,
-  80: WALL_CONCRETE, 82: DIRT, 83: AIR, 85: BARS, 86: WALL_CONCRETE,
-  88: AIR, 98: STONE, 99: AIR, 100: AIR, 101: BARS, 106: AIR,
-  107: BARS, 110: STONE, 111: AIR, 113: BARS, 115: AIR, 121: STONE,
-  123: AIR, 124: AIR, 126: AIR,
-};
-function mapLegacyId(id) {
-  return LEGACY_ID[id] ?? WALL_CONCRETE;
+function planResult(format, W, H, L, blocks, stats) {
+  let minY = Infinity;
+  let maxY = -Infinity;
+  for (const block of blocks) {
+    if (block[1] < minY) minY = block[1];
+    if (block[1] > maxY) maxY = block[1];
+  }
+  return {
+    format,
+    W,
+    H,
+    L,
+    blocks,
+    minY: minY === Infinity ? 0 : minY,
+    maxY: maxY === -Infinity ? 0 : maxY,
+    simplifiedBlocks: stats ? [...stats.simplified] : [],
+    unsupportedBlocks: stats ? [...stats.unsupported] : [],
+    ignoredBlocks: stats ? [...stats.ignored] : [],
+    simplifiedCount: stats?.simplifiedCount || 0,
+    unsupportedCount: stats?.unsupportedCount || 0,
+    ignoredCount: stats?.ignoredCount || 0,
+  };
 }
 
 // ============================================================
-// Распаковка + определение формата
+// Palette and block-data parsing
 // ============================================================
-function inflateMaybe(u8) {
-  if (u8.length >= 2 && u8[0] === 0x1f && u8[1] === 0x8b) return gunzipSync(u8);
-  if (u8.length >= 2 && u8[0] === 0x78) return unzlibSync(u8);
-  return u8;
+function paletteNameAndIndex(entry, implicitIndex, mode, label) {
+  let name;
+  let rawIndex = implicitIndex;
+  if (typeof entry === "string") {
+    name = entry;
+  } else if (isCompound(entry)) {
+    name = hasOwn(entry, "Name") ? entry.Name : entry.name;
+    if (hasOwn(entry, "Index")) rawIndex = entry.Index;
+    else if (hasOwn(entry, "index")) rawIndex = entry.index;
+  } else {
+    throw new Error(`${label}: некорректная запись палитры`);
+  }
+  if (typeof name !== "string" || name.length === 0) {
+    throw new Error(`${label}: отсутствует имя блока`);
+  }
+  if (entry != null && isCompound(entry) && hasOwn(entry, "Properties") &&
+      !isCompound(entry.Properties)) {
+    throw new Error(`${label}: некорректные свойства блока`);
+  }
+  if (mode === "v3" && rawIndex !== implicitIndex) {
+    throw new Error(`${label}: палитра v3 должна иметь непрерывные индексы`);
+  }
+  return { name, index: checkedPaletteIndex(rawIndex, `${label}: индекс`) };
 }
 
-function planResult(format, W, H, L, blocks) {
-  let minY = Infinity, maxY = 0;
-  for (const [, y, ,] of blocks) {
-    if (y < minY) minY = y;
-    if (y > maxY) maxY = y;
+function paletteEntries(raw, mode, label, stats = null) {
+  if (raw == null) throw new Error(`${label}: отсутствует палитра`);
+  let entries;
+  if (isCompound(raw)) {
+    const names = Object.keys(raw);
+    entries = names.map((name) => {
+      const value = raw[name];
+      if (isCompound(value)) {
+        const index = hasOwn(value, "Index") ? value.Index : value.index;
+        if (index == null) throw new Error(`${label}: отсутствует индекс палитры`);
+        return { name, index: checkedPaletteIndex(index, `${label}: индекс`), properties: value.Properties };
+      }
+      return { name, index: checkedPaletteIndex(value, `${label}: индекс`) };
+    });
+  } else if (isList(raw)) {
+    if (raw.length > MAX_PALETTE_ENTRIES) throw new Error(`${label}: слишком много блоков в палитре`);
+    entries = raw.map((entry, index) => paletteNameAndIndex(entry, index, mode, label));
+  } else {
+    throw new Error(`${label}: палитра должна быть compound или list`);
   }
-  return { format, W, H, L, blocks, minY: minY === Infinity ? 0 : minY, maxY };
+  if (entries.length === 0) throw new Error(`${label}: пустая палитра`);
+  if (entries.length > MAX_PALETTE_ENTRIES) throw new Error(`${label}: слишком много блоков в палитре`);
+
+  const ids = new Map();
+  const names = new Set();
+  for (const entry of entries) {
+    if (ids.has(entry.index)) throw new Error(`${label}: дублирующийся индекс палитры`);
+    const key = canonicalPaletteKey(entry.name);
+    if (!key) throw new Error(`${label}: пустое имя блока`);
+    if (!normalizeBlockName(entry.name)) throw new Error(`${label}: пустое имя блока`);
+    if (names.has(key)) throw new Error(`${label}: дублирующееся имя блока`);
+    names.add(key);
+    ids.set(entry.index, mapBlockState(entry.name, entry.properties, stats));
+  }
+  return { ids, entries };
 }
 
-export function parseSchematicFile(u8) {
-  let raw;
-  try {
-    raw = inflateMaybe(u8);
-  } catch (err) {
-    throw new Error("не удалось распаковать (gzip/zlib)");
-  }
-  if (!raw || raw.length < 2) throw new Error("файл слишком короткий");
-
-  let root;
-  try {
-    root = readNbt(raw);
-  } catch (err) {
-    throw new Error(`не NBT: ${err.message}`);
-  }
-  if (!root || typeof root !== "object") throw new Error("пустой NBT");
-
-  const scm = root.Schematic && typeof root.Schematic === "object" ? root.Schematic : root;
-
-  // ---- Sponge .schem v2 / v3 ----
-  if (scm.Version != null && scm.Width != null) {
-    const W = scm.Width & 0xffff;
-    const H = scm.Height & 0xffff;
-    const L = scm.Length & 0xffff;
-    const pal = scm.Blocks?.Palette || scm.Palette || scm.Blocks?.BlockPalette;
-    const data = scm.Blocks?.Data || scm.BlockData;
-    if (!pal || data == null) throw new Error("схема .schem: нет палитры/данных");
-    const names = Object.keys(pal).sort((a, b) => pal[a] - pal[b]);
-    const indexNames = new Array(names.length);
-    for (const k of names) indexNames[pal[k]] = k;
-    const idMap = indexNames.map((nm) => mapBlockName(nm));
-
-    const blocks = [];
-    if (ArrayBuffer.isView(data) && data instanceof Int32Array) {
-      for (let y = 0; y < H; y++) {
-        for (let z = 0; z < L; z++) {
-          for (let x = 0; x < W; x++) {
-            const id = idMap[data[y * W * L + z * W + x]] ?? AIR;
-            if (id !== AIR) blocks.push([x, y, z, id]);
-          }
-        }
-      }
-    } else {
-      let o = 0;
-      let pidx = 0;
-      for (let y = 0; y < H; y++) {
-        for (let z = 0; z < L; z++) {
-          for (let x = 0; x < W; x++) {
-            let val = 0, s = 0;
-            for (;;) {
-              const b = data[o++] & 0xff;
-              val |= (b & 0x7f) << s;
-              s += 7;
-              if (!(b & 0x80)) break;
-            }
-            pidx = val;
-            const id = idMap[pidx] ?? AIR;
-            if (id !== AIR) blocks.push([x, y, z, id]);
-          }
-        }
-      }
-      if (o > data.length + 4) throw new Error("BlockData короче размера схемы");
+function parseVarInt(data, offset) {
+  let value = 0;
+  let shift = 0;
+  for (let i = 0; i < 5; i++) {
+    if (offset.o >= data.length) throw new Error("BlockData: обрезанный VarInt");
+    const byte = data[offset.o++] & 0xff;
+    if (i === 4 && (byte & 0xf0) !== 0) {
+      throw new Error("BlockData: VarInt длиннее пяти байт");
     }
-    return planResult(`.schem v${scm.Version}`, W, H, L, blocks);
+    value += (byte & 0x7f) * (2 ** shift);
+    if ((byte & 0x80) === 0) return value;
+    shift += 7;
   }
+  throw new Error("BlockData: VarInt длиннее пяти байт");
+}
 
-  // ---- Vanilla /structure .nbt ----
-  const sizeArr = scm.Size ?? scm.size;
-  if (sizeArr != null && Array.isArray(scm.palette)) {
-    const W = sizeArr[0];
-    const H = sizeArr[1];
-    const L = sizeArr[2];
-    const idMap = scm.palette.map((p) => mapBlockName(p.Name));
-    const blocks = [];
-    for (const b of scm.blocks || []) {
-      const id = idMap[b.state] ?? AIR;
-      if (id === AIR) continue;
-      blocks.push([b.pos[0], b.pos[1], b.pos[2], id]);
+function paletteForSponge(scm, version, stats = null) {
+  const field = selectSpongeField(
+    scm,
+    ["Palette", "BlockPalette"],
+    "схема .schem: палитра"
+  );
+  if (!field) throw new Error("схема .schem: нет палитры");
+  const parsed = paletteEntries(field.value, version === 3 ? "v3" : "v2", "схема .schem", stats);
+  if (version === 3) {
+    for (let i = 0; i < parsed.entries.length; i++) {
+      if (parsed.entries[i].index !== i) throw new Error("схема .schem: разрывы в палитре v3");
     }
-    return planResult(".nbt", W, H, L, blocks);
   }
+  return parsed.ids;
+}
 
-  // ---- Legacy MCEdit .schematic ----
-  if (scm.Width != null && scm.Blocks != null && ArrayBuffer.isView(scm.Blocks)) {
-    const W = scm.Width & 0xffff;
-    const H = scm.Height & 0xffff;
-    const L = scm.Length & 0xffff;
-    const blocksData = scm.Blocks;
-    const add = scm.AddBlocks;
-    const blocks = [];
+function dataForSponge(scm) {
+  const field = selectSpongeField(
+    scm,
+    ["Data", "BlockData"],
+    "схема .schem: данные"
+  );
+  if (!field) throw new Error("схема .schem: нет данных блоков");
+  return field.value;
+}
+
+function parseSponge(scm, stats) {
+  if (!hasOwn(scm, "Version")) throw new Error("схема .schem: отсутствует Version");
+  const version = asSafeInt(scm.Version, "схема .schem: Version");
+  if (version !== 2 && version !== 3) {
+    throw new Error(`схема .schem: поддерживаются только версии 2 и 3 (получено ${version})`);
+  }
+  const { W, H, L, volume } = checkedDimensions(
+    scm.Width,
+    scm.Height,
+    scm.Length,
+    "схема .schem"
+  );
+  const palette = paletteForSponge(scm, version, stats);
+  const rawData = dataForSponge(scm);
+  const blocks = [];
+  const blockAt = (index) => {
+    const safe = checkedPaletteIndex(index, "схема .schem: индекс BlockData");
+    if (!palette.has(safe)) throw new Error("схема .schem: индекс не найден в палитре");
+    return palette.get(safe);
+  };
+
+  if (version === 2) {
+    if (!(rawData instanceof Uint8Array || rawData instanceof Int8Array || Array.isArray(rawData))) {
+      throw new Error("схема .schem v2: BlockData должен быть byte array");
+    }
+    for (let i = 0; i < rawData.length; i++) {
+      const byte = asSafeInt(rawData[i], `схема .schem v2: BlockData[${i}]`);
+      if (byte < -128 || byte > 255) {
+        throw new Error(`схема .schem v2: BlockData[${i}] не является байтом`);
+      }
+    }
+    const offset = { o: 0 };
     for (let y = 0; y < H; y++) {
       for (let z = 0; z < L; z++) {
         for (let x = 0; x < W; x++) {
-          const i = (y * L + z) * W + x;
-          let num = blocksData[i] & 0xff;
-          if (add) {
-            const half = add[i >> 1] & 0xff;
-            num |= (i & 1 ? half >> 4 : half & 0x0f) << 8;
+          const index = parseVarInt(rawData, offset);
+          const id = blockAt(index);
+          if (id !== AIR) {
+            blocks.push([x, y, z, id]);
+            checkBlockLimit(blocks.length);
           }
-          const id = mapLegacyId(num);
-          if (id !== AIR) blocks.push([x, y, z, id]);
         }
       }
     }
-    return planResult(".schematic", W, H, L, blocks);
+    if (offset.o !== rawData.length) throw new Error("схема .schem v2: лишние данные BlockData");
+  } else {
+    if (!(rawData instanceof Int32Array || Array.isArray(rawData))) {
+      throw new Error("схема .schem v3: BlockData должен быть int array");
+    }
+    exactSequence(rawData, volume, "схема .schem v3: BlockData");
+    for (let i = 0; i < rawData.length; i++) {
+      asSafeInt(rawData[i], `схема .schem v3: BlockData[${i}]`);
+    }
+    for (let y = 0; y < H; y++) {
+      for (let z = 0; z < L; z++) {
+        for (let x = 0; x < W; x++) {
+          const id = blockAt(rawData[y * W * L + z * W + x]);
+          if (id !== AIR) {
+            blocks.push([x, y, z, id]);
+            checkBlockLimit(blocks.length);
+          }
+        }
+      }
+    }
+  }
+  return planResult(`.schem v${version}`, W, H, L, blocks, stats);
+}
+
+function normalizeVanillaPalettes(raw) {
+  if (!isList(raw)) return raw;
+  if (raw.length === 0) return raw;
+
+  // A normal palette list is a list of names or {Name, Properties} records.
+  const isNamedEntry = (entry) => typeof entry === "string" ||
+    (isCompound(entry) && (hasOwn(entry, "Name") || hasOwn(entry, "name")) &&
+      !hasOwn(entry, "palette") && !hasOwn(entry, "Palette"));
+  if (raw.every(isNamedEntry)) return raw;
+
+  // `palettes` is used by a number of structure writers as a list containing
+  // one or more palette containers.  Keep the common single-container form
+  // intact; for multiple compound palettes merge them and reject collisions
+  // rather than silently choosing one of two interpretations.
+  const isContainer = (entry) => isCompound(entry) &&
+    (hasOwn(entry, "palette") || hasOwn(entry, "Palette"));
+  if (raw.every(isContainer)) {
+    const inner = raw.map((entry) => {
+      const selected = selectField(entry, ["palette", "Palette"], "структура .nbt: palettes");
+      return selected.value;
+    });
+    if (inner.every(isCompound)) {
+      const merged = Object.create(null);
+      for (const palette of inner) {
+        for (const name of Object.keys(palette)) {
+          if (hasOwn(merged, name)) {
+            throw new Error("структура .nbt: дублирующееся имя в нескольких палитрах");
+          }
+          merged[name] = palette[name];
+        }
+      }
+      return merged;
+    }
+    if (inner.every(isList)) return inner.flat();
+    throw new Error("структура .nbt: неоднозначный список палитр");
+  }
+
+  // Some writers wrap a single compound palette in `palettes: [ {...} ]`.
+  if (raw.every((entry) => isCompound(entry) &&
+      Object.values(entry).every((value) => !isCompound(value) && !isList(value)))) {
+    if (raw.length === 1) return raw[0];
+    const merged = Object.create(null);
+    for (const palette of raw) {
+      for (const name of Object.keys(palette)) {
+        if (hasOwn(merged, name)) {
+          throw new Error("структура .nbt: дублирующееся имя в нескольких палитрах");
+        }
+        merged[name] = palette[name];
+      }
+    }
+    return merged;
+  }
+
+  if (raw.every(isList)) return raw.flat();
+  return raw;
+}
+
+function parseVanillaPalette(raw, label, stats = null) {
+  const normalized = normalizeVanillaPalettes(raw);
+  if (isList(normalized)) {
+    if (normalized.length === 0) throw new Error(`${label}: пустая палитра`);
+    if (normalized.length > MAX_PALETTE_ENTRIES) throw new Error(`${label}: слишком много блоков в палитре`);
+    const entries = normalized.map((entry, index) => paletteNameAndIndex(entry, index, "vanilla", label));
+    const ids = new Map();
+    const names = new Set();
+    for (const entry of entries) {
+      if (ids.has(entry.index)) throw new Error(`${label}: дублирующийся индекс палитры`);
+      const key = canonicalPaletteKey(entry.name);
+      if (!key || !normalizeBlockName(entry.name) || names.has(key)) {
+        throw new Error(`${label}: дублирующееся имя блока`);
+      }
+      names.add(key);
+      ids.set(entry.index, mapBlockState(entry.name, null, stats));
+    }
+    return ids;
+  }
+  if (isCompound(normalized)) {
+    const ids = new Map();
+    const names = Object.keys(normalized);
+    if (names.length === 0) throw new Error(`${label}: пустая палитра`);
+    if (names.length > MAX_PALETTE_ENTRIES) throw new Error(`${label}: слишком много блоков в палитре`);
+    const seenNames = new Set();
+    for (const name of names) {
+      const index = checkedPaletteIndex(normalized[name], `${label}: индекс`);
+      const key = canonicalPaletteKey(name);
+      if (!key || !normalizeBlockName(name) || seenNames.has(key)) throw new Error(`${label}: дублирующееся имя блока`);
+      seenNames.add(key);
+      if (ids.has(index)) throw new Error(`${label}: дублирующийся индекс палитры`);
+      ids.set(index, mapBlockState(name, null, stats));
+    }
+    return ids;
+  }
+  throw new Error(`${label}: некорректная палитра`);
+}
+
+function parseVanilla(scm, stats) {
+  const sizeField = selectField(scm, ["size", "Size"], "структура .nbt: size");
+  const paletteField = selectField(
+    scm,
+    ["palette", "Palette", "palettes", "Palettes"],
+    "структура .nbt: палитра"
+  );
+  const blocksField = selectField(scm, ["blocks", "Blocks"], "структура .nbt: blocks");
+  if (!sizeField || !paletteField || !blocksField) {
+    throw new Error("структура .nbt: отсутствуют size/palette/blocks");
+  }
+  if (!isSequence(sizeField.value) || sizeField.value.length !== 3) {
+    throw new Error("структура .nbt: size должен содержать ровно три координаты");
+  }
+  const { W, H, L } = checkedDimensions(
+    sizeField.value[0],
+    sizeField.value[1],
+    sizeField.value[2],
+    "структура .nbt"
+  );
+  const palette = parseVanillaPalette(paletteField.value, "структура .nbt", stats);
+  if (!isList(blocksField.value)) throw new Error("структура .nbt: blocks должен быть списком");
+  if (blocksField.value.length > MAX_BLOCKS) throw new Error("структура .nbt: слишком много записей");
+
+  const blocks = [];
+  const positions = new Set();
+  for (const record of blocksField.value) {
+    if (!isCompound(record)) throw new Error("структура .nbt: некорректная запись blocks");
+    const posField = selectField(record, ["pos", "Pos"], "структура .nbt: pos");
+    const stateField = selectField(record, ["state", "State"], "структура .nbt: state");
+    if (!posField || !stateField || !isSequence(posField.value) || posField.value.length !== 3) {
+      throw new Error("структура .nbt: некорректные pos/state");
+    }
+    const x = asSafeInt(posField.value[0], "структура .nbt: pos.x");
+    const y = asSafeInt(posField.value[1], "структура .nbt: pos.y");
+    const z = asSafeInt(posField.value[2], "структура .nbt: pos.z");
+    if (x < 0 || y < 0 || z < 0 || x >= W || y >= H || z >= L) {
+      throw new Error("структура .nbt: блок вне границ");
+    }
+    const key = `${x},${y},${z}`;
+    if (positions.has(key)) throw new Error("структура .nbt: дублирующаяся позиция блока");
+    positions.add(key);
+    const state = checkedPaletteIndex(stateField.value, "структура .nbt: state");
+    if (!palette.has(state)) throw new Error("структура .nbt: неизвестное состояние блока");
+    const id = palette.get(state);
+    if (id !== AIR) {
+      blocks.push([x, y, z, id]);
+      checkBlockLimit(blocks.length);
+    }
+  }
+  return planResult(".nbt", W, H, L, blocks, stats);
+}
+
+const LEGACY_NAMES = {
+  0: "air",
+  1: "stone",
+  2: "grass_block",
+  3: "dirt",
+  4: "cobblestone",
+  5: "oak_planks",
+  6: "oak_sapling",
+  7: "bedrock",
+  8: "flowing_water",
+  9: "water",
+  10: "flowing_lava",
+  11: "lava",
+  12: "sand",
+  13: "gravel",
+  14: "gold_ore",
+  15: "iron_ore",
+  16: "coal_ore",
+  17: "oak_log",
+  18: "oak_leaves",
+  19: "sponge",
+  20: "glass",
+  21: "lapis_ore",
+  22: "dispenser",
+  23: "sandstone",
+  24: "note_block",
+  25: "red_bed",
+  26: "powered_rail",
+  27: "sticky_piston",
+  28: "piston",
+  29: "cobweb",
+  30: "short_grass",
+  31: "dead_bush",
+  32: "piston",
+  33: "piston",
+  34: "piston",
+  35: "wool",
+  37: "dandelion",
+  38: "poppy",
+  39: "brown_mushroom",
+  40: "red_mushroom",
+  41: "gold_block",
+  42: "iron_block",
+  43: "smooth_stone_slab",
+  44: "smooth_stone_slab",
+  45: "bricks",
+  46: "tnt",
+  47: "bookshelf",
+  48: "mossy_cobblestone",
+  49: "obsidian",
+  50: "torch",
+  51: "fire",
+  52: "monster_spawner",
+  53: "oak_stairs",
+  54: "chest",
+  55: "redstone",
+  56: "diamond_ore",
+  57: "diamond_block",
+  58: "crafting_table",
+  59: "wheat",
+  60: "farmland",
+  61: "furnace",
+  62: "furnace",
+  63: "oak_wall_sign",
+  64: "oak_door",
+  65: "iron_bars",
+  66: "rail",
+  67: "stone_stairs",
+  68: "oak_wall_sign",
+  69: "lever",
+  70: "stone_pressure_plate",
+  71: "iron_door",
+  72: "oak_pressure_plate",
+  73: "redstone_ore",
+  74: "lit_redstone_ore",
+  75: "redstone_torch",
+  76: "stone_button",
+  77: "snow",
+  78: "ice",
+  79: "snow_block",
+  80: "cactus",
+  81: "clay",
+  82: "sugar_cane",
+  83: "jukebox",
+  84: "oak_fence",
+  85: "carved_pumpkin",
+  86: "netherrack",
+  87: "soul_sand",
+  88: "glowstone",
+  89: "nether_portal",
+  90: "jack_o_lantern",
+  91: "cake",
+  92: "repeater",
+  93: "comparator",
+  94: "daylight_detector",
+  95: "redstone_block",
+  96: "stone_bricks",
+  97: "mossy_stone_bricks",
+  98: "cracked_stone_bricks",
+  99: "chiseled_stone_bricks",
+  100: "cracked_stone_bricks",
+  101: "iron_bars",
+  102: "glass_pane",
+  103: "melon",
+  104: "pumpkin_stem",
+  105: "melon_stem",
+  106: "vine",
+  107: "oak_fence_gate",
+  108: "brick_stairs",
+  109: "stone_stairs",
+  110: "red_sandstone",
+  111: "red_sandstone",
+  112: "red_sandstone_stairs",
+  113: "red_sandstone_slab",
+  114: "red_sandstone_slab",
+  115: "red_sandstone",
+  116: "red_sandstone",
+  117: "iron_bars",
+  118: "glass_pane",
+  119: "glass_pane",
+  120: "glass_pane",
+  121: "glass_pane",
+  122: "glass_pane",
+  123: "glass_pane",
+  124: "glass_pane",
+  125: "glass_pane",
+  126: "glass_pane",
+  127: "glass_pane",
+  128: "glass_pane",
+  129: "glass_pane",
+  130: "glass_pane",
+  131: "glass_pane",
+  132: "glass_pane",
+  133: "glass_pane",
+  134: "glass_pane",
+  135: "glass_pane",
+  136: "glass_pane",
+  137: "oak_fence",
+  138: "glass_pane",
+  139: "glass_pane",
+  140: "oak_fence",
+  141: "oak_fence",
+  142: "oak_fence",
+  143: "oak_fence_gate",
+  144: "oak_fence_gate",
+  145: "oak_fence_gate",
+  146: "oak_fence_gate",
+  147: "oak_fence_gate",
+  148: "oak_fence_gate",
+  149: "oak_fence_gate",
+  150: "oak_fence_gate",
+  151: "oak_fence_gate",
+  152: "oak_fence_gate",
+  153: "oak_fence_gate",
+  154: "oak_fence_gate",
+  155: "stained_glass",
+  156: "stained_glass_pane",
+  157: "stained_glass",
+  158: "stained_glass_pane",
+  159: "stained_glass",
+  160: "stained_glass_pane",
+  161: "white_terracotta",
+  162: "orange_terracotta",
+  163: "magenta_terracotta",
+  164: "light_blue_terracotta",
+  165: "yellow_terracotta",
+  166: "lime_terracotta",
+  167: "pink_terracotta",
+  168: "gray_terracotta",
+  169: "light_gray_terracotta",
+  170: "cyan_terracotta",
+  171: "purple_terracotta",
+  172: "blue_terracotta",
+  173: "brown_terracotta",
+  174: "green_terracotta",
+  175: "red_terracotta",
+  176: "black_terracotta",
+};
+
+function mapLegacyId(id, data, stats) {
+  if (!Number.isSafeInteger(id) || id < 0 || id > SCHEMATIC_LIMITS.maxLegacyId) {
+    markUnsupported(stats, `legacy:${id}`);
+    return AIR;
+  }
+  const name = LEGACY_NAMES[id];
+  if (!name) {
+    markUnsupported(stats, `legacy:${id}`);
+    return AIR;
+  }
+  // Metadata is intentionally used only to choose a known simplification.  A
+  // missing Data tag is common in old exports and remains valid.
+  const mapped = mapBlockState(name, null, stats);
+  if (id === 20) return GLASS;
+  if ((id === 43 || id === 44) && (data & 0x08)) return SMOOTH_STONE_SLAB;
+  return mapped;
+}
+
+function legacySequence(value, expected, label, byteOnly = false) {
+  if (!isSequence(value)) throw new Error(`${label}: ожидается массив`);
+  exactSequence(value, expected, label);
+  if (byteOnly) {
+    for (let i = 0; i < value.length; i++) {
+      const n = asSafeInt(value[i], `${label}[${i}]`);
+      if (n < -128 || n > 255) throw new Error(`${label}: значение не является байтом`);
+    }
+  }
+  return value;
+}
+
+function parseLegacy(scm, stats) {
+  if (!hasOwn(scm, "Width") || !hasOwn(scm, "Height") || !hasOwn(scm, "Length")) {
+    throw new Error("схема .schematic: отсутствуют размеры");
+  }
+  const { W, H, L, volume } = checkedDimensions(
+    scm.Width,
+    scm.Height,
+    scm.Length,
+    "схема .schematic"
+  );
+  const blocksField = selectField(scm, ["Blocks", "BlockIDs"], "схема .schematic: Blocks");
+  if (!blocksField) throw new Error("схема .schematic: отсутствуют Blocks/BlockIDs");
+  if (hasOwn(scm, "Blocks") && hasOwn(scm, "BlockIDs")) {
+    throw new Error("схема .schematic: неоднозначные Blocks и BlockIDs");
+  }
+  const isBlockIDs = blocksField.name === "BlockIDs";
+  if (isBlockIDs) {
+    if (hasOwn(scm, "AddBlocks")) throw new Error("схема .schematic: BlockIDs и AddBlocks несовместимы");
+  }
+  legacySequence(blocksField.value, volume, "схема .schematic: Blocks", !isBlockIDs);
+  let data = null;
+  if (hasOwn(scm, "Data")) {
+    data = legacySequence(scm.Data, volume, "схема .schematic: Data", true);
+  }
+  let add = null;
+  if (hasOwn(scm, "AddBlocks")) {
+    add = legacySequence(
+      scm.AddBlocks,
+      Math.ceil(volume / 2),
+      "схема .schematic: AddBlocks",
+      true
+    );
+  }
+
+  const blocks = [];
+  for (let y = 0; y < H; y++) {
+    for (let z = 0; z < L; z++) {
+      for (let x = 0; x < W; x++) {
+        const i = (y * L + z) * W + x;
+        let id;
+        if (isBlockIDs) {
+          id = asSafeInt(blocksField.value[i], "схема .schematic: BlockIDs");
+        } else {
+          id = blocksField.value[i] & 0xff;
+          if (add) {
+            const packed = add[i >> 1] & 0xff;
+            // MCEdit/MCEdit-Unified and the format specification use the
+            // high nibble for even indexes and the low nibble for odd ones.
+            id |= (i & 1 ? packed & 0x0f : (packed >> 4) & 0x0f) << 8;
+          }
+        }
+        const metadata = data ? data[i] & 0xff : 0;
+        const mapped = mapLegacyId(id, metadata, stats);
+        if (mapped !== AIR) {
+          blocks.push([x, y, z, mapped]);
+          checkBlockLimit(blocks.length);
+        }
+      }
+    }
+  }
+  return planResult(".schematic", W, H, L, blocks, stats);
+}
+
+function parseDecodedRoot(root) {
+  if (!isCompound(root)) throw new Error("корень NBT не является compound");
+  const scm = hasOwn(root, "Schematic") ? root.Schematic : root;
+  if (!isCompound(scm)) throw new Error("Schematic должен быть compound");
+
+  const hasSpongeMarkers = hasOwn(scm, "Version") ||
+    (hasOwn(scm, "Width") && (hasOwn(scm, "Palette") || hasOwn(scm, "BlockPalette") ||
+      (isCompound(scm.Blocks) && (hasOwn(scm.Blocks, "Palette") || hasOwn(scm.Blocks, "BlockPalette")))));
+  if (hasSpongeMarkers) {
+    const stats = makeMappingStats();
+    return parseSponge(scm, stats);
+  }
+
+  const vanillaShape = hasOwn(scm, "size") || hasOwn(scm, "Size") ||
+    hasOwn(scm, "palette") || hasOwn(scm, "Palette") ||
+    hasOwn(scm, "palettes") || hasOwn(scm, "Palettes");
+  if (vanillaShape) {
+    const stats = makeMappingStats();
+    return parseVanilla(scm, stats);
+  }
+
+  if (hasOwn(scm, "Width") && hasOwn(scm, "Height") && hasOwn(scm, "Length") &&
+      (hasOwn(scm, "Blocks") || hasOwn(scm, "BlockIDs"))) {
+    const stats = makeMappingStats();
+    return parseLegacy(scm, stats);
   }
 
   throw new Error("неизвестный формат схемы (поддерживаются .schem, .schematic, .nbt)");
 }
 
-// ============================================================
-// Вставка в мир
-// ============================================================
-export function pasteSchematic(world, plan, cx, cz, floorY = 1) {
-  if (!plan || plan.blocks.length === 0) throw new Error("в схеме нет блоков");
-  const W = plan.W, L = plan.L;
-  const x0 = Math.floor(cx - W / 2);
-  const z0 = Math.floor(cz - L / 2);
-  const dy = floorY - plan.minY;
-  const topY = plan.maxY + dy;
+export function parseSchematicFile(input) {
+  let bytes;
+  try {
+    bytes = input instanceof Uint8Array ? input : new Uint8Array(input);
+  } catch {
+    throw new Error("не удалось прочитать файл схемы");
+  }
+  if (bytes.length < 2) throw new Error("файл слишком короткий");
+  if (bytes.length > MAX_COMPRESSED_BYTES) throw new Error("файл превышает допустимый предел");
 
-  const topClear = Math.min(topY, WORLD_H - 1);
-  for (let bx = 0; bx < W; bx++) {
-    for (let bz = 0; bz < L; bz++) {
-      for (let by = 0; by <= topClear; by++) world.setBlock(x0 + bx, by, z0 + bz, AIR);
+  let raw;
+  try {
+    raw = inflateMaybe(bytes);
+  } catch (error) {
+    throw new Error(`не удалось распаковать (gzip/zlib): ${error.message || "повреждённый файл"}`);
+  }
+  if (!(raw instanceof Uint8Array) || raw.length < 2) throw new Error("файл слишком короткий");
+  if (raw.length > MAX_DECODED_BYTES) throw new Error("распакованный файл превышает предел");
+
+  let firstError = null;
+  for (const littleEndian of [false, true]) {
+    try {
+      const root = readNbt(raw, littleEndian);
+      return parseDecodedRoot(root);
+    } catch (error) {
+      if (!firstError) firstError = error;
+    }
+  }
+  const message = firstError?.message || "неизвестная ошибка";
+  if (message.startsWith("неизвестный формат")) throw new Error(message);
+  throw new Error(`не NBT: ${message}`);
+}
+
+// ============================================================
+// Atomic placement
+// ============================================================
+function validPlanCoordinate(value, limit, label) {
+  if (!Number.isSafeInteger(value) || value < 0 || value >= limit) {
+    throw new Error(`схема: ${label} вне границ`);
+  }
+}
+
+function validPlacementCoord(value, label) {
+  if (!Number.isSafeInteger(value) || Math.abs(value) > MAX_PLACEMENT_COORD) {
+    throw new Error(`схема: ${label} вне допустимого диапазона`);
+  }
+}
+
+export function pasteSchematic(world, plan, cx, cz, floorY = 1, options = {}) {
+  if (!world || typeof world.getBlock !== "function" || typeof world.setBlock !== "function" ||
+      !plan || !Array.isArray(plan.blocks)) {
+    throw new Error("схема для вставки: некорректные данные");
+  }
+  const W = asSafeInt(plan.W, "схема для вставки: ширина");
+  const H = asSafeInt(plan.H, "схема для вставки: высота");
+  const L = asSafeInt(plan.L, "схема для вставки: длина");
+  const { volume } = checkedDimensions(W, H, L, "схема для вставки");
+  if (plan.blocks.length > MAX_BLOCKS) throw new Error("схема для вставки: слишком много блоков");
+  if (!Number.isSafeInteger(cx) || !Number.isSafeInteger(cz) || !Number.isSafeInteger(floorY)) {
+    throw new Error("некорректные координаты вставки схемы");
+  }
+  validPlacementCoord(cx, "cx");
+  validPlacementCoord(cz, "cz");
+  validPlacementCoord(floorY, "floorY");
+  const x0 = cx - Math.floor(W / 2);
+  const z0 = cz - Math.floor(L / 2);
+  const dy = floorY - asSafeInt(plan.minY ?? 0, "схема для вставки: minY");
+  if (!Number.isSafeInteger(x0) || !Number.isSafeInteger(z0) || !Number.isSafeInteger(dy) ||
+      !Number.isSafeInteger(x0 + W) || !Number.isSafeInteger(z0 + L)) {
+    throw new Error("некорректные координаты вставки схемы");
+  }
+  validPlacementCoord(x0, "x0");
+  validPlacementCoord(z0, "z0");
+  validPlacementCoord(x0 + W, "x0+W");
+  validPlacementCoord(z0 + L, "z0+L");
+
+  const prepared = [];
+  const seen = new Set();
+  let placeable = 0;
+  let clipped = 0;
+  let highestPlaced = -1;
+  for (const tuple of plan.blocks) {
+    if (!Array.isArray(tuple) || tuple.length !== 4) {
+      throw new Error("схема для вставки: некорректная запись блока");
+    }
+    const x = asSafeInt(tuple[0], "схема: x");
+    const y = asSafeInt(tuple[1], "схема: y");
+    const z = asSafeInt(tuple[2], "схема: z");
+    const id = asSafeInt(tuple[3], "схема: id");
+    validPlanCoordinate(x, W, "x");
+    validPlanCoordinate(y, H, "y");
+    validPlanCoordinate(z, L, "z");
+    if (id < 0 || id >= BLOCKS.length || !BLOCKS[id]) {
+      throw new Error(`схема: неизвестный ID блока ${id}`);
+    }
+    const key = `${x},${y},${z}`;
+    if (seen.has(key)) throw new Error("схема: дублирующаяся позиция блока");
+    seen.add(key);
+    const wy = y + dy;
+    if (!Number.isSafeInteger(wy)) throw new Error("схема: y вне допустимого диапазона");
+    if (wy < 0 || wy >= WORLD_H) {
+      if (id !== AIR) clipped++;
+      continue;
+    }
+    if (id !== AIR) {
+      const wx = x0 + x;
+      const wz = z0 + z;
+      validPlacementCoord(wx, "wx");
+      validPlacementCoord(wz, "wz");
+      prepared.push([wx, wy, wz, id]);
+      placeable++;
+      highestPlaced = Math.max(highestPlaced, wy);
+      checkBlockLimit(placeable);
+    }
+  }
+  if (placeable === 0) throw new Error("в схеме нет блоков в пределах высоты мира");
+  const rawTopY = asSafeInt(plan.maxY ?? highestPlaced, "схема для вставки: maxY") + dy;
+  if (!Number.isSafeInteger(rawTopY)) throw new Error("схема для вставки: maxY вне диапазона");
+  const topY = Math.max(highestPlaced, Math.min(WORLD_H - 1, rawTopY));
+
+  // Everything above is preflight-only.  Do not mutate the target world until
+  // all dimensions, IDs, coordinates and vertical overlap have passed.
+  // For same-world replacement snapshot the footprint so a failed commit can
+  // be rolled back instead of leaving a half-cleared map.
+  const doClear = options.clear !== false;
+  let backup = null;
+  if (doClear) {
+    backup = [];
+    for (let bx = x0; bx < x0 + W; bx++) {
+      for (let bz = z0; bz < z0 + L; bz++) {
+        for (let by = 0; by < WORLD_H; by++) {
+          const prev = world.getBlock(bx, by, bz);
+          if (prev !== AIR) backup.push([bx, by, bz, prev]);
+        }
+      }
+    }
+    let cleared = false;
+    if (typeof world.clearRegion === "function") {
+      cleared = world.clearRegion(x0, 0, z0, W, WORLD_H, L);
+    } else {
+      cleared = true;
+      for (let bx = 0; bx < W && cleared; bx++) {
+        for (let bz = 0; bz < L && cleared; bz++) {
+          for (let by = 0; by < WORLD_H; by++) {
+            if (!world.setBlock(x0 + bx, by, z0 + bz, AIR)) { cleared = false; break; }
+          }
+        }
+      }
+    }
+    if (!cleared) {
+      for (const [x, y, z, id] of backup) world.setBlock(x, y, z, id);
+      throw new Error("схема для вставки: не удалось очистить область");
     }
   }
 
-  let placed = 0;
-  for (const [x, y, z, id] of plan.blocks) {
-    const wy = y + dy;
-    if (wy < 0 || wy >= WORLD_H) continue;
-    world.setBlock(x0 + x, wy, z0 + z, id);
-    placed++;
+  for (const [x, y, z, id] of prepared) {
+    if (!world.setBlock(x, y, z, id)) {
+      if (backup) {
+        if (typeof world.clearRegion === "function") world.clearRegion(x0, 0, z0, W, WORLD_H, L);
+        for (const [bx, by, bz, prev] of backup) world.setBlock(bx, by, bz, prev);
+      } else {
+        for (const [px, py, pz] of prepared) {
+          if (px === x && py === y && pz === z) break;
+          world.setBlock(px, py, pz, AIR);
+        }
+      }
+      throw new Error("схема для вставки: не удалось поставить блок");
+    }
   }
-  return { x0, z0, topY, placed };
+  return { x0, z0, topY, placed: placeable, clipped, volume };
 }
