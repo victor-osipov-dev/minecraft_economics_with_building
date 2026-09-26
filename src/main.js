@@ -38,7 +38,8 @@ import { World, WORLD_H } from "./world.js";
 import { HALF, HEIGHT, moveAxis, updateGrounded } from "./physics.js";
 import { buildPrison, SPAWN } from "./prison.js";
 import { Guard } from "./npcs.js";
-import { parseSchematicFile, pasteSchematic } from "./schematic.js";
+import { parseSchematicFile, pasteSchematic, rotatePlan } from "./schematic.js";
+import schemesIndex from "../schemes/index.json";
 
 // ---------- engine / scene ----------
 const canvas = document.getElementById("scene");
@@ -584,26 +585,41 @@ const SPRINT_SPEED = 10.5;
 const EYE = 1.7;
 const REACH = 6;
 
+// В креативе можно летать за границы постройки: запас 128 блоков
+// (там уже ждёт бесконечный плоский пол). Вертикаль ограничена всегда.
+const CREATIVE_MARGIN = 128;
+function activeBounds() {
+  if (!creative) return worldBounds;
+  return {
+    minX: worldBounds.minX - CREATIVE_MARGIN,
+    maxX: worldBounds.maxX + CREATIVE_MARGIN,
+    minZ: worldBounds.minZ - CREATIVE_MARGIN,
+    maxZ: worldBounds.maxZ + CREATIVE_MARGIN,
+  };
+}
+
 function playerHorizontalBounds() {
-  let minX = worldBounds.minX + HALF + 1e-3;
-  let maxX = worldBounds.maxX - HALF - 1e-3;
-  let minZ = worldBounds.minZ + HALF + 1e-3;
-  let maxZ = worldBounds.maxZ - HALF - 1e-3;
+  const wb = activeBounds();
+  let minX = wb.minX + HALF + 1e-3;
+  let maxX = wb.maxX - HALF - 1e-3;
+  let minZ = wb.minZ + HALF + 1e-3;
+  let maxZ = wb.maxZ - HALF - 1e-3;
   if (minX > maxX) {
-    const center = (worldBounds.minX + worldBounds.maxX) / 2;
+    const center = (wb.minX + wb.maxX) / 2;
     minX = maxX = center;
   }
   if (minZ > maxZ) {
-    const center = (worldBounds.minZ + worldBounds.maxZ) / 2;
+    const center = (wb.minZ + wb.maxZ) / 2;
     minZ = maxZ = center;
   }
   return { minX, maxX, minZ, maxZ };
 }
 
 function isInsideWorldBounds(x, y, z) {
+  const wb = activeBounds();
   return Number.isFinite(x) && Number.isFinite(y) && Number.isFinite(z) &&
-    x >= worldBounds.minX && x < worldBounds.maxX &&
-    z >= worldBounds.minZ && z < worldBounds.maxZ &&
+    x >= wb.minX && x < wb.maxX &&
+    z >= wb.minZ && z < wb.maxZ &&
     y >= 0 && y < WORLD_H;
 }
 
@@ -710,6 +726,13 @@ let noiseLevel = 0;
 let breaking = null;     // { key, x, y, z, dur, progress }
 let mouseDown = { 0: false, 2: false };
 
+// Состояние креатива объявлено здесь (а не в секции ниже), т.к. updateHotbar()
+// вызывается при инициализации модуля и читает эти флаги.
+let creative = false;
+let flying = false;
+let creativeSlots = new Array(9).fill(null);
+let creativeSel = 0;
+
 function getEntries() {
   return [...inventory.values()].filter((e) => e.count > 0);
 }
@@ -726,6 +749,8 @@ function breakTime(targetId, toolId) {
   return Math.max(0.4, (target.hardness / power) * BREAK_BASE + 0.35);
 }
 
+const hudEl = document.getElementById("hud");
+const defaultHud = hudEl.innerHTML;
 const hotbarEl = document.getElementById("hotbar");
 const handsFillEl = document.getElementById("handsFill");
 const noiseFillEl = document.getElementById("noiseFill");
@@ -735,6 +760,26 @@ const breakBarEl = document.getElementById("breakBar");
 const selBlockEl = document.getElementById("selBlock");
 
 function updateHotbar() {
+  if (creative) {
+    const marks = [];
+    for (let i = 0; i < 9; i++) {
+      const id = creativeSlots[i];
+      if (id == null) {
+        marks.push('<div class="hslot"></div>');
+        continue;
+      }
+      const b = BLOCKS[id];
+      const active = i === creativeSel ? ' active' : '';
+      marks.push(
+        `<div class="hslot${active}"><span class="sw" style="background:${b.color}"></span>` +
+        `<span class="cnt">∞</span><span class="nm">${b.name}</span></div>`
+      );
+    }
+    hotbarEl.innerHTML = marks.join("");
+    const name = creativeSlots[creativeSel] != null ? BLOCKS[creativeSlots[creativeSel]].name : "—";
+    if (selBlockEl.textContent !== name) selBlockEl.textContent = name;
+    return;
+  }
   const entries = getEntries();
   if (activeToolId != null && !inventory.get(activeToolId)) activeToolId = null;
   const selId = activeToolId != null && inventory.get(activeToolId)?.count > 0 ? activeToolId : null;
@@ -780,6 +825,11 @@ function updateBreakBar() {
 window.addEventListener("keydown", (e) => {
   const n = Number(e.code.replace("Digit", ""));
   if (n >= 1 && n <= 9) {
+    if (creative) {
+      creativeSel = n - 1;
+      updateHotbar();
+      return;
+    }
     const entries = getEntries();
     if (entries.length > 0 && n <= entries.length) activeToolId = entries[n - 1].id;
     updateHotbar();
@@ -787,11 +837,351 @@ window.addEventListener("keydown", (e) => {
 });
 updateHotbar();
 
+// ---------- creative mode ----------
+let previewPlan = null; // { plan, name, rot, rotated }
+let previewAnchor = null;
+let ghostLines = null;
+let ghostFill = null;
+let lastSpaceTap = 0;
+const planCache = new Map();
+const FLY_SPEED = 11;
+// Все постройки из папки schemes (видны и ставятся в креативе).
+const schemeFiles = import.meta.glob(
+  ["../schemes/*.schem", "../schemes/*.schematic", "../schemes/*.nbt"],
+  { query: "?url", import: "default", eager: true }
+);
+const schemeThumbUrls = import.meta.glob("../schemes/thumbs/*.png", { query: "?url", import: "default", eager: true });
+const schemeUrlByFile = {};
+for (const [p, url] of Object.entries(schemeFiles)) {
+  schemeUrlByFile[p.split("/").pop()] = url;
+}
+const schemeThumbByFile = {};
+for (const [p, url] of Object.entries(schemeThumbUrls)) {
+  schemeThumbByFile[p.split("/").pop().replace(/\.png$/i, "")] = url;
+}
+
+const creativeBtn = document.getElementById("creativeBtn");
+const blocksBtn = document.getElementById("blocksBtn");
+const schemesBtn = document.getElementById("schemesBtn");
+const pickerEl = document.getElementById("picker");
+const pickGridEl = document.getElementById("pickGrid");
+const schemesPanelEl = document.getElementById("schemesPanel");
+const schemeListEl = document.getElementById("schemeList");
+
+function setCreative(on) {
+  creative = on;
+  document.body.classList.toggle("creative", on);
+  creativeBtn.textContent = on ? "Креатив: вкл" : "Креатив: выкл";
+  creativeBtn.classList.toggle("active", on);
+  if (!on) {
+    flying = false;
+    cancelPreview();
+    closePanels();
+  }
+  updateHotbar();
+  hudEl.innerHTML = on
+    ? "Креатив &middot; E — блоки &middot; T — постройки &middot; Tab — выживание &middot; двойной Space — полёт"
+    : defaultHud;
+  showMsg(on ? "Креатив: полёт, любые блоки, постройки" : "Выживание");
+}
+
+function closePanels() {
+  pickerEl.classList.remove("show");
+  schemesPanelEl.classList.remove("show");
+}
+
+function togglePicker() {
+  if (!creative) return;
+  schemesPanelEl.classList.remove("show");
+  pickerEl.classList.toggle("show");
+  if (pickerEl.classList.contains("show") && document.pointerLockElement) {
+    document.exitPointerLock();
+  }
+}
+
+function toggleSchemes() {
+  if (!creative) return;
+  pickerEl.classList.remove("show");
+  schemesPanelEl.classList.toggle("show");
+  if (schemesPanelEl.classList.contains("show")) {
+    buildSchemeList();
+    if (document.pointerLockElement) document.exitPointerLock();
+  }
+}
+
+function buildPicker() {
+  pickGridEl.innerHTML = "";
+  BLOCKS.forEach((b, id) => {
+    if (id === AIR) return;
+    const d = document.createElement("div");
+    d.className = "pick";
+    d.title = b.name;
+    const sw = document.createElement("span");
+    sw.className = "sw";
+    sw.style.background = b.color;
+    const nm = document.createElement("span");
+    nm.textContent = b.name;
+    d.append(sw, nm);
+    d.addEventListener("click", () => {
+      creativeSlots[creativeSel] = id;
+      updateHotbar();
+    });
+    pickGridEl.appendChild(d);
+  });
+}
+
+const CAT_LABELS = {
+  residential: "Жилые",
+  towers: "Башни",
+  commercial: "Коммерция",
+  public: "Общество",
+  transport: "Транспорт",
+  roads: "Дороги",
+  intersections: "Перекрёстки",
+  bridges: "Мосты",
+  parks: "Парки",
+  industrial: "Промзона",
+  waterfront: "Набережная",
+  decor: "Декор",
+  vehicles: "Техника",
+  new: "Новые",
+};
+const CAT_ORDER = ["residential", "towers", "commercial", "public", "transport", "roads", "intersections", "bridges", "parks", "industrial", "waterfront", "decor", "vehicles", "new"];
+const indexFiles = new Set(schemesIndex.items.map((i) => i.file));
+const extraSchemeItems = Object.keys(schemeUrlByFile)
+  .filter((f) => !indexFiles.has(f) && /\.(schem|schematic|nbt)$/i.test(f))
+  .map((f) => ({ file: f, name: f, category: "new", w: "?", h: "?", l: "?", blocks: "?", tags: [] }));
+const allSchemeItems = [...schemesIndex.items, ...extraSchemeItems];
+const schemeFilter = { q: "", cat: "all", tags: new Set() };
+let selectedSchemeFile = null;
+const schemeSearchEl = document.getElementById("schemeSearch");
+const schemeCatsEl = document.getElementById("schemeCats");
+const schemeTagsEl = document.getElementById("schemeTags");
+const schemeCountEl = document.getElementById("schemeCount");
+
+function schemeMatches(item) {
+  if (schemeFilter.cat !== "all" && item.category !== schemeFilter.cat) return false;
+  for (const t of schemeFilter.tags) {
+    if (!item.tags.includes(t)) return false;
+  }
+  const q = schemeFilter.q.trim().toLowerCase().replace(/^#+/, "");
+  if (q && !(item.name.toLowerCase().includes(q) || item.tags.some((t) => t.includes(q)))) return false;
+  return true;
+}
+
+function buildSchemeChips() {
+  schemeCatsEl.innerHTML = "";
+  const present = new Set(allSchemeItems.map((i) => i.category));
+  const cats = ["all", ...CAT_ORDER.filter((c) => present.has(c))];
+  for (const c of cats) {
+    const n = c === "all" ? allSchemeItems.length : allSchemeItems.filter((i) => i.category === c).length;
+    const chip = document.createElement("span");
+    chip.className = "chip cat" + (schemeFilter.cat === c ? " active" : "");
+    chip.textContent = (c === "all" ? "Все" : CAT_LABELS[c] || c) + ` (${n})`;
+    chip.addEventListener("click", () => {
+      schemeFilter.cat = c;
+      buildSchemeChips();
+      renderSchemeTiles();
+    });
+    schemeCatsEl.appendChild(chip);
+  }
+  schemeTagsEl.innerHTML = "";
+  for (const t of schemesIndex.tags) {
+    const chip = document.createElement("span");
+    chip.className = "chip" + (schemeFilter.tags.has(t) ? " active" : "");
+    chip.textContent = "#" + t;
+    chip.addEventListener("click", () => {
+      if (schemeFilter.tags.has(t)) schemeFilter.tags.delete(t);
+      else schemeFilter.tags.add(t);
+      buildSchemeChips();
+      renderSchemeTiles();
+    });
+    schemeTagsEl.appendChild(chip);
+  }
+}
+
+function renderSchemeTiles() {
+  schemeListEl.innerHTML = "";
+  const shown = allSchemeItems.filter(schemeMatches);
+  schemeCountEl.textContent = `· ${shown.length} из ${allSchemeItems.length}`;
+  for (const item of shown) {
+    const tile = document.createElement("div");
+    tile.className = "tile" + (selectedSchemeFile === item.file ? " selected" : "");
+    const base = item.file.replace(/\.(schem|schematic|nbt)$/i, "");
+    if (schemeThumbByFile[base]) {
+      const img = document.createElement("img");
+      img.loading = "lazy";
+      img.alt = item.name;
+      img.src = schemeThumbByFile[base];
+      tile.appendChild(img);
+    }
+    const nm = document.createElement("div");
+    nm.className = "tn";
+    nm.textContent = item.name;
+    nm.title = item.name;
+    const dim = document.createElement("div");
+    dim.className = "td";
+    dim.textContent = `${item.w}×${item.h}×${item.l} · ${item.blocks}`;
+    const tags = document.createElement("div");
+    tags.className = "tt";
+    tags.textContent = item.tags.slice(0, 3).map((t) => "#" + t).join(" ");
+    tile.append(nm, dim, tags);
+    tile.title = `${item.name} · ${item.w}×${item.h}×${item.l} · блоков: ${item.blocks}`;
+    tile.addEventListener("click", () => {
+      const url = schemeUrlByFile[item.file];
+      if (!url) {
+        showMsg("Файл не найден в сборке");
+        return;
+      }
+      selectedSchemeFile = item.file;
+      selectScheme(url, item.name);
+      renderSchemeTiles();
+    });
+    schemeListEl.appendChild(tile);
+  }
+}
+
+function buildSchemeList() {
+  buildSchemeChips();
+  renderSchemeTiles();
+}
+
+schemeSearchEl.addEventListener("input", () => {
+  schemeFilter.q = schemeSearchEl.value;
+  renderSchemeTiles();
+});
+
+async function selectScheme(url, name) {
+  showMsg("Читаю схему...");
+  try {
+    let plan = planCache.get(url);
+    if (!plan) {
+      const response = await fetch(url);
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      const bytes = new Uint8Array(await response.arrayBuffer());
+      plan = parseSchematicFile(bytes);
+      planCache.set(url, plan);
+    }
+    if (!plan.blocks.length) {
+      showMsg("В схеме нет распознанных блоков");
+      return;
+    }
+    previewPlan = { plan, name, rot: 0, rotated: plan };
+    closePanels();
+    rebuildGhost();
+    showMsg(`${name}: ${plan.W}×${plan.H}×${plan.L} · R — поворот · ЛКМ — поставить · Esc — отмена`);
+  } catch (err) {
+    console.error("Не удалось прочитать схему", err);
+    showMsg(`Ошибка схемы: ${err.message}`);
+  }
+}
+
+function clearGhost() {
+  if (ghostLines) {
+    ghostLines.dispose();
+    ghostLines = null;
+  }
+  if (ghostFill) {
+    ghostFill.dispose();
+    ghostFill = null;
+  }
+}
+
+function rebuildGhost() {
+  clearGhost();
+  if (!previewPlan) return;
+  const { W, H, L } = previewPlan.rotated;
+  const v = (x, y, z) => new BABYLON.Vector3(x, y, z);
+  const corners = [v(0, 0, 0), v(W, 0, 0), v(W, 0, L), v(0, 0, L), v(0, H, 0), v(W, H, 0), v(W, H, L), v(0, H, L)];
+  const edges = [[0, 1], [1, 2], [2, 3], [3, 0], [4, 5], [5, 6], [6, 7], [7, 4], [0, 4], [1, 5], [2, 6], [3, 7]];
+  ghostLines = BABYLON.MeshBuilder.CreateLineSystem("schemeGhost", {
+    lines: edges.map(([a, b]) => [corners[a], corners[b]]),
+  }, scene);
+  ghostLines.color = new BABYLON.Color3(0.35, 1, 0.45);
+  ghostFill = BABYLON.MeshBuilder.CreateBox("schemeGhostFill", { width: W, height: H, depth: L }, scene);
+  const gm = new BABYLON.StandardMaterial("ghostMat", scene);
+  gm.diffuseColor = new BABYLON.Color3(0.3, 1, 0.4);
+  gm.alpha = 0.08;
+  gm.backFaceCulling = false;
+  ghostFill.material = gm;
+  ghostLines.isVisible = false;
+  ghostFill.isVisible = false;
+}
+
+function cancelPreview() {
+  previewPlan = null;
+  previewAnchor = null;
+  clearGhost();
+}
+
+function rotatePreview() {
+  if (!previewPlan) return;
+  previewPlan.rot = (previewPlan.rot + 1) % 4;
+  previewPlan.rotated = rotatePlan(previewPlan.plan, previewPlan.rot);
+  rebuildGhost();
+  const r = previewPlan.rotated;
+  showMsg(`${previewPlan.name}: поворот ${previewPlan.rot * 90}° · ${r.W}×${r.H}×${r.L} · ЛКМ — поставить`);
+}
+
+function placePreview() {
+  if (!previewAnchor) {
+    showMsg("Наведи прицел на блок");
+    return;
+  }
+  try {
+    const res = pasteSchematic(world, previewPlan.rotated, previewAnchor.x, previewAnchor.z, previewAnchor.y, { clear: false });
+    world.flushMeshes(scene, blockMat, cutoutMat, alphaMat, torchMat);
+    showMsg(`Поставлено ${res.placed} блоков`);
+  } catch (err) {
+    console.error("Не удалось поставить схему", err);
+    showMsg(`Ошибка: ${err.message}`);
+  }
+}
+
+creativeBtn.addEventListener("click", () => setCreative(!creative));
+blocksBtn.addEventListener("click", togglePicker);
+schemesBtn.addEventListener("click", toggleSchemes);
+buildPicker();
+
+window.addEventListener("keydown", (e) => {
+  if (e.code === "Tab") {
+    e.preventDefault();
+    setCreative(!creative);
+    return;
+  }
+  if (!creative) return;
+  if (e.code === "KeyE") {
+    togglePicker();
+  } else if (e.code === "KeyT") {
+    toggleSchemes();
+  } else if (e.code === "KeyR") {
+    rotatePreview();
+  } else if (e.code === "Escape" && !document.pointerLockElement) {
+    closePanels();
+    if (previewPlan) {
+      cancelPreview();
+      showMsg("Предпросмотр отменён");
+    }
+  } else if (e.code === "Space" && !e.repeat) {
+    const now = performance.now();
+    if (now - lastSpaceTap < 300) {
+      flying = !flying;
+      player.vy = 0;
+      showMsg(flying ? "Полёт: вкл (Space вверх, Shift вниз)" : "Полёт: выкл");
+    }
+    lastSpaceTap = now;
+  }
+});
+
 // ---------- pointer lock / mouse ----------
 canvas.addEventListener("pointerdown", (e) => {
   if (!document.pointerLockElement) {
     const req = canvas.requestPointerLock?.();
     if (req && req.catch) req.catch(() => {});
+    return;
+  }
+  if (creative && previewPlan) {
+    if (e.button === 0) placePreview();
     return;
   }
   mouseDown[e.button] = true;
@@ -877,8 +1267,18 @@ function placeData(id, hit) {
 function handlePlace() {
   const hit = lastHit;
   if (!hit) return;
-  const entry = activeEntry();
-  if (!entry) return;
+  let entry;
+  if (creative) {
+    const id = creativeSlots[creativeSel];
+    if (id == null) {
+      showMsg("Выбери блок: нажми E");
+      return;
+    }
+    entry = { id, count: Infinity };
+  } else {
+    entry = activeEntry();
+    if (!entry) return;
+  }
   const def = BLOCKS[entry.id];
   // Дабл-слэб как в майнкрафте: клик по верхней грани нижней плиты той же
   // породы собирает её в полный блок вместо установки нового.
@@ -887,9 +1287,11 @@ function handlePlace() {
       world.getState(hit.x, hit.y, hit.z) === SLAB_BOTTOM) {
     if (!world.setState(hit.x, hit.y, hit.z, SLAB_DOUBLE)) return;
     world.flushMeshes(scene, blockMat, cutoutMat, alphaMat, torchMat);
-    entry.count--;
-    emitNoise(hit.x, hit.y, hit.z, 20);
-    noiseLevel = Math.min(1, noiseLevel + 0.22);
+    if (!creative) {
+      entry.count--;
+      emitNoise(hit.x, hit.y, hit.z, 20);
+      noiseLevel = Math.min(1, noiseLevel + 0.22);
+    }
     updateHotbar();
     return;
   }
@@ -914,9 +1316,11 @@ function handlePlace() {
       return;
     }
     world.flushMeshes(scene, blockMat, cutoutMat, alphaMat, torchMat);
-    entry.count--;
-    emitNoise(px, py, pz, 20);
-    noiseLevel = Math.min(1, noiseLevel + 0.22);
+    if (!creative) {
+      entry.count--;
+      emitNoise(px, py, pz, 20);
+      noiseLevel = Math.min(1, noiseLevel + 0.22);
+    }
     updateHotbar();
     return;
   }
@@ -924,9 +1328,11 @@ function handlePlace() {
   // Поставленный факел засветится сам: setBlock пометил чанк грязным,
   // flushMeshes ниже перестроит меш уже с запечённым светом.
   world.flushMeshes(scene, blockMat, cutoutMat, alphaMat, torchMat);
-  entry.count--;
-  emitNoise(px, py, pz, 20);
-  noiseLevel = Math.min(1, noiseLevel + 0.22);
+  if (!creative) {
+    entry.count--;
+    emitNoise(px, py, pz, 20);
+    noiseLevel = Math.min(1, noiseLevel + 0.22);
+  }
   updateHotbar();
 }
 
@@ -996,13 +1402,21 @@ function raycast(ox, oy, oz, dx, dy, dz, maxD) {
 const fwd = new BABYLON.Vector3();
 const rgt = new BABYLON.Vector3();
 const rayDir = new BABYLON.Vector3();
+let genTimer = 0;
 
 scene.registerBeforeRender(() => {
   // During the initial fetch the canvas can already render, but physics and
   // NPC updates wait until either the imported map or fallback is committed.
   if (!mapReady) return;
   const dt = Math.min(engine.getDeltaTime() / 1000, 0.05);
-  const speed = keys.shift ? SPRINT_SPEED : WALK_SPEED;
+  const speed = creative && flying ? FLY_SPEED : keys.shift ? SPRINT_SPEED : WALK_SPEED;
+
+  // Бесконечный плоский пол: догенерируем чанки травы вокруг игрока.
+  genTimer += dt;
+  if (genTimer >= 0.3) {
+    genTimer = 0;
+    world.ensureFlatAround(player.x, player.z);
+  }
 
   camera.rotation.set(camPitch, camYaw, 0);
 
@@ -1028,17 +1442,27 @@ scene.registerBeforeRender(() => {
   player.x = moveAxis(player, world, "x", mx * speed * dt);
   player.z = moveAxis(player, world, "z", mz * speed * dt);
 
-  updateGrounded(player, world);
-  if (player.grounded && keys.jump) {
-    player.vy = JUMP_SPEED;
+  if (creative && flying) {
+    // Полёт: гравитации нет, Space вверх, Shift вниз, столкновения остаются.
+    let vy = 0;
+    if (keys.jump) vy += FLY_SPEED;
+    if (keys.shift) vy -= FLY_SPEED;
+    player.y = moveAxis(player, world, "y", vy * dt);
+    player.vy = 0;
     player.grounded = false;
+  } else {
+    updateGrounded(player, world);
+    if (player.grounded && keys.jump) {
+      player.vy = JUMP_SPEED;
+      player.grounded = false;
+    }
+    player.vy -= GRAVITY * dt;
+    const prevY = player.y;
+    player.y = moveAxis(player, world, "y", player.vy * dt);
+    if (player.vy > 0 && player.y < prevY) player.vy = 0;
+    updateGrounded(player, world);
+    if (player.grounded && player.vy <= 0) player.vy = 0;
   }
-  player.vy -= GRAVITY * dt;
-  const prevY = player.y;
-  player.y = moveAxis(player, world, "y", player.vy * dt);
-  if (player.vy > 0 && player.y < prevY) player.vy = 0;
-  updateGrounded(player, world);
-  if (player.grounded && player.vy <= 0) player.vy = 0;
 
   // Ограничиваем игрока фактическими границами текущей схемы, а не
   // предположением, что любая карта центрирована в начале координат.
@@ -1063,10 +1487,41 @@ scene.registerBeforeRender(() => {
     outline.isVisible = true;
   }
 
+  // ---- ghost preview for schemes (long reach) ----
+  if (creative && previewPlan && ghostLines && ghostFill) {
+    const far = raycast(camera.position.x, camera.position.y, camera.position.z, rayDir.x, rayDir.y, rayDir.z, 120);
+    if (far) {
+      previewAnchor = { x: far.x + far.nx, y: far.y + far.ny, z: far.z + far.nz };
+      const r = previewPlan.rotated;
+      const x0 = previewAnchor.x - Math.floor(r.W / 2);
+      const z0 = previewAnchor.z - Math.floor(r.L / 2);
+      ghostLines.position.set(x0, previewAnchor.y, z0);
+      ghostFill.position.set(x0 + r.W / 2, previewAnchor.y + r.H / 2, z0 + r.L / 2);
+      ghostLines.isVisible = true;
+      ghostFill.isVisible = true;
+    } else {
+      previewAnchor = null;
+      ghostLines.isVisible = false;
+      ghostFill.isVisible = false;
+    }
+  }
+
   // ---- breaking (hold LMB) ----
   const toolId = activeEntry()?.id ?? null;
-  const canBreak = lastHit && mouseDown[0] && (toolId != null || handHP > 0);
-  if (canBreak) {
+  if (creative && !previewPlan) {
+    // Креатив: ломается мгновенно и тихо (без рук, шума и добычи).
+    breaking = null;
+    if (locked && lastHit && mouseDown[0]) {
+      if (world.getBlock(lastHit.x, lastHit.y, lastHit.z) !== AIR) {
+        world.setBlock(lastHit.x, lastHit.y, lastHit.z, AIR);
+        world.flushMeshes(scene, blockMat, cutoutMat, alphaMat, torchMat);
+      }
+    }
+  } else if (creative && previewPlan) {
+    breaking = null;
+  } else {
+    const canBreak = lastHit && mouseDown[0] && (toolId != null || handHP > 0);
+    if (canBreak) {
     let dur = breakTime(lastHit.id, toolId);
     if (toolId == null) {
       if (handHP < 40) dur *= 2.4;
@@ -1091,6 +1546,7 @@ scene.registerBeforeRender(() => {
     }
   } else {
     breaking = null;
+  }
   }
 
   // ---- hands recovery / noise decay ----

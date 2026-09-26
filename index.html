@@ -136,6 +136,139 @@
       user-select: none;
     }
     #loadBtn:hover { background: rgba(255, 213, 74, 0.25); border-color: #ffd54a; }
+    .topbtn {
+      position: fixed;
+      right: 12px;
+      background: rgba(0, 0, 0, 0.55);
+      color: #fff;
+      font: 12px 'Segoe UI', Arial, sans-serif;
+      border: 1px solid rgba(255, 255, 255, 0.45);
+      border-radius: 6px;
+      padding: 6px 12px;
+      cursor: pointer;
+      z-index: 14;
+      user-select: none;
+    }
+    .topbtn:hover { background: rgba(255, 213, 74, 0.25); border-color: #ffd54a; }
+    .topbtn.active { background: rgba(255, 213, 74, 0.35); border-color: #ffd54a; color: #ffd54a; }
+    #creativeBtn { top: 48px; }
+    #blocksBtn { top: 84px; display: none; }
+    #schemesBtn { top: 120px; display: none; }
+    body.creative #blocksBtn, body.creative #schemesBtn { display: block; }
+    .panel {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      max-width: min(560px, 92vw);
+      max-height: 70vh;
+      overflow-y: auto;
+      background: rgba(12, 14, 18, 0.92);
+      border: 1px solid rgba(255, 213, 74, 0.5);
+      border-radius: 10px;
+      padding: 14px 16px;
+      z-index: 30;
+      color: #eee;
+      font: 13px 'Segoe UI', Arial, sans-serif;
+      display: none;
+      user-select: none;
+    }
+    .panel.show { display: block; }
+    .panel h3 { margin: 0 0 10px; font-size: 14px; color: #ffd54a; font-weight: 600; }
+    .panel .hint { opacity: 0.7; font-size: 12px; margin-bottom: 10px; }
+    #pickGrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(88px, 1fr)); gap: 6px; }
+    .pick {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid transparent;
+      border-radius: 6px;
+      padding: 5px 7px;
+      cursor: pointer;
+      font-size: 12px;
+    }
+    .pick:hover { border-color: #ffd54a; }
+    .pick .sw { width: 16px; height: 16px; border-radius: 3px; border: 1px solid rgba(255,255,255,0.35); flex-shrink: 0; }
+    .schemeRow {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid transparent;
+      border-radius: 6px;
+      padding: 7px 10px;
+      margin-bottom: 6px;
+    }
+    .schemeRow.selected { border-color: #ffd54a; }
+    .schemeRow .nm { flex: 1; }
+    .schemeRow .dim { opacity: 0.65; font-size: 12px; }
+    .schemeRow button {
+      background: rgba(255, 213, 74, 0.2);
+      color: #ffd54a;
+      border: 1px solid #ffd54a;
+      border-radius: 5px;
+      padding: 4px 10px;
+      cursor: pointer;
+      font-size: 12px;
+    }
+    .schemeRow button:hover { background: rgba(255, 213, 74, 0.4); }
+    .panel.wide { max-width: min(940px, 94vw); }
+    #schemeSearch {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 6px;
+      color: #eee;
+      font: 13px 'Segoe UI', Arial, sans-serif;
+      padding: 7px 10px;
+      margin-bottom: 8px;
+      outline: none;
+    }
+    #schemeSearch:focus { border-color: #ffd54a; }
+    #schemeCats, #schemeTags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 8px; }
+    .chip {
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 12px;
+      color: #ddd;
+      font-size: 12px;
+      padding: 3px 10px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .chip:hover { border-color: #ffd54a; }
+    .chip.active { background: rgba(255, 213, 74, 0.3); border-color: #ffd54a; color: #ffd54a; }
+    .chip.cat { font-weight: 600; }
+    #schemeList.tiles {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(148px, 1fr));
+      gap: 8px;
+      max-height: 46vh;
+      overflow-y: auto;
+      padding-right: 2px;
+    }
+    .tile {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid transparent;
+      border-radius: 8px;
+      padding: 6px;
+      cursor: pointer;
+      overflow: hidden;
+    }
+    .tile:hover { border-color: #ffd54a; }
+    .tile.selected { border-color: #ffd54a; box-shadow: 0 0 8px rgba(255, 213, 74, 0.5); }
+    .tile img {
+      width: 100%;
+      aspect-ratio: 232 / 176;
+      object-fit: contain;
+      background: rgba(255, 255, 255, 0.04);
+      border-radius: 5px;
+      display: block;
+    }
+    .tile .tn { font-size: 12px; font-weight: 600; margin: 5px 0 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .tile .td { font-size: 11px; opacity: 0.65; }
+    .tile .tt { font-size: 11px; color: #ffd54a; opacity: 0.9; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     #dropOverlay {
       position: fixed;
       inset: 0;
@@ -167,6 +300,22 @@
   <div id="crosshair"></div>
   <div id="msg"></div>
   <button id="loadBtn" title="Загрузить постройку из Minecraft (.schem / .schematic / .nbt)">Загрузить схему</button>
+  <button id="creativeBtn" class="topbtn" title="Креатив/выживание (Tab)">Креатив: выкл</button>
+  <button id="blocksBtn" class="topbtn" title="Выбор блоков (E)">Блоки</button>
+  <button id="schemesBtn" class="topbtn" title="Постройки из schemes (T)">Постройки</button>
+  <div id="picker" class="panel">
+    <h3>Блоки креатива</h3>
+    <div class="hint">Клик — положить в выбранный слот (1–9) · E — закрыть</div>
+    <div id="pickGrid"></div>
+  </div>
+  <div id="schemesPanel" class="panel wide">
+    <h3>Постройки <span id="schemeCount"></span></h3>
+    <input id="schemeSearch" type="text" placeholder="Поиск: название или #тег…" autocomplete="off" />
+    <div id="schemeCats"></div>
+    <div id="schemeTags"></div>
+    <div class="hint">Клик по плитке — призрак на прицеле · R — поворот · ЛКМ — поставить · Esc — отмена</div>
+    <div id="schemeList" class="tiles"></div>
+  </div>
   <input type="file" id="schemFile" accept=".schem,.schematic,.nbt" hidden />
   <div id="dropOverlay">Перетащите файл схемы (.schem / .schematic / .nbt)</div>
   <canvas id="scene"></canvas>

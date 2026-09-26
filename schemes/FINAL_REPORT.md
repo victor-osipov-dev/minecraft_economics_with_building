@@ -2,24 +2,25 @@
 
 - Date: 2026-09-26
 - Files found (downloaded): 1015 (staging)
-- Files in library: 799 (incl. 3 pre-existing)
+- Files in library: 777 (incl. 3 pre-existing)
 - Unique (sha256 deduped, 40 exact duplicates removed)
 - Categories: 13
 
 ## By category
-- residential: 276
-- towers: 129
-- commercial: 94
-- public: 66
-- transport: 49
-- bridges: 42
-- parks: 35
+- residential: 272
+- towers: 121
+- commercial: 91
+- public: 64
+- transport: 48
+- bridges: 41
+- parks: 33
 - decor: 26
 - roads: 26
 - industrial: 25
-- waterfront: 17
+- waterfront: 16
 - vehicles: 10
 - intersections: 4
+
 
 ## By source
 - buildschematics: 146

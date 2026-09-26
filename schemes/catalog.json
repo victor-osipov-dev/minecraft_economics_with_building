@@ -599,29 +599,6 @@
  },
  {
   "id": 27,
-  "slug": "enderman-bar",
-  "name": "Enderman Bar",
-  "category": "commercial",
-  "source": "buildschematics",
-  "page_url": "https://buildschematics.com/presets/enderman-bar",
-  "download_url": "https://dl2.9mcbox.com/dl2.php?file=Enderman-Bar.schematic",
-  "author": "Netherice24",
-  "minecraft_version": "",
-  "format": ".schematic",
-  "width": 47,
-  "height": 8,
-  "length": 43,
-  "blocks": 2646,
-  "file_size": 623,
-  "hash": "47347f3c0661cd30d6b090ac30b71c7e67a405d27e26b88afc35d03bc2e04643",
-  "unsupported_entries": 1,
-  "simplified_entries": 137,
-  "status": "verified",
-  "notes": "",
-  "file": "commercial_enderman-bar_buildschematics_x.schem"
- },
- {
-  "id": 28,
   "slug": "factory-and-train-station-structure",
   "name": "Factory and Train Station Structure",
   "category": "transport",
@@ -644,7 +621,7 @@
   "file": "transport_factory-and-train-station-structure_buildschematics_x.nbt"
  },
  {
-  "id": 29,
+  "id": 28,
   "slug": "fallout-3-broadcast-tower-structure",
   "name": "Fallout 3 Broadcast Tower Structure",
   "category": "industrial",
@@ -667,7 +644,7 @@
   "file": "industrial_fallout-3-broadcast-tower-structure_buildschematics_x.schem"
  },
  {
-  "id": 30,
+  "id": 29,
   "slug": "first-class-passenger-train-car",
   "name": "First Class Passenger Train Car",
   "category": "transport",
@@ -690,7 +667,7 @@
   "file": "transport_first-class-passenger-train-car_buildschematics_x.nbt"
  },
  {
-  "id": 31,
+  "id": 30,
   "slug": "four-tier-garden-structure",
   "name": "Four Tier Garden Structure",
   "category": "parks",
@@ -713,7 +690,7 @@
   "file": "parks_four-tier-garden-structure_buildschematics_x.schem"
  },
  {
-  "id": 32,
+  "id": 31,
   "slug": "futuristic-arcology-garden",
   "name": "Futuristic Arcology Garden",
   "category": "parks",
@@ -736,7 +713,7 @@
   "file": "parks_futuristic-arcology-garden_buildschematics_x.schem"
  },
  {
-  "id": 33,
+  "id": 32,
   "slug": "futuristic-industrial-complex",
   "name": "Futuristic Industrial Complex",
   "category": "industrial",
@@ -759,7 +736,7 @@
   "file": "industrial_futuristic-industrial-complex_buildschematics_x.schem"
  },
  {
-  "id": 34,
+  "id": 33,
   "slug": "futuristic-stadium-entrance-gate",
   "name": "Futuristic Stadium Entrance Gate",
   "category": "public",
@@ -782,7 +759,7 @@
   "file": "public_futuristic-stadium-entrance-gate_buildschematics_x.schem"
  },
  {
-  "id": 35,
+  "id": 34,
   "slug": "gothic-cathedral-structure-2",
   "name": "Gothic Cathedral Structure",
   "category": "public",
@@ -805,7 +782,7 @@
   "file": "public_gothic-cathedral-structure-2_buildschematics_x.schem"
  },
  {
-  "id": 36,
+  "id": 35,
   "slug": "gothic-church-structure",
   "name": "Gothic Church Structure",
   "category": "public",
@@ -828,7 +805,7 @@
   "file": "public_gothic-church-structure_buildschematics_x.schem"
  },
  {
-  "id": 37,
+  "id": 36,
   "slug": "gravel-crossroads-with-lighting",
   "name": "Gravel Crossroads with Lighting",
   "category": "intersections",
@@ -851,7 +828,7 @@
   "file": "intersections_gravel-crossroads-with-lighting_buildschematics_x.nbt"
  },
  {
-  "id": 38,
+  "id": 37,
   "slug": "hawkseye-pavilion-event-stage",
   "name": "Hawkseye Pavilion Event Stage",
   "category": "parks",
@@ -874,7 +851,7 @@
   "file": "parks_hawkseye-pavilion-event-stage_buildschematics_x.schem"
  },
  {
-  "id": 39,
+  "id": 38,
   "slug": "heavy-duty-off-road-dump-truck",
   "name": "Heavy Duty Off-Road Dump Truck",
   "category": "vehicles",
@@ -897,7 +874,7 @@
   "file": "vehicles_heavy-duty-off-road-dump-truck_buildschematics_x.schem"
  },
  {
-  "id": 40,
+  "id": 39,
   "slug": "heavy-duty-tractor-trailer-with-self-loader-truck",
   "name": "Heavy-Duty Tractor-Trailer with Self-Loader Truck",
   "category": "vehicles",
@@ -920,7 +897,7 @@
   "file": "vehicles_heavy-duty-tractor-trailer-with-self-loader-_buildschematics_x.schem"
  },
  {
-  "id": 41,
+  "id": 40,
   "slug": "hollywood-style-mansion",
   "name": "Hollywood Style Mansion",
   "category": "residential",
@@ -943,7 +920,7 @@
   "file": "residential_hollywood-style-mansion_buildschematics_x.schem"
  },
  {
-  "id": 42,
+  "id": 41,
   "slug": "industrial-factory-building",
   "name": "Industrial Factory Building",
   "category": "industrial",
@@ -966,7 +943,7 @@
   "file": "industrial_industrial-factory-building_buildschematics_x.nbt"
  },
  {
-  "id": 43,
+  "id": 42,
   "slug": "industrial-iron-factory-structure",
   "name": "Industrial Iron Factory Structure",
   "category": "industrial",
@@ -989,7 +966,7 @@
   "file": "industrial_industrial-iron-factory-structure_buildschematics_x.schem"
  },
  {
-  "id": 44,
+  "id": 43,
   "slug": "iron-stone-arch-bridge",
   "name": "Iron Stone Arch Bridge",
   "category": "bridges",
@@ -1012,7 +989,7 @@
   "file": "bridges_iron-stone-arch-bridge_buildschematics_x.nbt"
  },
  {
-  "id": 45,
+  "id": 44,
   "slug": "ironworks-industrial-smelter",
   "name": "Ironworks Industrial Smelter",
   "category": "industrial",
@@ -1035,7 +1012,7 @@
   "file": "industrial_ironworks-industrial-smelter_buildschematics_x.schem"
  },
  {
-  "id": 46,
+  "id": 45,
   "slug": "island-bridge",
   "name": "Island Bridge",
   "category": "bridges",
@@ -1058,7 +1035,7 @@
   "file": "bridges_island-bridge_buildschematics_x.schem"
  },
  {
-  "id": 47,
+  "id": 46,
   "slug": "island-lighthouse-structure",
   "name": "Island Lighthouse Structure",
   "category": "residential",
@@ -1081,7 +1058,7 @@
   "file": "residential_island-lighthouse-structure_buildschematics_x.schem"
  },
  {
-  "id": 48,
+  "id": 47,
   "slug": "italian-gelato-shop-small-build",
   "name": "Italian Gelato Shop Small Build",
   "category": "commercial",
@@ -1104,7 +1081,7 @@
   "file": "commercial_italian-gelato-shop-small-build_buildschematics_262.schem"
  },
  {
-  "id": 49,
+  "id": 48,
   "slug": "japanese-electric-train-coach-schematic",
   "name": "Japanese Electric Train Coach Schematic",
   "category": "transport",
@@ -1127,7 +1104,7 @@
   "file": "transport_japanese-electric-train-coach-schematic_buildschematics_x.nbt"
  },
  {
-  "id": 50,
+  "id": 49,
   "slug": "jungle-wood-house-with-furniture",
   "name": "Jungle Wood House with Furniture",
   "category": "residential",
@@ -1150,7 +1127,7 @@
   "file": "residential_jungle-wood-house-with-furniture_buildschematics_x.schem"
  },
  {
-  "id": 51,
+  "id": 50,
   "slug": "kami-house-minecraft-build",
   "name": "Kami House Minecraft Build",
   "category": "residential",
@@ -1173,30 +1150,7 @@
   "file": "residential_kami-house-minecraft-build_buildschematics_x.schem"
  },
  {
-  "id": 52,
-  "slug": "krusty-krab-restaurant-spongebob-build",
-  "name": "Krusty Krab Restaurant - SpongeBob Build",
-  "category": "commercial",
-  "source": "buildschematics",
-  "page_url": "https://buildschematics.com/presets/krusty-krab-restaurant-spongebob-build",
-  "download_url": "https://dl2.9mcbox.com/dl2.php?file=Krusty-Krab-Restaurant-SpongeBob-Build.nbt",
-  "author": "Bubbellboy",
-  "minecraft_version": "",
-  "format": ".nbt",
-  "width": 122,
-  "height": 43,
-  "length": 102,
-  "blocks": 17844,
-  "file_size": 59829,
-  "hash": "72ef37f56aeb6b2dfaf88467b1074468feaa10c8f8cbda75a739f48481a539a4",
-  "unsupported_entries": 22,
-  "simplified_entries": 62,
-  "status": "verified",
-  "notes": "",
-  "file": "commercial_krusty-krab-restaurant-spongebob-build_buildschematics_x.nbt"
- },
- {
-  "id": 53,
+  "id": 51,
   "slug": "large-modern-house",
   "name": "Large Modern House",
   "category": "residential",
@@ -1219,7 +1173,7 @@
   "file": "residential_large-modern-house_buildschematics_x.schem"
  },
  {
-  "id": 54,
+  "id": 52,
   "slug": "large-woodland-manor-house",
   "name": "Large Woodland Manor House",
   "category": "residential",
@@ -1242,7 +1196,7 @@
   "file": "residential_large-woodland-manor-house_buildschematics_x.schem"
  },
  {
-  "id": 55,
+  "id": 53,
   "slug": "luxury-yacht-small-boat-design",
   "name": "Luxury Yacht - Small Boat Design",
   "category": "waterfront",
@@ -1265,7 +1219,7 @@
   "file": "waterfront_luxury-yacht-small-boat-design_buildschematics_x.schem"
  },
  {
-  "id": 56,
+  "id": 54,
   "slug": "luxury-yacht",
   "name": "Luxury Yacht",
   "category": "vehicles",
@@ -1288,7 +1242,7 @@
   "file": "vehicles_luxury-yacht_buildschematics_x.schem"
  },
  {
-  "id": 57,
+  "id": 55,
   "slug": "magical-tree-structure",
   "name": "Magical Tree Structure",
   "category": "decor",
@@ -1311,7 +1265,7 @@
   "file": "decor_magical-tree-structure_buildschematics_x.schem"
  },
  {
-  "id": 58,
+  "id": 56,
   "slug": "medium-apartment-building",
   "name": "Medium Apartment Building",
   "category": "residential",
@@ -1334,7 +1288,7 @@
   "file": "residential_medium-apartment-building_buildschematics_x.schem"
  },
  {
-  "id": 59,
+  "id": 57,
   "slug": "medium-lighthouse-tower",
   "name": "Medium Lighthouse Tower",
   "category": "waterfront",
@@ -1357,7 +1311,7 @@
   "file": "waterfront_medium-lighthouse-tower_buildschematics_x.schem"
  },
  {
-  "id": 60,
+  "id": 58,
   "slug": "medium-townhouse-structure",
   "name": "Medium Townhouse Structure",
   "category": "residential",
@@ -1380,7 +1334,7 @@
   "file": "residential_medium-townhouse-structure_buildschematics_x.schem"
  },
  {
-  "id": 61,
+  "id": 59,
   "slug": "medium-yacht-boat",
   "name": "Medium Yacht Boat",
   "category": "waterfront",
@@ -1403,7 +1357,7 @@
   "file": "waterfront_medium-yacht-boat_buildschematics_x.schem"
  },
  {
-  "id": 62,
+  "id": 60,
   "slug": "mega-tower-with-working-elevators",
   "name": "Mega Tower With Working Elevators",
   "category": "industrial",
@@ -1426,7 +1380,7 @@
   "file": "industrial_mega-tower-with-working-elevators_buildschematics_x.schem"
  },
  {
-  "id": 63,
+  "id": 61,
   "slug": "modern-apartment-building-03",
   "name": "Modern Apartment Building 03",
   "category": "residential",
@@ -1449,7 +1403,7 @@
   "file": "residential_modern-apartment-building-03_buildschematics_x.schem"
  },
  {
-  "id": 64,
+  "id": 62,
   "slug": "modern-apartment-shops-and-housing",
   "name": "Modern Apartment Shops and Housing",
   "category": "residential",
@@ -1472,7 +1426,7 @@
   "file": "residential_modern-apartment-shops-and-housing_buildschematics_x.schem"
  },
  {
-  "id": 65,
+  "id": 63,
   "slug": "modern-apartment-tower-10-floors",
   "name": "Modern Apartment Tower &#8211; 10 Floors",
   "category": "towers",
@@ -1495,7 +1449,7 @@
   "file": "towers_modern-apartment-tower-10-floors_buildschematics_x.schem"
  },
  {
-  "id": 66,
+  "id": 64,
   "slug": "modern-burger-cafe-with-elevator",
   "name": "Modern Burger Cafe With Elevator",
   "category": "commercial",
@@ -1518,7 +1472,7 @@
   "file": "commercial_modern-burger-cafe-with-elevator_buildschematics_x.schem"
  },
  {
-  "id": 67,
+  "id": 65,
   "slug": "modern-city-apartment-tower",
   "name": "Modern City Apartment Tower",
   "category": "residential",
@@ -1541,7 +1495,7 @@
   "file": "residential_modern-city-apartment-tower_buildschematics_x.schem"
  },
  {
-  "id": 68,
+  "id": 66,
   "slug": "modern-dark-oak-residence",
   "name": "Modern Dark Oak Residence",
   "category": "residential",
@@ -1564,7 +1518,7 @@
   "file": "residential_modern-dark-oak-residence_buildschematics_x.schem"
  },
  {
-  "id": 69,
+  "id": 67,
   "slug": "modern-duplex-house",
   "name": "Modern Duplex House",
   "category": "residential",
@@ -1587,7 +1541,7 @@
   "file": "residential_modern-duplex-house_buildschematics_x.schem"
  },
  {
-  "id": 70,
+  "id": 68,
   "slug": "modern-home-exterior",
   "name": "Modern Home Exterior",
   "category": "residential",
@@ -1610,7 +1564,7 @@
   "file": "residential_modern-home-exterior_buildschematics_x.schem"
  },
  {
-  "id": 71,
+  "id": 69,
   "slug": "modern-hotel-building-with-fountain",
   "name": "Modern Hotel Building With Fountain",
   "category": "towers",
@@ -1633,7 +1587,7 @@
   "file": "towers_modern-hotel-building-with-fountain_buildschematics_x.schem"
  },
  {
-  "id": 72,
+  "id": 70,
   "slug": "modern-office-tower-design",
   "name": "Modern Office Tower Design",
   "category": "towers",
@@ -1656,7 +1610,7 @@
   "file": "towers_modern-office-tower-design_buildschematics_x.schem"
  },
  {
-  "id": 73,
+  "id": 71,
   "slug": "modern-retail-store",
   "name": "Modern Retail Store",
   "category": "commercial",
@@ -1679,7 +1633,7 @@
   "file": "commercial_modern-retail-store_buildschematics_x.schem"
  },
  {
-  "id": 74,
+  "id": 72,
   "slug": "modern-server-shop",
   "name": "Modern Server Shop",
   "category": "commercial",
@@ -1702,7 +1656,7 @@
   "file": "commercial_modern-server-shop_buildschematics_x.schem"
  },
  {
-  "id": 75,
+  "id": 73,
   "slug": "modern-shop-house",
   "name": "Modern Shop House",
   "category": "commercial",
@@ -1725,7 +1679,7 @@
   "file": "commercial_modern-shop-house_buildschematics_x.schem"
  },
  {
-  "id": 76,
+  "id": 74,
   "slug": "modern-sphere-house-design",
   "name": "Modern Sphere House Design",
   "category": "residential",
@@ -1748,7 +1702,7 @@
   "file": "residential_modern-sphere-house-design_buildschematics_x.schem"
  },
  {
-  "id": 77,
+  "id": 75,
   "slug": "modern-street-with-five-houses",
   "name": "Modern Street With Five Houses",
   "category": "decor",
@@ -1771,7 +1725,7 @@
   "file": "decor_modern-street-with-five-houses_buildschematics_x.schem"
  },
  {
-  "id": 78,
+  "id": 76,
   "slug": "modern-three-story-house-2",
   "name": "Modern Three-Story House",
   "category": "residential",
@@ -1794,7 +1748,7 @@
   "file": "residential_modern-three-story-house-2_buildschematics_x.schem"
  },
  {
-  "id": 79,
+  "id": 77,
   "slug": "modern-townhouse-with-furniture",
   "name": "Modern Townhouse with Furniture",
   "category": "residential",
@@ -1817,7 +1771,7 @@
   "file": "residential_modern-townhouse-with-furniture_buildschematics_x.schem"
  },
  {
-  "id": 80,
+  "id": 78,
   "slug": "modern-two-story-house-with-garage",
   "name": "Modern Two-Story House With Garage",
   "category": "residential",
@@ -1840,7 +1794,7 @@
   "file": "residential_modern-two-story-house-with-garage_buildschematics_x.schem"
  },
  {
-  "id": 81,
+  "id": 79,
   "slug": "modern-two-story-house-with-pond",
   "name": "Modern Two-Story House With Pond",
   "category": "residential",
@@ -1863,7 +1817,7 @@
   "file": "residential_modern-two-story-house-with-pond_buildschematics_x.schem"
  },
  {
-  "id": 82,
+  "id": 80,
   "slug": "modern-urban-apartment-house",
   "name": "Modern Urban Apartment House",
   "category": "residential",
@@ -1886,7 +1840,7 @@
   "file": "residential_modern-urban-apartment-house_buildschematics_x.schem"
  },
  {
-  "id": 83,
+  "id": 81,
   "slug": "monorail-maglev-transportation-system",
   "name": "Monorail Maglev Transportation System",
   "category": "transport",
@@ -1909,7 +1863,7 @@
   "file": "transport_monorail-maglev-transportation-system_buildschematics_x.nbt"
  },
  {
-  "id": 84,
+  "id": 82,
   "slug": "narrow-gauge-train-with-caboose",
   "name": "Narrow Gauge Train With Caboose",
   "category": "transport",
@@ -1932,7 +1886,7 @@
   "file": "transport_narrow-gauge-train-with-caboose_buildschematics_x.nbt"
  },
  {
-  "id": 85,
+  "id": 83,
   "slug": "passenger-train-carriage",
   "name": "Passenger Train Carriage",
   "category": "transport",
@@ -1955,7 +1909,7 @@
   "file": "transport_passenger-train-carriage_buildschematics_x.nbt"
  },
  {
-  "id": 86,
+  "id": 84,
   "slug": "pennsylvania-railroad-coaling-tower",
   "name": "Pennsylvania Railroad Coaling Tower",
   "category": "industrial",
@@ -1978,7 +1932,7 @@
   "file": "industrial_pennsylvania-railroad-coaling-tower_buildschematics_x.nbt"
  },
  {
-  "id": 87,
+  "id": 85,
   "slug": "pokemart-shop",
   "name": "PokeMart Shop",
   "category": "commercial",
@@ -2001,7 +1955,7 @@
   "file": "commercial_pokemart-shop_buildschematics_x.schem"
  },
  {
-  "id": 88,
+  "id": 86,
   "slug": "portland-style-townhouse-two-story-design",
   "name": "Portland-Style Townhouse - Two Story Design",
   "category": "residential",
@@ -2024,7 +1978,7 @@
   "file": "residential_portland-style-townhouse-two-story-design_buildschematics_x.schem"
  },
  {
-  "id": 89,
+  "id": 87,
   "slug": "quartz-home",
   "name": "Quartz Home",
   "category": "residential",
@@ -2047,7 +2001,7 @@
   "file": "residential_quartz-home_buildschematics_x.schem"
  },
  {
-  "id": 90,
+  "id": 88,
   "slug": "realistic-highway-tunnel-for-minecraft",
   "name": "Realistic Highway Tunnel For Minecraft",
   "category": "roads",
@@ -2070,7 +2024,7 @@
   "file": "roads_realistic-highway-tunnel-for-minecraft_buildschematics_x.schem"
  },
  {
-  "id": 91,
+  "id": 89,
   "slug": "red-japanese-house-2-minecraft-build",
   "name": "Red Japanese House 2 Minecraft Build",
   "category": "residential",
@@ -2093,7 +2047,7 @@
   "file": "residential_red-japanese-house-2-minecraft-build_buildschematics_262.schem"
  },
  {
-  "id": 92,
+  "id": 90,
   "slug": "ridable-german-ice-train",
   "name": "Ridable German ICE Train",
   "category": "transport",
@@ -2116,7 +2070,7 @@
   "file": "transport_ridable-german-ice-train_buildschematics_x.nbt"
  },
  {
-  "id": 93,
+  "id": 91,
   "slug": "ridge-mansion-with-pool-and-tower",
   "name": "Ridge Mansion With Pool And Tower",
   "category": "residential",
@@ -2139,7 +2093,7 @@
   "file": "residential_ridge-mansion-with-pool-and-tower_buildschematics_x.schem"
  },
  {
-  "id": 94,
+  "id": 92,
   "slug": "riverside-log-cabin-with-dock",
   "name": "Riverside Log Cabin with Dock",
   "category": "waterfront",
@@ -2162,7 +2116,7 @@
   "file": "waterfront_riverside-log-cabin-with-dock_buildschematics_x.schem"
  },
  {
-  "id": 95,
+  "id": 93,
   "slug": "row-house-facade-design",
   "name": "Row House Facade Design",
   "category": "residential",
@@ -2185,7 +2139,7 @@
   "file": "residential_row-house-facade-design_buildschematics_x.schem"
  },
  {
-  "id": 96,
+  "id": 94,
   "slug": "rustic-log-cabin-shop",
   "name": "Rustic Log Cabin Shop",
   "category": "commercial",
@@ -2208,7 +2162,7 @@
   "file": "commercial_rustic-log-cabin-shop_buildschematics_x.schem"
  },
  {
-  "id": 97,
+  "id": 95,
   "slug": "rustic-overgrown-church",
   "name": "Rustic Overgrown Church",
   "category": "public",
@@ -2231,7 +2185,7 @@
   "file": "public_rustic-overgrown-church_buildschematics_x.schem"
  },
  {
-  "id": 98,
+  "id": 96,
   "slug": "rustic-wooden-train-station",
   "name": "Rustic Wooden Train Station",
   "category": "public",
@@ -2254,7 +2208,7 @@
   "file": "public_rustic-wooden-train-station_buildschematics_x.schem"
  },
  {
-  "id": 99,
+  "id": 97,
   "slug": "sakura-tree-decoration",
   "name": "Sakura Tree Decoration",
   "category": "decor",
@@ -2277,7 +2231,7 @@
   "file": "decor_sakura-tree-decoration_buildschematics_x.schem"
  },
  {
-  "id": 100,
+  "id": 98,
   "slug": "sandstone-cliffside-mansion-with-boat-dock",
   "name": "Sandstone Cliffside Mansion with Boat Dock",
   "category": "transport",
@@ -2300,7 +2254,7 @@
   "file": "transport_sandstone-cliffside-mansion-with-boat-dock_buildschematics_x.schem"
  },
  {
-  "id": 101,
+  "id": 99,
   "slug": "sandstone-library-building",
   "name": "Sandstone Library Building",
   "category": "public",
@@ -2323,7 +2277,7 @@
   "file": "public_sandstone-library-building_buildschematics_x.schem"
  },
  {
-  "id": 102,
+  "id": 100,
   "slug": "sao-paulo-central-train-station-structure",
   "name": "Sao Paulo Central Train Station Structure",
   "category": "public",
@@ -2346,7 +2300,7 @@
   "file": "public_sao-paulo-central-train-station-structure_buildschematics_x.schem"
  },
  {
-  "id": 103,
+  "id": 101,
   "slug": "sazayama-prefecture-decoration-tree-big-7",
   "name": "Sazayama Prefecture Decoration Tree Big 7",
   "category": "decor",
@@ -2369,7 +2323,7 @@
   "file": "decor_sazayama-prefecture-decoration-tree-big-7_buildschematics_x.schem"
  },
  {
-  "id": 104,
+  "id": 102,
   "slug": "sazayama-prefecture-decoration-tree-big-9",
   "name": "Sazayama Prefecture Decoration Tree Big 9",
   "category": "decor",
@@ -2392,7 +2346,7 @@
   "file": "decor_sazayama-prefecture-decoration-tree-big-9_buildschematics_x.schem"
  },
  {
-  "id": 105,
+  "id": 103,
   "slug": "sazayama-prefecture-decoration-tree-cherry-1",
   "name": "Sazayama Prefecture Decoration Tree Cherry 1",
   "category": "decor",
@@ -2415,7 +2369,7 @@
   "file": "decor_sazayama-prefecture-decoration-tree-cherry-1_buildschematics_x.schem"
  },
  {
-  "id": 106,
+  "id": 104,
   "slug": "sazayama-prefecture-decoration-tree-normal-7",
   "name": "Sazayama Prefecture Decoration Tree Normal 7",
   "category": "decor",
@@ -2438,7 +2392,7 @@
   "file": "decor_sazayama-prefecture-decoration-tree-normal-7_buildschematics_x.schem"
  },
  {
-  "id": 107,
+  "id": 105,
   "slug": "sazayama-prefecture-decoration-tree-palm-2",
   "name": "Sazayama Prefecture Decoration Tree Palm 2",
   "category": "decor",
@@ -2461,7 +2415,7 @@
   "file": "decor_sazayama-prefecture-decoration-tree-palm-2_buildschematics_x.schem"
  },
  {
-  "id": 108,
+  "id": 106,
   "slug": "shakespearean-theater-structure",
   "name": "Shakespearean Theater Structure",
   "category": "public",
@@ -2484,7 +2438,7 @@
   "file": "public_shakespearean-theater-structure_buildschematics_x.schem"
  },
  {
-  "id": 109,
+  "id": 107,
   "slug": "shopping-mall-elevator-with-floor-selection",
   "name": "Shopping Mall Elevator with Floor Selection",
   "category": "commercial",
@@ -2507,7 +2461,7 @@
   "file": "commercial_shopping-mall-elevator-with-floor-selection_buildschematics_x.schem"
  },
  {
-  "id": 110,
+  "id": 108,
   "slug": "simple-beginner-treehouse",
   "name": "Simple Beginner Treehouse",
   "category": "decor",
@@ -2530,7 +2484,7 @@
   "file": "decor_simple-beginner-treehouse_buildschematics_262.schem"
  },
  {
-  "id": 111,
+  "id": 109,
   "slug": "single-cart-metro-train",
   "name": "Single Cart Metro Train",
   "category": "transport",
@@ -2553,7 +2507,7 @@
   "file": "transport_single-cart-metro-train_buildschematics_x.nbt"
  },
  {
-  "id": 112,
+  "id": 110,
   "slug": "small-apartment-building-exterior",
   "name": "Small Apartment Building Exterior",
   "category": "residential",
@@ -2576,7 +2530,7 @@
   "file": "residential_small-apartment-building-exterior_buildschematics_x.schem"
  },
  {
-  "id": 113,
+  "id": 111,
   "slug": "small-arabian-house",
   "name": "Small Arabian House",
   "category": "residential",
@@ -2599,7 +2553,7 @@
   "file": "residential_small-arabian-house_buildschematics_x.schem"
  },
  {
-  "id": 114,
+  "id": 112,
   "slug": "small-furnished-apartment-building",
   "name": "Small Furnished Apartment Building",
   "category": "residential",
@@ -2622,7 +2576,7 @@
   "file": "residential_small-furnished-apartment-building_buildschematics_x.schem"
  },
  {
-  "id": 115,
+  "id": 113,
   "slug": "small-grain-elevator-structure",
   "name": "Small Grain Elevator Structure",
   "category": "industrial",
@@ -2645,7 +2599,7 @@
   "file": "industrial_small-grain-elevator-structure_buildschematics_x.schem"
  },
  {
-  "id": 116,
+  "id": 114,
   "slug": "small-hotel-with-garden",
   "name": "Small Hotel With Garden",
   "category": "commercial",
@@ -2668,7 +2622,7 @@
   "file": "commercial_small-hotel-with-garden_buildschematics_x.schem"
  },
  {
-  "id": 117,
+  "id": 115,
   "slug": "small-lighthouse-tower",
   "name": "Small Lighthouse Tower",
   "category": "waterfront",
@@ -2691,7 +2645,7 @@
   "file": "waterfront_small-lighthouse-tower_buildschematics_x.schem"
  },
  {
-  "id": 118,
+  "id": 116,
   "slug": "small-modern-house-2",
   "name": "Small Modern House",
   "category": "residential",
@@ -2714,7 +2668,7 @@
   "file": "residential_small-modern-house-2_buildschematics_x.schem"
  },
  {
-  "id": 119,
+  "id": 117,
   "slug": "small-modern-train-station",
   "name": "Small Modern Train Station",
   "category": "public",
@@ -2737,7 +2691,7 @@
   "file": "public_small-modern-train-station_buildschematics_x.schem"
  },
  {
-  "id": 120,
+  "id": 118,
   "slug": "small-motorboat-vehicle",
   "name": "Small Motorboat Vehicle",
   "category": "waterfront",
@@ -2760,7 +2714,7 @@
   "file": "waterfront_small-motorboat-vehicle_buildschematics_x.nbt"
  },
  {
-  "id": 121,
+  "id": 119,
   "slug": "small-rustic-log-cabin-house",
   "name": "Small Rustic Log Cabin House",
   "category": "residential",
@@ -2783,7 +2737,7 @@
   "file": "residential_small-rustic-log-cabin-house_buildschematics_x.schem"
  },
  {
-  "id": 122,
+  "id": 120,
   "slug": "small-single-track-railway-bridge",
   "name": "Small Single-Track Railway Bridge",
   "category": "bridges",
@@ -2806,7 +2760,7 @@
   "file": "bridges_small-single-track-railway-bridge_buildschematics_x.schem"
  },
  {
-  "id": 123,
+  "id": 121,
   "slug": "small-terraced-houses-with-garage",
   "name": "Small Terraced Houses with Garage",
   "category": "residential",
@@ -2829,7 +2783,7 @@
   "file": "residential_small-terraced-houses-with-garage_buildschematics_x.schem"
  },
  {
-  "id": 124,
+  "id": 122,
   "slug": "small-town-cafe-building",
   "name": "Small Town Cafe Building",
   "category": "commercial",
@@ -2852,7 +2806,7 @@
   "file": "commercial_small-town-cafe-building_buildschematics_x.schem"
  },
  {
-  "id": 125,
+  "id": 123,
   "slug": "small-wooden-boat-dock",
   "name": "Small Wooden Boat Dock",
   "category": "transport",
@@ -2875,7 +2829,7 @@
   "file": "transport_small-wooden-boat-dock_buildschematics_x.schem"
  },
  {
-  "id": 126,
+  "id": 124,
   "slug": "small-yacht-for-one-or-two",
   "name": "Small Yacht for One or Two",
   "category": "waterfront",
@@ -2898,7 +2852,7 @@
   "file": "waterfront_small-yacht-for-one-or-two_buildschematics_x.schem"
  },
  {
-  "id": 127,
+  "id": 125,
   "slug": "spacious-modern-mansion",
   "name": "Spacious Modern Mansion",
   "category": "residential",
@@ -2921,7 +2875,7 @@
   "file": "residential_spacious-modern-mansion_buildschematics_x.schem"
  },
  {
-  "id": 128,
+  "id": 126,
   "slug": "speedboat-vehicle",
   "name": "Speedboat Vehicle",
   "category": "vehicles",
@@ -2944,7 +2898,7 @@
   "file": "vehicles_speedboat-vehicle_buildschematics_x.schem"
  },
  {
-  "id": 129,
+  "id": 127,
   "slug": "square-earth-build-2",
   "name": "Square Earth Build",
   "category": "parks",
@@ -2967,7 +2921,7 @@
   "file": "parks_square-earth-build-2_buildschematics_x.schem"
  },
  {
-  "id": 130,
+  "id": 128,
   "slug": "starter-house-and-workshop",
   "name": "Starter House and Workshop",
   "category": "residential",
@@ -2990,7 +2944,7 @@
   "file": "residential_starter-house-and-workshop_buildschematics_x.nbt"
  },
  {
-  "id": 131,
+  "id": 129,
   "slug": "stone-factory-building-20315-blocks",
   "name": "Stone Factory Building - 20315 Blocks",
   "category": "industrial",
@@ -3013,7 +2967,7 @@
   "file": "industrial_stone-factory-building-20315-blocks_buildschematics_x.nbt"
  },
  {
-  "id": 132,
+  "id": 130,
   "slug": "teenager-club-house-design",
   "name": "Teenager Club House Design",
   "category": "residential",
@@ -3036,7 +2990,7 @@
   "file": "residential_teenager-club-house-design_buildschematics_x.schem"
  },
  {
-  "id": 133,
+  "id": 131,
   "slug": "terraced-wooden-house",
   "name": "Terraced Wooden House",
   "category": "residential",
@@ -3059,7 +3013,7 @@
   "file": "residential_terraced-wooden-house_buildschematics_x.schem"
  },
  {
-  "id": 134,
+  "id": 132,
   "slug": "to-the-moon-lighthouse-house",
   "name": "To The Moon Lighthouse House",
   "category": "waterfront",
@@ -3082,7 +3036,7 @@
   "file": "waterfront_to-the-moon-lighthouse-house_buildschematics_x.schem"
  },
  {
-  "id": 135,
+  "id": 133,
   "slug": "town-hall-building-with-road",
   "name": "Town Hall Building With Road",
   "category": "roads",
@@ -3105,7 +3059,7 @@
   "file": "roads_town-hall-building-with-road_buildschematics_x.schem"
  },
  {
-  "id": 136,
+  "id": 134,
   "slug": "transport-van-with-barrel-storage",
   "name": "Transport Van with Barrel Storage",
   "category": "vehicles",
@@ -3128,7 +3082,7 @@
   "file": "vehicles_transport-van-with-barrel-storage_buildschematics_x.nbt"
  },
  {
-  "id": 137,
+  "id": 135,
   "slug": "tudor-blacksmith-shop",
   "name": "Tudor Blacksmith Shop",
   "category": "commercial",
@@ -3151,7 +3105,7 @@
   "file": "commercial_tudor-blacksmith-shop_buildschematics_x.schem"
  },
  {
-  "id": 138,
+  "id": 136,
   "slug": "tudor-house-with-hayloft-and-stables",
   "name": "Tudor House with Hayloft and Stables",
   "category": "residential",
@@ -3174,7 +3128,7 @@
   "file": "residential_tudor-house-with-hayloft-and-stables_buildschematics_x.schem"
  },
  {
-  "id": 139,
+  "id": 137,
   "slug": "twin-towers-gate-with-auto-night-protection",
   "name": "Twin Towers Gate with Auto Night Protection",
   "category": "towers",
@@ -3197,7 +3151,7 @@
   "file": "towers_twin-towers-gate-with-auto-night-protection_buildschematics_x.schem"
  },
  {
-  "id": 140,
+  "id": 138,
   "slug": "united-we-craft-server-tower",
   "name": "United We Craft Server Tower",
   "category": "towers",
@@ -3220,7 +3174,7 @@
   "file": "towers_united-we-craft-server-tower_buildschematics_x.schem"
  },
  {
-  "id": 141,
+  "id": 139,
   "slug": "vertical-modular-garage-system",
   "name": "Vertical Modular Garage System",
   "category": "transport",
@@ -3243,7 +3197,7 @@
   "file": "transport_vertical-modular-garage-system_buildschematics_x.nbt"
  },
  {
-  "id": 142,
+  "id": 140,
   "slug": "vienna-street-house-67",
   "name": "Vienna Street House 67",
   "category": "roads",
@@ -3266,7 +3220,7 @@
   "file": "roads_vienna-street-house-67_buildschematics_x.schem"
  },
  {
-  "id": 143,
+  "id": 141,
   "slug": "william-andrews-apartment-building",
   "name": "William Andrews Apartment Building",
   "category": "residential",
@@ -3289,7 +3243,7 @@
   "file": "residential_william-andrews-apartment-building_buildschematics_x.schem"
  },
  {
-  "id": 144,
+  "id": 142,
   "slug": "wishing-well-village-centerpiece",
   "name": "Wishing Well - Village Centerpiece",
   "category": "decor",
@@ -3312,7 +3266,7 @@
   "file": "decor_wishing-well-village-centerpiece_buildschematics_x.schem"
  },
  {
-  "id": 145,
+  "id": 143,
   "slug": "working-waterpark-with-slides",
   "name": "Working Waterpark With Slides",
   "category": "commercial",
@@ -3335,7 +3289,7 @@
   "file": "commercial_working-waterpark-with-slides_buildschematics_x.schem"
  },
  {
-  "id": 146,
+  "id": 144,
   "slug": "yellow-and-red-lighthouse-structure",
   "name": "Yellow and Red Lighthouse Structure",
   "category": "waterfront",
@@ -3358,7 +3312,7 @@
   "file": "waterfront_yellow-and-red-lighthouse-structure_buildschematics_x.schem"
  },
  {
-  "id": 147,
+  "id": 145,
   "slug": "10601-wooden-house",
   "name": "Wooden house",
   "category": "residential",
@@ -3381,7 +3335,7 @@
   "file": "residential_wooden-house_mcbuild_x.schem"
  },
  {
-  "id": 148,
+  "id": 146,
   "slug": "10605-diagonal-shore-port",
   "name": "diagonal shore port",
   "category": "waterfront",
@@ -3404,7 +3358,7 @@
   "file": "waterfront_diagonal-shore-port_mcbuild_x.schem"
  },
  {
-  "id": 149,
+  "id": 147,
   "slug": "11051-small-fountain",
   "name": "Small fountain",
   "category": "commercial",
@@ -3427,7 +3381,7 @@
   "file": "commercial_small-fountain_mcbuild_x.schem"
  },
  {
-  "id": 150,
+  "id": 148,
   "slug": "11171-old-wooden-house",
   "name": "Old Wooden House",
   "category": "residential",
@@ -3450,7 +3404,7 @@
   "file": "residential_old-wooden-house_mcbuild_x.schem"
  },
  {
-  "id": 151,
+  "id": 149,
   "slug": "11174-stonewood-bridge",
   "name": "Stonewood Bridge",
   "category": "bridges",
@@ -3473,7 +3427,7 @@
   "file": "bridges_stonewood-bridge_mcbuild_x.schem"
  },
  {
-  "id": 152,
+  "id": 150,
   "slug": "11182-cave-house",
   "name": "Cave House",
   "category": "residential",
@@ -3496,7 +3450,7 @@
   "file": "residential_cave-house_mcbuild_x.schem"
  },
  {
-  "id": 153,
+  "id": 151,
   "slug": "1120-modern-house-10",
   "name": "Modern House 10",
   "category": "residential",
@@ -3519,7 +3473,7 @@
   "file": "residential_modern-house-10_mcbuild_x.schem"
  },
  {
-  "id": 154,
+  "id": 152,
   "slug": "1121-modern-house--11",
   "name": "Modern House #11",
   "category": "residential",
@@ -3542,7 +3496,7 @@
   "file": "residential_modern-house--11_mcbuild_x.schem"
  },
  {
-  "id": 155,
+  "id": 153,
   "slug": "11247-stone-bridge",
   "name": "Stone Bridge",
   "category": "bridges",
@@ -3565,7 +3519,7 @@
   "file": "bridges_stone-bridge_mcbuild_x.schem"
  },
  {
-  "id": 156,
+  "id": 154,
   "slug": "11252-treehouse",
   "name": "Treehouse",
   "category": "residential",
@@ -3588,7 +3542,7 @@
   "file": "residential_treehouse_mcbuild_x.schem"
  },
  {
-  "id": 157,
+  "id": 155,
   "slug": "11282-teahouse",
   "name": "Teahouse",
   "category": "residential",
@@ -3611,7 +3565,7 @@
   "file": "residential_teahouse_mcbuild_x.schem"
  },
  {
-  "id": 158,
+  "id": 156,
   "slug": "11323-lakehouse",
   "name": "Lakehouse",
   "category": "residential",
@@ -3634,7 +3588,7 @@
   "file": "residential_lakehouse_mcbuild_x.schem"
  },
  {
-  "id": 159,
+  "id": 157,
   "slug": "11375-tree--lanterns-",
   "name": "Tree (Lanterns)",
   "category": "decor",
@@ -3657,7 +3611,7 @@
   "file": "decor_tree--lanterns-_mcbuild_x.schem"
  },
  {
-  "id": 160,
+  "id": 158,
   "slug": "11635-traditional-spruce-house",
   "name": "Traditional Spruce House",
   "category": "residential",
@@ -3680,7 +3634,7 @@
   "file": "residential_traditional-spruce-house_mcbuild_x.schem"
  },
  {
-  "id": 161,
+  "id": 159,
   "slug": "11681-asian-4-storey-pagoda-nr3",
   "name": "Asian 4 Storey Pagoda Nr3",
   "category": "commercial",
@@ -3703,7 +3657,7 @@
   "file": "commercial_asian-4-storey-pagoda-nr3_mcbuild_x.schem"
  },
  {
-  "id": 162,
+  "id": 160,
   "slug": "12151-rustic-modern-home",
   "name": "Rustic-Modern Home",
   "category": "residential",
@@ -3726,7 +3680,7 @@
   "file": "residential_rustic-modern-home_mcbuild_x.schem"
  },
  {
-  "id": 163,
+  "id": 161,
   "slug": "12250-asian-hotel",
   "name": "Asian Hotel",
   "category": "commercial",
@@ -3749,7 +3703,7 @@
   "file": "commercial_asian-hotel_mcbuild_x.schem"
  },
  {
-  "id": 164,
+  "id": 162,
   "slug": "12322-dark-oak-house",
   "name": "Dark Oak House",
   "category": "residential",
@@ -3772,7 +3726,7 @@
   "file": "residential_dark-oak-house_mcbuild_x.schem"
  },
  {
-  "id": 165,
+  "id": 163,
   "slug": "12757-contemporary-home",
   "name": "Contemporary Home",
   "category": "residential",
@@ -3795,7 +3749,7 @@
   "file": "residential_contemporary-home_mcbuild_x.schem"
  },
  {
-  "id": 166,
+  "id": 164,
   "slug": "13079-modern-house-green---update-from-2016-",
   "name": "Modern House(Green) [Update from 2016]",
   "category": "residential",
@@ -3818,7 +3772,7 @@
   "file": "residential_modern-house-green---update-from-2016-_mcbuild_x.schem"
  },
  {
-  "id": 167,
+  "id": 165,
   "slug": "13095-big-spruce-house",
   "name": "Big spruce house",
   "category": "residential",
@@ -3841,7 +3795,7 @@
   "file": "residential_big-spruce-house_mcbuild_x.schem"
  },
  {
-  "id": 168,
+  "id": 166,
   "slug": "13137-tower-gate--zerohero1458-",
   "name": "Tower Gate (ZeroHero1458)",
   "category": "towers",
@@ -3864,7 +3818,7 @@
   "file": "towers_tower-gate--zerohero1458-_mcbuild_x.schem"
  },
  {
-  "id": 169,
+  "id": 167,
   "slug": "13152-spruce-village-pack---church",
   "name": "Spruce Village Pack - Church",
   "category": "residential",
@@ -3887,7 +3841,7 @@
   "file": "residential_spruce-village-pack---church_mcbuild_x.schem"
  },
  {
-  "id": 170,
+  "id": 168,
   "slug": "13274-big-tree--v-1-0-",
   "name": "Big Tree [v.1.0]",
   "category": "decor",
@@ -3910,7 +3864,7 @@
   "file": "decor_big-tree--v-1-0-_mcbuild_x.schem"
  },
  {
-  "id": 171,
+  "id": 169,
   "slug": "13294-nice-looking-house",
   "name": "Nice looking House",
   "category": "residential",
@@ -3933,7 +3887,7 @@
   "file": "residential_nice-looking-house_mcbuild_x.schem"
  },
  {
-  "id": 172,
+  "id": 170,
   "slug": "13298-minecraft---vet-clinic",
   "name": "Minecraft - Vet Clinic",
   "category": "public",
@@ -3956,7 +3910,7 @@
   "file": "public_minecraft---vet-clinic_mcbuild_x.schem"
  },
  {
-  "id": 173,
+  "id": 171,
   "slug": "13355-big-tree",
   "name": "Big Tree",
   "category": "decor",
@@ -3979,7 +3933,7 @@
   "file": "decor_big-tree_mcbuild_x.schem"
  },
  {
-  "id": 174,
+  "id": 172,
   "slug": "13436-factory-2-0",
   "name": "Factory 2.0",
   "category": "industrial",
@@ -4002,30 +3956,7 @@
   "file": "industrial_factory-2-0_mcbuild_x.schem"
  },
  {
-  "id": 175,
-  "slug": "13691-mage-tower-from-jeracraft",
-  "name": "Mage Tower from Jeracraft",
-  "category": "towers",
-  "source": "mcbuild",
-  "page_url": "https://mcbuild.org/schematics/13691:mage-tower-from-jeracraft",
-  "download_url": "https://mcbuild.org/download/13691?format=schem",
-  "author": "",
-  "minecraft_version": "",
-  "format": ".schem v2",
-  "width": 29,
-  "height": 73,
-  "length": 29,
-  "blocks": 7088,
-  "file_size": 6616,
-  "hash": "716441595785775cb0337605676fc3e25c56881e034bef5bdff91b50b09b75c5",
-  "unsupported_entries": 13,
-  "simplified_entries": 27,
-  "status": "verified-tall",
-  "notes": "height clipped at 64 in game",
-  "file": "towers_mage-tower-from-jeracraft_mcbuild_x.schem"
- },
- {
-  "id": 176,
+  "id": 173,
   "slug": "13703-ancient-oak-tree",
   "name": "Ancient oak tree",
   "category": "decor",
@@ -4048,7 +3979,7 @@
   "file": "decor_ancient-oak-tree_mcbuild_x.schem"
  },
  {
-  "id": 177,
+  "id": 174,
   "slug": "13800-modern-house-1",
   "name": "Modern house 1",
   "category": "residential",
@@ -4071,7 +4002,7 @@
   "file": "residential_modern-house-1_mcbuild_x.schem"
  },
  {
-  "id": 178,
+  "id": 175,
   "slug": "13808-modern-house-2",
   "name": "Modern house 2",
   "category": "residential",
@@ -4094,7 +4025,7 @@
   "file": "residential_modern-house-2_mcbuild_x.schem"
  },
  {
-  "id": 179,
+  "id": 176,
   "slug": "13904-mediterranean-style---traditional-house",
   "name": "Mediterranean Style | Traditional House",
   "category": "residential",
@@ -4117,7 +4048,7 @@
   "file": "residential_mediterranean-style---traditional-house_mcbuild_x.schem"
  },
  {
-  "id": 180,
+  "id": 177,
   "slug": "1413-modern-apartment-building---1-6-2",
   "name": "Modern Apartment Building | 1.6.2",
   "category": "residential",
@@ -4140,7 +4071,7 @@
   "file": "residential_modern-apartment-building---1-6-2_mcbuild_x.schem"
  },
  {
-  "id": 181,
+  "id": 178,
   "slug": "14135-tree-in-minecraft",
   "name": "Tree in Minecraft",
   "category": "decor",
@@ -4163,7 +4094,7 @@
   "file": "decor_tree-in-minecraft_mcbuild_x.schem"
  },
  {
-  "id": 182,
+  "id": 179,
   "slug": "14713-wood-shop",
   "name": "Wood Shop",
   "category": "commercial",
@@ -4186,7 +4117,7 @@
   "file": "commercial_wood-shop_mcbuild_x.schem"
  },
  {
-  "id": 183,
+  "id": 180,
   "slug": "15104-mansion",
   "name": "Mansion",
   "category": "residential",
@@ -4209,7 +4140,7 @@
   "file": "residential_mansion_mcbuild_x.schem"
  },
  {
-  "id": 184,
+  "id": 181,
   "slug": "15194-tower-with-clock",
   "name": "Tower with clock",
   "category": "towers",
@@ -4232,30 +4163,7 @@
   "file": "towers_tower-with-clock_mcbuild_x.schem"
  },
  {
-  "id": 185,
-  "slug": "15389-flying-witch-tower",
-  "name": "Flying Witch Tower",
-  "category": "towers",
-  "source": "mcbuild",
-  "page_url": "https://mcbuild.org/schematics/15389:flying-witch-tower",
-  "download_url": "https://mcbuild.org/download/15389?format=schem",
-  "author": "",
-  "minecraft_version": "",
-  "format": ".schem v2",
-  "width": 42,
-  "height": 79,
-  "length": 16,
-  "blocks": 4432,
-  "file_size": 5991,
-  "hash": "c354e3b29bdc031e7bc2d63dadc4692e10992a4bf6a02465b6efe228fc949b6b",
-  "unsupported_entries": 10,
-  "simplified_entries": 15,
-  "status": "verified-tall",
-  "notes": "height clipped at 64 in game",
-  "file": "towers_flying-witch-tower_mcbuild_x.schem"
- },
- {
-  "id": 186,
+  "id": 182,
   "slug": "15541-spawn-house",
   "name": "Spawn House",
   "category": "residential",
@@ -4278,7 +4186,7 @@
   "file": "residential_spawn-house_mcbuild_x.schem"
  },
  {
-  "id": 187,
+  "id": 183,
   "slug": "15774-wood-modern-house",
   "name": "Wood Modern House",
   "category": "residential",
@@ -4301,7 +4209,7 @@
   "file": "residential_wood-modern-house_mcbuild_x.schem"
  },
  {
-  "id": 188,
+  "id": 184,
   "slug": "15971-modern-apartment-building",
   "name": "Modern Apartment Building",
   "category": "residential",
@@ -4324,7 +4232,7 @@
   "file": "residential_modern-apartment-building_mcbuild_x.schem"
  },
  {
-  "id": 189,
+  "id": 185,
   "slug": "16079-seaside-nordic-mansion",
   "name": "Seaside Nordic Mansion",
   "category": "residential",
@@ -4347,7 +4255,7 @@
   "file": "residential_seaside-nordic-mansion_mcbuild_x.schem"
  },
  {
-  "id": 190,
+  "id": 186,
   "slug": "16271-wood-house",
   "name": "Wood house",
   "category": "residential",
@@ -4370,7 +4278,7 @@
   "file": "residential_wood-house_mcbuild_x.schem"
  },
  {
-  "id": 191,
+  "id": 187,
   "slug": "16322-blue-modern-tower",
   "name": "Blue Modern Tower",
   "category": "towers",
@@ -4393,7 +4301,7 @@
   "file": "towers_blue-modern-tower_mcbuild_x.schem"
  },
  {
-  "id": 192,
+  "id": 188,
   "slug": "16331-stylish-house",
   "name": "Stylish House",
   "category": "residential",
@@ -4416,7 +4324,7 @@
   "file": "residential_stylish-house_mcbuild_x.schem"
  },
  {
-  "id": 193,
+  "id": 189,
   "slug": "16546-small-pond-1",
   "name": "Small pond 1",
   "category": "commercial",
@@ -4439,7 +4347,7 @@
   "file": "commercial_small-pond-1_mcbuild_x.schem"
  },
  {
-  "id": 194,
+  "id": 190,
   "slug": "16562-cherry-tree",
   "name": "Cherry Tree",
   "category": "decor",
@@ -4462,7 +4370,7 @@
   "file": "decor_cherry-tree_mcbuild_x.schem"
  },
  {
-  "id": 195,
+  "id": 191,
   "slug": "16725-stark-tower",
   "name": "Stark Tower",
   "category": "towers",
@@ -4485,7 +4393,7 @@
   "file": "towers_stark-tower_mcbuild_x.schem"
  },
  {
-  "id": 196,
+  "id": 192,
   "slug": "16786-a-small-modern-house",
   "name": "A Small Modern House",
   "category": "residential",
@@ -4508,7 +4416,7 @@
   "file": "residential_a-small-modern-house_mcbuild_x.schem"
  },
  {
-  "id": 197,
+  "id": 193,
   "slug": "17730-real-kfc-restaurant",
   "name": "Real KFC Restaurant",
   "category": "commercial",
@@ -4531,30 +4439,7 @@
   "file": "commercial_real-kfc-restaurant_mcbuild_x.schem"
  },
  {
-  "id": 198,
-  "slug": "17858-jarl---viking-house---maison-de-jarl---viking",
-  "name": "Jarl - Viking House / Maison de Jarl - Viking",
-  "category": "residential",
-  "source": "mcbuild",
-  "page_url": "https://mcbuild.org/schematics/17858:jarl---viking-house-/-maison-de-jarl---viking",
-  "download_url": "https://mcbuild.org/download/17858?format=schem",
-  "author": "",
-  "minecraft_version": "",
-  "format": ".schem v2",
-  "width": 32,
-  "height": 35,
-  "length": 57,
-  "blocks": 4894,
-  "file_size": 3801,
-  "hash": "d300872d16059958ace106efac4e73fd97fe64b1b45abac1ef2184263c6d2b7f",
-  "unsupported_entries": 1,
-  "simplified_entries": 36,
-  "status": "verified",
-  "notes": "",
-  "file": "residential_jarl---viking-house---maison-de-jarl---vikin_mcbuild_x.schem"
- },
- {
-  "id": 199,
+  "id": 194,
   "slug": "18043-starting-house--mansion-",
   "name": "Starting House (Mansion)",
   "category": "residential",
@@ -4577,7 +4462,7 @@
   "file": "residential_starting-house--mansion-_mcbuild_x.schem"
  },
  {
-  "id": 200,
+  "id": 195,
   "slug": "18240-simple-resource-warehouse",
   "name": "Simple resource warehouse",
   "category": "residential",
@@ -4600,7 +4485,7 @@
   "file": "residential_simple-resource-warehouse_mcbuild_x.schem"
  },
  {
-  "id": 201,
+  "id": 196,
   "slug": "18295-big-minecraft-modern-house",
   "name": "Big minecraft modern house",
   "category": "residential",
@@ -4623,7 +4508,7 @@
   "file": "residential_big-minecraft-modern-house_mcbuild_x.schem"
  },
  {
-  "id": 202,
+  "id": 197,
   "slug": "18504-market-with-the-villagers",
   "name": "Market with the villagers",
   "category": "residential",
@@ -4646,7 +4531,7 @@
   "file": "residential_market-with-the-villagers_mcbuild_x.schem"
  },
  {
-  "id": 203,
+  "id": 198,
   "slug": "18516-stark-tower",
   "name": "Stark Tower",
   "category": "towers",
@@ -4669,7 +4554,7 @@
   "file": "towers_stark-tower_mcbuild_x-2.schem"
  },
  {
-  "id": 204,
+  "id": 199,
   "slug": "18524-modern-mansion",
   "name": "Modern Mansion",
   "category": "residential",
@@ -4692,7 +4577,7 @@
   "file": "residential_modern-mansion_mcbuild_x.schem"
  },
  {
-  "id": 205,
+  "id": 200,
   "slug": "18527-blue-modern-tower",
   "name": "Blue Modern Tower",
   "category": "towers",
@@ -4715,7 +4600,7 @@
   "file": "towers_blue-modern-tower_mcbuild_x-2.schem"
  },
  {
-  "id": 206,
+  "id": 201,
   "slug": "18536-lakehouse",
   "name": "Lakehouse ",
   "category": "residential",
@@ -4738,7 +4623,7 @@
   "file": "residential_lakehouse_mcbuild_x-2.schem"
  },
  {
-  "id": 207,
+  "id": 202,
   "slug": "18537-iron-man's-mansion",
   "name": "Iron Man's Mansion",
   "category": "residential",
@@ -4761,7 +4646,7 @@
   "file": "residential_iron-man-s-mansion_mcbuild_x.schem"
  },
  {
-  "id": 208,
+  "id": 203,
   "slug": "18538-classic-modern-house",
   "name": "Classic Modern House",
   "category": "residential",
@@ -4784,7 +4669,7 @@
   "file": "residential_classic-modern-house_mcbuild_x.schem"
  },
  {
-  "id": 209,
+  "id": 204,
   "slug": "18539-modern-apartment-building",
   "name": "Modern Apartment Building",
   "category": "residential",
@@ -4807,30 +4692,7 @@
   "file": "residential_modern-apartment-building_mcbuild_x-2.schem"
  },
  {
-  "id": 210,
-  "slug": "18546-parkour-tower",
-  "name": "Parkour Tower",
-  "category": "towers",
-  "source": "mcbuild",
-  "page_url": "https://mcbuild.org/schematics/18546:parkour-tower",
-  "download_url": "https://mcbuild.org/download/18546?format=schem",
-  "author": "",
-  "minecraft_version": "",
-  "format": ".schem v2",
-  "width": 64,
-  "height": 185,
-  "length": 64,
-  "blocks": 51259,
-  "file_size": 23965,
-  "hash": "36ca7a9538b0cfeaea046566d8238d6d8e48a9275562cf63e0fb46f922dcc57d",
-  "unsupported_entries": 8,
-  "simplified_entries": 8,
-  "status": "verified-tall",
-  "notes": "height clipped at 64 in game",
-  "file": "towers_parkour-tower_mcbuild_x.schem"
- },
- {
-  "id": 211,
+  "id": 205,
   "slug": "18554-lighthouse",
   "name": "Lighthouse ",
   "category": "residential",
@@ -4853,7 +4715,7 @@
   "file": "residential_lighthouse_mcbuild_x.schem"
  },
  {
-  "id": 212,
+  "id": 206,
   "slug": "18557-clock-tower",
   "name": " Clock Tower",
   "category": "towers",
@@ -4876,7 +4738,7 @@
   "file": "towers_clock-tower_mcbuild_x.schem"
  },
  {
-  "id": 213,
+  "id": 207,
   "slug": "18559-colonial-mansion",
   "name": "Colonial Mansion",
   "category": "residential",
@@ -4899,7 +4761,7 @@
   "file": "residential_colonial-mansion_mcbuild_x.schem"
  },
  {
-  "id": 214,
+  "id": 208,
   "slug": "18565-small-town",
   "name": "Small Town",
   "category": "commercial",
@@ -4922,7 +4784,7 @@
   "file": "commercial_small-town_mcbuild_x.schem"
  },
  {
-  "id": 215,
+  "id": 209,
   "slug": "18568-skate-park",
   "name": "Skate Park",
   "category": "parks",
@@ -4945,7 +4807,7 @@
   "file": "parks_skate-park_mcbuild_x.schem"
  },
  {
-  "id": 216,
+  "id": 210,
   "slug": "18572-factory-building",
   "name": "Factory Building",
   "category": "industrial",
@@ -4968,7 +4830,7 @@
   "file": "industrial_factory-building_mcbuild_x.schem"
  },
  {
-  "id": 217,
+  "id": 211,
   "slug": "18576-traditional-house",
   "name": "Traditional House",
   "category": "residential",
@@ -4991,7 +4853,7 @@
   "file": "residential_traditional-house_mcbuild_x.schem"
  },
  {
-  "id": 218,
+  "id": 212,
   "slug": "18579-beach-house",
   "name": "Beach House",
   "category": "residential",
@@ -5014,30 +4876,7 @@
   "file": "residential_beach-house_mcbuild_x.schem"
  },
  {
-  "id": 219,
-  "slug": "18581-pokemon-stadium",
-  "name": "Pokemon Stadium",
-  "category": "public",
-  "source": "mcbuild",
-  "page_url": "https://mcbuild.org/schematics/18581:pokemon-stadium",
-  "download_url": "https://mcbuild.org/download/18581?format=schem",
-  "author": "",
-  "minecraft_version": "",
-  "format": ".schem v2",
-  "width": 94,
-  "height": 70,
-  "length": 125,
-  "blocks": 30136,
-  "file_size": 5702,
-  "hash": "333aa444ef74bd65229af684336cb83e7657ea8c45d645a90d1f43767f79ea75",
-  "unsupported_entries": 0,
-  "simplified_entries": 2,
-  "status": "verified-tall",
-  "notes": "height clipped at 64 in game",
-  "file": "public_pokemon-stadium_mcbuild_x.schem"
- },
- {
-  "id": 220,
+  "id": 213,
   "slug": "18582-dream-survival-house",
   "name": "Dream Survival House",
   "category": "residential",
@@ -5060,7 +4899,7 @@
   "file": "residential_dream-survival-house_mcbuild_x.schem"
  },
  {
-  "id": 221,
+  "id": 214,
   "slug": "18583-harbor-village",
   "name": "Harbor Village",
   "category": "residential",
@@ -5083,7 +4922,7 @@
   "file": "residential_harbor-village_mcbuild_x.schem"
  },
  {
-  "id": 222,
+  "id": 215,
   "slug": "18587-furnished-yacht",
   "name": "Furnished Yacht ",
   "category": "waterfront",
@@ -5106,7 +4945,7 @@
   "file": "waterfront_furnished-yacht_mcbuild_x.schem"
  },
  {
-  "id": 223,
+  "id": 216,
   "slug": "18593-large-yacht",
   "name": "Large Yacht",
   "category": "waterfront",
@@ -5129,7 +4968,7 @@
   "file": "waterfront_large-yacht_mcbuild_x.schem"
  },
  {
-  "id": 224,
+  "id": 217,
   "slug": "18597-giant-church",
   "name": "Giant Church",
   "category": "public",
@@ -5152,30 +4991,7 @@
   "file": "public_giant-church_mcbuild_x.schem"
  },
  {
-  "id": 225,
-  "slug": "18601-hobbit-home",
-  "name": "Hobbit Home",
-  "category": "residential",
-  "source": "mcbuild",
-  "page_url": "https://mcbuild.org/schematics/18601:hobbit-home",
-  "download_url": "https://mcbuild.org/download/18601?format=schem",
-  "author": "",
-  "minecraft_version": "",
-  "format": ".schem v2",
-  "width": 77,
-  "height": 35,
-  "length": 61,
-  "blocks": 57845,
-  "file_size": 14769,
-  "hash": "e76655510e3f0130a73c6f6144e61bbdd37e417ecc9703b555ad847fcb15650d",
-  "unsupported_entries": 31,
-  "simplified_entries": 23,
-  "status": "verified",
-  "notes": "",
-  "file": "residential_hobbit-home_mcbuild_x.schem"
- },
- {
-  "id": 226,
+  "id": 218,
   "slug": "18603-most-secured-house",
   "name": "Most Secured House",
   "category": "residential",
@@ -5198,7 +5014,7 @@
   "file": "residential_most-secured-house_mcbuild_x.schem"
  },
  {
-  "id": 227,
+  "id": 219,
   "slug": "18610-desert-city",
   "name": "Desert City",
   "category": "decor",
@@ -5221,7 +5037,7 @@
   "file": "decor_desert-city_mcbuild_x.schem"
  },
  {
-  "id": 228,
+  "id": 220,
   "slug": "18611-skyscraper",
   "name": "Skyscraper ",
   "category": "towers",
@@ -5244,7 +5060,7 @@
   "file": "towers_skyscraper_mcbuild_x.schem"
  },
  {
-  "id": 229,
+  "id": 221,
   "slug": "18624-japanese-style-house",
   "name": "Japanese Style House",
   "category": "residential",
@@ -5267,7 +5083,7 @@
   "file": "residential_japanese-style-house_mcbuild_x.schem"
  },
  {
-  "id": 230,
+  "id": 222,
   "slug": "18625-seaside-nordic-mansion",
   "name": "Seaside Nordic Mansion",
   "category": "residential",
@@ -5290,7 +5106,7 @@
   "file": "residential_seaside-nordic-mansion_mcbuild_x-2.schem"
  },
  {
-  "id": 231,
+  "id": 223,
   "slug": "18632-little-shop",
   "name": "Little Shop",
   "category": "commercial",
@@ -5313,7 +5129,7 @@
   "file": "commercial_little-shop_mcbuild_x.schem"
  },
  {
-  "id": 232,
+  "id": 224,
   "slug": "18636-apartment-building",
   "name": "Apartment Building",
   "category": "residential",
@@ -5336,7 +5152,7 @@
   "file": "residential_apartment-building_mcbuild_x.schem"
  },
  {
-  "id": 233,
+  "id": 225,
   "slug": "18638-small-cozy-house",
   "name": "Small Cozy House",
   "category": "residential",
@@ -5359,7 +5175,7 @@
   "file": "residential_small-cozy-house_mcbuild_x.schem"
  },
  {
-  "id": 234,
+  "id": 226,
   "slug": "18639-assassins-creed-tower",
   "name": "Assassins Creed Tower",
   "category": "towers",
@@ -5382,7 +5198,7 @@
   "file": "towers_assassins-creed-tower_mcbuild_x.schem"
  },
  {
-  "id": 235,
+  "id": 227,
   "slug": "18641-twins-towers-gate",
   "name": "Twins Towers Gate",
   "category": "towers",
@@ -5405,7 +5221,7 @@
   "file": "towers_twins-towers-gate_mcbuild_x.schem"
  },
  {
-  "id": 236,
+  "id": 228,
   "slug": "18644-hollywood-hills-mansion",
   "name": "Hollywood Hills Mansion",
   "category": "residential",
@@ -5428,30 +5244,7 @@
   "file": "residential_hollywood-hills-mansion_mcbuild_x.schem"
  },
  {
-  "id": 237,
-  "slug": "18646-santa's-workshop",
-  "name": "Santa's Workshop",
-  "category": "commercial",
-  "source": "mcbuild",
-  "page_url": "https://mcbuild.org/schematics/18646:santa's-workshop",
-  "download_url": "https://mcbuild.org/download/18646?format=schem",
-  "author": "",
-  "minecraft_version": "",
-  "format": ".schem v2",
-  "width": 90,
-  "height": 44,
-  "length": 30,
-  "blocks": 14095,
-  "file_size": 5401,
-  "hash": "3dcbbf8bb55bd1c69c8710ea6dca66a4535021b6274759c37dd825578c7ed1e3",
-  "unsupported_entries": 37,
-  "simplified_entries": 8,
-  "status": "verified",
-  "notes": "",
-  "file": "commercial_santa-s-workshop_mcbuild_x.schem"
- },
- {
-  "id": 238,
+  "id": 229,
   "slug": "18647-modern-hotel",
   "name": "Modern Hotel",
   "category": "towers",
@@ -5474,7 +5267,7 @@
   "file": "towers_modern-hotel_mcbuild_x.schem"
  },
  {
-  "id": 239,
+  "id": 230,
   "slug": "18650-beach-hotel",
   "name": "Beach Hotel",
   "category": "towers",
@@ -5497,7 +5290,7 @@
   "file": "towers_beach-hotel_mcbuild_x.schem"
  },
  {
-  "id": 240,
+  "id": 231,
   "slug": "18657-train-station",
   "name": "Train Station",
   "category": "transport",
@@ -5520,7 +5313,7 @@
   "file": "transport_train-station_mcbuild_x.schem"
  },
  {
-  "id": 241,
+  "id": 232,
   "slug": "18658-modern-house-on-a-hilltop",
   "name": "Modern House on a Hilltop",
   "category": "residential",
@@ -5543,53 +5336,7 @@
   "file": "residential_modern-house-on-a-hilltop_mcbuild_x.schem"
  },
  {
-  "id": 242,
-  "slug": "18663-hobbit-home",
-  "name": "Hobbit Home",
-  "category": "residential",
-  "source": "mcbuild",
-  "page_url": "https://mcbuild.org/schematics/18663:hobbit-home",
-  "download_url": "https://mcbuild.org/download/18663?format=schem",
-  "author": "",
-  "minecraft_version": "",
-  "format": ".schem v2",
-  "width": 77,
-  "height": 35,
-  "length": 61,
-  "blocks": 57845,
-  "file_size": 14768,
-  "hash": "d4702979d29bf19c4d1016c4b38a11aba99e60e145b93521184adf452d32ad45",
-  "unsupported_entries": 31,
-  "simplified_entries": 23,
-  "status": "verified",
-  "notes": "",
-  "file": "residential_hobbit-home_mcbuild_x-2.schem"
- },
- {
-  "id": 243,
-  "slug": "18666-raptor-paddock",
-  "name": "Raptor Paddock",
-  "category": "waterfront",
-  "source": "mcbuild",
-  "page_url": "https://mcbuild.org/schematics/18666:raptor-paddock",
-  "download_url": "https://mcbuild.org/download/18666?format=schem",
-  "author": "",
-  "minecraft_version": "",
-  "format": ".schem v2",
-  "width": 61,
-  "height": 31,
-  "length": 76,
-  "blocks": 23426,
-  "file_size": 7104,
-  "hash": "22aec8c34a983f6cb19878862633d6ddbf17f6be3f59c5a29526b7cebfa46f79",
-  "unsupported_entries": 3,
-  "simplified_entries": 11,
-  "status": "verified",
-  "notes": "",
-  "file": "waterfront_raptor-paddock_mcbuild_x.schem"
- },
- {
-  "id": 244,
+  "id": 233,
   "slug": "18669-villa",
   "name": "Villa",
   "category": "residential",
@@ -5612,7 +5359,7 @@
   "file": "residential_villa_mcbuild_x.schem"
  },
  {
-  "id": 245,
+  "id": 234,
   "slug": "18672-resident-evil-4-church",
   "name": "Resident Evil 4 Church",
   "category": "public",
@@ -5635,7 +5382,7 @@
   "file": "public_resident-evil-4-church_mcbuild_x.schem"
  },
  {
-  "id": 246,
+  "id": 235,
   "slug": "18679-the-majestic-hotel",
   "name": "The Majestic Hotel",
   "category": "towers",
@@ -5658,7 +5405,7 @@
   "file": "towers_the-majestic-hotel_mcbuild_x.schem"
  },
  {
-  "id": 247,
+  "id": 236,
   "slug": "18680-mansion-and-place",
   "name": "Mansion and Place",
   "category": "residential",
@@ -5681,7 +5428,7 @@
   "file": "residential_mansion-and-place_mcbuild_x.schem"
  },
  {
-  "id": 248,
+  "id": 237,
   "slug": "18688-saltillo-cathedral-tower",
   "name": "Saltillo Cathedral Tower",
   "category": "towers",
@@ -5704,7 +5451,7 @@
   "file": "towers_saltillo-cathedral-tower_mcbuild_x.schem"
  },
  {
-  "id": 249,
+  "id": 238,
   "slug": "18689-rustic-mansion",
   "name": "Rustic Mansion",
   "category": "residential",
@@ -5727,7 +5474,7 @@
   "file": "residential_rustic-mansion_mcbuild_x.schem"
  },
  {
-  "id": 250,
+  "id": 239,
   "slug": "18695-apple-store",
   "name": "Apple Store",
   "category": "commercial",
@@ -5750,7 +5497,7 @@
   "file": "commercial_apple-store_mcbuild_x.schem"
  },
  {
-  "id": 251,
+  "id": 240,
   "slug": "18699-sydney-museum-of-modern-art",
   "name": "Sydney Museum of Modern Art",
   "category": "public",
@@ -5773,7 +5520,7 @@
   "file": "public_sydney-museum-of-modern-art_mcbuild_x.schem"
  },
  {
-  "id": 252,
+  "id": 241,
   "slug": "18703-supermario-parkour",
   "name": "SuperMario Parkour",
   "category": "parks",
@@ -5796,30 +5543,7 @@
   "file": "parks_supermario-parkour_mcbuild_x.schem"
  },
  {
-  "id": 253,
-  "slug": "18704-sauron's-tower",
-  "name": "Sauron's Tower",
-  "category": "towers",
-  "source": "mcbuild",
-  "page_url": "https://mcbuild.org/schematics/18704:sauron's-tower",
-  "download_url": "https://mcbuild.org/download/18704?format=schem",
-  "author": "",
-  "minecraft_version": "",
-  "format": ".schem v2",
-  "width": 67,
-  "height": 94,
-  "length": 65,
-  "blocks": 5663,
-  "file_size": 4045,
-  "hash": "ce26f226b0c906480e1bb5383bcb42cb896a6841ac678735c6c2e700b7ca1aac",
-  "unsupported_entries": 2,
-  "simplified_entries": 0,
-  "status": "verified-tall",
-  "notes": "height clipped at 64 in game",
-  "file": "towers_sauron-s-tower_mcbuild_x.schem"
- },
- {
-  "id": 254,
+  "id": 242,
   "slug": "18705-sand-palace-station",
   "name": "Sand Palace Station",
   "category": "transport",
@@ -5842,7 +5566,7 @@
   "file": "transport_sand-palace-station_mcbuild_x.schem"
  },
  {
-  "id": 255,
+  "id": 243,
   "slug": "190-supreme-house-asian-style",
   "name": "supreme house asian style",
   "category": "residential",
@@ -5865,7 +5589,7 @@
   "file": "residential_supreme-house-asian-style_mcbuild_x.schem"
  },
  {
-  "id": 256,
+  "id": 244,
   "slug": "211-modern-2-story-house-above-small-pond",
   "name": "Modern 2 story house above small pond",
   "category": "residential",
@@ -5888,7 +5612,7 @@
   "file": "residential_modern-2-story-house-above-small-pond_mcbuild_x.schem"
  },
  {
-  "id": 257,
+  "id": 245,
   "slug": "214-rustic-small-town",
   "name": "Rustic Small town",
   "category": "commercial",
@@ -5911,7 +5635,7 @@
   "file": "commercial_rustic-small-town_mcbuild_x.schem"
  },
  {
-  "id": 258,
+  "id": 246,
   "slug": "2305-georgian-house--1---full-furnished---1-6-4",
   "name": "Georgian House #1 | full furnished | 1.6.4",
   "category": "residential",
@@ -5934,7 +5658,7 @@
   "file": "residential_georgian-house--1---full-furnished---1-6-4_mcbuild_x.schem"
  },
  {
-  "id": 259,
+  "id": 247,
   "slug": "2353-modern-house-ii",
   "name": "Modern house II",
   "category": "residential",
@@ -5957,7 +5681,7 @@
   "file": "residential_modern-house-ii_mcbuild_x.schem"
  },
  {
-  "id": 260,
+  "id": 248,
   "slug": "2411-small-cozy-house",
   "name": "Small Cozy House",
   "category": "residential",
@@ -5980,7 +5704,7 @@
   "file": "residential_small-cozy-house_mcbuild_x-2.schem"
  },
  {
-  "id": 261,
+  "id": 249,
   "slug": "2417-burger-shop",
   "name": "burger shop",
   "category": "commercial",
@@ -6003,7 +5727,7 @@
   "file": "commercial_burger-shop_mcbuild_x.schem"
  },
  {
-  "id": 262,
+  "id": 250,
   "slug": "249-large-3-story-mansion",
   "name": "LARGE 3 story Mansion",
   "category": "residential",
@@ -6026,7 +5750,7 @@
   "file": "residential_large-3-story-mansion_mcbuild_x.schem"
  },
  {
-  "id": 263,
+  "id": 251,
   "slug": "2545-stark-tower",
   "name": "Stark Tower",
   "category": "towers",
@@ -6049,7 +5773,7 @@
   "file": "towers_stark-tower_mcbuild_x-3.schem"
  },
  {
-  "id": 264,
+  "id": 252,
   "slug": "2632-suburban-house--1---full-furnished---1-7-4",
   "name": "Suburban House #1 | Full Furnished | 1.7.4",
   "category": "residential",
@@ -6072,7 +5796,7 @@
   "file": "residential_suburban-house--1---full-furnished---1-7-4_mcbuild_x.schem"
  },
  {
-  "id": 265,
+  "id": 253,
   "slug": "2784-european-mansion--1---by-goldeneye33",
   "name": "European Mansion #1 | By Goldeneye33",
   "category": "residential",
@@ -6095,7 +5819,7 @@
   "file": "residential_european-mansion--1---by-goldeneye33_mcbuild_x.schem"
  },
  {
-  "id": 266,
+  "id": 254,
   "slug": "2876-modern-house--d-i-y-interior-",
   "name": "Modern House [D.I.Y Interior]",
   "category": "residential",
@@ -6118,7 +5842,7 @@
   "file": "residential_modern-house--d-i-y-interior-_mcbuild_x.schem"
  },
  {
-  "id": 267,
+  "id": 255,
   "slug": "2898-traditional-house",
   "name": "Traditional house",
   "category": "residential",
@@ -6141,7 +5865,7 @@
   "file": "residential_traditional-house_mcbuild_x-2.schem"
  },
  {
-  "id": 268,
+  "id": 256,
   "slug": "2924-traditional-house-2",
   "name": "Traditional House 2",
   "category": "residential",
@@ -6164,7 +5888,7 @@
   "file": "residential_traditional-house-2_mcbuild_x.schem"
  },
  {
-  "id": 269,
+  "id": 257,
   "slug": "2947-traditional-house--4---by-goldeneye33",
   "name": "Traditional House #4 | by Goldeneye33",
   "category": "residential",
@@ -6187,7 +5911,7 @@
   "file": "residential_traditional-house--4---by-goldeneye33_mcbuild_x.schem"
  },
  {
-  "id": 270,
+  "id": 258,
   "slug": "314-jungle-treehouse",
   "name": "Jungle Treehouse",
   "category": "residential",
@@ -6210,7 +5934,7 @@
   "file": "residential_jungle-treehouse_mcbuild_x.schem"
  },
  {
-  "id": 271,
+  "id": 259,
   "slug": "3171-modern-burger-shop",
   "name": "Modern Burger Shop",
   "category": "commercial",
@@ -6233,7 +5957,7 @@
   "file": "commercial_modern-burger-shop_mcbuild_x.schem"
  },
  {
-  "id": 272,
+  "id": 260,
   "slug": "3249-hollywood-style-mansion---by-goldeneye33",
   "name": "Hollywood Style Mansion | by Goldeneye33",
   "category": "residential",
@@ -6256,7 +5980,7 @@
   "file": "residential_hollywood-style-mansion---by-goldeneye33_mcbuild_x.schem"
  },
  {
-  "id": 273,
+  "id": 261,
   "slug": "3388-nordic-house--2",
   "name": "Nordic house #2",
   "category": "residential",
@@ -6279,7 +6003,7 @@
   "file": "residential_nordic-house--2_mcbuild_x.schem"
  },
  {
-  "id": 274,
+  "id": 262,
   "slug": "3393-japanese-pagoda-plus-tea-house",
   "name": "Japanese pagoda Plus Tea House",
   "category": "residential",
@@ -6302,7 +6026,7 @@
   "file": "residential_japanese-pagoda-plus-tea-house_mcbuild_x.schem"
  },
  {
-  "id": 275,
+  "id": 263,
   "slug": "3508-futurist-modern-house--2",
   "name": "Futurist Modern House #2",
   "category": "residential",
@@ -6325,7 +6049,7 @@
   "file": "residential_futurist-modern-house--2_mcbuild_x.schem"
  },
  {
-  "id": 276,
+  "id": 264,
   "slug": "3515-plantation-mansion--1---architecture",
   "name": "Plantation Mansion #1 | Architecture",
   "category": "residential",
@@ -6348,7 +6072,7 @@
   "file": "residential_plantation-mansion--1---architecture_mcbuild_x.schem"
  },
  {
-  "id": 277,
+  "id": 265,
   "slug": "3555-office-building---architecture",
   "name": "Office Building | Architecture",
   "category": "towers",
@@ -6371,7 +6095,7 @@
   "file": "towers_office-building---architecture_mcbuild_x.schem"
  },
  {
-  "id": 278,
+  "id": 266,
   "slug": "3582-european-mansion-2",
   "name": "European Mansion 2",
   "category": "residential",
@@ -6394,7 +6118,7 @@
   "file": "residential_european-mansion-2_mcbuild_x.schem"
  },
  {
-  "id": 279,
+  "id": 267,
   "slug": "3691-futurist-modern-house-tower",
   "name": "Futurist Modern house/tower",
   "category": "towers",
@@ -6417,7 +6141,7 @@
   "file": "towers_futurist-modern-house-tower_mcbuild_x.schem"
  },
  {
-  "id": 280,
+  "id": 268,
   "slug": "3701-modern-house",
   "name": "Modern House",
   "category": "residential",
@@ -6440,7 +6164,7 @@
   "file": "residential_modern-house_mcbuild_x.schem"
  },
  {
-  "id": 281,
+  "id": 269,
   "slug": "371-grand-central-park",
   "name": "Grand Central Park",
   "category": "parks",
@@ -6463,7 +6187,7 @@
   "file": "parks_grand-central-park_mcbuild_x.schem"
  },
  {
-  "id": 282,
+  "id": 270,
   "slug": "372-modern-grand-fountain",
   "name": "Modern Grand Fountain",
   "category": "parks",
@@ -6486,7 +6210,7 @@
   "file": "parks_modern-grand-fountain_mcbuild_x.schem"
  },
  {
-  "id": 283,
+  "id": 271,
   "slug": "3849-modern-futuristic-city-building-",
   "name": "Modern/Futuristic City Building.",
   "category": "decor",
@@ -6509,7 +6233,7 @@
   "file": "decor_modern-futuristic-city-building-_mcbuild_x.schem"
  },
  {
-  "id": 284,
+  "id": 272,
   "slug": "3975-big-tree",
   "name": "Big tree",
   "category": "decor",
@@ -6532,7 +6256,7 @@
   "file": "decor_big-tree_mcbuild_x-2.schem"
  },
  {
-  "id": 285,
+  "id": 273,
   "slug": "3981-colonial-mansion-1",
   "name": "Colonial Mansion 1",
   "category": "residential",
@@ -6555,30 +6279,7 @@
   "file": "residential_colonial-mansion-1_mcbuild_x.schem"
  },
  {
-  "id": 286,
-  "slug": "4029-tower--complete-",
-  "name": "Tower (complete)",
-  "category": "towers",
-  "source": "mcbuild",
-  "page_url": "https://mcbuild.org/schematics/4029:tower-(complete)",
-  "download_url": "https://mcbuild.org/download/4029?format=schem",
-  "author": "",
-  "minecraft_version": "",
-  "format": ".schem v2",
-  "width": 64,
-  "height": 185,
-  "length": 64,
-  "blocks": 51259,
-  "file_size": 23960,
-  "hash": "671207c33ff9f7aae59899e1fa9a96ef2e0650da1b2e6314d5d9dcac55a40008",
-  "unsupported_entries": 8,
-  "simplified_entries": 8,
-  "status": "verified-tall",
-  "notes": "height clipped at 64 in game",
-  "file": "towers_tower--complete-_mcbuild_x.schem"
- },
- {
-  "id": 287,
+  "id": 274,
   "slug": "4084-35x35-futuristic-house-plot",
   "name": "35x35 Futuristic House Plot",
   "category": "residential",
@@ -6601,7 +6302,7 @@
   "file": "residential_35x35-futuristic-house-plot_mcbuild_x.schem"
  },
  {
-  "id": 288,
+  "id": 275,
   "slug": "4091-mansion--3",
   "name": "Mansion #3",
   "category": "residential",
@@ -6624,7 +6325,7 @@
   "file": "residential_mansion--3_mcbuild_x.schem"
  },
  {
-  "id": 289,
+  "id": 276,
   "slug": "4332-twin-hotel-towers",
   "name": "Twin Hotel Towers",
   "category": "towers",
@@ -6647,7 +6348,7 @@
   "file": "towers_twin-hotel-towers_mcbuild_x.schem"
  },
  {
-  "id": 290,
+  "id": 277,
   "slug": "4370-modern-house",
   "name": "Modern House",
   "category": "residential",
@@ -6670,7 +6371,7 @@
   "file": "residential_modern-house_mcbuild_x-2.schem"
  },
  {
-  "id": 291,
+  "id": 278,
   "slug": "444-luxurious-cove-house",
   "name": "Luxurious Cove House",
   "category": "residential",
@@ -6693,7 +6394,7 @@
   "file": "residential_luxurious-cove-house_mcbuild_x.schem"
  },
  {
-  "id": 292,
+  "id": 279,
   "slug": "445-classic-modern-house",
   "name": "Classic Modern House",
   "category": "residential",
@@ -6716,7 +6417,7 @@
   "file": "residential_classic-modern-house_mcbuild_x-2.schem"
  },
  {
-  "id": 293,
+  "id": 280,
   "slug": "4514-final-house",
   "name": "Final House",
   "category": "residential",
@@ -6739,7 +6440,7 @@
   "file": "residential_final-house_mcbuild_x.schem"
  },
  {
-  "id": 294,
+  "id": 281,
   "slug": "4584-traditional-mansion",
   "name": "Traditional Mansion",
   "category": "residential",
@@ -6762,7 +6463,7 @@
   "file": "residential_traditional-mansion_mcbuild_x.schem"
  },
  {
-  "id": 295,
+  "id": 282,
   "slug": "4641-modern-city-building",
   "name": "Modern city building",
   "category": "decor",
@@ -6785,7 +6486,7 @@
   "file": "decor_modern-city-building_mcbuild_x.schem"
  },
  {
-  "id": 296,
+  "id": 283,
   "slug": "4875-exampleton-basic-village",
   "name": "Exampleton Basic Village",
   "category": "residential",
@@ -6808,7 +6509,7 @@
   "file": "residential_exampleton-basic-village_mcbuild_x.schem"
  },
  {
-  "id": 297,
+  "id": 284,
   "slug": "4949-modern-townhouse-2",
   "name": "Modern Townhouse 2",
   "category": "residential",
@@ -6831,7 +6532,7 @@
   "file": "residential_modern-townhouse-2_mcbuild_x.schem"
  },
  {
-  "id": 298,
+  "id": 285,
   "slug": "5020-modern-box-house",
   "name": "Modern Box house",
   "category": "residential",
@@ -6854,7 +6555,7 @@
   "file": "residential_modern-box-house_mcbuild_x.schem"
  },
  {
-  "id": 299,
+  "id": 286,
   "slug": "561-contemporary-survival-starter-house",
   "name": "Contemporary Survival Starter House",
   "category": "residential",
@@ -6877,7 +6578,7 @@
   "file": "residential_contemporary-survival-starter-house_mcbuild_x.schem"
  },
  {
-  "id": 300,
+  "id": 287,
   "slug": "5704-modern-house",
   "name": "Modern house",
   "category": "residential",
@@ -6900,7 +6601,7 @@
   "file": "residential_modern-house_mcbuild_x-3.schem"
  },
  {
-  "id": 301,
+  "id": 288,
   "slug": "5705-japanese-style-house",
   "name": "Japanese style house",
   "category": "residential",
@@ -6923,7 +6624,7 @@
   "file": "residential_japanese-style-house_mcbuild_x-2.schem"
  },
  {
-  "id": 302,
+  "id": 289,
   "slug": "5706-japanese-style-house--standard-",
   "name": "Japanese style house (Standard)",
   "category": "residential",
@@ -6946,7 +6647,7 @@
   "file": "residential_japanese-style-house--standard-_mcbuild_x.schem"
  },
  {
-  "id": 303,
+  "id": 290,
   "slug": "5780-16x16-modern-house-1",
   "name": "16x16 Modern House 1",
   "category": "residential",
@@ -6969,7 +6670,7 @@
   "file": "residential_16x16-modern-house-1_mcbuild_x.schem"
  },
  {
-  "id": 304,
+  "id": 291,
   "slug": "5781-16x16-modern-house-2",
   "name": "16x16 Modern House 2",
   "category": "residential",
@@ -6992,7 +6693,7 @@
   "file": "residential_16x16-modern-house-2_mcbuild_x.schem"
  },
  {
-  "id": 305,
+  "id": 292,
   "slug": "5782-16x16-modern-house-3",
   "name": "16x16 Modern House 3",
   "category": "residential",
@@ -7015,7 +6716,7 @@
   "file": "residential_16x16-modern-house-3_mcbuild_x.schem"
  },
  {
-  "id": 306,
+  "id": 293,
   "slug": "5974-desert-city",
   "name": "Desert city",
   "category": "decor",
@@ -7038,7 +6739,7 @@
   "file": "decor_desert-city_mcbuild_x-2.schem"
  },
  {
-  "id": 307,
+  "id": 294,
   "slug": "6296-modern-mansion",
   "name": "Modern Mansion",
   "category": "residential",
@@ -7061,7 +6762,7 @@
   "file": "residential_modern-mansion_mcbuild_x-2.schem"
  },
  {
-  "id": 308,
+  "id": 295,
   "slug": "6401-traditional-mansion-2",
   "name": "traditional mansion 2",
   "category": "residential",
@@ -7084,7 +6785,7 @@
   "file": "residential_traditional-mansion-2_mcbuild_x.schem"
  },
  {
-  "id": 309,
+  "id": 296,
   "slug": "6430-rustic-mansion-large-house",
   "name": "Rustic Mansion/Large House",
   "category": "residential",
@@ -7107,7 +6808,7 @@
   "file": "residential_rustic-mansion-large-house_mcbuild_x.schem"
  },
  {
-  "id": 310,
+  "id": 297,
   "slug": "6436-mansion",
   "name": "Mansion",
   "category": "residential",
@@ -7130,7 +6831,7 @@
   "file": "residential_mansion_mcbuild_x-2.schem"
  },
  {
-  "id": 311,
+  "id": 298,
   "slug": "6526-traditional-mansion",
   "name": "Traditional mansion",
   "category": "residential",
@@ -7153,7 +6854,7 @@
   "file": "residential_traditional-mansion_mcbuild_x-2.schem"
  },
  {
-  "id": 312,
+  "id": 299,
   "slug": "6619-large-modern-house",
   "name": "Large modern house",
   "category": "residential",
@@ -7176,7 +6877,7 @@
   "file": "residential_large-modern-house_mcbuild_x.schem"
  },
  {
-  "id": 313,
+  "id": 300,
   "slug": "679-cascade-city",
   "name": "Cascade City",
   "category": "decor",
@@ -7199,7 +6900,7 @@
   "file": "decor_cascade-city_mcbuild_x.schem"
  },
  {
-  "id": 314,
+  "id": 301,
   "slug": "6793-modern-house",
   "name": "Modern house",
   "category": "residential",
@@ -7222,7 +6923,7 @@
   "file": "residential_modern-house_mcbuild_x-4.schem"
  },
  {
-  "id": 315,
+  "id": 302,
   "slug": "6976-modern-house",
   "name": "Modern house",
   "category": "residential",
@@ -7245,7 +6946,7 @@
   "file": "residential_modern-house_mcbuild_x-5.schem"
  },
  {
-  "id": 316,
+  "id": 303,
   "slug": "6977-modern-house-3",
   "name": "Modern house 3",
   "category": "residential",
@@ -7268,7 +6969,7 @@
   "file": "residential_modern-house-3_mcbuild_x.schem"
  },
  {
-  "id": 317,
+  "id": 304,
   "slug": "7011-futuristic-house",
   "name": "Futuristic house",
   "category": "residential",
@@ -7291,7 +6992,7 @@
   "file": "residential_futuristic-house_mcbuild_x.schem"
  },
  {
-  "id": 318,
+  "id": 305,
   "slug": "7017-iron-man-s-mansion",
   "name": "Iron Man's Mansion",
   "category": "residential",
@@ -7314,7 +7015,7 @@
   "file": "residential_iron-man-s-mansion_mcbuild_x-2.schem"
  },
  {
-  "id": 319,
+  "id": 306,
   "slug": "7026-modern-mansion",
   "name": "Modern mansion",
   "category": "residential",
@@ -7337,7 +7038,7 @@
   "file": "residential_modern-mansion_mcbuild_x-3.schem"
  },
  {
-  "id": 320,
+  "id": 307,
   "slug": "7051-epich-yacht--fully-furnished-",
   "name": "Epich Yacht [Fully Furnished]",
   "category": "waterfront",
@@ -7360,7 +7061,7 @@
   "file": "waterfront_epich-yacht--fully-furnished-_mcbuild_x.schem"
  },
  {
-  "id": 321,
+  "id": 308,
   "slug": "7376-modern-house",
   "name": "Modern house",
   "category": "residential",
@@ -7383,7 +7084,7 @@
   "file": "residential_modern-house_mcbuild_x-6.schem"
  },
  {
-  "id": 322,
+  "id": 309,
   "slug": "7378-futuristic-house",
   "name": "Futuristic house",
   "category": "residential",
@@ -7406,7 +7107,7 @@
   "file": "residential_futuristic-house_mcbuild_x-2.schem"
  },
  {
-  "id": 323,
+  "id": 310,
   "slug": "7518-modern-house",
   "name": "Modern house",
   "category": "residential",
@@ -7429,7 +7130,7 @@
   "file": "residential_modern-house_mcbuild_x-7.schem"
  },
  {
-  "id": 324,
+  "id": 311,
   "slug": "7717-oakheart-house-ii",
   "name": "Oakheart House II",
   "category": "residential",
@@ -7452,7 +7153,7 @@
   "file": "residential_oakheart-house-ii_mcbuild_x.schem"
  },
  {
-  "id": 325,
+  "id": 312,
   "slug": "7801-panda-express-restaurant",
   "name": "Panda express restaurant",
   "category": "commercial",
@@ -7475,7 +7176,7 @@
   "file": "commercial_panda-express-restaurant_mcbuild_x.schem"
  },
  {
-  "id": 326,
+  "id": 313,
   "slug": "7827-large-traditional-modern-house",
   "name": "Large traditional modern house",
   "category": "residential",
@@ -7498,7 +7199,7 @@
   "file": "residential_large-traditional-modern-house_mcbuild_x.schem"
  },
  {
-  "id": 327,
+  "id": 314,
   "slug": "7863-town",
   "name": "Town: &quot;Portland&quot;",
   "category": "waterfront",
@@ -7521,30 +7222,7 @@
   "file": "waterfront_town_mcbuild_x.schem"
  },
  {
-  "id": 328,
-  "slug": "788-pokemon-stadium-super-smash-brawl",
-  "name": "Pokemon Stadium Super Smash Brawl",
-  "category": "public",
-  "source": "mcbuild",
-  "page_url": "https://mcbuild.org/schematics/788:pokemon-stadium-super-smash-brawl",
-  "download_url": "https://mcbuild.org/download/788?format=schem",
-  "author": "",
-  "minecraft_version": "",
-  "format": ".schem v2",
-  "width": 112,
-  "height": 45,
-  "length": 72,
-  "blocks": 39421,
-  "file_size": 4233,
-  "hash": "0fde1ffb0da755e54863f0c259c4e3464c8e358e3feebdf04f93853d5a024aa4",
-  "unsupported_entries": 0,
-  "simplified_entries": 0,
-  "status": "verified",
-  "notes": "",
-  "file": "public_pokemon-stadium-super-smash-brawl_mcbuild_x.schem"
- },
- {
-  "id": 329,
+  "id": 315,
   "slug": "7884-large-modern-house",
   "name": "Large modern house",
   "category": "residential",
@@ -7567,7 +7245,7 @@
   "file": "residential_large-modern-house_mcbuild_x-2.schem"
  },
  {
-  "id": 330,
+  "id": 316,
   "slug": "7924-modern-house",
   "name": "Modern house",
   "category": "residential",
@@ -7590,7 +7268,7 @@
   "file": "residential_modern-house_mcbuild_x-8.schem"
  },
  {
-  "id": 331,
+  "id": 317,
   "slug": "7942-futuristic-mansion",
   "name": "Futuristic mansion",
   "category": "residential",
@@ -7613,7 +7291,7 @@
   "file": "residential_futuristic-mansion_mcbuild_x.schem"
  },
  {
-  "id": 332,
+  "id": 318,
   "slug": "7998-light-house--with-working-lights-",
   "name": "Light House (with working lights)",
   "category": "residential",
@@ -7636,7 +7314,7 @@
   "file": "residential_light-house--with-working-lights-_mcbuild_x.schem"
  },
  {
-  "id": 333,
+  "id": 319,
   "slug": "8007-alexandar-v-luxury-yacht",
   "name": "Alexandar V Luxury Yacht",
   "category": "waterfront",
@@ -7659,7 +7337,7 @@
   "file": "waterfront_alexandar-v-luxury-yacht_mcbuild_x.schem"
  },
  {
-  "id": 334,
+  "id": 320,
   "slug": "8042-modern-house",
   "name": "Modern house",
   "category": "residential",
@@ -7682,7 +7360,7 @@
   "file": "residential_modern-house_mcbuild_x-9.schem"
  },
  {
-  "id": 335,
+  "id": 321,
   "slug": "8322-small-modern-house",
   "name": "Small modern house",
   "category": "residential",
@@ -7705,7 +7383,7 @@
   "file": "residential_small-modern-house_mcbuild_x.schem"
  },
  {
-  "id": 336,
+  "id": 322,
   "slug": "840-steampunk-bridge",
   "name": "Steampunk Bridge",
   "category": "bridges",
@@ -7728,30 +7406,7 @@
   "file": "bridges_steampunk-bridge_mcbuild_x.schem"
  },
  {
-  "id": 337,
-  "slug": "8511-the-tower-of-the-orb",
-  "name": "The Tower Of The Orb",
-  "category": "towers",
-  "source": "mcbuild",
-  "page_url": "https://mcbuild.org/schematics/8511:the-tower-of-the-orb",
-  "download_url": "https://mcbuild.org/download/8511?format=schem",
-  "author": "",
-  "minecraft_version": "",
-  "format": ".schem v2",
-  "width": 79,
-  "height": 102,
-  "length": 76,
-  "blocks": 25095,
-  "file_size": 11164,
-  "hash": "1865226d99c18ba136a0e5f58902ce9a93ab11789acfd80b24e2076a9daf0fe4",
-  "unsupported_entries": 2,
-  "simplified_entries": 3,
-  "status": "verified-tall",
-  "notes": "height clipped at 64 in game",
-  "file": "towers_the-tower-of-the-orb_mcbuild_x.schem"
- },
- {
-  "id": 338,
+  "id": 323,
   "slug": "8589-large-modern-house",
   "name": "Large modern house",
   "category": "residential",
@@ -7774,7 +7429,7 @@
   "file": "residential_large-modern-house_mcbuild_x-3.schem"
  },
  {
-  "id": 339,
+  "id": 324,
   "slug": "8838-modern-house",
   "name": "Modern House",
   "category": "residential",
@@ -7797,7 +7452,7 @@
   "file": "residential_modern-house_mcbuild_x-10.schem"
  },
  {
-  "id": 340,
+  "id": 325,
   "slug": "8930-great-garden-detailed",
   "name": "Great garden detailed",
   "category": "parks",
@@ -7820,7 +7475,7 @@
   "file": "parks_great-garden-detailed_mcbuild_x.schem"
  },
  {
-  "id": 341,
+  "id": 326,
   "slug": "9027-ancient-lightower",
   "name": "Ancient lightower",
   "category": "towers",
@@ -7843,7 +7498,7 @@
   "file": "towers_ancient-lightower_mcbuild_x.schem"
  },
  {
-  "id": 342,
+  "id": 327,
   "slug": "9044-petronas-twin-towers--kuala-lumpur--malaysia",
   "name": "Petronas Twin Towers, Kuala Lumpur, Malaysia",
   "category": "towers",
@@ -7866,7 +7521,7 @@
   "file": "towers_petronas-twin-towers--kuala-lumpur--malaysia_mcbuild_x.schem"
  },
  {
-  "id": 343,
+  "id": 328,
   "slug": "905-mall-shop",
   "name": "Mall Shop",
   "category": "commercial",
@@ -7889,7 +7544,7 @@
   "file": "commercial_mall-shop_mcbuild_x.schem"
  },
  {
-  "id": 344,
+  "id": 329,
   "slug": "9124-sugar-can-factory",
   "name": "Sugar can factory",
   "category": "industrial",
@@ -7912,30 +7567,7 @@
   "file": "industrial_sugar-can-factory_mcbuild_x.schem"
  },
  {
-  "id": 345,
-  "slug": "9234-tower-of-the-blue-flame",
-  "name": "Tower of the Blue Flame",
-  "category": "towers",
-  "source": "mcbuild",
-  "page_url": "https://mcbuild.org/schematics/9234:tower-of-the-blue-flame",
-  "download_url": "https://mcbuild.org/download/9234?format=schem",
-  "author": "",
-  "minecraft_version": "",
-  "format": ".schem v2",
-  "width": 12,
-  "height": 66,
-  "length": 13,
-  "blocks": 1942,
-  "file_size": 1664,
-  "hash": "81cfd91d13ffb9c6e2581b4282a0f54a2cbfc294f78d2cdc6043e754d35263b8",
-  "unsupported_entries": 4,
-  "simplified_entries": 5,
-  "status": "verified-tall",
-  "notes": "height clipped at 64 in game",
-  "file": "towers_tower-of-the-blue-flame_mcbuild_x.schem"
- },
- {
-  "id": 346,
+  "id": 330,
   "slug": "935-beach-house",
   "name": "Beach House",
   "category": "residential",
@@ -7958,7 +7590,7 @@
   "file": "residential_beach-house_mcbuild_x-2.schem"
  },
  {
-  "id": 347,
+  "id": 331,
   "slug": "9458-big-treehouse",
   "name": "Big treehouse",
   "category": "residential",
@@ -7981,7 +7613,7 @@
   "file": "residential_big-treehouse_mcbuild_x.schem"
  },
  {
-  "id": 348,
+  "id": 332,
   "slug": "9608-mansion",
   "name": "Mansion",
   "category": "residential",
@@ -8004,7 +7636,7 @@
   "file": "residential_mansion_mcbuild_x-3.schem"
  },
  {
-  "id": 349,
+  "id": 333,
   "slug": "9766-great-oak-tree-with-spanish-moss",
   "name": "Great Oak Tree with Spanish Moss",
   "category": "decor",
@@ -8027,7 +7659,7 @@
   "file": "decor_great-oak-tree-with-spanish-moss_mcbuild_x.schem"
  },
  {
-  "id": 350,
+  "id": 334,
   "slug": "1950s-moses-lake-high-school-building",
   "name": "1950s Moses Lake High School Building",
   "category": "public",
@@ -8050,7 +7682,7 @@
   "file": "public_1950s-moses-lake-high-school-building_mc-mod_x.schem"
  },
  {
-  "id": 351,
+  "id": 335,
   "slug": "29-story-modern-parking-garage-structure",
   "name": "29-Story Modern Parking Garage Structure",
   "category": "transport",
@@ -8073,7 +7705,7 @@
   "file": "transport_story-modern-parking-garage-structure_mc-mod_x.schem"
  },
  {
-  "id": 352,
+  "id": 336,
   "slug": "432-park-avenue-skyscraper-replica",
   "name": "432 Park Avenue Skyscraper Replica",
   "category": "roads",
@@ -8096,7 +7728,7 @@
   "file": "roads_park-avenue-skyscraper-replica_mc-mod_x.schem"
  },
  {
-  "id": 353,
+  "id": 337,
   "slug": "a-walkable-bridge",
   "name": "A Walkable Bridge",
   "category": "bridges",
@@ -8119,7 +7751,7 @@
   "file": "bridges_a-walkable-bridge_mc-mod_x.schem"
  },
  {
-  "id": 354,
+  "id": 338,
   "slug": "addexios-sausage-kiosk",
   "name": "Addexio&#8217;s Sausage Kiosk",
   "category": "commercial",
@@ -8142,7 +7774,7 @@
   "file": "commercial_addexios-sausage-kiosk_mc-mod_x.schem"
  },
  {
-  "id": 355,
+  "id": 339,
   "slug": "age-of-empires-sentry-tower",
   "name": "Age of Empires Sentry Tower",
   "category": "towers",
@@ -8165,7 +7797,7 @@
   "file": "towers_age-of-empires-sentry-tower_mc-mod_x.schem"
  },
  {
-  "id": 356,
+  "id": 340,
   "slug": "aik-bank-building",
   "name": "AIK Bank Building",
   "category": "commercial",
@@ -8188,7 +7820,7 @@
   "file": "commercial_aik-bank-building_mc-mod_x.schem"
  },
  {
-  "id": 357,
+  "id": 341,
   "slug": "aik-house-03-modern-residence",
   "name": "Aik House 03 Modern Residence",
   "category": "residential",
@@ -8211,7 +7843,7 @@
   "file": "residential_aik-house-03-modern-residence_mc-mod_x.schem"
  },
  {
-  "id": 358,
+  "id": 342,
   "slug": "aik-house-16-large-quartz-city-residence",
   "name": "AIK House 16: Large Quartz City Residence",
   "category": "residential",
@@ -8234,7 +7866,7 @@
   "file": "residential_aik-house-16-large-quartz-city-residence_mc-mod_x.schem"
  },
  {
-  "id": 359,
+  "id": 343,
   "slug": "aik-weaving-factory",
   "name": "AIK Weaving Factory",
   "category": "industrial",
@@ -8257,7 +7889,7 @@
   "file": "industrial_aik-weaving-factory_mc-mod_x.schem"
  },
  {
-  "id": 360,
+  "id": 344,
   "slug": "airport-service-truck",
   "name": "Airport Service Truck",
   "category": "waterfront",
@@ -8280,7 +7912,7 @@
   "file": "waterfront_airport-service-truck_mc-mod_x.schem"
  },
  {
-  "id": 361,
+  "id": 345,
   "slug": "ancient-fountain",
   "name": "Ancient Fountain",
   "category": "parks",
@@ -8303,7 +7935,7 @@
   "file": "parks_ancient-fountain_mc-mod_x.schem"
  },
  {
-  "id": 362,
+  "id": 346,
   "slug": "ancient-greek-library-structure",
   "name": "Ancient Greek Library Structure",
   "category": "public",
@@ -8326,7 +7958,7 @@
   "file": "public_ancient-greek-library-structure_mc-mod_x.schem"
  },
  {
-  "id": 363,
+  "id": 347,
   "slug": "ancient-stone-archway-bridge",
   "name": "Ancient Stone Archway Bridge",
   "category": "bridges",
@@ -8349,7 +7981,7 @@
   "file": "bridges_ancient-stone-archway-bridge_mc-mod_x.schem"
  },
  {
-  "id": 364,
+  "id": 348,
   "slug": "apartment-building-replica",
   "name": "Apartment Building Replica",
   "category": "residential",
@@ -8372,7 +8004,7 @@
   "file": "residential_apartment-building-replica_mc-mod_x.schem"
  },
  {
-  "id": 365,
+  "id": 349,
   "slug": "apartment-building-under-construction",
   "name": "Apartment Building Under Construction",
   "category": "residential",
@@ -8395,7 +8027,7 @@
   "file": "residential_apartment-building-under-construction_mc-mod_x.schem"
  },
  {
-  "id": 366,
+  "id": 350,
   "slug": "apartment-building-with-colorful-block-design",
   "name": "Apartment Building With Colorful Block Design",
   "category": "residential",
@@ -8418,7 +8050,7 @@
   "file": "residential_apartment-building-with-colorful-block-desig_mc-mod_x.schem"
  },
  {
-  "id": 367,
+  "id": 351,
   "slug": "apartment-building-with-shop",
   "name": "Apartment Building With Shop",
   "category": "residential",
@@ -8441,7 +8073,7 @@
   "file": "residential_apartment-building-with-shop_mc-mod_x.schem"
  },
  {
-  "id": 368,
+  "id": 352,
   "slug": "asian-bridge",
   "name": "Simple Asian Bridge",
   "category": "bridges",
@@ -8464,7 +8096,7 @@
   "file": "bridges_asian-bridge_mc-mod_x.schem"
  },
  {
-  "id": 369,
+  "id": 353,
   "slug": "asian-hotel-building",
   "name": "Asian Hotel Building",
   "category": "commercial",
@@ -8487,7 +8119,7 @@
   "file": "commercial_asian-hotel-building_mc-mod_x.schem"
  },
  {
-  "id": 370,
+  "id": 354,
   "slug": "asian-pagoda-tower-3",
   "name": "Asian Pagoda Tower",
   "category": "towers",
@@ -8510,30 +8142,7 @@
   "file": "towers_asian-pagoda-tower-3_mc-mod_x.schem"
  },
  {
-  "id": 371,
-  "slug": "asus-professional-workstation-motherboard-schematic",
-  "name": "ASUS Professional Workstation Motherboard Schematic",
-  "category": "transport",
-  "source": "mc-mod",
-  "page_url": "https://www.mc-mod.net/schematics/asus-professional-workstation-motherboard-schematic/",
-  "download_url": "https://dl2.9minecraft.net/dl2storage800/ASUS-Professional-Workstation-Motherboard-Schematic.schematic",
-  "author": "",
-  "minecraft_version": "",
-  "format": ".schematic",
-  "width": 128,
-  "height": 21,
-  "length": 150,
-  "blocks": 54870,
-  "file_size": 15723,
-  "hash": "0dff42a8b3ad8eecb7d0857ad4a4b9b7b2ff83a1a740c81b8e08eae2b3e67f90",
-  "unsupported_entries": 1800,
-  "simplified_entries": 28,
-  "status": "verified",
-  "notes": "",
-  "file": "transport_asus-professional-workstation-motherboard-sc_mc-mod_x.schem"
- },
- {
-  "id": 372,
+  "id": 355,
   "slug": "automatic-nighttime-streetlight",
   "name": "Automatic Nighttime Streetlight",
   "category": "roads",
@@ -8556,7 +8165,7 @@
   "file": "roads_automatic-nighttime-streetlight_mc-mod_x.schem"
  },
  {
-  "id": 373,
+  "id": 356,
   "slug": "automotive-tuning-workshop",
   "name": "Automotive Tuning Workshop",
   "category": "commercial",
@@ -8579,7 +8188,7 @@
   "file": "commercial_automotive-tuning-workshop_mc-mod_x.schem"
  },
  {
-  "id": 374,
+  "id": 357,
   "slug": "avalon-manor-house",
   "name": "Avalon Manor House",
   "category": "residential",
@@ -8602,7 +8211,7 @@
   "file": "residential_avalon-manor-house_mc-mod_x.schem"
  },
  {
-  "id": 375,
+  "id": 358,
   "slug": "avengers-tower-build",
   "name": "Avengers Tower Build",
   "category": "towers",
@@ -8625,7 +8234,7 @@
   "file": "towers_avengers-tower-build_mc-mod_x.schem"
  },
  {
-  "id": 376,
+  "id": 359,
   "slug": "average-decor-house",
   "name": "Average Decor House",
   "category": "residential",
@@ -8648,7 +8257,7 @@
   "file": "residential_average-decor-house_mc-mod_x.schem"
  },
  {
-  "id": 377,
+  "id": 360,
   "slug": "bank-and-financial-building",
   "name": "Bank and Financial Building",
   "category": "commercial",
@@ -8671,7 +8280,7 @@
   "file": "commercial_bank-and-financial-building_mc-mod_x.schem"
  },
  {
-  "id": 378,
+  "id": 361,
   "slug": "baroque-quartz-villa-with-garden",
   "name": "Baroque Quartz Villa With Garden",
   "category": "residential",
@@ -8694,7 +8303,7 @@
   "file": "residential_baroque-quartz-villa-with-garden_mc-mod_x.schem"
  },
  {
-  "id": 379,
+  "id": 362,
   "slug": "basalt-block-house",
   "name": "Basalt Block House",
   "category": "residential",
@@ -8717,7 +8326,7 @@
   "file": "residential_basalt-block-house_mc-mod_x.schem"
  },
  {
-  "id": 380,
+  "id": 363,
   "slug": "baseball-stadium",
   "name": "Baseball Stadium",
   "category": "public",
@@ -8740,7 +8349,7 @@
   "file": "public_baseball-stadium_mc-mod_x.schem"
  },
  {
-  "id": 381,
+  "id": 364,
   "slug": "basic-lighthouse-structure",
   "name": "Basic Lighthouse Structure",
   "category": "residential",
@@ -8763,7 +8372,7 @@
   "file": "residential_basic-lighthouse-structure_mc-mod_x.schem"
  },
  {
-  "id": 382,
+  "id": 365,
   "slug": "beautiful-fountain",
   "name": "Beautiful Fountain",
   "category": "parks",
@@ -8786,7 +8395,7 @@
   "file": "parks_beautiful-fountain_mc-mod_x.schem"
  },
  {
-  "id": 383,
+  "id": 366,
   "slug": "big-house-11-modern-complex",
   "name": "Big House 11 Modern Complex",
   "category": "residential",
@@ -8809,30 +8418,7 @@
   "file": "residential_big-house-11-modern-complex_mc-mod_x.schem"
  },
  {
-  "id": 384,
-  "slug": "big-minion-house",
-  "name": "Big Minion House",
-  "category": "residential",
-  "source": "mc-mod",
-  "page_url": "https://www.mc-mod.net/schematics/big-minion-house/",
-  "download_url": "https://dl2.9minecraft.net/dl2storage800/Big-Minion-House.schematic",
-  "author": "",
-  "minecraft_version": "",
-  "format": ".schematic",
-  "width": 55,
-  "height": 119,
-  "length": 48,
-  "blocks": 33026,
-  "file_size": 7023,
-  "hash": "869c28e0e8fe15a3843bf0add98bf1a91b60940be2cffdaa4ab72b2037306ef1",
-  "unsupported_entries": 0,
-  "simplified_entries": 0,
-  "status": "verified-tall",
-  "notes": "height clipped at 64 in game",
-  "file": "residential_big-minion-house_mc-mod_x.schem"
- },
- {
-  "id": 385,
+  "id": 367,
   "slug": "blocks-ahoy-hotel-towering-presidential-suite",
   "name": "Blocks Ahoy Hotel &#8211; Towering Presidential Suite",
   "category": "towers",
@@ -8855,7 +8441,7 @@
   "file": "towers_blocks-ahoy-hotel-towering-presidential-suit_mc-mod_x.schem"
  },
  {
-  "id": 386,
+  "id": 368,
   "slug": "blue-and-white-lighthouse-structure",
   "name": "Blue And White Lighthouse Structure",
   "category": "residential",
@@ -8878,7 +8464,7 @@
   "file": "residential_blue-and-white-lighthouse-structure_mc-mod_x.schem"
  },
  {
-  "id": 387,
+  "id": 369,
   "slug": "blue-orange-apartment-building-progress",
   "name": "Blue-Orange Apartment Building Progress",
   "category": "residential",
@@ -8901,7 +8487,7 @@
   "file": "residential_blue-orange-apartment-building-progress_mc-mod_x.schem"
  },
  {
-  "id": 388,
+  "id": 370,
   "slug": "blue-orange-apartment-building-under-construction",
   "name": "Blue Orange Apartment Building Under Construction",
   "category": "residential",
@@ -8924,7 +8510,7 @@
   "file": "residential_blue-orange-apartment-building-under-constru_mc-mod_x.schem"
  },
  {
-  "id": 389,
+  "id": 371,
   "slug": "blue-palace-furnished-residence",
   "name": "Blue Palace Furnished Residence",
   "category": "residential",
@@ -8947,30 +8533,7 @@
   "file": "residential_blue-palace-furnished-residence_mc-mod_x.schem"
  },
  {
-  "id": 390,
-  "slug": "bridge-test-schematic",
-  "name": "Bridge Test Schematic",
-  "category": "bridges",
-  "source": "mc-mod",
-  "page_url": "https://www.mc-mod.net/schematics/bridge-test-schematic/",
-  "download_url": "https://dl2.9minecraft.net/dl2storage800/Bridge-Test-Schematic.schematic",
-  "author": "",
-  "minecraft_version": "",
-  "format": ".schematic",
-  "width": 27,
-  "height": 16,
-  "length": 8,
-  "blocks": 291,
-  "file_size": 734,
-  "hash": "42664a4961c54d7dc5ad06a26c6fc45d646efc310770459487270b43bbd4e1d0",
-  "unsupported_entries": 0,
-  "simplified_entries": 93,
-  "status": "verified",
-  "notes": "",
-  "file": "bridges_bridge-test-schematic_mc-mod_x.schem"
- },
- {
-  "id": 391,
+  "id": 372,
   "slug": "building-contractors-office",
   "name": "Building Contractors Office",
   "category": "towers",
@@ -8993,7 +8556,7 @@
   "file": "towers_building-contractors-office_mc-mod_x.schem"
  },
  {
-  "id": 392,
+  "id": 373,
   "slug": "candy-cane-road-light",
   "name": "Candy Cane Road Light",
   "category": "roads",
@@ -9016,7 +8579,7 @@
   "file": "roads_candy-cane-road-light_mc-mod_x.schem"
  },
  {
-  "id": 393,
+  "id": 374,
   "slug": "central-fountain-maze-schematic",
   "name": "Central Fountain Maze Schematic",
   "category": "parks",
@@ -9039,7 +8602,7 @@
   "file": "parks_central-fountain-maze-schematic_mc-mod_x.schem"
  },
  {
-  "id": 394,
+  "id": 375,
   "slug": "ceramic-production-factory",
   "name": "Ceramic Production Factory",
   "category": "industrial",
@@ -9062,7 +8625,7 @@
   "file": "industrial_ceramic-production-factory_mc-mod_x.schem"
  },
  {
-  "id": 395,
+  "id": 376,
   "slug": "charming-cottage-with-living-area-and-garage",
   "name": "Charming Cottage with Living Area and Garage",
   "category": "commercial",
@@ -9085,7 +8648,7 @@
   "file": "commercial_charming-cottage-with-living-area-and-garage_mc-mod_x.schem"
  },
  {
-  "id": 396,
+  "id": 377,
   "slug": "charming-small-house-shop",
   "name": "Charming Small House Shop",
   "category": "residential",
@@ -9108,7 +8671,7 @@
   "file": "residential_charming-small-house-shop_mc-mod_x.schem"
  },
  {
-  "id": 397,
+  "id": 378,
   "slug": "chest-shaped-storage-warehouse",
   "name": "Chest-Shaped Storage Warehouse",
   "category": "residential",
@@ -9131,7 +8694,7 @@
   "file": "residential_chest-shaped-storage-warehouse_mc-mod_x.schem"
  },
  {
-  "id": 398,
+  "id": 379,
   "slug": "chest-shop-galleria",
   "name": "Chest Shop Galleria",
   "category": "commercial",
@@ -9154,7 +8717,7 @@
   "file": "commercial_chest-shop-galleria_mc-mod_x.schem"
  },
  {
-  "id": 399,
+  "id": 380,
   "slug": "chiseled-stone-brick-bridge",
   "name": "Chiseled Stone Brick Bridge",
   "category": "bridges",
@@ -9177,7 +8740,7 @@
   "file": "bridges_chiseled-stone-brick-bridge_mc-mod_x.schem"
  },
  {
-  "id": 400,
+  "id": 381,
   "slug": "chrysler-building-skyscraper",
   "name": "Chrysler Building Skyscraper",
   "category": "towers",
@@ -9200,7 +8763,7 @@
   "file": "towers_chrysler-building-skyscraper_mc-mod_x.schem"
  },
  {
-  "id": 401,
+  "id": 382,
   "slug": "city-17-style-apartment-block",
   "name": "City 17 Style Apartment Block",
   "category": "residential",
@@ -9223,7 +8786,7 @@
   "file": "residential_city-17-style-apartment-block_mc-mod_x.schem"
  },
  {
-  "id": 402,
+  "id": 383,
   "slug": "city-hall-building",
   "name": "City Hall Building",
   "category": "decor",
@@ -9246,7 +8809,7 @@
   "file": "decor_city-hall-building_mc-mod_x.schem"
  },
  {
-  "id": 403,
+  "id": 384,
   "slug": "city-hotel-with-penthouses",
   "name": "City Hotel With Penthouses",
   "category": "towers",
@@ -9269,7 +8832,7 @@
   "file": "towers_city-hotel-with-penthouses_mc-mod_x.schem"
  },
  {
-  "id": 404,
+  "id": 385,
   "slug": "city-intersection-crossroads",
   "name": "City Intersection Crossroads",
   "category": "intersections",
@@ -9292,7 +8855,7 @@
   "file": "intersections_city-intersection-crossroads_mc-mod_x.schem"
  },
  {
-  "id": 405,
+  "id": 386,
   "slug": "city-library-building",
   "name": "City Library Building",
   "category": "public",
@@ -9315,7 +8878,7 @@
   "file": "public_city-library-building_mc-mod_x.schem"
  },
  {
-  "id": 406,
+  "id": 387,
   "slug": "city-park-garden",
   "name": "City Park Garden",
   "category": "parks",
@@ -9338,7 +8901,7 @@
   "file": "parks_city-park-garden_mc-mod_x.schem"
  },
  {
-  "id": 407,
+  "id": 388,
   "slug": "city-road-construction-project",
   "name": "City Road Construction Project",
   "category": "roads",
@@ -9361,7 +8924,7 @@
   "file": "roads_city-road-construction-project_mc-mod_x.schem"
  },
  {
-  "id": 408,
+  "id": 389,
   "slug": "classic-lighthouse-tower",
   "name": "Classic Lighthouse Tower",
   "category": "towers",
@@ -9384,7 +8947,7 @@
   "file": "towers_classic-lighthouse-tower_mc-mod_x.schem"
  },
  {
-  "id": 409,
+  "id": 390,
   "slug": "classic-minecraft-lighthouse-decoration-2",
   "name": "Classic Minecraft Lighthouse Decoration",
   "category": "residential",
@@ -9407,7 +8970,7 @@
   "file": "residential_classic-minecraft-lighthouse-decoration-2_mc-mod_x.schem"
  },
  {
-  "id": 410,
+  "id": 391,
   "slug": "classic-museum-building-berlin",
   "name": "Classic Museum Building Berlin",
   "category": "public",
@@ -9430,7 +8993,7 @@
   "file": "public_classic-museum-building-berlin_mc-mod_x.schem"
  },
  {
-  "id": 411,
+  "id": 392,
   "slug": "classic-school-bus-design",
   "name": "Classic School Bus Design",
   "category": "public",
@@ -9453,7 +9016,7 @@
   "file": "public_classic-school-bus-design_mc-mod_x.schem"
  },
  {
-  "id": 412,
+  "id": 393,
   "slug": "classic-train-station-design",
   "name": "Classic Train Station Design",
   "category": "transport",
@@ -9476,7 +9039,7 @@
   "file": "transport_classic-train-station-design_mc-mod_x.schem"
  },
  {
-  "id": 413,
+  "id": 394,
   "slug": "coastal-lighthouse-polished-andesite-stone-bricks",
   "name": "Coastal Lighthouse &#8211; Polished Andesite &amp; Stone Bricks",
   "category": "residential",
@@ -9499,7 +9062,7 @@
   "file": "residential_coastal-lighthouse-polished-andesite-stone-b_mc-mod_x.schem"
  },
  {
-  "id": 414,
+  "id": 395,
   "slug": "coastal-lighthouse-structure",
   "name": "Coastal Lighthouse Structure",
   "category": "residential",
@@ -9522,7 +9085,7 @@
   "file": "residential_coastal-lighthouse-structure_mc-mod_x.schem"
  },
  {
-  "id": 415,
+  "id": 396,
   "slug": "coastal-lighthouse-tower",
   "name": "Coastal Lighthouse Tower",
   "category": "towers",
@@ -9545,30 +9108,7 @@
   "file": "towers_coastal-lighthouse-tower_mc-mod_x.schem"
  },
  {
-  "id": 416,
-  "slug": "cobblestone-and-glass-portal-towers",
-  "name": "Cobblestone and Glass Portal Towers",
-  "category": "towers",
-  "source": "mc-mod",
-  "page_url": "https://www.mc-mod.net/schematics/cobblestone-and-glass-portal-towers/",
-  "download_url": "https://dl2.9minecraft.net/dl2storage800/Cobblestone-and-Glass-Portal-Towers.schematic",
-  "author": "",
-  "minecraft_version": "",
-  "format": ".schematic",
-  "width": 74,
-  "height": 71,
-  "length": 92,
-  "blocks": 28350,
-  "file_size": 14597,
-  "hash": "bcbc67721c106609c90bc286d855e38bb4cc31637d504771f65db6ce7ebc3d10",
-  "unsupported_entries": 29,
-  "simplified_entries": 0,
-  "status": "verified-tall",
-  "notes": "height clipped at 64 in game",
-  "file": "towers_cobblestone-and-glass-portal-towers_mc-mod_x.schem"
- },
- {
-  "id": 417,
+  "id": 397,
   "slug": "cobblestone-house-design",
   "name": "Cobblestone House Design",
   "category": "residential",
@@ -9591,7 +9131,7 @@
   "file": "residential_cobblestone-house-design_mc-mod_x.schem"
  },
  {
-  "id": 418,
+  "id": 398,
   "slug": "communist-apartment-block",
   "name": "Communist Apartment Block",
   "category": "residential",
@@ -9614,7 +9154,7 @@
   "file": "residential_communist-apartment-block_mc-mod_x.schem"
  },
  {
-  "id": 419,
+  "id": 399,
   "slug": "compact-football-stadium",
   "name": "Compact Football Stadium",
   "category": "public",
@@ -9637,7 +9177,7 @@
   "file": "public_compact-football-stadium_mc-mod_x.schem"
  },
  {
-  "id": 420,
+  "id": 400,
   "slug": "compact-highway-gas-station",
   "name": "Compact Highway Gas Station",
   "category": "roads",
@@ -9660,7 +9200,7 @@
   "file": "roads_compact-highway-gas-station_mc-mod_x.schem"
  },
  {
-  "id": 421,
+  "id": 401,
   "slug": "compact-hospital-structure",
   "name": "Compact Hospital Structure",
   "category": "public",
@@ -9683,7 +9223,7 @@
   "file": "public_compact-hospital-structure_mc-mod_x.schem"
  },
  {
-  "id": 422,
+  "id": 402,
   "slug": "compact-quartz-modern-house",
   "name": "Compact Quartz Modern House",
   "category": "residential",
@@ -9706,7 +9246,7 @@
   "file": "residential_compact-quartz-modern-house_mc-mod_x.schem"
  },
  {
-  "id": 423,
+  "id": 403,
   "slug": "compact-two-story-office-building",
   "name": "Compact Two-Story Office Building",
   "category": "towers",
@@ -9729,7 +9269,7 @@
   "file": "towers_compact-two-story-office-building_mc-mod_x.schem"
  },
  {
-  "id": 424,
+  "id": 404,
   "slug": "compressed-cobblestone-factory",
   "name": "Compressed Cobblestone Factory",
   "category": "industrial",
@@ -9752,7 +9292,7 @@
   "file": "industrial_compressed-cobblestone-factory_mc-mod_x.schem"
  },
  {
-  "id": 425,
+  "id": 405,
   "slug": "concrete-factory-structure",
   "name": "Concrete Factory Structure",
   "category": "industrial",
@@ -9775,7 +9315,7 @@
   "file": "industrial_concrete-factory-structure_mc-mod_x.schem"
  },
  {
-  "id": 426,
+  "id": 406,
   "slug": "concrete-warehouse-structure",
   "name": "Concrete Warehouse Structure",
   "category": "residential",
@@ -9798,7 +9338,7 @@
   "file": "residential_concrete-warehouse-structure_mc-mod_x.schem"
  },
  {
-  "id": 427,
+  "id": 407,
   "slug": "corporate-office-building-2",
   "name": "Large Corporate Office Building",
   "category": "towers",
@@ -9821,7 +9361,7 @@
   "file": "towers_corporate-office-building-2_mc-mod_x.schem"
  },
  {
-  "id": 428,
+  "id": 408,
   "slug": "corporate-office-building",
   "name": "Corporate Office Building",
   "category": "towers",
@@ -9844,7 +9384,7 @@
   "file": "towers_corporate-office-building_mc-mod_x.schem"
  },
  {
-  "id": 429,
+  "id": 409,
   "slug": "country-library-building",
   "name": "Country Library Building",
   "category": "public",
@@ -9867,7 +9407,7 @@
   "file": "public_country-library-building_mc-mod_x.schem"
  },
  {
-  "id": 430,
+  "id": 410,
   "slug": "covered-minecraft-bridge",
   "name": "Covered Minecraft Bridge",
   "category": "bridges",
@@ -9890,7 +9430,7 @@
   "file": "bridges_covered-minecraft-bridge_mc-mod_x.schem"
  },
  {
-  "id": 431,
+  "id": 411,
   "slug": "cozy-medium-house-with-garden",
   "name": "Cozy Medium House With Garden",
   "category": "residential",
@@ -9913,7 +9453,7 @@
   "file": "residential_cozy-medium-house-with-garden_mc-mod_x.schem"
  },
  {
-  "id": 432,
+  "id": 412,
   "slug": "cozy-small-hotel-building",
   "name": "Cozy Small Hotel Building",
   "category": "towers",
@@ -9936,7 +9476,7 @@
   "file": "towers_cozy-small-hotel-building_mc-mod_x.schem"
  },
  {
-  "id": 433,
+  "id": 413,
   "slug": "cozy-small-house-with-attic-and-basement",
   "name": "Cozy Small House with Attic and Basement",
   "category": "residential",
@@ -9959,7 +9499,7 @@
   "file": "residential_cozy-small-house-with-attic-and-basement_mc-mod_x.schem"
  },
  {
-  "id": 434,
+  "id": 414,
   "slug": "cyan-tower-build",
   "name": "Cyan Tower Build",
   "category": "towers",
@@ -9982,7 +9522,7 @@
   "file": "towers_cyan-tower-build_mc-mod_x.schem"
  },
  {
-  "id": 435,
+  "id": 415,
   "slug": "dark-luminous-night-tower",
   "name": "Dark Luminous Night Tower",
   "category": "towers",
@@ -10005,7 +9545,7 @@
   "file": "towers_dark-luminous-night-tower_mc-mod_x.schem"
  },
  {
-  "id": 436,
+  "id": 416,
   "slug": "desert-sand-tower",
   "name": "Desert Sand Tower",
   "category": "towers",
@@ -10028,7 +9568,7 @@
   "file": "towers_desert-sand-tower_mc-mod_x.schem"
  },
  {
-  "id": 437,
+  "id": 417,
   "slug": "dirt-church-structure",
   "name": "Dirt Church Structure",
   "category": "public",
@@ -10051,7 +9591,7 @@
   "file": "public_dirt-church-structure_mc-mod_x.schem"
  },
  {
-  "id": 438,
+  "id": 418,
   "slug": "doughnut-shop-building",
   "name": "Doughnut Shop Building",
   "category": "commercial",
@@ -10074,7 +9614,7 @@
   "file": "commercial_doughnut-shop-building_mc-mod_x.schem"
  },
  {
-  "id": 439,
+  "id": 419,
   "slug": "dreamy-fountain-build",
   "name": "Dreamy Fountain Build",
   "category": "parks",
@@ -10097,7 +9637,7 @@
   "file": "parks_dreamy-fountain-build_mc-mod_x.schem"
  },
  {
-  "id": 440,
+  "id": 420,
   "slug": "early-20th-century-schoolhouse",
   "name": "Early 20th Century Schoolhouse",
   "category": "residential",
@@ -10120,7 +9660,7 @@
   "file": "residential_early-20th-century-schoolhouse_mc-mod_x.schem"
  },
  {
-  "id": 441,
+  "id": 421,
   "slug": "early-american-library-building",
   "name": "Early American Library Building",
   "category": "public",
@@ -10143,7 +9683,7 @@
   "file": "public_early-american-library-building_mc-mod_x.schem"
  },
  {
-  "id": 442,
+  "id": 422,
   "slug": "eight-story-hotel",
   "name": "Eight Story Hotel",
   "category": "towers",
@@ -10166,7 +9706,7 @@
   "file": "towers_eight-story-hotel_mc-mod_x.schem"
  },
  {
-  "id": 443,
+  "id": 423,
   "slug": "eldorado-house-lakeside-residence",
   "name": "Eldorado House Lakeside Residence",
   "category": "residential",
@@ -10189,7 +9729,7 @@
   "file": "residential_eldorado-house-lakeside-residence_mc-mod_x.schem"
  },
  {
-  "id": 444,
+  "id": 424,
   "slug": "eldwyn-library-structure",
   "name": "Eldwyn Library Structure",
   "category": "public",
@@ -10212,7 +9752,7 @@
   "file": "public_eldwyn-library-structure_mc-mod_x.schem"
  },
  {
-  "id": 445,
+  "id": 425,
   "slug": "elegant-city-hall-for-small-towns",
   "name": "Elegant City Hall For Small Towns",
   "category": "commercial",
@@ -10235,7 +9775,7 @@
   "file": "commercial_elegant-city-hall-for-small-towns_mc-mod_x.schem"
  },
  {
-  "id": 446,
+  "id": 426,
   "slug": "elegant-grand-hotel",
   "name": "Elegant Grand Hotel",
   "category": "towers",
@@ -10258,7 +9798,7 @@
   "file": "towers_elegant-grand-hotel_mc-mod_x.schem"
  },
  {
-  "id": 447,
+  "id": 427,
   "slug": "elegant-hotel-with-bar-and-dining",
   "name": "Elegant Hotel With Bar And Dining",
   "category": "commercial",
@@ -10281,7 +9821,7 @@
   "file": "commercial_elegant-hotel-with-bar-and-dining_mc-mod_x.schem"
  },
  {
-  "id": 448,
+  "id": 428,
   "slug": "elegant-marble-bridge-design",
   "name": "Elegant Marble Bridge Design",
   "category": "bridges",
@@ -10304,7 +9844,7 @@
   "file": "bridges_elegant-marble-bridge-design_mc-mod_x.schem"
  },
  {
-  "id": 449,
+  "id": 429,
   "slug": "elegant-modern-office-tower",
   "name": "Elegant Modern Office Tower",
   "category": "towers",
@@ -10327,7 +9867,7 @@
   "file": "towers_elegant-modern-office-tower_mc-mod_x.schem"
  },
  {
-  "id": 450,
+  "id": 430,
   "slug": "elegant-quartz-fountain",
   "name": "Elegant Quartz Fountain",
   "category": "parks",
@@ -10350,7 +9890,7 @@
   "file": "parks_elegant-quartz-fountain_mc-mod_x.schem"
  },
  {
-  "id": 451,
+  "id": 431,
   "slug": "elegant-quartz-water-fountain",
   "name": "Elegant Quartz Water Fountain",
   "category": "parks",
@@ -10373,7 +9913,7 @@
   "file": "parks_elegant-quartz-water-fountain_mc-mod_x.schem"
  },
  {
-  "id": 452,
+  "id": 432,
   "slug": "elementary-school-building",
   "name": "Elementary School Building",
   "category": "public",
@@ -10396,7 +9936,7 @@
   "file": "public_elementary-school-building_mc-mod_x.schem"
  },
  {
-  "id": 453,
+  "id": 433,
   "slug": "elevated-metro-station-building",
   "name": "Elevated Metro Station Building",
   "category": "transport",
@@ -10419,7 +9959,7 @@
   "file": "transport_elevated-metro-station-building_mc-mod_x.schem"
  },
  {
-  "id": 454,
+  "id": 434,
   "slug": "elevated-metro-station-exterior",
   "name": "Elevated Metro Station Exterior",
   "category": "transport",
@@ -10442,7 +9982,7 @@
   "file": "transport_elevated-metro-station-exterior_mc-mod_x.schem"
  },
  {
-  "id": 455,
+  "id": 435,
   "slug": "elevated-metro-station-with-side-platform",
   "name": "Elevated Metro Station With Side Platform",
   "category": "transport",
@@ -10465,7 +10005,7 @@
   "file": "transport_elevated-metro-station-with-side-platform_mc-mod_x.schem"
  },
  {
-  "id": 456,
+  "id": 436,
   "slug": "elevated-railway-station",
   "name": "Elevated Railway Station",
   "category": "transport",
@@ -10488,7 +10028,7 @@
   "file": "transport_elevated-railway-station_mc-mod_x.schem"
  },
  {
-  "id": 457,
+  "id": 437,
   "slug": "emerald-skyscraper-tower",
   "name": "Emerald Skyscraper Tower",
   "category": "towers",
@@ -10511,7 +10051,7 @@
   "file": "towers_emerald-skyscraper-tower_mc-mod_x.schem"
  },
  {
-  "id": 458,
+  "id": 438,
   "slug": "essentialsx-shop-setup",
   "name": "EssentialsX Shop Setup",
   "category": "commercial",
@@ -10534,7 +10074,7 @@
   "file": "commercial_essentialsx-shop-setup_mc-mod_x.schem"
  },
  {
-  "id": 459,
+  "id": 439,
   "slug": "factory-hall-2-0",
   "name": "Factory Hall 2.0",
   "category": "industrial",
@@ -10557,7 +10097,7 @@
   "file": "industrial_factory-hall-2-0_mc-mod_x.schem"
  },
  {
-  "id": 460,
+  "id": 440,
   "slug": "fallout-3-inspired-overpass-ramp",
   "name": "Fallout 3 Inspired Overpass Ramp",
   "category": "bridges",
@@ -10580,7 +10120,7 @@
   "file": "bridges_fallout-3-inspired-overpass-ramp_mc-mod_x.schem"
  },
  {
-  "id": 461,
+  "id": 441,
   "slug": "fallout-3-inspired-substation",
   "name": "Fallout 3 Inspired Substation",
   "category": "transport",
@@ -10603,7 +10143,7 @@
   "file": "transport_fallout-3-inspired-substation_mc-mod_x.schem"
  },
  {
-  "id": 462,
+  "id": 442,
   "slug": "fallout-3-player-shack-house",
   "name": "Fallout 3 Player Shack House",
   "category": "residential",
@@ -10626,7 +10166,7 @@
   "file": "residential_fallout-3-player-shack-house_mc-mod_x.schem"
  },
  {
-  "id": 463,
+  "id": 443,
   "slug": "fallout-3-power-transmission-tower",
   "name": "Fallout 3 Power Transmission Tower",
   "category": "towers",
@@ -10649,7 +10189,7 @@
   "file": "towers_fallout-3-power-transmission-tower_mc-mod_x.schem"
  },
  {
-  "id": 464,
+  "id": 444,
   "slug": "fallout-3-rubble-house",
   "name": "Fallout 3 Rubble House",
   "category": "residential",
@@ -10672,7 +10212,7 @@
   "file": "residential_fallout-3-rubble-house_mc-mod_x.schem"
  },
  {
-  "id": 465,
+  "id": 445,
   "slug": "fallout-3-springvale-school-building",
   "name": "Fallout 3 Springvale School Building",
   "category": "public",
@@ -10695,7 +10235,7 @@
   "file": "public_fallout-3-springvale-school-building_mc-mod_x.schem"
  },
  {
-  "id": 466,
+  "id": 446,
   "slug": "fallout-3-style-overpass-structure",
   "name": "Fallout 3 Style Overpass Structure",
   "category": "bridges",
@@ -10718,7 +10258,7 @@
   "file": "bridges_fallout-3-style-overpass-structure_mc-mod_x.schem"
  },
  {
-  "id": 467,
+  "id": 447,
   "slug": "fallout-3-style-overpass",
   "name": "Fallout 3 Style Overpass",
   "category": "bridges",
@@ -10741,7 +10281,7 @@
   "file": "bridges_fallout-3-style-overpass_mc-mod_x.schem"
  },
  {
-  "id": 468,
+  "id": 448,
   "slug": "fallout-3-style-power-station",
   "name": "Fallout 3 Style Power Station",
   "category": "transport",
@@ -10764,7 +10304,7 @@
   "file": "transport_fallout-3-style-power-station_mc-mod_x.schem"
  },
  {
-  "id": 469,
+  "id": 449,
   "slug": "fallout-3-water-tower-structure",
   "name": "Fallout 3 Water Tower Structure",
   "category": "towers",
@@ -10787,7 +10327,7 @@
   "file": "towers_fallout-3-water-tower-structure_mc-mod_x.schem"
  },
  {
-  "id": 470,
+  "id": 450,
   "slug": "fire-truck-vehicle",
   "name": "Fire Truck Vehicle",
   "category": "public",
@@ -10810,7 +10350,7 @@
   "file": "public_fire-truck-vehicle_mc-mod_x.schem"
  },
  {
-  "id": 471,
+  "id": 451,
   "slug": "functional-lighthouse",
   "name": "Functional Lighthouse",
   "category": "residential",
@@ -10833,7 +10373,7 @@
   "file": "residential_functional-lighthouse_mc-mod_x.schem"
  },
  {
-  "id": 472,
+  "id": 452,
   "slug": "functional-train-station",
   "name": "Functional Train Station",
   "category": "transport",
@@ -10856,7 +10396,7 @@
   "file": "transport_functional-train-station_mc-mod_x.schem"
  },
  {
-  "id": 473,
+  "id": 453,
   "slug": "furnished-bank-building",
   "name": "Furnished Bank Building",
   "category": "commercial",
@@ -10879,7 +10419,7 @@
   "file": "commercial_furnished-bank-building_mc-mod_x.schem"
  },
  {
-  "id": 474,
+  "id": 454,
   "slug": "furnished-family-home-with-garage",
   "name": "Furnished Family Home with Garage",
   "category": "commercial",
@@ -10902,7 +10442,7 @@
   "file": "commercial_furnished-family-home-with-garage_mc-mod_x.schem"
  },
  {
-  "id": 475,
+  "id": 455,
   "slug": "futuristic-city-parking-lot",
   "name": "Futuristic City Parking Lot",
   "category": "transport",
@@ -10925,7 +10465,7 @@
   "file": "transport_futuristic-city-parking-lot_mc-mod_x.schem"
  },
  {
-  "id": 476,
+  "id": 456,
   "slug": "futuristic-marble-bridge",
   "name": "Futuristic Marble Bridge",
   "category": "bridges",
@@ -10948,7 +10488,7 @@
   "file": "bridges_futuristic-marble-bridge_mc-mod_x.schem"
  },
  {
-  "id": 477,
+  "id": 457,
   "slug": "futuristic-stadium-angle-section",
   "name": "Futuristic Stadium Angle Section",
   "category": "public",
@@ -10971,7 +10511,7 @@
   "file": "public_futuristic-stadium-angle-section_mc-mod_x.schem"
  },
  {
-  "id": 478,
+  "id": 458,
   "slug": "futuristic-stadium-panel",
   "name": "Futuristic Stadium Panel",
   "category": "public",
@@ -10994,7 +10534,7 @@
   "file": "public_futuristic-stadium-panel_mc-mod_x.schem"
  },
  {
-  "id": 479,
+  "id": 459,
   "slug": "futuristic-stadium-wall-section",
   "name": "Futuristic Stadium Wall Section",
   "category": "public",
@@ -11017,7 +10557,7 @@
   "file": "public_futuristic-stadium-wall-section_mc-mod_x.schem"
  },
  {
-  "id": 480,
+  "id": 460,
   "slug": "futuristic-station-for-vehicles",
   "name": "Futuristic Station for Vehicles",
   "category": "transport",
@@ -11040,7 +10580,7 @@
   "file": "transport_futuristic-station-for-vehicles_mc-mod_x.schem"
  },
  {
-  "id": 481,
+  "id": 461,
   "slug": "garden-fountain-design",
   "name": "Garden Fountain Design",
   "category": "parks",
@@ -11063,7 +10603,7 @@
   "file": "parks_garden-fountain-design_mc-mod_x.schem"
  },
  {
-  "id": 482,
+  "id": 462,
   "slug": "garden-fountain-structure",
   "name": "Garden Fountain Structure",
   "category": "parks",
@@ -11086,7 +10626,7 @@
   "file": "parks_garden-fountain-structure_mc-mod_x.schem"
  },
  {
-  "id": 483,
+  "id": 463,
   "slug": "geologic-museum-minecraft-build",
   "name": "Geologic Museum Minecraft Build",
   "category": "public",
@@ -11109,7 +10649,7 @@
   "file": "public_geologic-museum-minecraft-build_mc-mod_x.schem"
  },
  {
-  "id": 484,
+  "id": 464,
   "slug": "gingerbread-factory",
   "name": "Gingerbread Factory",
   "category": "industrial",
@@ -11132,7 +10672,7 @@
   "file": "industrial_gingerbread-factory_mc-mod_x.schem"
  },
  {
-  "id": 485,
+  "id": 465,
   "slug": "glass-factory-build",
   "name": "Glass Factory Build",
   "category": "industrial",
@@ -11155,7 +10695,7 @@
   "file": "industrial_glass-factory-build_mc-mod_x.schem"
  },
  {
-  "id": 486,
+  "id": 466,
   "slug": "gold-smelting-factory",
   "name": "Gold Smelting Factory",
   "category": "industrial",
@@ -11178,7 +10718,7 @@
   "file": "industrial_gold-smelting-factory_mc-mod_x.schem"
  },
  {
-  "id": 487,
+  "id": 467,
   "slug": "gothic-church-minecraft-structure",
   "name": "Gothic Church Minecraft Structure",
   "category": "public",
@@ -11201,7 +10741,7 @@
   "file": "public_gothic-church-minecraft-structure_mc-mod_x.schem"
  },
  {
-  "id": 488,
+  "id": 468,
   "slug": "grand-central-park-large-town-square",
   "name": "Grand Central Park &#8211; Large Town Square",
   "category": "public",
@@ -11224,7 +10764,7 @@
   "file": "public_grand-central-park-large-town-square_mc-mod_x.schem"
  },
  {
-  "id": 489,
+  "id": 469,
   "slug": "grand-hotel-seventh-heaven",
   "name": "Grand Hotel Seventh Heaven",
   "category": "towers",
@@ -11247,7 +10787,7 @@
   "file": "towers_grand-hotel-seventh-heaven_mc-mod_x.schem"
  },
  {
-  "id": 490,
+  "id": 470,
   "slug": "grandpas-flower-power-tower-with-garden",
   "name": "Grandpa&#8217;s Flower Power Tower with Garden",
   "category": "towers",
@@ -11270,7 +10810,7 @@
   "file": "towers_grandpas-flower-power-tower-with-garden_mc-mod_x.schem"
  },
  {
-  "id": 491,
+  "id": 471,
   "slug": "gray-tower-structure",
   "name": "Gray Tower Structure",
   "category": "towers",
@@ -11293,7 +10833,7 @@
   "file": "towers_gray-tower-structure_mc-mod_x.schem"
  },
  {
-  "id": 492,
+  "id": 472,
   "slug": "guadalupe-river-bridge",
   "name": "Guadalupe River Bridge",
   "category": "bridges",
@@ -11316,7 +10856,7 @@
   "file": "bridges_guadalupe-river-bridge_mc-mod_x.schem"
  },
  {
-  "id": 493,
+  "id": 473,
   "slug": "hamburg-michel-church-structure",
   "name": "Hamburg Michel Church Structure",
   "category": "public",
@@ -11339,7 +10879,7 @@
   "file": "public_hamburg-michel-church-structure_mc-mod_x.schem"
  },
  {
-  "id": 494,
+  "id": 474,
   "slug": "hanging-gardens-of-brisbane",
   "name": "Hanging Gardens of Brisbane",
   "category": "parks",
@@ -11362,7 +10902,7 @@
   "file": "parks_hanging-gardens-of-brisbane_mc-mod_x.schem"
  },
  {
-  "id": 495,
+  "id": 475,
   "slug": "harbour-shops",
   "name": "Harbour Shops",
   "category": "commercial",
@@ -11385,7 +10925,7 @@
   "file": "commercial_harbour-shops_mc-mod_x.schem"
  },
  {
-  "id": 496,
+  "id": 476,
   "slug": "hidden-wooden-house",
   "name": "Hidden Wooden House",
   "category": "residential",
@@ -11408,7 +10948,7 @@
   "file": "residential_hidden-wooden-house_mc-mod_x.schem"
  },
  {
-  "id": 497,
+  "id": 477,
   "slug": "highway-exit-structure",
   "name": "Highway Exit Structure",
   "category": "roads",
@@ -11431,7 +10971,7 @@
   "file": "roads_highway-exit-structure_mc-mod_x.schem"
  },
  {
-  "id": 498,
+  "id": 478,
   "slug": "highway-section-with-lighting-and-signs",
   "name": "Highway Section with Lighting and Signs",
   "category": "roads",
@@ -11454,7 +10994,7 @@
   "file": "roads_highway-section-with-lighting-and-signs_mc-mod_x.schem"
  },
  {
-  "id": 499,
+  "id": 479,
   "slug": "highway-toll-booth-structure",
   "name": "Highway Toll Booth Structure",
   "category": "roads",
@@ -11477,7 +11017,7 @@
   "file": "roads_highway-toll-booth-structure_mc-mod_x.schem"
  },
  {
-  "id": 500,
+  "id": 480,
   "slug": "home-and-workshop-building",
   "name": "Home and Workshop Building",
   "category": "commercial",
@@ -11500,7 +11040,7 @@
   "file": "commercial_home-and-workshop-building_mc-mod_x.schem"
  },
  {
-  "id": 501,
+  "id": 481,
   "slug": "hotel-hilton",
   "name": "Small Hilton Hotel Build",
   "category": "towers",
@@ -11523,7 +11063,7 @@
   "file": "towers_hotel-hilton_mc-mod_x.schem"
  },
  {
-  "id": 502,
+  "id": 482,
   "slug": "hotel-honk-house",
   "name": "Hotel Honk House",
   "category": "towers",
@@ -11546,7 +11086,7 @@
   "file": "towers_hotel-honk-house_mc-mod_x.schem"
  },
  {
-  "id": 503,
+  "id": 483,
   "slug": "hotel-opal-seaside-resort",
   "name": "Hotel Opal Seaside Resort",
   "category": "towers",
@@ -11569,7 +11109,7 @@
   "file": "towers_hotel-opal-seaside-resort_mc-mod_x.schem"
  },
  {
-  "id": 504,
+  "id": 484,
   "slug": "hotel-weiss-v2",
   "name": "Hotel Weiss V2",
   "category": "towers",
@@ -11592,7 +11132,7 @@
   "file": "towers_hotel-weiss-v2_mc-mod_x.schem"
  },
  {
-  "id": 505,
+  "id": 485,
   "slug": "immersive-railroading-bridge",
   "name": "Immersive Railroading Bridge",
   "category": "roads",
@@ -11615,7 +11155,7 @@
   "file": "roads_immersive-railroading-bridge_mc-mod_x.schem"
  },
  {
-  "id": 506,
+  "id": 486,
   "slug": "immersive-railroading-roundhouse-structure",
   "name": "Immersive Railroading Roundhouse Structure",
   "category": "roads",
@@ -11638,7 +11178,7 @@
   "file": "roads_immersive-railroading-roundhouse-structure_mc-mod_x.schem"
  },
  {
-  "id": 507,
+  "id": 487,
   "slug": "immersive-railroading-steamworks-station",
   "name": "Immersive Railroading Steamworks Station",
   "category": "roads",
@@ -11661,7 +11201,7 @@
   "file": "roads_immersive-railroading-steamworks-station_mc-mod_x.schem"
  },
  {
-  "id": 508,
+  "id": 488,
   "slug": "improved-warehouse-storage-structure",
   "name": "Improved Warehouse Storage Structure",
   "category": "residential",
@@ -11684,7 +11224,7 @@
   "file": "residential_improved-warehouse-storage-structure_mc-mod_x.schem"
  },
  {
-  "id": 509,
+  "id": 489,
   "slug": "indian-style-jade-mansion-tower",
   "name": "Indian Style Jade Mansion Tower",
   "category": "towers",
@@ -11707,7 +11247,7 @@
   "file": "towers_indian-style-jade-mansion-tower_mc-mod_x.schem"
  },
  {
-  "id": 510,
+  "id": 490,
   "slug": "integral-bridge-structure",
   "name": "Integral Bridge Structure",
   "category": "bridges",
@@ -11730,7 +11270,7 @@
   "file": "bridges_integral-bridge-structure_mc-mod_x.schem"
  },
  {
-  "id": 511,
+  "id": 491,
   "slug": "island-house-lakefront",
   "name": "Island House Lakefront",
   "category": "residential",
@@ -11753,7 +11293,7 @@
   "file": "residential_island-house-lakefront_mc-mod_x.schem"
  },
  {
-  "id": 512,
+  "id": 492,
   "slug": "item-storage-warehouse",
   "name": "Item Storage Warehouse",
   "category": "residential",
@@ -11776,7 +11316,7 @@
   "file": "residential_item-storage-warehouse_mc-mod_x.schem"
  },
  {
-  "id": 513,
+  "id": 493,
   "slug": "japanese-tower-style-asian-structure",
   "name": "Japanese Tower Style Asian Structure",
   "category": "towers",
@@ -11799,7 +11339,7 @@
   "file": "towers_japanese-tower-style-asian-structure_mc-mod_x.schem"
  },
  {
-  "id": 514,
+  "id": 494,
   "slug": "jive-49-modern-condominium-tower",
   "name": "Jive 49 Modern Condominium Tower",
   "category": "towers",
@@ -11822,7 +11362,7 @@
   "file": "towers_jive-49-modern-condominium-tower_mc-mod_x.schem"
  },
  {
-  "id": 515,
+  "id": 495,
   "slug": "jungle-spawn-bridge",
   "name": "Jungle Spawn Bridge",
   "category": "bridges",
@@ -11845,7 +11385,7 @@
   "file": "bridges_jungle-spawn-bridge_mc-mod_x.schem"
  },
  {
-  "id": 516,
+  "id": 496,
   "slug": "keralis-style-giant-mansion",
   "name": "Keralis Style Giant Mansion",
   "category": "residential",
@@ -11868,7 +11408,7 @@
   "file": "residential_keralis-style-giant-mansion_mc-mod_x.schem"
  },
  {
-  "id": 517,
+  "id": 497,
   "slug": "kingdom-banker-shop-house",
   "name": "Kingdom Banker Shop House",
   "category": "residential",
@@ -11891,7 +11431,7 @@
   "file": "residential_kingdom-banker-shop-house_mc-mod_x.schem"
  },
  {
-  "id": 518,
+  "id": 498,
   "slug": "kokotonis-furnished-tower",
   "name": "Kokotoni&#8217;s Furnished Tower",
   "category": "towers",
@@ -11914,7 +11454,7 @@
   "file": "towers_kokotonis-furnished-tower_mc-mod_x.schem"
  },
  {
-  "id": 519,
+  "id": 499,
   "slug": "lapis-and-pickaxe-shop-medium-house",
   "name": "Lapis and Pickaxe Shop &#8211; Medium House",
   "category": "residential",
@@ -11937,7 +11477,7 @@
   "file": "residential_lapis-and-pickaxe-shop-medium-house_mc-mod_x.schem"
  },
  {
-  "id": 520,
+  "id": 500,
   "slug": "large-car-park",
   "name": "Large Car Park",
   "category": "parks",
@@ -11960,7 +11500,7 @@
   "file": "parks_large-car-park_mc-mod_x.schem"
  },
  {
-  "id": 521,
+  "id": 501,
   "slug": "large-house-and-shop-building",
   "name": "Large House and Shop Building",
   "category": "residential",
@@ -11983,7 +11523,7 @@
   "file": "residential_large-house-and-shop-building_mc-mod_x.schem"
  },
  {
-  "id": 522,
+  "id": 502,
   "slug": "large-modern-hotel-jungle-planks",
   "name": "Large Modern Hotel &#8211; Jungle Planks",
   "category": "commercial",
@@ -12006,7 +11546,7 @@
   "file": "commercial_large-modern-hotel-jungle-planks_mc-mod_x.schem"
  },
  {
-  "id": 523,
+  "id": 503,
   "slug": "large-ranch-style-minimalist-house",
   "name": "Large Ranch Style Minimalist House",
   "category": "residential",
@@ -12029,7 +11569,7 @@
   "file": "residential_large-ranch-style-minimalist-house_mc-mod_x.schem"
  },
  {
-  "id": 524,
+  "id": 504,
   "slug": "large-server-warehouse",
   "name": "Large Server Warehouse",
   "category": "residential",
@@ -12052,7 +11592,7 @@
   "file": "residential_large-server-warehouse_mc-mod_x.schem"
  },
  {
-  "id": 525,
+  "id": 505,
   "slug": "large-smithy-workshop",
   "name": "Large Smithy Workshop",
   "category": "commercial",
@@ -12075,7 +11615,7 @@
   "file": "commercial_large-smithy-workshop_mc-mod_x.schem"
  },
  {
-  "id": 526,
+  "id": 506,
   "slug": "large-stone-brick-bridge",
   "name": "Large Stone Brick Bridge",
   "category": "bridges",
@@ -12098,7 +11638,7 @@
   "file": "bridges_large-stone-brick-bridge_mc-mod_x.schem"
  },
  {
-  "id": 527,
+  "id": 507,
   "slug": "large-stone-bridge-with-buildings",
   "name": "Large Stone Bridge With Buildings",
   "category": "bridges",
@@ -12121,7 +11661,7 @@
   "file": "bridges_large-stone-bridge-with-buildings_mc-mod_x.schem"
  },
  {
-  "id": 528,
+  "id": 508,
   "slug": "large-stone-tower",
   "name": "Large Stone Tower",
   "category": "towers",
@@ -12144,7 +11684,7 @@
   "file": "towers_large-stone-tower_mc-mod_x.schem"
  },
  {
-  "id": 529,
+  "id": 509,
   "slug": "large-survival-mansion-house",
   "name": "Large Survival Mansion House",
   "category": "residential",
@@ -12167,7 +11707,7 @@
   "file": "residential_large-survival-mansion-house_mc-mod_x.schem"
  },
  {
-  "id": 530,
+  "id": 510,
   "slug": "lava-hotel-resort",
   "name": "Lava Hotel Resort",
   "category": "towers",
@@ -12190,7 +11730,7 @@
   "file": "towers_lava-hotel-resort_mc-mod_x.schem"
  },
  {
-  "id": 531,
+  "id": 511,
   "slug": "leniland-office-building",
   "name": "Leniland Office Building",
   "category": "towers",
@@ -12213,7 +11753,7 @@
   "file": "towers_leniland-office-building_mc-mod_x.schem"
  },
  {
-  "id": 532,
+  "id": 512,
   "slug": "light-rail-transit-station",
   "name": "Light Rail Transit Station",
   "category": "transport",
@@ -12236,7 +11776,7 @@
   "file": "transport_light-rail-transit-station_mc-mod_x.schem"
  },
  {
-  "id": 533,
+  "id": 513,
   "slug": "lucavas-tower",
   "name": "Lucava&#8217;s Tower",
   "category": "towers",
@@ -12259,7 +11799,7 @@
   "file": "towers_lucavas-tower_mc-mod_x.schem"
  },
  {
-  "id": 534,
+  "id": 514,
   "slug": "luxury-mansion-with-party-room",
   "name": "Luxury Mansion With Party Room",
   "category": "residential",
@@ -12282,7 +11822,7 @@
   "file": "residential_luxury-mansion-with-party-room_mc-mod_x.schem"
  },
  {
-  "id": 535,
+  "id": 515,
   "slug": "luxury-palace-tower-with-elevator",
   "name": "Luxury Palace Tower With Elevator",
   "category": "towers",
@@ -12305,7 +11845,7 @@
   "file": "towers_luxury-palace-tower-with-elevator_mc-mod_x.schem"
  },
  {
-  "id": 536,
+  "id": 516,
   "slug": "luxury-studio-apartment",
   "name": "Luxury Studio Apartment",
   "category": "residential",
@@ -12328,7 +11868,7 @@
   "file": "residential_luxury-studio-apartment_mc-mod_x.schem"
  },
  {
-  "id": 537,
+  "id": 517,
   "slug": "luxury-villa-with-courtyard-and-pool",
   "name": "Luxury Villa with Courtyard and Pool",
   "category": "residential",
@@ -12351,7 +11891,7 @@
   "file": "residential_luxury-villa-with-courtyard-and-pool_mc-mod_x.schem"
  },
  {
-  "id": 538,
+  "id": 518,
   "slug": "majestic-fountain-structure",
   "name": "Majestic Fountain Structure",
   "category": "parks",
@@ -12374,7 +11914,7 @@
   "file": "parks_majestic-fountain-structure_mc-mod_x.schem"
  },
  {
-  "id": 539,
+  "id": 519,
   "slug": "market-stall",
   "name": "Market Stall",
   "category": "commercial",
@@ -12397,7 +11937,7 @@
   "file": "commercial_market-stall_mc-mod_x.schem"
  },
  {
-  "id": 540,
+  "id": 520,
   "slug": "massive-lava-tunnel-with-minecart-track",
   "name": "Massive Lava Tunnel With Minecart Track",
   "category": "bridges",
@@ -12420,7 +11960,7 @@
   "file": "bridges_massive-lava-tunnel-with-minecart-track_mc-mod_x.schem"
  },
  {
-  "id": 541,
+  "id": 521,
   "slug": "massive-minecraft-bridge",
   "name": "Massive Minecraft Bridge",
   "category": "bridges",
@@ -12443,7 +11983,7 @@
   "file": "bridges_massive-minecraft-bridge_mc-mod_x.schem"
  },
  {
-  "id": 542,
+  "id": 522,
   "slug": "massive-skyscraper-structure",
   "name": "Massive Skyscraper Structure",
   "category": "towers",
@@ -12466,7 +12006,7 @@
   "file": "towers_massive-skyscraper-structure_mc-mod_x.schem"
  },
  {
-  "id": 543,
+  "id": 523,
   "slug": "massive-storage-warehouse-structure",
   "name": "Massive Storage Warehouse Structure",
   "category": "residential",
@@ -12489,7 +12029,7 @@
   "file": "residential_massive-storage-warehouse-structure_mc-mod_x.schem"
  },
  {
-  "id": 544,
+  "id": 524,
   "slug": "maximum-height-tower",
   "name": "Maximum Height Tower",
   "category": "towers",
@@ -12512,7 +12052,7 @@
   "file": "towers_maximum-height-tower_mc-mod_x.schem"
  },
  {
-  "id": 545,
+  "id": 525,
   "slug": "mccready-grocery-store",
   "name": "McCready Grocery Store",
   "category": "commercial",
@@ -12535,7 +12075,7 @@
   "file": "commercial_mccready-grocery-store_mc-mod_x.schem"
  },
  {
-  "id": 546,
+  "id": 526,
   "slug": "mcfey-astroworld-amusement-park",
   "name": "McFey Astroworld Amusement Park",
   "category": "parks",
@@ -12558,7 +12098,7 @@
   "file": "parks_mcfey-astroworld-amusement-park_mc-mod_x.schem"
  },
  {
-  "id": 547,
+  "id": 527,
   "slug": "mediterranean-plaza-build",
   "name": "Mediterranean Plaza Build",
   "category": "public",
@@ -12581,7 +12121,7 @@
   "file": "public_mediterranean-plaza-build_mc-mod_x.schem"
  },
  {
-  "id": 548,
+  "id": 528,
   "slug": "mediterranean-style-apartment-house",
   "name": "Mediterranean Style Apartment House",
   "category": "residential",
@@ -12604,7 +12144,7 @@
   "file": "residential_mediterranean-style-apartment-house_mc-mod_x.schem"
  },
  {
-  "id": 549,
+  "id": 529,
   "slug": "mediterranean-style-shopping-center",
   "name": "Mediterranean Style Shopping Center",
   "category": "commercial",
@@ -12627,7 +12167,7 @@
   "file": "commercial_mediterranean-style-shopping-center_mc-mod_x.schem"
  },
  {
-  "id": 550,
+  "id": 530,
   "slug": "medium-mansion-with-bridge",
   "name": "Medium Mansion With Bridge",
   "category": "bridges",
@@ -12650,7 +12190,7 @@
   "file": "bridges_medium-mansion-with-bridge_mc-mod_x.schem"
  },
  {
-  "id": 551,
+  "id": 531,
   "slug": "medium-merchants-house",
   "name": "Medium Merchant&#8217;s House",
   "category": "residential",
@@ -12673,7 +12213,7 @@
   "file": "residential_medium-merchants-house_mc-mod_x.schem"
  },
  {
-  "id": 552,
+  "id": 532,
   "slug": "medium-orange-warehouse",
   "name": "Medium Orange Warehouse",
   "category": "residential",
@@ -12696,7 +12236,7 @@
   "file": "residential_medium-orange-warehouse_mc-mod_x.schem"
  },
  {
-  "id": 553,
+  "id": 533,
   "slug": "medium-wooden-bridge-design",
   "name": "Medium Wooden Bridge Design",
   "category": "bridges",
@@ -12719,7 +12259,7 @@
   "file": "bridges_medium-wooden-bridge-design_mc-mod_x.schem"
  },
  {
-  "id": 554,
+  "id": 534,
   "slug": "metro-city-spawn",
   "name": "Metro City Spawn",
   "category": "transport",
@@ -12742,7 +12282,7 @@
   "file": "transport_metro-city-spawn_mc-mod_x.schem"
  },
  {
-  "id": 555,
+  "id": 535,
   "slug": "metro-train-pass",
   "name": "Metro Train Pass",
   "category": "transport",
@@ -12765,7 +12305,7 @@
   "file": "transport_metro-train-pass_mc-mod_x.schem"
  },
  {
-  "id": 556,
+  "id": 536,
   "slug": "metro-train-station",
   "name": "Metro Train Station",
   "category": "transport",
@@ -12788,7 +12328,7 @@
   "file": "transport_metro-train-station_mc-mod_x.schem"
  },
  {
-  "id": 557,
+  "id": 537,
   "slug": "mid-century-hotel",
   "name": "Mid-Century Hotel",
   "category": "towers",
@@ -12811,7 +12351,7 @@
   "file": "towers_mid-century-hotel_mc-mod_x.schem"
  },
  {
-  "id": 558,
+  "id": 538,
   "slug": "minebank-building",
   "name": "MineBank Building",
   "category": "commercial",
@@ -12834,7 +12374,7 @@
   "file": "commercial_minebank-building_mc-mod_x.schem"
  },
  {
-  "id": 559,
+  "id": 539,
   "slug": "minecraft-build-book-house",
   "name": "Minecraft Build Book House",
   "category": "residential",
@@ -12857,7 +12397,7 @@
   "file": "residential_minecraft-build-book-house_mc-mod_x.schem"
  },
  {
-  "id": 560,
+  "id": 540,
   "slug": "minecraft-casino-mansion-structure",
   "name": "Minecraft Casino Mansion Structure",
   "category": "residential",
@@ -12880,7 +12420,7 @@
   "file": "residential_minecraft-casino-mansion-structure_mc-mod_x.schem"
  },
  {
-  "id": 561,
+  "id": 541,
   "slug": "minecraft-gas-station-build-2",
   "name": "Minecraft Gas Station Build",
   "category": "commercial",
@@ -12903,7 +12443,7 @@
   "file": "commercial_minecraft-gas-station-build-2_mc-mod_x.schem"
  },
  {
-  "id": 562,
+  "id": 542,
   "slug": "minecraft-hospital-building",
   "name": "Minecraft Hospital Building",
   "category": "public",
@@ -12926,7 +12466,7 @@
   "file": "public_minecraft-hospital-building_mc-mod_x.schem"
  },
  {
-  "id": 563,
+  "id": 543,
   "slug": "minecraft-railway-station",
   "name": "Minecraft Railway Station",
   "category": "transport",
@@ -12949,7 +12489,7 @@
   "file": "transport_minecraft-railway-station_mc-mod_x.schem"
  },
  {
-  "id": 564,
+  "id": 544,
   "slug": "minecraft-soccer-stadium-schematic",
   "name": "Minecraft Soccer Stadium Schematic",
   "category": "public",
@@ -12972,7 +12512,7 @@
   "file": "public_minecraft-soccer-stadium-schematic_mc-mod_x.schem"
  },
  {
-  "id": 565,
+  "id": 545,
   "slug": "minecraftia-elementary-school-blue-and-white-campus",
   "name": "Minecraftia Elementary School Blue and White Campus",
   "category": "public",
@@ -12995,7 +12535,7 @@
   "file": "public_minecraftia-elementary-school-blue-and-white_mc-mod_x.schem"
  },
  {
-  "id": 566,
+  "id": 546,
   "slug": "mini-shop-blockhouse",
   "name": "Mini Shop Blockhouse",
   "category": "residential",
@@ -13018,7 +12558,7 @@
   "file": "residential_mini-shop-blockhouse_mc-mod_x.schem"
  },
  {
-  "id": 567,
+  "id": 547,
   "slug": "modern-3-story-office-building",
   "name": "Modern 3 Story Office Building",
   "category": "towers",
@@ -13041,7 +12581,7 @@
   "file": "towers_modern-3-story-office-building_mc-mod_x.schem"
  },
  {
-  "id": 568,
+  "id": 548,
   "slug": "modern-apartment-block-townhouse",
   "name": "Modern Apartment Block Townhouse",
   "category": "residential",
@@ -13064,7 +12604,7 @@
   "file": "residential_modern-apartment-block-townhouse_mc-mod_x.schem"
  },
  {
-  "id": 569,
+  "id": 549,
   "slug": "modern-apartment-building-2",
   "name": "Modern Apartment Block &#8211; White Concrete",
   "category": "residential",
@@ -13087,7 +12627,7 @@
   "file": "residential_modern-apartment-building-2_mc-mod_x.schem"
  },
  {
-  "id": 570,
+  "id": 550,
   "slug": "modern-apartment-building-4",
   "name": "Modern Apartment Tower &#8211; White &amp; Blue Concrete",
   "category": "towers",
@@ -13110,7 +12650,7 @@
   "file": "towers_modern-apartment-building-4_mc-mod_x.schem"
  },
  {
-  "id": 571,
+  "id": 551,
   "slug": "modern-apartment-building-with-6-units",
   "name": "Modern Apartment Building With 6 Units",
   "category": "residential",
@@ -13133,7 +12673,7 @@
   "file": "residential_modern-apartment-building-with-6-units_mc-mod_x.schem"
  },
  {
-  "id": 572,
+  "id": 552,
   "slug": "modern-apartment-complex",
   "name": "Modern Apartment Complex",
   "category": "residential",
@@ -13156,7 +12696,7 @@
   "file": "residential_modern-apartment-complex_mc-mod_x.schem"
  },
  {
-  "id": 573,
+  "id": 553,
   "slug": "modern-apartment-tower-10-floors",
   "name": "Modern Apartment Tower &#8211; 10 Floors",
   "category": "towers",
@@ -13179,7 +12719,7 @@
   "file": "towers_modern-apartment-tower-10-floors_mc-mod_x.schem"
  },
  {
-  "id": 574,
+  "id": 554,
   "slug": "modern-blue-apartment-building-schematic",
   "name": "Modern Blue Apartment Building Schematic",
   "category": "residential",
@@ -13202,7 +12742,7 @@
   "file": "residential_modern-blue-apartment-building-schematic_mc-mod_x.schem"
  },
  {
-  "id": 575,
+  "id": 555,
   "slug": "modern-blue-glass-tower",
   "name": "Modern Blue Glass Tower",
   "category": "towers",
@@ -13225,7 +12765,7 @@
   "file": "towers_modern-blue-glass-tower_mc-mod_x.schem"
  },
  {
-  "id": 576,
+  "id": 556,
   "slug": "modern-bridge-design",
   "name": "Modern Bridge Design",
   "category": "bridges",
@@ -13248,7 +12788,7 @@
   "file": "bridges_modern-bridge-design_mc-mod_x.schem"
  },
  {
-  "id": 577,
+  "id": 557,
   "slug": "modern-business-building",
   "name": "Modern Business Building",
   "category": "transport",
@@ -13271,7 +12811,7 @@
   "file": "transport_modern-business-building_mc-mod_x.schem"
  },
  {
-  "id": 578,
+  "id": 558,
   "slug": "modern-city-apartment-building",
   "name": "Modern City Apartment Building",
   "category": "residential",
@@ -13294,7 +12834,7 @@
   "file": "residential_modern-city-apartment-building_mc-mod_x.schem"
  },
  {
-  "id": 579,
+  "id": 559,
   "slug": "modern-city-apartments",
   "name": "Modern City Apartments",
   "category": "residential",
@@ -13317,7 +12857,7 @@
   "file": "residential_modern-city-apartments_mc-mod_x.schem"
  },
  {
-  "id": 580,
+  "id": 560,
   "slug": "modern-city-connecting-bridge",
   "name": "Modern City Connecting Bridge",
   "category": "bridges",
@@ -13340,7 +12880,7 @@
   "file": "bridges_modern-city-connecting-bridge_mc-mod_x.schem"
  },
  {
-  "id": 581,
+  "id": 561,
   "slug": "modern-city-hotel-building",
   "name": "Modern City Hotel Building",
   "category": "towers",
@@ -13363,7 +12903,7 @@
   "file": "towers_modern-city-hotel-building_mc-mod_x.schem"
  },
  {
-  "id": 582,
+  "id": 562,
   "slug": "modern-city-intersection-road",
   "name": "Modern City Intersection Road",
   "category": "intersections",
@@ -13386,7 +12926,7 @@
   "file": "intersections_modern-city-intersection-road_mc-mod_x.schem"
  },
  {
-  "id": 583,
+  "id": 563,
   "slug": "modern-city-skyscraper",
   "name": "Modern City Skyscraper",
   "category": "towers",
@@ -13409,7 +12949,7 @@
   "file": "towers_modern-city-skyscraper_mc-mod_x.schem"
  },
  {
-  "id": 584,
+  "id": 564,
   "slug": "modern-coffee-shop",
   "name": "Modern Coffee Shop",
   "category": "commercial",
@@ -13432,7 +12972,7 @@
   "file": "commercial_modern-coffee-shop_mc-mod_x.schem"
  },
  {
-  "id": 585,
+  "id": 565,
   "slug": "modern-concrete-park",
   "name": "Modern Concrete Park",
   "category": "parks",
@@ -13455,7 +12995,7 @@
   "file": "parks_modern-concrete-park_mc-mod_x.schem"
  },
  {
-  "id": 586,
+  "id": 566,
   "slug": "modern-cyan-terracotta-house",
   "name": "Modern Cyan Terracotta House",
   "category": "residential",
@@ -13478,7 +13018,7 @@
   "file": "residential_modern-cyan-terracotta-house_mc-mod_x.schem"
  },
  {
-  "id": 587,
+  "id": 567,
   "slug": "modern-decorated-tower",
   "name": "Modern Decorated Tower",
   "category": "towers",
@@ -13501,7 +13041,7 @@
   "file": "towers_modern-decorated-tower_mc-mod_x.schem"
  },
  {
-  "id": 588,
+  "id": 568,
   "slug": "modern-diamond-skyscraper",
   "name": "Modern Diamond Skyscraper",
   "category": "towers",
@@ -13524,7 +13064,7 @@
   "file": "towers_modern-diamond-skyscraper_mc-mod_x.schem"
  },
  {
-  "id": 589,
+  "id": 569,
   "slug": "modern-eco-skyscraper",
   "name": "Modern Eco Skyscraper",
   "category": "towers",
@@ -13547,7 +13087,7 @@
   "file": "towers_modern-eco-skyscraper_mc-mod_x.schem"
  },
  {
-  "id": 590,
+  "id": 570,
   "slug": "modern-food-shop",
   "name": "Modern Food Shop",
   "category": "commercial",
@@ -13570,7 +13110,7 @@
   "file": "commercial_modern-food-shop_mc-mod_x.schem"
  },
  {
-  "id": 591,
+  "id": 571,
   "slug": "modern-fountain-design",
   "name": "Modern Fountain Design",
   "category": "parks",
@@ -13593,7 +13133,7 @@
   "file": "parks_modern-fountain-design_mc-mod_x.schem"
  },
  {
-  "id": 592,
+  "id": 572,
   "slug": "modern-four-story-hotel",
   "name": "Modern Four-Story Hotel",
   "category": "towers",
@@ -13616,7 +13156,7 @@
   "file": "towers_modern-four-story-hotel_mc-mod_x.schem"
  },
  {
-  "id": 593,
+  "id": 573,
   "slug": "modern-four-story-shopping-mall-with-roads",
   "name": "Modern Four Story Shopping Mall With Roads",
   "category": "roads",
@@ -13639,7 +13179,7 @@
   "file": "roads_modern-four-story-shopping-mall-with-roads_mc-mod_x.schem"
  },
  {
-  "id": 594,
+  "id": 574,
   "slug": "modern-gas-station-and-shop",
   "name": "Modern Gas Station And Shop",
   "category": "commercial",
@@ -13662,7 +13202,7 @@
   "file": "commercial_modern-gas-station-and-shop_mc-mod_x.schem"
  },
  {
-  "id": 595,
+  "id": 575,
   "slug": "modern-gas-station-exterior",
   "name": "Modern Gas Station Exterior",
   "category": "commercial",
@@ -13685,7 +13225,7 @@
   "file": "commercial_modern-gas-station-exterior_mc-mod_x.schem"
  },
  {
-  "id": 596,
+  "id": 576,
   "slug": "modern-gas-station-truck-stop",
   "name": "Modern Gas Station &amp; Truck Stop",
   "category": "commercial",
@@ -13708,7 +13248,7 @@
   "file": "commercial_modern-gas-station-truck-stop_mc-mod_x.schem"
  },
  {
-  "id": 597,
+  "id": 577,
   "slug": "modern-gas-station-with-store",
   "name": "Modern Gas Station With Store",
   "category": "commercial",
@@ -13731,7 +13271,7 @@
   "file": "commercial_modern-gas-station-with-store_mc-mod_x.schem"
  },
  {
-  "id": 598,
+  "id": 578,
   "slug": "modern-glass-office-tower-building",
   "name": "Modern Glass Office Tower Building",
   "category": "towers",
@@ -13754,7 +13294,7 @@
   "file": "towers_modern-glass-office-tower-building_mc-mod_x.schem"
  },
  {
-  "id": 599,
+  "id": 579,
   "slug": "modern-grand-fountain-medium-garden",
   "name": "Modern Grand Fountain &#8211; Medium Garden",
   "category": "parks",
@@ -13777,7 +13317,7 @@
   "file": "parks_modern-grand-fountain-medium-garden_mc-mod_x.schem"
  },
  {
-  "id": 600,
+  "id": 580,
   "slug": "modern-hotel-building",
   "name": "Modern Hotel Building",
   "category": "towers",
@@ -13800,7 +13340,7 @@
   "file": "towers_modern-hotel-building_mc-mod_x.schem"
  },
  {
-  "id": 601,
+  "id": 581,
   "slug": "modern-house-design-with-library",
   "name": "Modern House Design With Library",
   "category": "residential",
@@ -13823,7 +13363,7 @@
   "file": "residential_modern-house-design-with-library_mc-mod_x.schem"
  },
  {
-  "id": 602,
+  "id": 582,
   "slug": "modern-lakehouse-mansion",
   "name": "Modern Lakehouse Mansion",
   "category": "residential",
@@ -13846,7 +13386,7 @@
   "file": "residential_modern-lakehouse-mansion_mc-mod_x.schem"
  },
  {
-  "id": 603,
+  "id": 583,
   "slug": "modern-library-design",
   "name": "Modern Library Design",
   "category": "public",
@@ -13869,7 +13409,7 @@
   "file": "public_modern-library-design_mc-mod_x.schem"
  },
  {
-  "id": 604,
+  "id": 584,
   "slug": "modern-library-house",
   "name": "Modern Library House",
   "category": "residential",
@@ -13892,7 +13432,7 @@
   "file": "residential_modern-library-house_mc-mod_x.schem"
  },
  {
-  "id": 605,
+  "id": 585,
   "slug": "modern-luxury-residence",
   "name": "Modern Luxury Residence",
   "category": "residential",
@@ -13915,7 +13455,7 @@
   "file": "residential_modern-luxury-residence_mc-mod_x.schem"
  },
  {
-  "id": 606,
+  "id": 586,
   "slug": "modern-office-building-sketch",
   "name": "Modern Office Building Sketch",
   "category": "towers",
@@ -13938,7 +13478,7 @@
   "file": "towers_modern-office-building-sketch_mc-mod_x.schem"
  },
  {
-  "id": 607,
+  "id": 587,
   "slug": "modern-office-tower-building",
   "name": "Modern Office Tower Building",
   "category": "towers",
@@ -13961,7 +13501,7 @@
   "file": "towers_modern-office-tower-building_mc-mod_x.schem"
  },
  {
-  "id": 608,
+  "id": 588,
   "slug": "modern-office-tower-with-elevator",
   "name": "Modern Office Tower with Elevator",
   "category": "towers",
@@ -13984,7 +13524,7 @@
   "file": "towers_modern-office-tower-with-elevator_mc-mod_x.schem"
  },
  {
-  "id": 609,
+  "id": 589,
   "slug": "modern-office-tower",
   "name": "Modern Office Tower",
   "category": "towers",
@@ -14007,7 +13547,7 @@
   "file": "towers_modern-office-tower_mc-mod_x.schem"
  },
  {
-  "id": 610,
+  "id": 590,
   "slug": "modern-parallel-heights-hotel-building",
   "name": "Modern Parallel Heights Hotel Building",
   "category": "commercial",
@@ -14030,7 +13570,7 @@
   "file": "commercial_modern-parallel-heights-hotel-building_mc-mod_x.schem"
  },
  {
-  "id": 611,
+  "id": 591,
   "slug": "modern-park-with-fountain-and-benches",
   "name": "Modern Park with Fountain and Benches",
   "category": "parks",
@@ -14053,7 +13593,7 @@
   "file": "parks_modern-park-with-fountain-and-benches_mc-mod_x.schem"
  },
  {
-  "id": 612,
+  "id": 592,
   "slug": "modern-parking-garage-structure",
   "name": "Modern Parking Garage Structure",
   "category": "transport",
@@ -14076,7 +13616,7 @@
   "file": "transport_modern-parking-garage-structure_mc-mod_x.schem"
  },
  {
-  "id": 613,
+  "id": 593,
   "slug": "modern-police-station-building",
   "name": "Modern Police Station Building",
   "category": "public",
@@ -14099,7 +13639,7 @@
   "file": "public_modern-police-station-building_mc-mod_x.schem"
  },
  {
-  "id": 614,
+  "id": 594,
   "slug": "modern-police-station-design",
   "name": "Modern Police Station Design",
   "category": "public",
@@ -14122,7 +13662,7 @@
   "file": "public_modern-police-station-design_mc-mod_x.schem"
  },
  {
-  "id": 615,
+  "id": 595,
   "slug": "modern-quartz-city-tower",
   "name": "Modern Quartz City Tower",
   "category": "towers",
@@ -14145,7 +13685,7 @@
   "file": "towers_modern-quartz-city-tower_mc-mod_x.schem"
  },
  {
-  "id": 616,
+  "id": 596,
   "slug": "modern-quartz-house-with-birch-accents",
   "name": "Modern Quartz House With Birch Accents",
   "category": "residential",
@@ -14168,7 +13708,7 @@
   "file": "residential_modern-quartz-house-with-birch-accents_mc-mod_x.schem"
  },
  {
-  "id": 617,
+  "id": 597,
   "slug": "modern-quartz-reserve-bank",
   "name": "Modern Quartz Reserve Bank",
   "category": "commercial",
@@ -14191,7 +13731,7 @@
   "file": "commercial_modern-quartz-reserve-bank_mc-mod_x.schem"
  },
  {
-  "id": 618,
+  "id": 598,
   "slug": "modern-quartz-skyscraper-tower",
   "name": "Modern Quartz Skyscraper Tower",
   "category": "towers",
@@ -14214,7 +13754,7 @@
   "file": "towers_modern-quartz-skyscraper-tower_mc-mod_x.schem"
  },
  {
-  "id": 619,
+  "id": 599,
   "slug": "modern-school-building",
   "name": "Modern School Building",
   "category": "public",
@@ -14237,7 +13777,7 @@
   "file": "public_modern-school-building_mc-mod_x.schem"
  },
  {
-  "id": 620,
+  "id": 600,
   "slug": "modern-skyscraper-build",
   "name": "Modern Skyscraper Build",
   "category": "towers",
@@ -14260,7 +13800,7 @@
   "file": "towers_modern-skyscraper-build_mc-mod_x.schem"
  },
  {
-  "id": 621,
+  "id": 601,
   "slug": "modern-skyscraper-design",
   "name": "Modern Skyscraper Design",
   "category": "towers",
@@ -14283,7 +13823,7 @@
   "file": "towers_modern-skyscraper-design_mc-mod_x.schem"
  },
  {
-  "id": 622,
+  "id": 602,
   "slug": "modern-skyscraper-tower-11",
   "name": "Modern Skyscraper Tower",
   "category": "towers",
@@ -14306,7 +13846,7 @@
   "file": "towers_modern-skyscraper-tower-11_mc-mod_x.schem"
  },
  {
-  "id": 623,
+  "id": 603,
   "slug": "modern-skyscraper-tower",
   "name": "Modern Skyscraper Tower",
   "category": "towers",
@@ -14329,7 +13869,7 @@
   "file": "towers_modern-skyscraper-tower_mc-mod_x.schem"
  },
  {
-  "id": 624,
+  "id": 604,
   "slug": "modern-skyscraper",
   "name": "Modern Skyscraper",
   "category": "towers",
@@ -14352,7 +13892,7 @@
   "file": "towers_modern-skyscraper_mc-mod_x.schem"
  },
  {
-  "id": 625,
+  "id": 605,
   "slug": "modern-small-to-medium-futuristic-house",
   "name": "Modern Small to Medium Futuristic House",
   "category": "residential",
@@ -14375,7 +13915,7 @@
   "file": "residential_modern-small-to-medium-futuristic-house_mc-mod_x.schem"
  },
  {
-  "id": 626,
+  "id": 606,
   "slug": "modern-spiral-skyscraper",
   "name": "Modern Spiral Skyscraper",
   "category": "towers",
@@ -14398,7 +13938,7 @@
   "file": "towers_modern-spiral-skyscraper_mc-mod_x.schem"
  },
  {
-  "id": 627,
+  "id": 607,
   "slug": "modern-style-shop",
   "name": "Modern Style Shop",
   "category": "commercial",
@@ -14421,7 +13961,7 @@
   "file": "commercial_modern-style-shop_mc-mod_x.schem"
  },
  {
-  "id": 628,
+  "id": 608,
   "slug": "modern-style-tower-structure",
   "name": "Modern Style Tower Structure",
   "category": "towers",
@@ -14444,7 +13984,7 @@
   "file": "towers_modern-style-tower-structure_mc-mod_x.schem"
  },
  {
-  "id": 629,
+  "id": 609,
   "slug": "modern-torch-towers",
   "name": "Modern Torch Towers",
   "category": "towers",
@@ -14467,7 +14007,7 @@
   "file": "towers_modern-torch-towers_mc-mod_x.schem"
  },
  {
-  "id": 630,
+  "id": 610,
   "slug": "modern-train-station-design",
   "name": "Modern Train Station Design",
   "category": "transport",
@@ -14490,7 +14030,7 @@
   "file": "transport_modern-train-station-design_mc-mod_x.schem"
  },
  {
-  "id": 631,
+  "id": 611,
   "slug": "modern-villa-with-survival-features",
   "name": "Modern Villa With Survival Features",
   "category": "residential",
@@ -14513,7 +14053,7 @@
   "file": "residential_modern-villa-with-survival-features_mc-mod_x.schem"
  },
  {
-  "id": 632,
+  "id": 612,
   "slug": "modern-warehouse-with-iron-gate-details",
   "name": "Modern Warehouse with Iron Gate Details",
   "category": "residential",
@@ -14536,7 +14076,7 @@
   "file": "residential_modern-warehouse-with-iron-gate-details_mc-mod_x.schem"
  },
  {
-  "id": 633,
+  "id": 613,
   "slug": "modern-white-city-apartment-building",
   "name": "Modern White City Apartment Building",
   "category": "residential",
@@ -14559,7 +14099,7 @@
   "file": "residential_modern-white-city-apartment-building_mc-mod_x.schem"
  },
  {
-  "id": 634,
+  "id": 614,
   "slug": "mr-burns-small-structure",
   "name": "Mr. Burns Small Structure",
   "category": "commercial",
@@ -14582,7 +14122,7 @@
   "file": "commercial_mr-burns-small-structure_mc-mod_x.schem"
  },
  {
-  "id": 635,
+  "id": 615,
   "slug": "mud-tower-build",
   "name": "Mud Tower Build",
   "category": "towers",
@@ -14605,7 +14145,7 @@
   "file": "towers_mud-tower-build_mc-mod_x.schem"
  },
  {
-  "id": 636,
+  "id": 616,
   "slug": "multi-level-6-story-parking-lot",
   "name": "Multi-Level 6-Story Parking Lot",
   "category": "transport",
@@ -14628,7 +14168,7 @@
   "file": "transport_multi-level-6-story-parking-lot_mc-mod_x.schem"
  },
  {
-  "id": 637,
+  "id": 617,
   "slug": "multi-level-parking-garage-structure",
   "name": "Multi-Level Parking Garage Structure",
   "category": "transport",
@@ -14651,7 +14191,7 @@
   "file": "transport_multi-level-parking-garage-structure_mc-mod_x.schem"
  },
  {
-  "id": 638,
+  "id": 618,
   "slug": "multiplayer-survival-base-with-shop",
   "name": "Multiplayer Survival Base with Shop",
   "category": "commercial",
@@ -14674,7 +14214,7 @@
   "file": "commercial_multiplayer-survival-base-with-shop_mc-mod_x.schem"
  },
  {
-  "id": 639,
+  "id": 619,
   "slug": "murchinson-modern-office-building-with-helipad",
   "name": "Murchinson Modern Office Building With Helipad",
   "category": "towers",
@@ -14697,7 +14237,7 @@
   "file": "towers_murchinson-modern-office-building-with-helip_mc-mod_x.schem"
  },
  {
-  "id": 640,
+  "id": 620,
   "slug": "mystcraft-inspired-library-structure",
   "name": "Mystcraft-Inspired Library Structure",
   "category": "public",
@@ -14720,7 +14260,7 @@
   "file": "public_mystcraft-inspired-library-structure_mc-mod_x.schem"
  },
  {
-  "id": 641,
+  "id": 621,
   "slug": "mystical-church-structure",
   "name": "Mystical Church Structure",
   "category": "public",
@@ -14743,7 +14283,7 @@
   "file": "public_mystical-church-structure_mc-mod_x.schem"
  },
  {
-  "id": 642,
+  "id": 622,
   "slug": "mythological-shopping-mall-with-water-features",
   "name": "Mythological Shopping Mall with Water Features",
   "category": "commercial",
@@ -14766,7 +14306,7 @@
   "file": "commercial_mythological-shopping-mall-with-water-featur_mc-mod_x.schem"
  },
  {
-  "id": 643,
+  "id": 623,
   "slug": "nierta-central-park-town-square",
   "name": "Nierta Central Park Town Square",
   "category": "public",
@@ -14789,7 +14329,7 @@
   "file": "public_nierta-central-park-town-square_mc-mod_x.schem"
  },
  {
-  "id": 644,
+  "id": 624,
   "slug": "nine-story-apartment-building-series",
   "name": "Nine-Story Apartment Building Series",
   "category": "residential",
@@ -14812,7 +14352,7 @@
   "file": "residential_nine-story-apartment-building-series_mc-mod_x.schem"
  },
  {
-  "id": 645,
+  "id": 625,
   "slug": "nordic-style-small-bridge",
   "name": "Nordic Style Small Bridge",
   "category": "bridges",
@@ -14835,7 +14375,7 @@
   "file": "bridges_nordic-style-small-bridge_mc-mod_x.schem"
  },
  {
-  "id": 646,
+  "id": 626,
   "slug": "octagonal-hotel-interior-design",
   "name": "Octagonal Hotel Interior Design",
   "category": "towers",
@@ -14858,7 +14398,7 @@
   "file": "towers_octagonal-hotel-interior-design_mc-mod_x.schem"
  },
  {
-  "id": 647,
+  "id": 627,
   "slug": "old-church-structure",
   "name": "Old Church Structure",
   "category": "public",
@@ -14881,7 +14421,7 @@
   "file": "public_old-church-structure_mc-mod_x.schem"
  },
  {
-  "id": 648,
+  "id": 628,
   "slug": "old-factory-hall-building",
   "name": "Old Factory Hall Building",
   "category": "industrial",
@@ -14904,7 +14444,7 @@
   "file": "industrial_old-factory-hall-building_mc-mod_x.schem"
  },
  {
-  "id": 649,
+  "id": 629,
   "slug": "olimpushd-tower-large-build",
   "name": "OlimpusHD Tower &#8211; Large Build",
   "category": "towers",
@@ -14927,7 +14467,7 @@
   "file": "towers_olimpushd-tower-large-build_mc-mod_x.schem"
  },
  {
-  "id": 650,
+  "id": 630,
   "slug": "olympus-tower-large-build",
   "name": "Olympus Tower &#8211; Large Build",
   "category": "towers",
@@ -14950,7 +14490,7 @@
   "file": "towers_olympus-tower-large-build_mc-mod_x.schem"
  },
  {
-  "id": 651,
+  "id": 631,
   "slug": "one-world-trade-centre-skyscraper",
   "name": "One World Trade Centre Skyscraper",
   "category": "towers",
@@ -14973,7 +14513,7 @@
   "file": "towers_one-world-trade-centre-skyscraper_mc-mod_x.schem"
  },
  {
-  "id": 652,
+  "id": 632,
   "slug": "orange-tower-large-scale-block-structure",
   "name": "Orange Tower &#8211; Large Scale Block Structure",
   "category": "towers",
@@ -14996,7 +14536,7 @@
   "file": "towers_orange-tower-large-scale-block-structure_mc-mod_x.schem"
  },
  {
-  "id": 653,
+  "id": 633,
   "slug": "orbital-station",
   "name": "Orbital Station",
   "category": "transport",
@@ -15019,7 +14559,7 @@
   "file": "transport_orbital-station_mc-mod_x.schem"
  },
  {
-  "id": 654,
+  "id": 634,
   "slug": "ornamental-garden-fountain",
   "name": "Ornamental Garden Fountain",
   "category": "parks",
@@ -15042,30 +14582,7 @@
   "file": "parks_ornamental-garden-fountain_mc-mod_x.schem"
  },
  {
-  "id": 655,
-  "slug": "park-ball-structure",
-  "name": "Park Ball Structure",
-  "category": "parks",
-  "source": "mc-mod",
-  "page_url": "https://www.mc-mod.net/schematics/park-ball-structure/",
-  "download_url": "https://dl2.9minecraft.net/dl2storage800/Park-Ball-Structure.schematic",
-  "author": "",
-  "minecraft_version": "",
-  "format": ".schematic",
-  "width": 41,
-  "height": 14,
-  "length": 39,
-  "blocks": 4096,
-  "file_size": 2954,
-  "hash": "a9d7f89bb8a74d1a6628d1d8ae82175b9c3f12c4c260434564ff134914becdf3",
-  "unsupported_entries": 18,
-  "simplified_entries": 0,
-  "status": "verified",
-  "notes": "",
-  "file": "parks_park-ball-structure_mc-mod_x.schem"
- },
- {
-  "id": 656,
+  "id": 635,
   "slug": "peaceful-fountain",
   "name": "Peaceful Fountain",
   "category": "parks",
@@ -15088,7 +14605,7 @@
   "file": "parks_peaceful-fountain_mc-mod_x.schem"
  },
  {
-  "id": 657,
+  "id": 636,
   "slug": "peaceful-minecraft-garden-oasis-build",
   "name": "Peaceful Minecraft Garden Oasis Build",
   "category": "parks",
@@ -15111,7 +14628,7 @@
   "file": "parks_peaceful-minecraft-garden-oasis-build_mc-mod_x.schem"
  },
  {
-  "id": 658,
+  "id": 637,
   "slug": "pet-shop-building",
   "name": "Pet Shop Building",
   "category": "commercial",
@@ -15134,7 +14651,7 @@
   "file": "commercial_pet-shop-building_mc-mod_x.schem"
  },
  {
-  "id": 659,
+  "id": 638,
   "slug": "platinum-residential-tower-with-antenna",
   "name": "Platinum Residential Tower with Antenna",
   "category": "towers",
@@ -15157,7 +14674,7 @@
   "file": "towers_platinum-residential-tower-with-antenna_mc-mod_x.schem"
  },
  {
-  "id": 660,
+  "id": 639,
   "slug": "police-car-vehicle",
   "name": "Police Car Vehicle",
   "category": "public",
@@ -15180,7 +14697,7 @@
   "file": "public_police-car-vehicle_mc-mod_x.schem"
  },
  {
-  "id": 661,
+  "id": 640,
   "slug": "police-vehicle",
   "name": "Police Vehicle",
   "category": "public",
@@ -15203,7 +14720,7 @@
   "file": "public_police-vehicle_mc-mod_x.schem"
  },
  {
-  "id": 662,
+  "id": 641,
   "slug": "portuguese-style-house",
   "name": "Portuguese Style House",
   "category": "residential",
@@ -15226,7 +14743,7 @@
   "file": "residential_portuguese-style-house_mc-mod_x.schem"
  },
  {
-  "id": 663,
+  "id": 642,
   "slug": "prismarine-island-tower",
   "name": "Prismarine Island Tower",
   "category": "towers",
@@ -15249,7 +14766,7 @@
   "file": "towers_prismarine-island-tower_mc-mod_x.schem"
  },
  {
-  "id": 664,
+  "id": 643,
   "slug": "quad-steam-turbine-warehouse",
   "name": "Quad Steam Turbine Warehouse",
   "category": "residential",
@@ -15272,7 +14789,7 @@
   "file": "residential_quad-steam-turbine-warehouse_mc-mod_x.schem"
  },
  {
-  "id": 665,
+  "id": 644,
   "slug": "quaint-library-structure",
   "name": "Quaint Library Structure",
   "category": "public",
@@ -15295,7 +14812,7 @@
   "file": "public_quaint-library-structure_mc-mod_x.schem"
  },
  {
-  "id": 666,
+  "id": 645,
   "slug": "quartz-pool-garden-feature",
   "name": "Quartz Pool Garden Feature",
   "category": "parks",
@@ -15318,7 +14835,7 @@
   "file": "parks_quartz-pool-garden-feature_mc-mod_x.schem"
  },
  {
-  "id": 667,
+  "id": 646,
   "slug": "quartz-spruce-small-house",
   "name": "Quartz Spruce Small House",
   "category": "residential",
@@ -15341,7 +14858,7 @@
   "file": "residential_quartz-spruce-small-house_mc-mod_x.schem"
  },
  {
-  "id": 668,
+  "id": 647,
   "slug": "quickdeli-cargo-services-warehouse-and-office",
   "name": "QuickDeli Cargo Services Warehouse and Office",
   "category": "towers",
@@ -15364,7 +14881,7 @@
   "file": "towers_quickdeli-cargo-services-warehouse-and-offic_mc-mod_x.schem"
  },
  {
-  "id": 669,
+  "id": 648,
   "slug": "railway-station-building",
   "name": "Railway Station Building",
   "category": "transport",
@@ -15387,7 +14904,7 @@
   "file": "transport_railway-station-building_mc-mod_x.schem"
  },
  {
-  "id": 670,
+  "id": 649,
   "slug": "rainbow-lighthouse",
   "name": "Rainbow Lighthouse",
   "category": "residential",
@@ -15410,7 +14927,7 @@
   "file": "residential_rainbow-lighthouse_mc-mod_x.schem"
  },
  {
-  "id": 671,
+  "id": 650,
   "slug": "red-bureaucratic-office-building",
   "name": "Red Bureaucratic Office Building",
   "category": "towers",
@@ -15433,7 +14950,7 @@
   "file": "towers_red-bureaucratic-office-building_mc-mod_x.schem"
  },
  {
-  "id": 672,
+  "id": 651,
   "slug": "renaissance-church-structure",
   "name": "Renaissance Church Structure",
   "category": "public",
@@ -15456,7 +14973,7 @@
   "file": "public_renaissance-church-structure_mc-mod_x.schem"
  },
  {
-  "id": 673,
+  "id": 652,
   "slug": "river-crossing-bridge",
   "name": "River Crossing Bridge",
   "category": "bridges",
@@ -15479,7 +14996,7 @@
   "file": "bridges_river-crossing-bridge_mc-mod_x.schem"
  },
  {
-  "id": 674,
+  "id": 653,
   "slug": "rivertown-library-structure",
   "name": "Rivertown Library Structure",
   "category": "public",
@@ -15502,7 +15019,7 @@
   "file": "public_rivertown-library-structure_mc-mod_x.schem"
  },
  {
-  "id": 675,
+  "id": 654,
   "slug": "rustic-cottage-house-3",
   "name": "Rustic Cottage House",
   "category": "residential",
@@ -15525,7 +15042,7 @@
   "file": "residential_rustic-cottage-house-3_mc-mod_x.schem"
  },
  {
-  "id": 676,
+  "id": 655,
   "slug": "rustic-furnished-wooden-house",
   "name": "Rustic Furnished Wooden House",
   "category": "residential",
@@ -15548,7 +15065,7 @@
   "file": "residential_rustic-furnished-wooden-house_mc-mod_x.schem"
  },
  {
-  "id": 677,
+  "id": 656,
   "slug": "rustic-modern-house-with-pool-and-barn",
   "name": "Rustic Modern House with Pool and Barn",
   "category": "residential",
@@ -15571,7 +15088,7 @@
   "file": "residential_rustic-modern-house-with-pool-and-barn_mc-mod_x.schem"
  },
  {
-  "id": 678,
+  "id": 657,
   "slug": "rustic-stone-bridge",
   "name": "Rustic Stone Bridge",
   "category": "bridges",
@@ -15594,7 +15111,7 @@
   "file": "bridges_rustic-stone-bridge_mc-mod_x.schem"
  },
  {
-  "id": 679,
+  "id": 658,
   "slug": "rustic-wood-tower-build",
   "name": "Rustic Wood Tower Build",
   "category": "towers",
@@ -15617,7 +15134,7 @@
   "file": "towers_rustic-wood-tower-build_mc-mod_x.schem"
  },
  {
-  "id": 680,
+  "id": 659,
   "slug": "rustic-wooden-shop-medium-size",
   "name": "Rustic Wooden Shop &#8211; Medium Size",
   "category": "commercial",
@@ -15640,7 +15157,7 @@
   "file": "commercial_rustic-wooden-shop-medium-size_mc-mod_x.schem"
  },
  {
-  "id": 681,
+  "id": 660,
   "slug": "sam-and-taurtis-roleplay-house",
   "name": "Sam and Taurtis&#8217; Roleplay House",
   "category": "residential",
@@ -15663,7 +15180,7 @@
   "file": "residential_sam-and-taurtis-roleplay-house_mc-mod_x.schem"
  },
  {
-  "id": 682,
+  "id": 661,
   "slug": "sand-palace-station",
   "name": "Sand Palace Station",
   "category": "transport",
@@ -15686,7 +15203,7 @@
   "file": "transport_sand-palace-station_mc-mod_x.schem"
  },
  {
-  "id": 683,
+  "id": 662,
   "slug": "sandstone-hotel",
   "name": "Sandstone Hotel",
   "category": "towers",
@@ -15709,7 +15226,7 @@
   "file": "towers_sandstone-hotel_mc-mod_x.schem"
  },
  {
-  "id": 684,
+  "id": 663,
   "slug": "sandstone-office-tower-126k-blocks",
   "name": "Sandstone Office Tower &#8211; 126k Blocks",
   "category": "towers",
@@ -15732,7 +15249,7 @@
   "file": "towers_sandstone-office-tower-126k-blocks_mc-mod_x.schem"
  },
  {
-  "id": 685,
+  "id": 664,
   "slug": "scalable-long-bridge",
   "name": "Scalable Long Bridge",
   "category": "bridges",
@@ -15755,30 +15272,7 @@
   "file": "bridges_scalable-long-bridge_mc-mod_x.schem"
  },
  {
-  "id": 686,
-  "slug": "sea-creature-park-megalodon-whale",
-  "name": "Sea Creature Park Megalodon Whale",
-  "category": "parks",
-  "source": "mc-mod",
-  "page_url": "https://www.mc-mod.net/schematics/sea-creature-park-megalodon-whale/",
-  "download_url": "https://dl2.9minecraft.net/dl2storage800/Sea-Creature-Park-Megalodon-Whale.schematic",
-  "author": "",
-  "minecraft_version": "",
-  "format": ".schematic",
-  "width": 52,
-  "height": 26,
-  "length": 62,
-  "blocks": 71810,
-  "file_size": 3773,
-  "hash": "0ffd798a2d0128a13bb3870d12d8210063c0655fd353af932a995609c1386bf3",
-  "unsupported_entries": 48,
-  "simplified_entries": 181,
-  "status": "verified",
-  "notes": "",
-  "file": "parks_sea-creature-park-megalodon-whale_mc-mod_x.schem"
- },
- {
-  "id": 687,
+  "id": 665,
   "slug": "seaside-lighthouse-tower",
   "name": "Seaside Lighthouse Tower",
   "category": "towers",
@@ -15801,7 +15295,7 @@
   "file": "towers_seaside-lighthouse-tower_mc-mod_x.schem"
  },
  {
-  "id": 688,
+  "id": 666,
   "slug": "seaside-multi-story-house",
   "name": "Seaside Multi-Story House",
   "category": "residential",
@@ -15824,7 +15318,7 @@
   "file": "residential_seaside-multi-story-house_mc-mod_x.schem"
  },
  {
-  "id": 689,
+  "id": 667,
   "slug": "secluded-cove-house-with-shops",
   "name": "Secluded Cove House With Shops",
   "category": "residential",
@@ -15847,7 +15341,7 @@
   "file": "residential_secluded-cove-house-with-shops_mc-mod_x.schem"
  },
  {
-  "id": 690,
+  "id": 668,
   "slug": "shady-oaks-hotel-townhouse",
   "name": "Shady Oaks Hotel Townhouse",
   "category": "commercial",
@@ -15870,7 +15364,7 @@
   "file": "commercial_shady-oaks-hotel-townhouse_mc-mod_x.schem"
  },
  {
-  "id": 691,
+  "id": 669,
   "slug": "shard-tower-tall-unfurnished-structure",
   "name": "Shard Tower &#8211; Tall Unfurnished Structure",
   "category": "towers",
@@ -15893,7 +15387,7 @@
   "file": "towers_shard-tower-tall-unfurnished-structure_mc-mod_x.schem"
  },
  {
-  "id": 692,
+  "id": 670,
   "slug": "shop-house-building",
   "name": "Shop House Building",
   "category": "residential",
@@ -15916,7 +15410,7 @@
   "file": "residential_shop-house-building_mc-mod_x.schem"
  },
  {
-  "id": 693,
+  "id": 671,
   "slug": "shop-house-for-sale",
   "name": "Shop House for Sale",
   "category": "residential",
@@ -15939,7 +15433,7 @@
   "file": "residential_shop-house-for-sale_mc-mod_x.schem"
  },
  {
-  "id": 694,
+  "id": 672,
   "slug": "shop-or-house-design",
   "name": "Shop or House Design",
   "category": "residential",
@@ -15962,7 +15456,7 @@
   "file": "residential_shop-or-house-design_mc-mod_x.schem"
  },
  {
-  "id": 695,
+  "id": 673,
   "slug": "simple-defense-tower",
   "name": "Simple Defense Tower",
   "category": "towers",
@@ -15985,7 +15479,7 @@
   "file": "towers_simple-defense-tower_mc-mod_x.schem"
  },
  {
-  "id": 696,
+  "id": 674,
   "slug": "simple-factory-shed",
   "name": "Simple Factory Shed",
   "category": "industrial",
@@ -16008,7 +15502,7 @@
   "file": "industrial_simple-factory-shed_mc-mod_x.schem"
  },
  {
-  "id": 697,
+  "id": 675,
   "slug": "simple-minecraft-church-building",
   "name": "Simple Minecraft Church Building",
   "category": "public",
@@ -16031,7 +15525,7 @@
   "file": "public_simple-minecraft-church-building_mc-mod_x.schem"
  },
  {
-  "id": 698,
+  "id": 676,
   "slug": "simple-small-house",
   "name": "Simple Small House",
   "category": "residential",
@@ -16054,7 +15548,7 @@
   "file": "residential_simple-small-house_mc-mod_x.schem"
  },
  {
-  "id": 699,
+  "id": 677,
   "slug": "simple-stone-bridge",
   "name": "Simple Stone Bridge",
   "category": "bridges",
@@ -16077,7 +15571,7 @@
   "file": "bridges_simple-stone-bridge_mc-mod_x.schem"
  },
  {
-  "id": 700,
+  "id": 678,
   "slug": "simple-stone-river-bridge",
   "name": "Simple Stone River Bridge",
   "category": "bridges",
@@ -16100,7 +15594,7 @@
   "file": "bridges_simple-stone-river-bridge_mc-mod_x.schem"
  },
  {
-  "id": 701,
+  "id": 679,
   "slug": "simple-train-station",
   "name": "Simple Train Station",
   "category": "transport",
@@ -16123,7 +15617,7 @@
   "file": "transport_simple-train-station_mc-mod_x.schem"
  },
  {
-  "id": 702,
+  "id": 680,
   "slug": "simple-yellow-house",
   "name": "Simple Yellow House",
   "category": "residential",
@@ -16146,7 +15640,7 @@
   "file": "residential_simple-yellow-house_mc-mod_x.schem"
  },
  {
-  "id": 703,
+  "id": 681,
   "slug": "six-lane-highway",
   "name": "Six Lane Highway",
   "category": "roads",
@@ -16169,7 +15663,7 @@
   "file": "roads_six-lane-highway_mc-mod_x.schem"
  },
  {
-  "id": 704,
+  "id": 682,
   "slug": "six-story-hotel-with-furnished-rooms",
   "name": "Six Story Hotel With Furnished Rooms",
   "category": "towers",
@@ -16192,7 +15686,7 @@
   "file": "towers_six-story-hotel-with-furnished-rooms_mc-mod_x.schem"
  },
  {
-  "id": 705,
+  "id": 683,
   "slug": "six-story-parking-garage",
   "name": "Six Story Parking Garage",
   "category": "transport",
@@ -16215,7 +15709,7 @@
   "file": "transport_six-story-parking-garage_mc-mod_x.schem"
  },
  {
-  "id": 706,
+  "id": 684,
   "slug": "skyscraper-city-building",
   "name": "Skyscraper City Building",
   "category": "towers",
@@ -16238,7 +15732,7 @@
   "file": "towers_skyscraper-city-building_mc-mod_x.schem"
  },
  {
-  "id": 707,
+  "id": 685,
   "slug": "skyscraper",
   "name": "Iron Quartz Skyscraper Near Build Limit",
   "category": "towers",
@@ -16261,7 +15755,7 @@
   "file": "towers_skyscraper_mc-mod_x.schem"
  },
  {
-  "id": 708,
+  "id": 686,
   "slug": "small-apartment-building",
   "name": "Small Apartment Building",
   "category": "residential",
@@ -16284,7 +15778,7 @@
   "file": "residential_small-apartment-building_mc-mod_x.schem"
  },
  {
-  "id": 709,
+  "id": 687,
   "slug": "small-asian-style-house",
   "name": "Small Asian Style House",
   "category": "residential",
@@ -16307,7 +15801,7 @@
   "file": "residential_small-asian-style-house_mc-mod_x.schem"
  },
  {
-  "id": 710,
+  "id": 688,
   "slug": "small-carwash-station",
   "name": "Small Carwash Station",
   "category": "commercial",
@@ -16330,7 +15824,7 @@
   "file": "commercial_small-carwash-station_mc-mod_x.schem"
  },
  {
-  "id": 711,
+  "id": 689,
   "slug": "small-chapel-structure",
   "name": "Small Chapel Structure",
   "category": "commercial",
@@ -16353,7 +15847,7 @@
   "file": "commercial_small-chapel-structure_mc-mod_x.schem"
  },
  {
-  "id": 712,
+  "id": 690,
   "slug": "small-church",
   "name": "Small Church",
   "category": "commercial",
@@ -16376,7 +15870,7 @@
   "file": "commercial_small-church_mc-mod_x.schem"
  },
  {
-  "id": 713,
+  "id": 691,
   "slug": "small-concrete-bus-stop-schematic",
   "name": "Small Concrete Bus Stop Schematic",
   "category": "commercial",
@@ -16399,7 +15893,7 @@
   "file": "commercial_small-concrete-bus-stop-schematic_mc-mod_x.schem"
  },
  {
-  "id": 714,
+  "id": 692,
   "slug": "small-desert-cactus-fountain",
   "name": "Small Desert Cactus Fountain",
   "category": "commercial",
@@ -16422,7 +15916,7 @@
   "file": "commercial_small-desert-cactus-fountain_mc-mod_x.schem"
  },
  {
-  "id": 715,
+  "id": 693,
   "slug": "small-double-modern-church-with-interior",
   "name": "Small Double Modern Church With Interior",
   "category": "commercial",
@@ -16445,7 +15939,7 @@
   "file": "commercial_small-double-modern-church-with-interior_mc-mod_x.schem"
  },
  {
-  "id": 716,
+  "id": 694,
   "slug": "small-driving-school",
   "name": "Small Driving School",
   "category": "commercial",
@@ -16468,7 +15962,7 @@
   "file": "commercial_small-driving-school_mc-mod_x.schem"
  },
  {
-  "id": 717,
+  "id": 695,
   "slug": "small-faction-base-for-hardcore-players",
   "name": "Small Faction Base for Hardcore Players",
   "category": "commercial",
@@ -16491,7 +15985,7 @@
   "file": "commercial_small-faction-base-for-hardcore-players_mc-mod_x.schem"
  },
  {
-  "id": 718,
+  "id": 696,
   "slug": "small-factory-shell-template",
   "name": "Small Factory Shell Template",
   "category": "commercial",
@@ -16514,7 +16008,7 @@
   "file": "commercial_small-factory-shell-template_mc-mod_x.schem"
  },
  {
-  "id": 719,
+  "id": 697,
   "slug": "small-fancy-wooden-house",
   "name": "Small Fancy Wooden House",
   "category": "residential",
@@ -16537,7 +16031,7 @@
   "file": "residential_small-fancy-wooden-house_mc-mod_x.schem"
  },
  {
-  "id": 720,
+  "id": 698,
   "slug": "small-garden-fountain-3",
   "name": "Small Garden Fountain",
   "category": "commercial",
@@ -16560,7 +16054,7 @@
   "file": "commercial_small-garden-fountain-3_mc-mod_x.schem"
  },
  {
-  "id": 721,
+  "id": 699,
   "slug": "small-house-with-garden-path",
   "name": "Small House with Garden Path",
   "category": "residential",
@@ -16583,7 +16077,7 @@
   "file": "residential_small-house-with-garden-path_mc-mod_x.schem"
  },
  {
-  "id": 722,
+  "id": 700,
   "slug": "small-minecraft-church-building",
   "name": "Small Minecraft Church Building",
   "category": "commercial",
@@ -16606,7 +16100,7 @@
   "file": "commercial_small-minecraft-church-building_mc-mod_x.schem"
  },
  {
-  "id": 723,
+  "id": 701,
   "slug": "small-miscellaneous-structure-2",
   "name": "Small Miscellaneous Structure",
   "category": "commercial",
@@ -16629,7 +16123,7 @@
   "file": "commercial_small-miscellaneous-structure-2_mc-mod_x.schem"
  },
  {
-  "id": 724,
+  "id": 702,
   "slug": "small-office-building",
   "name": "Small Office Building",
   "category": "towers",
@@ -16652,7 +16146,7 @@
   "file": "towers_small-office-building_mc-mod_x.schem"
  },
  {
-  "id": 725,
+  "id": 703,
   "slug": "small-open-cafe-design",
   "name": "Small Open Cafe Design",
   "category": "commercial",
@@ -16675,7 +16169,7 @@
   "file": "commercial_small-open-cafe-design_mc-mod_x.schem"
  },
  {
-  "id": 726,
+  "id": 704,
   "slug": "small-police-car-schematic",
   "name": "Small Police Car Schematic",
   "category": "commercial",
@@ -16698,7 +16192,7 @@
   "file": "commercial_small-police-car-schematic_mc-mod_x.schem"
  },
  {
-  "id": 727,
+  "id": 705,
   "slug": "small-schoolhouse-with-blackboard",
   "name": "Small Schoolhouse With Blackboard",
   "category": "residential",
@@ -16721,7 +16215,7 @@
   "file": "residential_small-schoolhouse-with-blackboard_mc-mod_x.schem"
  },
  {
-  "id": 728,
+  "id": 706,
   "slug": "small-shop-building",
   "name": "Small Shop Building",
   "category": "commercial",
@@ -16744,7 +16238,7 @@
   "file": "commercial_small-shop-building_mc-mod_x.schem"
  },
  {
-  "id": 729,
+  "id": 707,
   "slug": "small-shopping-mall",
   "name": "Small Shopping Mall",
   "category": "commercial",
@@ -16767,7 +16261,7 @@
   "file": "commercial_small-shopping-mall_mc-mod_x.schem"
  },
  {
-  "id": 730,
+  "id": 708,
   "slug": "small-skybridge-design",
   "name": "Small Skybridge Design",
   "category": "bridges",
@@ -16790,7 +16284,7 @@
   "file": "bridges_small-skybridge-design_mc-mod_x.schem"
  },
  {
-  "id": 731,
+  "id": 709,
   "slug": "small-spade-shop",
   "name": "Small Spade Shop",
   "category": "commercial",
@@ -16813,7 +16307,7 @@
   "file": "commercial_small-spade-shop_mc-mod_x.schem"
  },
  {
-  "id": 732,
+  "id": 710,
   "slug": "small-terracotta-vase-decoration",
   "name": "Small Terracotta Vase Decoration",
   "category": "commercial",
@@ -16836,7 +16330,7 @@
   "file": "commercial_small-terracotta-vase-decoration_mc-mod_x.schem"
  },
  {
-  "id": 733,
+  "id": 711,
   "slug": "small-underground-faction-shop",
   "name": "Small Underground Faction Shop",
   "category": "commercial",
@@ -16859,7 +16353,7 @@
   "file": "commercial_small-underground-faction-shop_mc-mod_x.schem"
  },
  {
-  "id": 734,
+  "id": 712,
   "slug": "small-waterfront-house",
   "name": "Small Waterfront House",
   "category": "residential",
@@ -16882,7 +16376,7 @@
   "file": "residential_small-waterfront-house_mc-mod_x.schem"
  },
  {
-  "id": 735,
+  "id": 713,
   "slug": "small-wooden-shop-with-multiple-entrances",
   "name": "Small Wooden Shop with Multiple Entrances",
   "category": "commercial",
@@ -16905,7 +16399,7 @@
   "file": "commercial_small-wooden-shop-with-multiple-entrances_mc-mod_x.schem"
  },
  {
-  "id": 736,
+  "id": 714,
   "slug": "soviet-style-apartment-building",
   "name": "Soviet Style Apartment Building",
   "category": "residential",
@@ -16928,7 +16422,7 @@
   "file": "residential_soviet-style-apartment-building_mc-mod_x.schem"
  },
  {
-  "id": 737,
+  "id": 715,
   "slug": "spacious-mansion-with-park",
   "name": "Spacious Mansion With Park",
   "category": "residential",
@@ -16951,7 +16445,7 @@
   "file": "residential_spacious-mansion-with-park_mc-mod_x.schem"
  },
  {
-  "id": 738,
+  "id": 716,
   "slug": "spawn-fountain-garden",
   "name": "Spawn Fountain Garden",
   "category": "parks",
@@ -16974,7 +16468,7 @@
   "file": "parks_spawn-fountain-garden_mc-mod_x.schem"
  },
  {
-  "id": 739,
+  "id": 717,
   "slug": "st-pancras-old-church-exterior-replica",
   "name": "St. Pancras Old Church Exterior Replica",
   "category": "public",
@@ -16997,7 +16491,7 @@
   "file": "public_st-pancras-old-church-exterior-replica_mc-mod_x.schem"
  },
  {
-  "id": 740,
+  "id": 718,
   "slug": "standard-railroad-station",
   "name": "Standard Railroad Station",
   "category": "roads",
@@ -17020,7 +16514,7 @@
   "file": "roads_standard-railroad-station_mc-mod_x.schem"
  },
  {
-  "id": 741,
+  "id": 719,
   "slug": "stone-and-wood-survival-bridge",
   "name": "Stone and Wood Survival Bridge",
   "category": "bridges",
@@ -17043,7 +16537,7 @@
   "file": "bridges_stone-and-wood-survival-bridge_mc-mod_x.schem"
  },
  {
-  "id": 742,
+  "id": 720,
   "slug": "stone-church-building",
   "name": "Stone Church Building",
   "category": "public",
@@ -17066,7 +16560,7 @@
   "file": "public_stone-church-building_mc-mod_x.schem"
  },
  {
-  "id": 743,
+  "id": 721,
   "slug": "storage-warehouse-building",
   "name": "Storage Warehouse Building",
   "category": "residential",
@@ -17089,7 +16583,7 @@
   "file": "residential_storage-warehouse-building_mc-mod_x.schem"
  },
  {
-  "id": 744,
+  "id": 722,
   "slug": "storage-warehouse-structure",
   "name": "Storage Warehouse Structure",
   "category": "residential",
@@ -17112,7 +16606,7 @@
   "file": "residential_storage-warehouse-structure_mc-mod_x.schem"
  },
  {
-  "id": 745,
+  "id": 723,
   "slug": "subway-tunnel-structure",
   "name": "Subway Tunnel Structure",
   "category": "bridges",
@@ -17135,7 +16629,7 @@
   "file": "bridges_subway-tunnel-structure_mc-mod_x.schem"
  },
  {
-  "id": 746,
+  "id": 724,
   "slug": "survival-mansion-2-story-build",
   "name": "Survival Mansion 2-Story Build",
   "category": "residential",
@@ -17158,7 +16652,7 @@
   "file": "residential_survival-mansion-2-story-build_mc-mod_x.schem"
  },
  {
-  "id": 747,
+  "id": 725,
   "slug": "suspended-bridge-minecraft-build",
   "name": "Suspended Bridge Minecraft Build",
   "category": "bridges",
@@ -17181,7 +16675,7 @@
   "file": "bridges_suspended-bridge-minecraft-build_mc-mod_x.schem"
  },
  {
-  "id": 748,
+  "id": 726,
   "slug": "suspension-cable-bridge",
   "name": "Suspension Cable Bridge",
   "category": "bridges",
@@ -17204,7 +16698,7 @@
   "file": "bridges_suspension-cable-bridge_mc-mod_x.schem"
  },
  {
-  "id": 749,
+  "id": 727,
   "slug": "tails-workshop-recreation",
   "name": "Tails&#8217; Workshop Recreation",
   "category": "commercial",
@@ -17227,7 +16721,7 @@
   "file": "commercial_tails-workshop-recreation_mc-mod_x.schem"
  },
  {
-  "id": 750,
+  "id": 728,
   "slug": "tall-orange-quartz-apartment-building",
   "name": "Tall Orange Quartz Apartment Building",
   "category": "residential",
@@ -17250,7 +16744,7 @@
   "file": "residential_tall-orange-quartz-apartment-building_mc-mod_x.schem"
  },
  {
-  "id": 751,
+  "id": 729,
   "slug": "technoblade-tribute-parkour-build",
   "name": "Technoblade Tribute Parkour Build",
   "category": "parks",
@@ -17273,7 +16767,7 @@
   "file": "parks_technoblade-tribute-parkour-build_mc-mod_x.schem"
  },
  {
-  "id": 752,
+  "id": 730,
   "slug": "ten-story-apartment-building",
   "name": "Ten Story Apartment Building",
   "category": "residential",
@@ -17296,7 +16790,7 @@
   "file": "residential_ten-story-apartment-building_mc-mod_x.schem"
  },
  {
-  "id": 753,
+  "id": 731,
   "slug": "the-hidden-library-from-the-book",
   "name": "The Hidden Library From The Book",
   "category": "public",
@@ -17319,7 +16813,7 @@
   "file": "public_the-hidden-library-from-the-book_mc-mod_x.schem"
  },
  {
-  "id": 754,
+  "id": 732,
   "slug": "tilted-office-building",
   "name": "Tilted Office Building",
   "category": "towers",
@@ -17342,7 +16836,7 @@
   "file": "towers_tilted-office-building_mc-mod_x.schem"
  },
  {
-  "id": 755,
+  "id": 733,
   "slug": "tnt-museum",
   "name": "TNT Museum",
   "category": "public",
@@ -17365,7 +16859,7 @@
   "file": "public_tnt-museum_mc-mod_x.schem"
  },
  {
-  "id": 756,
+  "id": 734,
   "slug": "town-parking-lot",
   "name": "Town Parking Lot",
   "category": "transport",
@@ -17388,7 +16882,7 @@
   "file": "transport_town-parking-lot_mc-mod_x.schem"
  },
  {
-  "id": 757,
+  "id": 735,
   "slug": "towny-road-system-cobblestone-construction",
   "name": "Towny Road System &#8211; Cobblestone Construction",
   "category": "roads",
@@ -17411,7 +16905,7 @@
   "file": "roads_towny-road-system-cobblestone-construction_mc-mod_x.schem"
  },
  {
-  "id": 758,
+  "id": 736,
   "slug": "traditional-brick-home-with-garage",
   "name": "Traditional Brick Home With Garage",
   "category": "commercial",
@@ -17434,7 +16928,7 @@
   "file": "commercial_traditional-brick-home-with-garage_mc-mod_x.schem"
  },
  {
-  "id": 759,
+  "id": 737,
   "slug": "traditional-british-pub-building",
   "name": "Traditional British Pub Building",
   "category": "commercial",
@@ -17457,7 +16951,7 @@
   "file": "commercial_traditional-british-pub-building_mc-mod_x.schem"
  },
  {
-  "id": 760,
+  "id": 738,
   "slug": "trainyard-automatic-refill-station",
   "name": "Trainyard Automatic Refill Station",
   "category": "transport",
@@ -17480,7 +16974,7 @@
   "file": "transport_trainyard-automatic-refill-station_mc-mod_x.schem"
  },
  {
-  "id": 761,
+  "id": 739,
   "slug": "tropical-mine-and-shop",
   "name": "Tropical Mine and Shop",
   "category": "commercial",
@@ -17503,7 +16997,7 @@
   "file": "commercial_tropical-mine-and-shop_mc-mod_x.schem"
  },
  {
-  "id": 762,
+  "id": 740,
   "slug": "truck-stop-gas-station",
   "name": "Truck Stop Gas Station",
   "category": "commercial",
@@ -17526,7 +17020,7 @@
   "file": "commercial_truck-stop-gas-station_mc-mod_x.schem"
  },
  {
-  "id": 763,
+  "id": 741,
   "slug": "two-story-house-with-attic-and-balcony",
   "name": "Two Story House With Attic And Balcony",
   "category": "residential",
@@ -17549,7 +17043,7 @@
   "file": "residential_two-story-house-with-attic-and-balcony_mc-mod_x.schem"
  },
  {
-  "id": 764,
+  "id": 742,
   "slug": "two-story-warehouse-with-parking",
   "name": "Two Story Warehouse With Parking",
   "category": "transport",
@@ -17572,7 +17066,7 @@
   "file": "transport_two-story-warehouse-with-parking_mc-mod_x.schem"
  },
  {
-  "id": 765,
+  "id": 743,
   "slug": "underground-metro-station-design",
   "name": "Underground Metro Station Design",
   "category": "transport",
@@ -17595,7 +17089,7 @@
   "file": "transport_underground-metro-station-design_mc-mod_x.schem"
  },
  {
-  "id": 766,
+  "id": 744,
   "slug": "underground-metro-station-with-blue-train",
   "name": "Underground Metro Station With Blue Train",
   "category": "transport",
@@ -17618,7 +17112,7 @@
   "file": "transport_underground-metro-station-with-blue-train_mc-mod_x.schem"
  },
  {
-  "id": 767,
+  "id": 745,
   "slug": "unfurnished-office-building-structure",
   "name": "Unfurnished Office Building Structure",
   "category": "towers",
@@ -17641,7 +17135,7 @@
   "file": "towers_unfurnished-office-building-structure_mc-mod_x.schem"
  },
  {
-  "id": 768,
+  "id": 746,
   "slug": "urban-compressed-air-factory",
   "name": "Urban Compressed Air Factory",
   "category": "industrial",
@@ -17664,7 +17158,7 @@
   "file": "industrial_urban-compressed-air-factory_mc-mod_x.schem"
  },
  {
-  "id": 769,
+  "id": 747,
   "slug": "urban-warehouse-storage-building-2",
   "name": "Large Urban Warehouse Storage Building",
   "category": "residential",
@@ -17687,7 +17181,7 @@
   "file": "residential_urban-warehouse-storage-building-2_mc-mod_x.schem"
  },
  {
-  "id": 770,
+  "id": 748,
   "slug": "vehicle-warehouse-storage",
   "name": "Vehicle Warehouse Storage",
   "category": "residential",
@@ -17710,7 +17204,7 @@
   "file": "residential_vehicle-warehouse-storage_mc-mod_x.schem"
  },
  {
-  "id": 771,
+  "id": 749,
   "slug": "vibrant-yellow-modern-apartment-building",
   "name": "Vibrant Yellow Modern Apartment Building",
   "category": "residential",
@@ -17733,7 +17227,7 @@
   "file": "residential_vibrant-yellow-modern-apartment-building_mc-mod_x.schem"
  },
  {
-  "id": 772,
+  "id": 750,
   "slug": "vienna-street-house-65-build",
   "name": "Vienna Street House 65 Build",
   "category": "roads",
@@ -17756,7 +17250,7 @@
   "file": "roads_vienna-street-house-65-build_mc-mod_x.schem"
  },
  {
-  "id": 773,
+  "id": 751,
   "slug": "vienna-street-house-66",
   "name": "Vienna Street House 66",
   "category": "roads",
@@ -17779,7 +17273,7 @@
   "file": "roads_vienna-street-house-66_mc-mod_x.schem"
  },
  {
-  "id": 774,
+  "id": 752,
   "slug": "vienna-street-house-68",
   "name": "Vienna Street House 68",
   "category": "roads",
@@ -17802,7 +17296,7 @@
   "file": "roads_vienna-street-house-68_mc-mod_x.schem"
  },
  {
-  "id": 775,
+  "id": 753,
   "slug": "vienna-street-house-70-build",
   "name": "Vienna Street House 70 Build",
   "category": "roads",
@@ -17825,7 +17319,7 @@
   "file": "roads_vienna-street-house-70-build_mc-mod_x.schem"
  },
  {
-  "id": 776,
+  "id": 754,
   "slug": "vienna-street-house-71",
   "name": "Vienna Street House 71",
   "category": "roads",
@@ -17848,7 +17342,7 @@
   "file": "roads_vienna-street-house-71_mc-mod_x.schem"
  },
  {
-  "id": 777,
+  "id": 755,
   "slug": "vienna-street-house-73",
   "name": "Vienna Street House 73",
   "category": "roads",
@@ -17871,7 +17365,7 @@
   "file": "roads_vienna-street-house-73_mc-mod_x.schem"
  },
  {
-  "id": 778,
+  "id": 756,
   "slug": "vienna-street-house-74",
   "name": "Vienna Street House 74",
   "category": "roads",
@@ -17894,7 +17388,7 @@
   "file": "roads_vienna-street-house-74_mc-mod_x.schem"
  },
  {
-  "id": 779,
+  "id": 757,
   "slug": "vienna-street-houses-2",
   "name": "Vienna Street House With Jungle Planks",
   "category": "roads",
@@ -17917,7 +17411,7 @@
   "file": "roads_vienna-street-houses-2_mc-mod_x.schem"
  },
  {
-  "id": 780,
+  "id": 758,
   "slug": "vintage-train-station-building",
   "name": "Vintage Train Station Building",
   "category": "transport",
@@ -17940,7 +17434,7 @@
   "file": "transport_vintage-train-station-building_mc-mod_x.schem"
  },
  {
-  "id": 781,
+  "id": 759,
   "slug": "warehouse-13-storage-building",
   "name": "Warehouse 13 Storage Building",
   "category": "residential",
@@ -17963,7 +17457,7 @@
   "file": "residential_warehouse-13-storage-building_mc-mod_x.schem"
  },
  {
-  "id": 782,
+  "id": 760,
   "slug": "warehouse-with-movie-sets",
   "name": "Warehouse With Movie Sets",
   "category": "residential",
@@ -17986,7 +17480,7 @@
   "file": "residential_warehouse-with-movie-sets_mc-mod_x.schem"
  },
  {
-  "id": 783,
+  "id": 761,
   "slug": "water-wall-skyscraper",
   "name": "Water Wall Skyscraper",
   "category": "towers",
@@ -18009,7 +17503,7 @@
   "file": "towers_water-wall-skyscraper_mc-mod_x.schem"
  },
  {
-  "id": 784,
+  "id": 762,
   "slug": "western-train-station-structure",
   "name": "Western Train Station Structure",
   "category": "transport",
@@ -18032,7 +17526,7 @@
   "file": "transport_western-train-station-structure_mc-mod_x.schem"
  },
  {
-  "id": 785,
+  "id": 763,
   "slug": "wii-island-hotel",
   "name": "Wii Island Hotel",
   "category": "commercial",
@@ -18055,7 +17549,7 @@
   "file": "commercial_wii-island-hotel_mc-mod_x.schem"
  },
  {
-  "id": 786,
+  "id": 764,
   "slug": "willis-tower-overhaul-schematic",
   "name": "Willis Tower Overhaul Schematic",
   "category": "towers",
@@ -18078,7 +17572,7 @@
   "file": "towers_willis-tower-overhaul-schematic_mc-mod_x.schem"
  },
  {
-  "id": 787,
+  "id": 765,
   "slug": "willis-tower-skyscraper-build",
   "name": "Willis Tower Skyscraper Build",
   "category": "towers",
@@ -18101,7 +17595,7 @@
   "file": "towers_willis-tower-skyscraper-build_mc-mod_x.schem"
  },
  {
-  "id": 788,
+  "id": 766,
   "slug": "wooden-bridge-design",
   "name": "Wooden Bridge Design",
   "category": "bridges",
@@ -18124,7 +17618,7 @@
   "file": "bridges_wooden-bridge-design_mc-mod_x.schem"
  },
  {
-  "id": 789,
+  "id": 767,
   "slug": "wooden-bridge-with-fences",
   "name": "Wooden Bridge with Fences",
   "category": "bridges",
@@ -18147,7 +17641,7 @@
   "file": "bridges_wooden-bridge-with-fences_mc-mod_x.schem"
  },
  {
-  "id": 790,
+  "id": 768,
   "slug": "working-lighthouse-tower",
   "name": "Working Lighthouse Tower",
   "category": "towers",
@@ -18170,7 +17664,7 @@
   "file": "towers_working-lighthouse-tower_mc-mod_x.schem"
  },
  {
-  "id": 791,
+  "id": 769,
   "slug": "world-relics-museum-build",
   "name": "World Relics Museum Build",
   "category": "public",
@@ -18193,7 +17687,7 @@
   "file": "public_world-relics-museum-build_mc-mod_x.schem"
  },
  {
-  "id": 792,
+  "id": 770,
   "slug": "yandere-high-school-electric-chair-room",
   "name": "Yandere High School Electric Chair Room",
   "category": "public",
@@ -18216,7 +17710,7 @@
   "file": "public_yandere-high-school-electric-chair-room_mc-mod_x.schem"
  },
  {
-  "id": 793,
+  "id": 771,
   "slug": "yetis-alpine-shop",
   "name": "Yeti&#8217;s Alpine Shop",
   "category": "commercial",
@@ -18239,7 +17733,7 @@
   "file": "commercial_yetis-alpine-shop_mc-mod_x.schem"
  },
  {
-  "id": 794,
+  "id": 772,
   "slug": "yin-yang-garden-fountain",
   "name": "Yin Yang Garden Fountain",
   "category": "parks",
@@ -18262,7 +17756,7 @@
   "file": "parks_yin-yang-garden-fountain_mc-mod_x.schem"
  },
  {
-  "id": 795,
+  "id": 773,
   "slug": "youcube-office-structure",
   "name": "Youcube Office Structure",
   "category": "towers",
@@ -18285,7 +17779,7 @@
   "file": "towers_youcube-office-structure_mc-mod_x.schem"
  },
  {
-  "id": 796,
+  "id": 774,
   "slug": "zambias-tallest-skyscraper-findeco-house",
   "name": "Zambia&#8217;s Tallest Skyscraper &#8211; Findeco House",
   "category": "towers",
@@ -18308,7 +17802,7 @@
   "file": "towers_zambias-tallest-skyscraper-findeco-house_mc-mod_x.schem"
  },
  {
-  "id": 797,
+  "id": 775,
   "slug": "high-security-jail",
   "name": "High Security Jail (default map)",
   "category": "public",
@@ -18331,7 +17825,7 @@
   "file": "high-security-jail.schem"
  },
  {
-  "id": 798,
+  "id": 776,
   "slug": "modern_house_n_2",
   "name": "Modern house N2",
   "category": "residential",
@@ -18354,7 +17848,7 @@
   "file": "modern_house_n_2.schem"
  },
  {
-  "id": 799,
+  "id": 777,
   "slug": "radeon-prison",
   "name": "Radeon prison",
   "category": "public",

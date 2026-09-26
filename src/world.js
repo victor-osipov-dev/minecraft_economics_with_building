@@ -4,6 +4,7 @@ import {
   ATLAS_COLS as ATL_COLS,
   ATLAS_ROWS as ATL_ROWS,
   STONE,
+  GRASS_BLOCK,
   BLOCKS,
   TORCH,
   REDSTONE_TORCH,
@@ -58,6 +59,10 @@ export class World {
     // data-байт на клетку, трактовка зависит от id блока. 0 = вид по умолчанию
     // (факел на полу, стоячая табличка, двойная плита = полный куб).
     this.states = new Map();
+    // Чанки с ручными/схемными данными. Автогенерация плоского пола
+    // (ensureFlatAround) их пропускает: иначе пол прорастёт сквозь постройки
+    // и не даст игроку выкопать яму (регенерация поверх).
+    this.touched = new Set();
     this.dirty = new Set();
     this.meshes = new Map();
   }
@@ -116,6 +121,7 @@ export class World {
     const idx = this._idx(x, y, z, cx, cy, cz);
     const prev = c[idx];
     c[idx] = id;
+    this.touched.add(levelKey(cx, cy, cz));
     if (data === 0) {
       const st = this.states.get(levelKey(cx, cy, cz));
       if (st) st[idx] = 0;
@@ -274,6 +280,8 @@ export class World {
       for (let cy = firstCy; cy <= lastCy; cy++) {
         for (let cz = firstCz; cz <= lastCz; cz++) {
           const key = levelKey(cx, cy, cz);
+          // Очищенная под схему область — тоже "тронутая": пол там не генерим.
+          this.touched.add(key);
           const chunk = this.chunks.get(key);
           if (!chunk) continue;
           const minX = Math.max(x, cx * CHUNK);
@@ -321,7 +329,38 @@ export class World {
     this.meshes.clear();
     this.chunks.clear();
     this.states.clear();
+    this.touched.clear();
     this.dirty.clear();
+  }
+
+  // Бесконечный плоский пол как в flat-мире: один слой травы на y=0 в
+  // чанках вокруг (x, z), где ещё ничего нет. Тронутые чанки (постройки,
+  // правки игрока, очищенные области) пропускаем. Вызывать периодически
+  // (раз в ~0.3 c): создаёт максимум (2r+1)^2 чанков за проход.
+  ensureFlatAround(x, z, radius = 2) {
+    if (!Number.isFinite(x) || !Number.isFinite(z)) return;
+    const ccx = Math.floor(x / CHUNK);
+    const ccz = Math.floor(z / CHUNK);
+    for (let dx = -radius; dx <= radius; dx++) {
+      for (let dz = -radius; dz <= radius; dz++) {
+        const cx = ccx + dx;
+        const cz = ccz + dz;
+        const key = levelKey(cx, 0, cz);
+        if (this.chunks.has(key) || this.touched.has(key)) continue;
+        const c = this.ensureChunk(cx, 0, cz);
+        for (let lz = 0; lz < CHUNK; lz++) {
+          for (let lx = 0; lx < CHUNK; lx++) {
+            c[lz * CHUNK + lx] = GRASS_BLOCK;
+          }
+        }
+        this.dirty.add(key);
+        // Соседям тоже обновить грани (пол могут перекрыть их боковины).
+        for (const [nx, nz] of [[cx - 1, cz], [cx + 1, cz], [cx, cz - 1], [cx, cz + 1]]) {
+          const nkey = levelKey(nx, 0, nz);
+          if (this.chunks.has(nkey)) this.dirty.add(nkey);
+        }
+      }
+    }
   }
 
   flushMeshes(scene, opaqueMaterial, cutoutMaterial = opaqueMaterial, alphaMaterial = cutoutMaterial, torchMaterial = cutoutMaterial) {
