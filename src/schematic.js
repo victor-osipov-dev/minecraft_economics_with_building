@@ -337,14 +337,14 @@ function readValue(state, type, depth) {
       need(state, 4);
       const value = state.view.getFloat32(state.offset, state.littleEndian);
       advance(state, 4);
-      if (!Number.isFinite(value)) throw nbtError("недопустимое число с плавающей точкой");
+      // NaN/Infinity встречаются в реальных файлах (сущности, частицы);
+      // на геометрию блоков они не влияют — пропускаем как есть.
       return value;
     }
     case T_DOUBLE: {
       need(state, 8);
       const value = state.view.getFloat64(state.offset, state.littleEndian);
       advance(state, 8);
-      if (!Number.isFinite(value)) throw nbtError("недопустимое число с плавающей точкой");
       return value;
     }
     case T_BYTEARR: {
@@ -435,7 +435,8 @@ function readNbt(u8, littleEndian = false) {
   readString(state);
   countTag(state);
   const root = readValue(state, rootType, 0);
-  if (state.offset !== u8.length) throw nbtError("лишние данные после корневого тега");
+  // Хвостовой паддинг встречается в реальных файлах — терпим.
+  if (state.offset > u8.length) throw nbtError("лишние данные после корневого тега");
   if (rootType !== T_COMPOUND) throw nbtError("корень должен быть compound");
   return root;
 }
@@ -732,6 +733,14 @@ export function mapBlockState(rawName, properties, stats) {
     return { id: SMOOTH_STONE_SLAB, data: slabData(props.type) };
   }
 
+  // Рычаг крепится как кнопка (face floor/wall/ceiling + facing).
+  if (name.includes("lever")) {
+    let data = BUTTON_FLOOR;
+    if (props.face === "ceiling") data = BUTTON_CEIL;
+    else if (props.face === "wall" || (!props.face && props.facing)) data = facingData(props.facing, BUTTON_FLOOR);
+    return { id: OAK_BUTTON, data };
+  }
+
   // Кнопка: face floor/wall/ceiling + facing. Тоже до EXACT_BLOCKS:
   // "oak_button"/"stone_button" там есть, но без состояний.
   if (name.includes("button")) {
@@ -778,7 +787,7 @@ export function mapBlockState(rawName, properties, stats) {
     markSimplified(stats, name);
     return { id: GLASS_PANE, data: 0 };
   }
-  if (name === "ice") return { id: GLASS, data: 0 };
+  if (name === "ice" || name.endsWith("_ice")) return { id: GLASS, data: 0 };
   if (name === "snow_block") return { id: QUARTZ_BLOCK, data: 0 };
   if (name === "clay") return { id: WALL_CONCRETE, data: 0 };
   if (name === "anvil") return { id: IRON_BLOCK, data: 0 };
@@ -791,7 +800,14 @@ export function mapBlockState(rawName, properties, stats) {
       name.includes("tall_grass") || name.includes("dead_bush") || name.includes("vine") ||
       name.includes("rail") || name.includes("carpet") || name.includes("sapling") ||
       name.includes("mushroom") || name.includes("seagrass") || name.includes("kelp") ||
-      name === "snow" || name === "snow_layer") {
+      name === "snow" || name === "snow_layer" ||
+      name.includes("coral") || name.includes("candle") || name.includes("tulip") ||
+      name.includes("orchid") || name.includes("allium") || name.includes("poppy") ||
+      name.includes("peony") || name.includes("lilac") || name.includes("daisy") ||
+      name.includes("bluet") || name.includes("bush") || name.includes("azalea") ||
+      name.includes("pickle") || name.includes("_pot") || name.includes("petals") ||
+      name.includes("blossom") || name.includes("potato") || name.includes("carrot") ||
+      name === "tripwire" || name.includes("grass")) {
     markIgnored(stats, name);
     return { id: AIR, data: 0 };
   }
@@ -801,10 +817,12 @@ export function mapBlockState(rawName, properties, stats) {
     return { id: WALL_CONCRETE, data: 0 };
   }
   if (name.includes("stone_brick")) return { id: STONE_BRICKS, data: 0 };
+  if (name.includes("prismarine")) return { id: STONE_BRICKS, data: 0 };
   if (name.includes("cobblestone") || name.includes("deepslate") ||
       name.includes("blackstone") || name.includes("andesite") || name.includes("diorite") ||
       name.includes("granite") || name.includes("netherrack") || name.includes("end_stone") ||
       name.includes("calcite") || name.includes("tuff") || name.includes("basalt") ||
+      name.includes("dripstone") ||
       name.includes("obsidian") || name.includes("ore") || name === "stone") return { id: STONE, data: 0 };
   if (name.includes("quartz")) return { id: QUARTZ_BLOCK, data: 0 };
   if (name.includes("sandstone")) return { id: SANDSTONE, data: 0 };
@@ -817,12 +835,22 @@ export function mapBlockState(rawName, properties, stats) {
   if (name.includes("yellow_wool")) return { id: YELLOW_WOOL, data: 0 };
   if (name.includes("wool") || name.includes("shulker")) return { id: WALL_CONCRETE, data: 0 };
   if (name.includes("bookshelf")) return { id: BOOKSHELF, data: 0 };
+  if (name === "bricks") return { id: RED_TERRACOTTA, data: 0 };
+  if (name.includes("note_block")) return { id: WOOD, data: 0 };
+  if (name.includes("furnace")) return { id: DARK_METAL, data: 0 };
+  if (name.includes("crafting_table")) return { id: WOOD, data: 0 };
+  if (name.includes("pumpkin") && !name.includes("jack_o")) return { id: SANDSTONE, data: 0 };
+  if (name.includes("nether_portal")) return { id: GLASS, data: 0 };
   if (name.includes("cauldron")) return { id: CAULDRON, data: 0 };
   if (name.includes("ender_chest")) return { id: ENDER_CHEST, data: 0 };
   if (name.includes("chest")) return { id: CHEST, data: 0 };
+  if (name.includes("barrel")) return { id: CHEST, data: 0 };
+  if (name.includes("shelf") || name.includes("lectern")) return { id: BOOKSHELF, data: 0 };
   if (name.includes("hopper")) return { id: HOPPER, data: 0 };
   if (name.includes("piston")) return { id: PISTON, data: 0 };
   if (name.includes("iron_door")) return { id: IRON_DOOR, data: 0 };
+  if (name.includes("diamond_block")) return { id: IRON_BLOCK, data: 0 };
+  if (name.includes("monster_egg")) return { id: STONE, data: 0 };
   if (name.includes("iron_block")) return { id: IRON_BLOCK, data: 0 };
   if (name.includes("bed")) return { id: RED_BED, data: 0 };
   if (name.includes("web")) return { id: COBWEB, data: 0 };
@@ -832,8 +860,14 @@ export function mapBlockState(rawName, properties, stats) {
     if (name.includes("wall_") || props.facing) return { id: OAK_SIGN, data: facingData(props.facing, 4) };
     return { id: OAK_SIGN, data: SIGN_STANDING };
   }
+  if (name.includes("jack_o")) return { id: RED_TERRACOTTA, data: 0 };
+  if (name.includes("sea_lantern") || name.includes("froglight")) return { id: GLASS, data: 0 };
+  if (name.includes("lantern") || name.includes("end_rod") || name.includes("campfire")) {
+    return { id: TORCH, data: TORCH_FLOOR };
+  }
   if (name.includes("redstone_torch")) return { id: REDSTONE_TORCH, data: TORCH_FLOOR };
   if (name.includes("torch")) return { id: TORCH, data: TORCH_FLOOR };
+  if (name.includes("smoker")) return { id: DARK_METAL, data: 0 };
   if (name.includes("metal") || name.includes("iron") || name.includes("copper") ||
       name.includes("gold_block") || name.includes("netherite")) return { id: DARK_METAL, data: 0 };
 
@@ -980,8 +1014,9 @@ function dataForSponge(scm) {
 function parseSponge(scm, stats) {
   if (!hasOwn(scm, "Version")) throw new Error("схема .schem: отсутствует Version");
   const version = asSafeInt(scm.Version, "схема .schem: Version");
-  if (version !== 2 && version !== 3) {
-    throw new Error(`схема .schem: поддерживаются только версии 2 и 3 (получено ${version})`);
+  // v1 по структуре совпадает с v2 (VarInt BlockData + палитра) — читаем тем же путём.
+  if (version !== 1 && version !== 2 && version !== 3) {
+    throw new Error(`схема .schem: поддерживаются только версии 1-3 (получено ${version})`);
   }
   const { W, H, L, volume } = checkedDimensions(
     scm.Width,
@@ -1004,9 +1039,9 @@ function parseSponge(scm, stats) {
     }
   };
 
-  if (version === 2) {
+  if (version === 1 || version === 2) {
     if (!(rawData instanceof Uint8Array || rawData instanceof Int8Array || Array.isArray(rawData))) {
-      throw new Error("схема .schem v2: BlockData должен быть byte array");
+      throw new Error(`схема .schem v${version}: BlockData должен быть byte array`);
     }
     for (let i = 0; i < rawData.length; i++) {
       const byte = asSafeInt(rawData[i], `схема .schem v2: BlockData[${i}]`);
@@ -1025,6 +1060,26 @@ function parseSponge(scm, stats) {
     }
     if (offset.o !== rawData.length) throw new Error("схема .schem v2: лишние данные BlockData");
   } else {
+    // Ряд экспортеров (включая FAWE) пишет v3-Data VarInt byte array вместо
+    // int array из спеки. Принимаем оба представления.
+    if (rawData instanceof Uint8Array || rawData instanceof Int8Array) {
+      for (let i = 0; i < rawData.length; i++) {
+        const byte = asSafeInt(rawData[i], `схема .schem v3: BlockData[${i}]`);
+        if (byte < -128 || byte > 255) {
+          throw new Error(`схема .schem v3: BlockData[${i}] не является байтом`);
+        }
+      }
+      const offset = { o: 0 };
+      for (let y = 0; y < H; y++) {
+        for (let z = 0; z < L; z++) {
+          for (let x = 0; x < W; x++) {
+            pushBlock(x, y, z, blockAt(parseVarInt(rawData, offset)));
+          }
+        }
+      }
+      if (offset.o !== rawData.length) throw new Error("схема .schem v3: лишние данные BlockData");
+      return planResult(`.schem v${version}`, W, H, L, blocks, stats);
+    }
     if (!(rawData instanceof Int32Array || Array.isArray(rawData))) {
       throw new Error("схема .schem v3: BlockData должен быть int array");
     }
@@ -1107,14 +1162,15 @@ function parseVanillaPalette(raw, label, stats = null) {
     if (normalized.length > MAX_PALETTE_ENTRIES) throw new Error(`${label}: слишком много блоков в палитре`);
     const entries = normalized.map((entry, index) => paletteNameAndIndex(entry, index, "vanilla", label));
     const ids = new Map();
-    const names = new Set();
     for (const entry of entries) {
       if (ids.has(entry.index)) throw new Error(`${label}: дублирующийся индекс палитры`);
       const key = canonicalPaletteKey(entry.name);
-      if (!key || !normalizeBlockName(entry.name) || names.has(key)) {
-        throw new Error(`${label}: дублирующееся имя блока`);
+      if (!key || !normalizeBlockName(entry.name)) {
+        throw new Error(`${label}: пустое имя блока ${JSON.stringify(key).slice(0, 120)}`);
       }
-      names.add(key);
+      // Повтор имени с другим индексом — безобидное дублирование состояния
+      // (встречается в реальных файлах): маппинг детерминирован парой
+      // (имя, свойства), каждый индекс резолвится независимо.
       ids.set(entry.index, mapBlockState(entry.name, entry.properties, stats));
     }
     return ids;
@@ -1305,7 +1361,6 @@ const LEGACY_NAMES = {
   111: "waterlily",
   112: "nether_brick_stairs",
   113: "nether_bricks",
-  113: "red_sandstone_slab",
   114: "red_sandstone_slab",
   115: "red_sandstone",
   116: "red_sandstone",
@@ -1480,28 +1535,36 @@ function parseLegacy(scm, stats) {
     scm.Length,
     "схема .schematic"
   );
-  const blocksField = selectField(scm, ["Blocks", "BlockIDs"], "схема .schematic: Blocks");
-  if (!blocksField) throw new Error("схема .schematic: отсутствуют Blocks/BlockIDs");
-  if (hasOwn(scm, "Blocks") && hasOwn(scm, "BlockIDs")) {
-    throw new Error("схема .schematic: неоднозначные Blocks и BlockIDs");
+  const hasBlocks = hasOwn(scm, "Blocks");
+  const hasBlockIDs = hasOwn(scm, "BlockIDs");
+  if (!hasBlocks && !hasBlockIDs) throw new Error("схема .schematic: отсутствуют Blocks/BlockIDs");
+  // Некоторые экспортеры пишут Blocks и BlockIDs одновременно (дубликаты).
+  // Предпочитаем BlockIDs как более точные; AddBlocks тогда игнорируем.
+  let isBlockIDs = hasBlockIDs;
+  if (hasBlocks && hasBlockIDs) {
+    try {
+      legacySequence(scm.BlockIDs, volume, "схема .schematic: BlockIDs", false);
+      isBlockIDs = true;
+    } catch {
+      isBlockIDs = false;
+    }
   }
-  const isBlockIDs = blocksField.name === "BlockIDs";
-  if (isBlockIDs) {
-    if (hasOwn(scm, "AddBlocks")) throw new Error("схема .schematic: BlockIDs и AddBlocks несовместимы");
-  }
-  legacySequence(blocksField.value, volume, "схема .schematic: Blocks", !isBlockIDs);
+  legacySequence(isBlockIDs ? scm.BlockIDs : scm.Blocks, volume, "схема .schematic: Blocks", !isBlockIDs);
+  const rawBlocks = isBlockIDs ? scm.BlockIDs : scm.Blocks;
   let data = null;
   if (hasOwn(scm, "Data")) {
     data = legacySequence(scm.Data, volume, "схема .schematic: Data", true);
   }
   let add = null;
-  if (hasOwn(scm, "AddBlocks")) {
-    add = legacySequence(
-      scm.AddBlocks,
-      Math.ceil(volume / 2),
-      "схема .schematic: AddBlocks",
-      true
-    );
+  if (hasOwn(scm, "AddBlocks") && !isBlockIDs) {
+    // Встречается trailing pad-byte (+1 к ceil(volume/2)) — терпим.
+    const raw = scm.AddBlocks;
+    if (!isSequence(raw)) throw new Error("схема .schematic: AddBlocks: ожидается массив");
+    const expected = Math.ceil(volume / 2);
+    if (raw.length !== expected && raw.length !== expected + 1) {
+      exactSequence(raw, expected, "схема .schematic: AddBlocks");
+    }
+    add = legacySequence(raw, raw.length, "схема .schematic: AddBlocks", true);
   }
 
   const blocks = [];
@@ -1511,9 +1574,9 @@ function parseLegacy(scm, stats) {
         const i = (y * L + z) * W + x;
         let id;
         if (isBlockIDs) {
-          id = asSafeInt(blocksField.value[i], "схема .schematic: BlockIDs");
+          id = asSafeInt(rawBlocks[i], "схема .schematic: BlockIDs");
         } else {
-          id = blocksField.value[i] & 0xff;
+          id = rawBlocks[i] & 0xff;
           if (add) {
             const packed = add[i >> 1] & 0xff;
             // MCEdit/MCEdit-Unified and the format specification use the
@@ -1609,6 +1672,49 @@ function validPlacementCoord(value, label) {
   if (!Number.isSafeInteger(value) || Math.abs(value) > MAX_PLACEMENT_COORD) {
     throw new Error(`схема: ${label} вне допустимого диапазона`);
   }
+}
+
+// Поворот плана на 90° по часовой (вид сверху) вокруг начала координат:
+// (x, z) -> (L-1-z, x), W<->L. Направления 1..4 (+X/-X/+Z/-Z): 1->3->2->4->1.
+function rotateFacing90(data) {
+  if (data === 1) return 3;
+  if (data === 3) return 2;
+  if (data === 2) return 4;
+  if (data === 4) return 1;
+  return data;
+}
+
+function rotateData90(id, data) {
+  // Открытый люк 2..5 крутится своей картой, остальное ненаправленное не трогаем.
+  if (id === OAK_TRAPDOOR && data >= 2 && data <= 5) {
+    if (data === 2) return 4;
+    if (data === 4) return 3;
+    if (data === 3) return 5;
+    return 2;
+  }
+  if (id === TORCH || id === REDSTONE_TORCH || id === OAK_SIGN ||
+      id === OAK_STAIRS || id === TRIPWIRE_HOOK || id === OAK_BUTTON) {
+    return rotateFacing90(data);
+  }
+  return data;
+}
+
+// Новый план, повёрнутый times раз на 90°. Чистая функция (вход не меняется).
+export function rotatePlan(plan, times = 1) {
+  const steps = ((Math.trunc(times) % 4) + 4) % 4;
+  let { W, H, L, blocks } = plan;
+  let current = blocks.map((b) => [b[0], b[1], b[2], b[3], b.length > 4 ? b[4] : 0]);
+  for (let s = 0; s < steps; s++) {
+    const next = [];
+    for (const [x, y, z, id, data] of current) {
+      next.push([L - 1 - z, y, x, id, rotateData90(id, data)]);
+    }
+    current = next;
+    const swap = W;
+    W = L;
+    L = swap;
+  }
+  return { ...plan, W, H, L, blocks: current };
 }
 
 export function pasteSchematic(world, plan, cx, cz, floorY = 1, options = {}) {
