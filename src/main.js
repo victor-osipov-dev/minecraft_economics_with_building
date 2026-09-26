@@ -546,10 +546,11 @@ function recordBuilding({ name, file, x0, y0, z0, W, H, L, rot, placed }) {
 }
 
 function applyBuildingVisibility() {
-  const vis = viewMode && showFrames;
+  // Рамки живут сами по себе (кнопка "Рамки"), от режима просмотра не зависят.
+  // Метки с информацией — только в просмотре.
   for (const b of buildings) {
-    b.lines.isVisible = vis;
-    b.fill.isVisible = vis;
+    b.lines.isVisible = showFrames;
+    b.fill.isVisible = showFrames;
     if (!viewMode) b.label.style.display = "none";
   }
 }
