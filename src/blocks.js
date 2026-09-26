@@ -119,6 +119,30 @@ export const SIGN_NZ = 4;
 export const SLAB_DOUBLE = 0;
 export const SLAB_BOTTOM = 1;
 export const SLAB_TOP = 2;
+// Ступени: 1..4 сторона спуска (facing), верхняя половина сзади.
+export const STAIR_PX = 1;
+export const STAIR_NX = 2;
+export const STAIR_PZ = 3;
+export const STAIR_NZ = 4;
+// Кнопка: 0 на полу, 1..4 на стене (сторона взгляда), 5 на потолке.
+export const BUTTON_FLOOR = 0;
+export const BUTTON_PX = 1;
+export const BUTTON_NX = 2;
+export const BUTTON_PZ = 3;
+export const BUTTON_NZ = 4;
+export const BUTTON_CEIL = 5;
+// Люк: 0 закрыт снизу, 1 закрыт сверху, 2..5 открыт панелью у +X/-X/+Z/-Z.
+export const TRAP_BOTTOM = 0;
+export const TRAP_TOP = 1;
+export const TRAP_OPEN_PX = 2;
+export const TRAP_OPEN_NX = 3;
+export const TRAP_OPEN_PZ = 4;
+export const TRAP_OPEN_NZ = 5;
+// Крюк натяжной проволоки: 1..4 сторона взгляда (те же значения, что у факела).
+export const HOOK_PX = 1;
+export const HOOK_NX = 2;
+export const HOOK_PZ = 3;
+export const HOOK_NZ = 4;
 
 const block = (name, options = {}) => {
   const result = {
@@ -168,15 +192,15 @@ export const BLOCKS = [
   block("Кирпичный забор", { bars: true, transparent: true, tiles: T.netherFence, hardness: 4, toolPower: 1.5, color: "#382027" }),
   block("Адский кирпич", { tiles: T.netherBrick, hardness: 5, toolPower: 1.7, color: "#382027" }),
   block("Плита из адского кирпича", { shape: "slab", tiles: T.netherBrickSlab, hardness: 5, toolPower: 1.7, color: "#382027" }),
-  block("Дубовая кнопка", { solid: false, transparent: true, tiles: T.button, hardness: 0.3, color: "#9a713f" }),
+  block("Дубовая кнопка", { solid: false, transparent: true, shape: "button", tiles: { up: 28, side: 50, down: 28 }, hardness: 0.3, color: "#9a713f" }),
   block("Дубовый забор", { bars: true, transparent: true, tiles: T.oakFence, hardness: 2, toolPower: 1.1, color: "#7a5833" }),
   block("Нажимная плита", { solid: false, transparent: true, shape: "plate", tiles: { up: 46, side: 47, down: 46 }, hardness: 0.4, color: "#9a713f" }),
   block("Табличка", { solid: false, transparent: true, shape: "sign", tiles: T.sign, hardness: 0.5, color: "#9a713f" }),
-  block("Дубовые ступени", { tiles: T.oakStairs, hardness: 3, toolPower: 1.2, color: "#7a5833" }),
-  block("Дубовой люк", { solid: false, transparent: true, tiles: T.trapdoor, hardness: 1, toolPower: 1.1, color: "#7a5833" }),
+  block("Дубовые ступени", { shape: "stairs", tiles: T.oakStairs, hardness: 3, toolPower: 1.2, color: "#7a5833" }),
+  block("Дубовой люк", { solid: false, transparent: true, shape: "trapdoor", tiles: T.trapdoor, hardness: 1, toolPower: 1.1, color: "#7a5833" }),
   block("Поршень", { tiles: T.piston, hardness: 4, toolPower: 1.7, color: "#777f88" }),
   block("Кварцевый блок", { tiles: T.quartz, hardness: 3, toolPower: 1.3, color: "#e8e4dc" }),
-  block("Красная кровать", { solid: false, transparent: true, tiles: T.bed, hardness: 0.5, color: "#8f2025" }),
+  block("Красная кровать", { solid: false, transparent: true, shape: "bed", tiles: { up: 51, side: 52, down: 52 }, hardness: 0.5, color: "#8f2025" }),
   block("Красная терракота", { tiles: T.redTerracotta, hardness: 1.4, toolPower: 1.1, color: "#963b32" }),
   block("Песчаник", { tiles: T.sandstone, hardness: 2.5, toolPower: 1.2, color: "#d8c78e" }),
   block("Гладкая каменная плита", { shape: "slab", tiles: T.smoothSlab, hardness: 3, toolPower: 1.3, color: "#a0a3a3" }),
@@ -184,7 +208,7 @@ export const BLOCKS = [
   block("Каменная нажимная плита", { solid: false, transparent: true, shape: "plate", tiles: { up: 48, side: 49, down: 48 }, hardness: 0.5, color: "#8d9090" }),
   block("Факел", { solid: false, transparent: true, shape: "torch", tiles: T.torch, hardness: 0.1, color: "#f5c65a", light: 8 }),
   block("Красный камень", { solid: false, transparent: true, shape: "torch", tiles: T.redstoneTorch, hardness: 0.1, color: "#d43c35", light: 5 }),
-  block("Крюк натянутой проволоки", { solid: false, transparent: true, tiles: T.tripwireHook, hardness: 0.4, color: "#a7a9aa" }),
+  block("Крюк натянутой проволоки", { solid: false, transparent: true, shape: "hook", tiles: T.wood, hardness: 0.4, color: "#7a5833" }),
   block("Вода", { solid: false, transparent: true, tiles: T.water, hardness: 0, color: "#3f83c5" }),
 ];
 
@@ -192,7 +216,7 @@ const TILE = 64;
 export const ATLAS_COLS = 4;
 // Тайлы 46..49 (верх/бок нажимных плит) живут за пределами BLOCKS, поэтому
 // высота атласа считается от максимального индекса тайла, а не от числа блоков.
-const MAX_TILE_INDEX = 49;
+const MAX_TILE_INDEX = 52;
 export const ATLAS_ROWS = Math.ceil((MAX_TILE_INDEX + 1) / ATLAS_COLS);
 // Keep the physical texture dimensions in lockstep with the UV grid.  A
 // 1024px square with 4x12 UVs would sample only the top-left quarter of
@@ -520,16 +544,22 @@ function paintNetherBrick(ctx, ox, oy, slab = false) {
 }
 
 function paintButton(ctx, ox, oy) {
-  ctx.clearRect(ox, oy, TILE, TILE);
+  // Прямоугольная пластина во весь тайл БЕЗ прозрачности: круг на прозрачном
+  // фоне вырезался альфа-тестом, и вокруг кнопки оставались дыры. Деревянная
+  // основа, тёмная рамка, светлая середина и нажимной центр.
   ctx.fillStyle = "#9a713f";
-  ctx.beginPath();
-  ctx.arc(ox + 32, oy + 32, 20, 0, Math.PI * 2);
-  ctx.fill();
+  ctx.fillRect(ox, oy, TILE, TILE);
+  noiseFill(ctx, ox, oy, [154, 113, 63], 22, 1.2);
   ctx.strokeStyle = "#4c321d";
-  ctx.lineWidth = 3;
-  ctx.stroke();
+  ctx.lineWidth = 5;
+  ctx.strokeRect(ox + 3.5, oy + 3.5, TILE - 7, TILE - 7);
+  ctx.fillStyle = "#c0955b";
+  ctx.fillRect(ox + 10, oy + 10, TILE - 20, TILE - 20);
+  noiseFill(ctx, ox + 10, oy + 10, [192, 149, 91], 14, 0.7);
+  ctx.fillStyle = "#7a562e";
+  ctx.fillRect(ox + 24, oy + 24, 16, 16);
   ctx.fillStyle = "#d3aa6b";
-  ctx.fillRect(ox + 27, oy + 25, 10, 10);
+  ctx.fillRect(ox + 27, oy + 27, 10, 10);
 }
 
 function paintPressurePlate(ctx, ox, oy, stone = false) {
@@ -544,15 +574,20 @@ function paintPressurePlate(ctx, ox, oy, stone = false) {
 }
 
 function paintSign(ctx, ox, oy) {
-  ctx.clearRect(ox, oy, TILE, TILE);
+  // Во весь тайл БЕЗ прозрачности: доска и так меньше клетки геометрией,
+  // поля в арте давали бы вторую рамку дыр. Дерево + тёмное поле + строки.
   ctx.fillStyle = "#8a6135";
-  ctx.fillRect(ox + 8, oy + 10, 48, 42);
+  ctx.fillRect(ox, oy, TILE, TILE);
+  noiseFill(ctx, ox, oy, [138, 97, 53], 20, 1.1);
   ctx.fillStyle = "#5b3c22";
-  ctx.fillRect(ox + 12, oy + 14, 40, 34);
+  ctx.fillRect(ox + 5, oy + 5, TILE - 10, TILE - 10);
   ctx.fillStyle = "#d4b275";
-  ctx.fillRect(ox + 15, oy + 20, 34, 2);
-  ctx.fillRect(ox + 15, oy + 28, 28, 2);
-  ctx.fillRect(ox + 15, oy + 36, 32, 2);
+  ctx.fillRect(ox + 10, oy + 18, TILE - 20, 3);
+  ctx.fillRect(ox + 10, oy + 30, TILE - 28, 3);
+  ctx.fillRect(ox + 10, oy + 42, TILE - 24, 3);
+  ctx.strokeStyle = "#3e2818";
+  ctx.lineWidth = 3;
+  ctx.strokeRect(ox + 2.5, oy + 2.5, TILE - 5, TILE - 5);
 }
 
 function paintStairs(ctx, ox, oy) {
@@ -566,14 +601,16 @@ function paintStairs(ctx, ox, oy) {
 }
 
 function paintTrapdoor(ctx, ox, oy) {
-  ctx.clearRect(ox, oy, TILE, TILE);
+  // Во весь тайл БЕЗ прозрачности: поля по краям вырезались альфа-тестом
+  // и давали дыры по периметру панели. Дерево + сквозные планки + рамка.
   ctx.fillStyle = "#79552f";
-  ctx.fillRect(ox + 5, oy + 8, 54, 48);
+  ctx.fillRect(ox, oy, TILE, TILE);
+  noiseFill(ctx, ox, oy, [121, 85, 47], 22, 1.2);
   ctx.fillStyle = "#3e2818";
-  for (let i = 0; i < 4; i++) ctx.fillRect(ox + 8, oy + 12 + i * 12, 48, 3);
+  for (let i = 0; i < 4; i++) ctx.fillRect(ox, oy + 6 + i * 14, TILE, 3);
   ctx.strokeStyle = "#ad7e47";
-  ctx.lineWidth = 3;
-  ctx.strokeRect(ox + 6.5, oy + 9.5, 51, 45);
+  ctx.lineWidth = 4;
+  ctx.strokeRect(ox + 3, oy + 3, TILE - 6, TILE - 6);
 }
 
 function paintPiston(ctx, ox, oy) {
@@ -672,28 +709,59 @@ function paintTripwireHook(ctx, ox, oy) {
 }
 
 function paintPlateTop(ctx, ox, oy, hex) {
-  // Вид нажимной плиты сверху: почти во весь тайл, тонкая рамка по краю.
-  ctx.clearRect(ox, oy, TILE, TILE);
+  // Вид нажимной плиты сверху во весь тайл БЕЗ прозрачности: поля давали
+  // дыры по краю пластины. Материал + внутренняя рамка + блик.
   const rgb = hexRgb(hex);
   ctx.fillStyle = hex;
-  ctx.fillRect(ox + 4, oy + 4, TILE - 8, TILE - 8);
-  noiseFill(ctx, ox + 4, oy + 4, rgb, 16, 0.7);
+  ctx.fillRect(ox, oy, TILE, TILE);
+  noiseFill(ctx, ox, oy, rgb, 22, 1.2);
   ctx.strokeStyle = "rgba(0,0,0,0.45)";
-  ctx.lineWidth = 2;
-  ctx.strokeRect(ox + 4.5, oy + 4.5, TILE - 9, TILE - 9);
+  ctx.lineWidth = 4;
+  ctx.strokeRect(ox + 3, oy + 3, TILE - 6, TILE - 6);
   ctx.fillStyle = "rgba(255,255,255,0.22)";
-  ctx.fillRect(ox + 8, oy + 8, TILE - 16, 3);
+  ctx.fillRect(ox + 8, oy + 8, TILE - 16, 4);
 }
 
 function paintPlateSide(ctx, ox, oy, hex) {
-  // Бок тонкой плиты: нижняя полоса в цвет материала + светлая кромка сверху.
-  ctx.clearRect(ox, oy, TILE, TILE);
-  ctx.fillStyle = "rgba(0,0,0,0)";
-  ctx.fillRect(ox, oy, TILE, TILE);
+  // Бок тонкой плиты во весь тайл: однородный материал (на грани 1/16 любая
+  // вертикальная деталь всё равно ужмётся в полосу) + светлая кромка.
+  const rgb = hexRgb(hex);
   ctx.fillStyle = hex;
-  ctx.fillRect(ox, oy + TILE - 12, TILE, 12);
+  ctx.fillRect(ox, oy, TILE, TILE);
+  noiseFill(ctx, ox, oy, rgb, 18, 1.0);
   ctx.fillStyle = "rgba(255,255,255,0.28)";
-  ctx.fillRect(ox, oy + TILE - 12, TILE, 3);
+  ctx.fillRect(ox, oy, TILE, 5);
+}
+
+function paintBedTop(ctx, ox, oy) {
+  // Вид кровати сверху без прозрачных дыр: деревянная рама, красное одеяло,
+  // белая подушка полосой по центру (голова/ноги не различаем — симметрия).
+  ctx.fillStyle = "#5b3c22";
+  ctx.fillRect(ox, oy, TILE, TILE);
+  ctx.fillStyle = "#a3272e";
+  ctx.fillRect(ox + 4, oy + 4, TILE - 8, TILE - 8);
+  noiseFill(ctx, ox + 4, oy + 4, [163, 39, 46], 26, 1.4);
+  ctx.fillStyle = "#d9d7d2";
+  ctx.fillRect(ox + 4, oy + 24, TILE - 8, 16);
+  noiseFill(ctx, ox + 4, oy + 24, [217, 215, 210], 14, 0.7);
+  ctx.strokeStyle = "rgba(30,16,10,0.6)";
+  ctx.lineWidth = 2;
+  ctx.strokeRect(ox + 4.5, oy + 4.5, TILE - 9, TILE - 9);
+}
+
+function paintBedSide(ctx, ox, oy) {
+  // Бок кровати без прозрачности: тёмное дерево снизу, красное одеяло,
+  // светлая кромка матраса сверху.
+  ctx.fillStyle = "#b92e34";
+  ctx.fillRect(ox, oy, TILE, TILE);
+  noiseFill(ctx, ox, oy, [185, 46, 52], 26, 1.4);
+  ctx.fillStyle = "#4a2c17";
+  ctx.fillRect(ox, oy + TILE - 18, TILE, 18);
+  noiseFill(ctx, ox, oy + TILE - 18, [74, 44, 23], 12, 0.6);
+  ctx.fillStyle = "#d9d7d2";
+  ctx.fillRect(ox, oy, TILE, 10);
+  ctx.fillStyle = "rgba(0,0,0,0.25)";
+  ctx.fillRect(ox, oy + TILE - 20, TILE, 2);
 }
 
 function paintWater(ctx, ox, oy) {
@@ -772,6 +840,9 @@ export function createAtlas(scene) {
   paintPlateSide(ctx, 192, 704, "#7a562e");
   paintPlateTop(ctx, 0, 768, "#8d9090");
   paintPlateSide(ctx, 64, 768, "#6f7272");
+  paintPlateSide(ctx, 128, 768, "#7a562e"); // 50: боковина кнопки
+  paintBedTop(ctx, 192, 768); // 51: верх кровати
+  paintBedSide(ctx, 0, 832); // 52: бок кровати
   dt.update(false);
   dt.hasAlpha = true;
   dt.wrapU = BABYLON.Texture.CLAMP_ADDRESSMODE;

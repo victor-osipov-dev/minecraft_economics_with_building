@@ -23,6 +23,16 @@ import {
   SLAB_BOTTOM,
   SLAB_TOP,
   SLAB_DOUBLE,
+  RED_BED,
+  TRIPWIRE_HOOK,
+  STAIR_PX,
+  STAIR_NX,
+  STAIR_PZ,
+  STAIR_NZ,
+  BUTTON_FLOOR,
+  BUTTON_CEIL,
+  TRAP_BOTTOM,
+  TRAP_TOP,
 } from "./blocks.js";
 import { World, WORLD_H } from "./world.js";
 import { HALF, HEIGHT, moveAxis, updateGrounded } from "./physics.js";
@@ -816,17 +826,42 @@ outline.isVisible = false;
 let lastHit = null;
 
 // ---------- interactions ----------
+// Направление взгляда по горизонтали (1..4 как facing): для ориентации
+// блоков без привязки к грани (ступени, изголовье кровати, крюк сверху).
+function lookFacing() {
+  if (Math.abs(rayDir.x) > Math.abs(rayDir.z)) return rayDir.x > 0 ? 1 : 2;
+  return rayDir.z > 0 ? 3 : 4;
+}
+
 // Состояние для установки неполного блока по грани, в которую кликнули:
-// факел/табличка крепятся к ней, плита кладётся вверх/вниз.
+// факел/табличка/крюк крепятся к ней, плита кладётся вверх/вниз.
 function placeData(id, hit) {
   const def = BLOCKS[id];
   if (!def) return 0;
   if (def.shape === "slab") return hit.ny === -1 ? SLAB_TOP : SLAB_BOTTOM;
-  if (id === TORCH || id === REDSTONE_TORCH) {
+  if (def.shape === "stairs") {
+    // Спуск — к игроку (ступени поднимаются от него).
+    const look = lookFacing();
+    return look === 1 ? STAIR_NX : look === 2 ? STAIR_PX : look === 3 ? STAIR_NZ : STAIR_PZ;
+  }
+  if (def.shape === "button") {
+    if (hit.ny === 1) return BUTTON_FLOOR;
+    if (hit.ny === -1) return BUTTON_CEIL;
+    if (hit.nx === 1) return 1;
+    if (hit.nx === -1) return 2;
+    if (hit.nz === 1) return 3;
+    if (hit.nz === -1) return 4;
+    return BUTTON_FLOOR;
+  }
+  if (def.shape === "trapdoor") {
+    return hit.ny === -1 ? TRAP_TOP : TRAP_BOTTOM;
+  }
+  if (id === TORCH || id === REDSTONE_TORCH || id === TRIPWIRE_HOOK) {
     if (hit.nx === 1) return TORCH_PX;
     if (hit.nx === -1) return TORCH_NX;
     if (hit.nz === 1) return TORCH_PZ;
     if (hit.nz === -1) return TORCH_NZ;
+    if (id === TRIPWIRE_HOOK) return lookFacing();
     return TORCH_FLOOR;
   }
   if (id === OAK_SIGN) {
@@ -864,6 +899,27 @@ function handlePlace() {
   if (!isInsideWorldBounds(px, py, pz)) return;
   if (world.getBlock(px, py, pz) !== AIR) return;
   if (boxIntersectsPlayer(px, py, pz)) return;
+  // Кровать как в майнкрафте занимает две клетки: ножка + изголовье дальше
+  // от игрока. Предмет один — тратится один.
+  if (entry.id === RED_BED) {
+    const look = lookFacing();
+    const hx = px + (look === 1 ? 1 : look === 2 ? -1 : 0);
+    const hz = pz + (look === 3 ? 1 : look === 4 ? -1 : 0);
+    if (!isInsideWorldBounds(hx, py, hz)) return;
+    if (world.getBlock(hx, py, hz) !== AIR) return;
+    if (boxIntersectsPlayer(hx, py, hz)) return;
+    if (!world.setBlock(px, py, pz, entry.id, 0)) return;
+    if (!world.setBlock(hx, py, hz, entry.id, 0)) {
+      world.setBlock(px, py, pz, AIR);
+      return;
+    }
+    world.flushMeshes(scene, blockMat, cutoutMat, alphaMat, torchMat);
+    entry.count--;
+    emitNoise(px, py, pz, 20);
+    noiseLevel = Math.min(1, noiseLevel + 0.22);
+    updateHotbar();
+    return;
+  }
   if (!world.setBlock(px, py, pz, entry.id, placeData(entry.id, hit))) return;
   // Поставленный факел засветится сам: setBlock пометил чанк грязным,
   // flushMeshes ниже перестроит меш уже с запечённым светом.

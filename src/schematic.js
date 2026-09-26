@@ -51,6 +51,10 @@ import {
   SLAB_DOUBLE,
   SLAB_BOTTOM,
   SLAB_TOP,
+  BUTTON_FLOOR,
+  BUTTON_CEIL,
+  TRAP_BOTTOM,
+  TRAP_TOP,
 } from "./blocks.js";
 import { WORLD_H } from "./world.js";
 
@@ -728,21 +732,43 @@ export function mapBlockState(rawName, properties, stats) {
     return { id: SMOOTH_STONE_SLAB, data: slabData(props.type) };
   }
 
+  // Кнопка: face floor/wall/ceiling + facing. Тоже до EXACT_BLOCKS:
+  // "oak_button"/"stone_button" там есть, но без состояний.
+  if (name.includes("button")) {
+    let data = BUTTON_FLOOR;
+    if (props.face === "ceiling") data = BUTTON_CEIL;
+    else if (props.face === "wall" || (!props.face && props.facing)) data = facingData(props.facing, BUTTON_FLOOR);
+    if (data === BUTTON_FLOOR && !props.face && !props.facing) markSimplified(stats, name);
+    return { id: OAK_BUTTON, data };
+  }
+
+  // Люк: half top/bottom + open + facing. До EXACT_BLOCKS ("oak_trapdoor").
+  // data: 0 закрыт снизу, 1 закрыт сверху, 2..5 открыт панелью у +X/-X/+Z/-Z.
+  if (/_trapdoor$/.test(name)) {
+    if (props.open === "true") return { id: OAK_TRAPDOOR, data: 1 + facingData(props.facing, 4) };
+    return { id: OAK_TRAPDOOR, data: props.half === "top" ? TRAP_TOP : TRAP_BOTTOM };
+  }
+
+  // Крюк натяжной проволоки смотрит facing (как факел). До EXACT (там его
+  // нет, но единообразие дешевле путаницы).
+  if (name.includes("tripwire_hook") || name === "tripwirehook") {
+    return { id: TRIPWIRE_HOOK, data: facingData(props.facing, 4) };
+  }
+
+  // Ступени: facing = сторона спуска. До EXACT_BLOCKS ("oak_stairs" там есть).
+  // Угловые inner/outer формы упрощаем до прямых.
+  if (/_stairs$/.test(name)) {
+    if (props.shape && props.shape !== "straight") markSimplified(stats, `${name}[shape=${props.shape}]`);
+    return { id: OAK_STAIRS, data: facingData(props.facing, 4) };
+  }
+
   if (EXACT_BLOCKS.has(name)) {
     if (COMPLEX_BLOCK_RE.test(name)) markSimplified(stats, name);
     return { id: EXACT_BLOCKS.get(name), data: 0 };
   }
-  if (/_stairs$/.test(name)) {
-    markSimplified(stats, name);
-    return { id: OAK_STAIRS, data: 0 };
-  }
   if (/_door$/.test(name)) {
     markSimplified(stats, name);
     return { id: IRON_DOOR, data: 0 };
-  }
-  if (/_trapdoor$/.test(name)) {
-    markSimplified(stats, name);
-    return { id: OAK_TRAPDOOR, data: 0 };
   }
   if (/_fence(_gate)?$/.test(name)) {
     markSimplified(stats, name);
@@ -752,12 +778,20 @@ export function mapBlockState(rawName, properties, stats) {
     markSimplified(stats, name);
     return { id: GLASS_PANE, data: 0 };
   }
+  if (name === "ice") return { id: GLASS, data: 0 };
+  if (name === "snow_block") return { id: QUARTZ_BLOCK, data: 0 };
+  if (name === "clay") return { id: WALL_CONCRETE, data: 0 };
+  if (name === "anvil") return { id: IRON_BLOCK, data: 0 };
+  if (name === "redstone_block") return { id: RED_WOOL, data: 0 };
+  if (name === "weighted_plate_heavy") return { id: STONE_PRESSURE_PLATE, data: 0 };
+  if (name === "weighted_plate_light") return { id: OAK_PRESSURE_PLATE, data: 0 };
   if (name.includes("glass")) return { id: GLASS, data: 0 };
   if (name === "water" || name === "flowing_water") return { id: WATER, data: 0 };
   if (name.includes("leaves") || name.includes("lava") || name.includes("flower") ||
       name.includes("tall_grass") || name.includes("dead_bush") || name.includes("vine") ||
       name.includes("rail") || name.includes("carpet") || name.includes("sapling") ||
-      name.includes("mushroom") || name.includes("seagrass") || name.includes("kelp")) {
+      name.includes("mushroom") || name.includes("seagrass") || name.includes("kelp") ||
+      name === "snow" || name === "snow_layer") {
     markIgnored(stats, name);
     return { id: AIR, data: 0 };
   }
@@ -775,7 +809,7 @@ export function mapBlockState(rawName, properties, stats) {
   if (name.includes("quartz")) return { id: QUARTZ_BLOCK, data: 0 };
   if (name.includes("sandstone")) return { id: SANDSTONE, data: 0 };
   if (name.includes("dirt") || name.includes("sand") || name.includes("gravel") ||
-      name === "podzol" || name.includes("mud")) return { id: DIRT, data: 0 };
+      name === "podzol" || name.includes("mud") || name === "mycelium") return { id: DIRT, data: 0 };
   if (name.includes("plank") || name.includes("_log") || name.includes("_wood")) return { id: WOOD, data: 0 };
   if (name.includes("black_wool")) return { id: BLACK_WOOL, data: 0 };
   if (name.includes("blue_wool")) return { id: BLUE_WOOL, data: 0 };
@@ -793,7 +827,6 @@ export function mapBlockState(rawName, properties, stats) {
   if (name.includes("bed")) return { id: RED_BED, data: 0 };
   if (name.includes("web")) return { id: COBWEB, data: 0 };
   if (name.includes("fence") || name.includes("bars")) return { id: BARS, data: 0 };
-  if (name.includes("button")) return { id: OAK_BUTTON, data: 0 };
   if (name.includes("pressure_plate")) return { id: name.includes("stone") ? STONE_PRESSURE_PLATE : OAK_PRESSURE_PLATE, data: 0 };
   if (name.includes("sign")) {
     if (name.includes("wall_") || props.facing) return { id: OAK_SIGN, data: facingData(props.facing, 4) };
@@ -801,7 +834,6 @@ export function mapBlockState(rawName, properties, stats) {
   }
   if (name.includes("redstone_torch")) return { id: REDSTONE_TORCH, data: TORCH_FLOOR };
   if (name.includes("torch")) return { id: TORCH, data: TORCH_FLOOR };
-  if (name.includes("tripwire")) return { id: TRIPWIRE_HOOK, data: 0 };
   if (name.includes("metal") || name.includes("iron") || name.includes("copper") ||
       name.includes("gold_block") || name.includes("netherite")) return { id: DARK_METAL, data: 0 };
 
@@ -1235,15 +1267,15 @@ const LEGACY_NAMES = {
   73: "redstone_ore",
   74: "lit_redstone_ore",
   75: "redstone_torch",
-  76: "stone_button",
-  77: "snow",
-  78: "ice",
-  79: "snow_block",
-  80: "cactus",
-  81: "clay",
-  82: "sugar_cane",
-  83: "jukebox",
-  84: "oak_fence",
+  76: "redstone_torch",
+  77: "stone_button",
+  78: "snow",
+  79: "ice",
+  80: "snow_block",
+  81: "cactus",
+  82: "clay",
+  83: "sugar_cane",
+  84: "jukebox",
   85: "carved_pumpkin",
   86: "netherrack",
   87: "soul_sand",
@@ -1255,11 +1287,11 @@ const LEGACY_NAMES = {
   93: "comparator",
   94: "daylight_detector",
   95: "redstone_block",
-  96: "stone_bricks",
-  97: "mossy_stone_bricks",
-  98: "cracked_stone_bricks",
-  99: "chiseled_stone_bricks",
-  100: "cracked_stone_bricks",
+  96: "oak_trapdoor",
+  97: "monster_egg",
+  98: "stone_bricks",
+  99: "brown_mushroom_block",
+  100: "red_mushroom_block",
   101: "iron_bars",
   102: "glass_pane",
   103: "melon",
@@ -1269,9 +1301,10 @@ const LEGACY_NAMES = {
   107: "oak_fence_gate",
   108: "brick_stairs",
   109: "stone_stairs",
-  110: "red_sandstone",
-  111: "red_sandstone",
-  112: "red_sandstone_stairs",
+  110: "mycelium",
+  111: "waterlily",
+  112: "nether_brick_stairs",
+  113: "nether_bricks",
   113: "red_sandstone_slab",
   114: "red_sandstone_slab",
   115: "red_sandstone",
@@ -1299,21 +1332,21 @@ const LEGACY_NAMES = {
   137: "oak_fence",
   138: "glass_pane",
   139: "glass_pane",
-  140: "oak_fence",
-  141: "oak_fence",
-  142: "oak_fence",
-  143: "oak_fence_gate",
-  144: "oak_fence_gate",
-  145: "oak_fence_gate",
-  146: "oak_fence_gate",
-  147: "oak_fence_gate",
-  148: "oak_fence_gate",
-  149: "oak_fence_gate",
-  150: "oak_fence_gate",
-  151: "oak_fence_gate",
-  152: "oak_fence_gate",
-  153: "oak_fence_gate",
-  154: "oak_fence_gate",
+  140: "flower_pot",
+  141: "carrots",
+  142: "potatoes",
+  143: "wooden_button",
+  144: "skull",
+  145: "anvil",
+  146: "trapped_chest",
+  147: "weighted_plate_light",
+  148: "weighted_plate_heavy",
+  149: "comparator",
+  150: "daylight_detector",
+  151: "redstone_block",
+  152: "quartz_ore",
+  153: "hopper",
+  154: "quartz_block",
   155: "stained_glass",
   156: "stained_glass_pane",
   157: "stained_glass",
@@ -1357,7 +1390,38 @@ function legacyWallSignData(data) {
   return 4;
 }
 
-function mapLegacyId(id, data, stats) {
+// Ступени в legacy Data: биты 0-1 — сторона ПОЛНОГО блока (0=East, 1=West,
+// 2=South, 3=North), т.е. facing (сторона спуска) наоборот. Бит 0x4
+// upside-down игнорируем: перевернутых ступеней у нас нет.
+function legacyStairData(data) {
+  switch (data & 3) {
+    case 0: return 2; // full east -> спуск на запад
+    case 1: return 1; // full west -> спуск на восток
+    case 2: return 4; // full south -> спуск на север
+    default: return 3; // full north -> спуск на юг
+  }
+}
+
+// Кнопка/рычаг в legacy Data: 0 вниз (потолок), 1 east, 2 west, 3 south,
+// 4 north, 5 вверх (пол). Рычаг с тем же nibble маппим так же.
+function legacyButtonData(data) {
+  switch (data & 7) {
+    case 0: return BUTTON_CEIL;
+    case 5: return BUTTON_FLOOR;
+    case 6: return BUTTON_FLOOR;
+    case 7: return BUTTON_CEIL;
+    default: return data & 7;
+  }
+}
+
+// Крюк в legacy Data: 0 south, 1 west, 2 north, 3 east (0x4/0x8 — состояние
+// нити, на геометрию не влияет).
+function legacyHookData(data) {
+  const table = [3, 2, 4, 1];
+  return table[data & 3];
+}
+
+export function mapLegacyId(id, data, stats) {
   if (!Number.isSafeInteger(id) || id < 0 || id > SCHEMATIC_LIMITS.maxLegacyId) {
     markUnsupported(stats, `legacy:${id}`);
     return { id: AIR, data: 0 };
@@ -1371,6 +1435,17 @@ function mapLegacyId(id, data, stats) {
   // 43 двойная плита (полный куб), 44 одинарная: бит 0x08 верхняя половина.
   if (id === 43) return { id: SMOOTH_STONE_SLAB, data: SLAB_DOUBLE };
   if (id === 44) return { id: SMOOTH_STONE_SLAB, data: (meta & 0x08) ? SLAB_TOP : SLAB_BOTTOM };
+  // Ступени несут facing в битах 0-1.
+  if (id === 53 || id === 67 || id === 108 || id === 109 || id === 112 ||
+      id === 128 || id === 134 || id === 135 || id === 136) {
+    return { id: OAK_STAIRS, data: legacyStairData(meta) };
+  }
+  // Кнопки и рычаг: ориентация + нажатость (нажатость игнорируем).
+  if (id === 69 || id === 77 || id === 143) return { id: OAK_BUTTON, data: legacyButtonData(meta) };
+  // Люк: знаем только верх/низ (0x08), открытую рисуем закрытой.
+  if (id === 96) return { id: OAK_TRAPDOOR, data: (meta & 0x08) ? TRAP_TOP : TRAP_BOTTOM };
+  // Крюк: facing в битах 0-1.
+  if (id === 131) return { id: TRIPWIRE_HOOK, data: legacyHookData(meta) };
   const name = LEGACY_NAMES[id];
   if (!name) {
     markUnsupported(stats, `legacy:${id}`);

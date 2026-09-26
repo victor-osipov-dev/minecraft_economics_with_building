@@ -12,6 +12,15 @@ import {
   SLAB_DOUBLE,
   SLAB_BOTTOM,
   SLAB_TOP,
+  STAIR_NZ,
+  BUTTON_FLOOR,
+  BUTTON_CEIL,
+  TRAP_BOTTOM,
+  TRAP_TOP,
+  TRAP_OPEN_PX,
+  TRAP_OPEN_NX,
+  TRAP_OPEN_PZ,
+  TRAP_OPEN_NZ,
 } from "./blocks.js";
 
 export const CHUNK = 16;
@@ -180,12 +189,15 @@ export class World {
   }
 
   // Верхняя поверхность блока для физики: null у нематериальных
-  // (воздух, факел, табличка, плита нажимная), 0.5 у нижней половины плиты.
+  // (воздух, факел, табличка, плита нажимная, кровать, кнопка, люк, крюк),
+  // 0.5 у нижней половины плиты и у ступеней (верхняя ступенька добирается
+  // auto-step; см. physics.js).
   solidTop(x, y, z) {
     const id = this.getBlock(x, y, z);
     const def = BLOCKS[id];
     if (!def || !def.solid) return null;
     const by = Math.floor(y);
+    if (def.shape === "stairs") return by + 0.5;
     if (def.shape === "slab" && this.getState(x, y, z) === SLAB_BOTTOM) return by + 0.5;
     return by + 1;
   }
@@ -467,11 +479,109 @@ function emitSlab(gd, world, wx, wy, wz, def, COLS, ROWS, INSET, data) {
   }
 }
 
+// Ступени как в майнкрафте (только прямые, без угловых inner/outer):
+// нижняя половина на весь отпечаток + верхняя задняя половина по facing
+// (data 1..4: спуск в +X/-X/+Z/-Z). Текстура на каждом боксе целиком.
+function emitStairs(gd, world, wx, wy, wz, def, COLS, ROWS, INSET, data) {
+  emitPartialBox(gd, world, wx, wy, wz, def, COLS, ROWS, INSET,
+    0, 0, 0, 1, 0.5, 1, null);
+  if (data === 2) {
+    emitPartialBox(gd, world, wx, wy, wz, def, COLS, ROWS, INSET,
+      0.5, 0.5, 0, 1, 1, 1, null);
+  } else if (data === 3) {
+    emitPartialBox(gd, world, wx, wy, wz, def, COLS, ROWS, INSET,
+      0, 0.5, 0.5, 1, 1, 1, null);
+  } else if (data === 4) {
+    emitPartialBox(gd, world, wx, wy, wz, def, COLS, ROWS, INSET,
+      0, 0.5, 0, 1, 1, 0.5, null);
+  } else {
+    // 1 (+X, спуск на восток) и неизвестные: верхняя западная половина.
+    emitPartialBox(gd, world, wx, wy, wz, def, COLS, ROWS, INSET,
+      0, 0.5, 0, 0.5, 1, 1, null);
+  }
+}
+
+// Кнопка как в майнкрафте: напольная бляшка 6/16 x 2/16, настенная выступает
+// из грани на 2/16, потолочная висит снизу. data 0 пол, 1..4 стены, 5 потолок.
+// Лицевая грань (по facing) — круг кнопки, остальные — plain-боковина.
+function emitButton(gd, world, wx, wy, wz, def, COLS, ROWS, INSET, data) {
+  const circle = def.tiles.up;
+  const fx = data === 1 ? [1, 0, 0] : data === 2 ? [-1, 0, 0] :
+    data === 3 ? [0, 0, 1] : data === 4 ? [0, 0, -1] : null;
+  const tileFn = (n) => (fx && n[0] === fx[0] && n[1] === fx[1] && n[2] === fx[2])
+    ? circle
+    : tileFor(def, n);
+  const box = (x0, y0, z0, x1, y1, z1) =>
+    emitPartialBox(gd, world, wx, wy, wz, def, COLS, ROWS, INSET,
+      x0, y0, z0, x1, y1, z1, null, tileFn);
+  const a = 5 / 16;
+  const b = 11 / 16;
+  if (data === BUTTON_CEIL) {
+    box(a, 14 / 16, a, b, 1, b);
+  } else if (data === 2) {
+    box(14 / 16, 6 / 16, a, 1, 10 / 16, b);
+  } else if (data === 3) {
+    box(a, 6 / 16, 0, b, 10 / 16, 2 / 16);
+  } else if (data === 4) {
+    box(a, 6 / 16, 14 / 16, b, 10 / 16, 1);
+  } else if (data === 1) {
+    box(0, 6 / 16, a, 2 / 16, 10 / 16, b);
+  } else {
+    box(a, 0, a, b, 2 / 16, b);
+  }
+}
+
+// Люк как в майнкрафте: закрытый — тонкая панель 3/16 снизу/сверху клетки,
+// открытый — вертикальная панель у своей стороны. data 0/1 закрыт, 2..5 открыт.
+function emitTrapdoor(gd, world, wx, wy, wz, def, COLS, ROWS, INSET, data) {
+  if (data === TRAP_TOP) {
+    emitPartialBox(gd, world, wx, wy, wz, def, COLS, ROWS, INSET,
+      0, 13 / 16, 0, 1, 1, 1, null);
+  } else if (data === TRAP_OPEN_PX) {
+    emitPartialBox(gd, world, wx, wy, wz, def, COLS, ROWS, INSET,
+      13 / 16, 0, 0, 1, 1, 1, null);
+  } else if (data === TRAP_OPEN_NX) {
+    emitPartialBox(gd, world, wx, wy, wz, def, COLS, ROWS, INSET,
+      0, 0, 0, 3 / 16, 1, 1, null);
+  } else if (data === TRAP_OPEN_PZ) {
+    emitPartialBox(gd, world, wx, wy, wz, def, COLS, ROWS, INSET,
+      0, 0, 13 / 16, 1, 1, 1, null);
+  } else if (data === TRAP_OPEN_NZ) {
+    emitPartialBox(gd, world, wx, wy, wz, def, COLS, ROWS, INSET,
+      0, 0, 0, 1, 1, 3 / 16, null);
+  } else {
+    emitPartialBox(gd, world, wx, wy, wz, def, COLS, ROWS, INSET,
+      0, 0, 0, 1, 3 / 16, 1, null);
+  }
+}
+
+// Крюк натяжной проволоки как в майнкрафте: деревянная скоба из двух
+// боксов (пластина на стене + рычаг наружу) wood-текстурой. data 1..4.
+function emitHook(gd, world, wx, wy, wz, def, COLS, ROWS, INSET, data) {
+  const box = (x0, y0, z0, x1, y1, z1) =>
+    emitPartialBox(gd, world, wx, wy, wz, def, COLS, ROWS, INSET,
+      x0, y0, z0, x1, y1, z1, null);
+  if (data === 2) {
+    box(14 / 16, 4 / 16, 6 / 16, 1, 12 / 16, 10 / 16);
+    box(9 / 16, 8 / 16, 7 / 16, 14 / 16, 10 / 16, 9 / 16);
+  } else if (data === 3) {
+    box(6 / 16, 4 / 16, 0, 10 / 16, 12 / 16, 2 / 16);
+    box(7 / 16, 8 / 16, 2 / 16, 9 / 16, 10 / 16, 7 / 16);
+  } else if (data === 4) {
+    box(6 / 16, 4 / 16, 14 / 16, 10 / 16, 12 / 16, 1);
+    box(7 / 16, 8 / 16, 9 / 16, 9 / 16, 10 / 16, 14 / 16);
+  } else {
+    // 1 (+X) и неизвестные: опора западнее.
+    box(0, 4 / 16, 6 / 16, 2 / 16, 12 / 16, 10 / 16);
+    box(2 / 16, 8 / 16, 7 / 16, 7 / 16, 10 / 16, 9 / 16);
+  }
+}
+
 // Произвольный бокс внутри клетки: 6 граней с кulling'ом по opaque-соседям.
 // sideFrac [fBot, fTop] — какую долю тайла (от верха) показывают боковые
 // грани: null = весь тайл. Верх/низ бокса всегда с полным тайлом.
 function emitPartialBox(gd, world, wx, wy, wz, def, COLS, ROWS, INSET,
-    x0, y0, z0, x1, y1, z1, sideFrac) {
+    x0, y0, z0, x1, y1, z1, sideFrac, tileFn = null) {
   const boxMin = [wx + x0, wy + y0, wz + z0];
   const boxMax = [wx + x1, wy + y1, wz + z1];
   for (let f = 0; f < FACES.length; f++) {
@@ -481,17 +591,18 @@ function emitPartialBox(gd, world, wx, wy, wz, def, COLS, ROWS, INSET,
     const ny = wy + n[1];
     const nz = wz + n[2];
     const nbDef = BLOCKS[world.getBlock(nx, ny, nz)];
-    // Свой бокс меньше куба: соседнюю половину плиты не прячем целиком,
+    // Свой бокс меньше куба: неполного соседа не прячем целиком,
     // иначе между разными половинами останутся щели без граней.
-    const nbState = nbDef && nbDef.shape === "slab" ? world.getState(nx, ny, nz) : 0;
-    if (faceHiddenByNeighbor(n[1], y0, y1, nbDef, nbState)) continue;
+    const partial = nbDef && (nbDef.shape === "slab" || nbDef.shape === "stairs");
+    const nbState = partial ? world.getState(nx, ny, nz) : 0;
+    if (faceHiddenByNeighbor(n[0], n[1], n[2], y0, y1, nbDef, nbState)) continue;
     let fBot = 1;
     let fTop = 0;
     if (sideFrac && n[1] === 0) {
       fBot = sideFrac[0];
       fTop = sideFrac[1];
     }
-    pushMergedFace(gd, boxMin, boxMax, face, tileFor(def, n), face.shade,
+    pushMergedFace(gd, boxMin, boxMax, face, tileFn ? tileFn(n) : tileFor(def, n), face.shade,
       COLS, ROWS, INSET, fBot, fTop);
   }
 }
@@ -622,20 +733,32 @@ function isOpaqueBlock(def) {
 }
 
 // Закрывает ли соседний блок грань целиком. Полный куб/двойная плита — да;
-// половина плиты закрывает только свою половину: боковая грань видна, если
-// наш диапазон по Y не входит в диапазон соседа; верхняя грань видна, если
-// сверху верхняя плита (щель), нижняя — если снизу нижняя плита.
-// Без этого рядом с плитами появляются дыры: грань полного блока пряталась
-// целиком, хотя сосед закрывал лишь её половину.
-function faceHiddenByNeighbor(nY, ourY0, ourY1, nbDef, nbState) {
+// половина плиты закрывает только свою половину, у ступеней низ закрыт
+// всегда, а верх — только со стороны зада (против facing).
+// Без этого рядом с неполными блоками появляются дыры: грань полного блока
+// пряталась целиком, хотя сосед закрывал лишь её часть.
+function faceHiddenByNeighbor(nX, nY, nZ, ourY0, ourY1, nbDef, nbState) {
   if (!isOpaqueBlock(nbDef)) return false;
-  if (nbDef.shape !== "slab") return true;
-  if (nbState !== SLAB_BOTTOM && nbState !== SLAB_TOP) return true; // double = куб
-  if (nY === 1) return nbState === SLAB_BOTTOM; // сосед сверху: закрывает своим низом
-  if (nY === -1) return nbState === SLAB_TOP; // сосед снизу: закрывает своим верхом
-  const lo = nbState === SLAB_BOTTOM ? 0 : 0.5;
-  const hi = nbState === SLAB_BOTTOM ? 0.5 : 1;
-  return lo <= ourY0 && ourY1 <= hi;
+  if (nbDef.shape === "slab") {
+    if (nbState !== SLAB_BOTTOM && nbState !== SLAB_TOP) return true; // double
+    if (nY === 1) return nbState === SLAB_BOTTOM; // сосед сверху: закрывает своим низом
+    if (nY === -1) return nbState === SLAB_TOP; // сосед снизу: закрывает своим верхом
+    const lo = nbState === SLAB_BOTTOM ? 0 : 0.5;
+    const hi = nbState === SLAB_BOTTOM ? 0.5 : 1;
+    return lo <= ourY0 && ourY1 <= hi;
+  }
+  if (nbDef.shape === "stairs") {
+    // Зад ступени (против facing 1..4): [-X, +X, -Z, +Z].
+    const back = nbState === 1 ? [-1, 0, 0] : nbState === 2 ? [1, 0, 0] :
+      nbState === 3 ? [0, 0, -1] : nbState === 4 ? [0, 0, 1] : null;
+    if (!back) return false; // неизвестно — рисуем (дыра хуже overdraw)
+    if (nY === 1) return true; // низ ступени закрывает грань сверху целиком
+    if (nY === -1) return false; // снизу щель: верхняя половина только сзади
+    // Бок: низ закрыт всегда, верх — если грань со стороны зада.
+    if (ourY1 <= 0.5) return true;
+    return nX === -back[0] && nZ === -back[2];
+  }
+  return true;
 }
 
 function renderLayer(def) {
@@ -723,6 +846,29 @@ export function buildChunkGeometry(world, cx, cy, cz) {
             1 / 16, 0, 1 / 16, 15 / 16, 1 / 16, 15 / 16);
           continue;
         }
+        if (def.shape === "stairs") {
+          emitStairs(gd, world, wx, wy, wz, def, ATL_COLS, ATL_ROWS, INSET, world.getState(wx, wy, wz));
+          continue;
+        }
+        if (def.shape === "bed") {
+          // Кровать как в майнкрафте: низкий блок 9/16. Изголовье отдельной
+          // геометрией не выделяем (вторая клетка ставится рядом при установке).
+          emitPartialBox(gd, world, wx, wy, wz, def, ATL_COLS, ATL_ROWS, INSET,
+            0, 0, 0, 1, 9 / 16, 1, null);
+          continue;
+        }
+        if (def.shape === "button") {
+          emitButton(gd, world, wx, wy, wz, def, ATL_COLS, ATL_ROWS, INSET, world.getState(wx, wy, wz));
+          continue;
+        }
+        if (def.shape === "trapdoor") {
+          emitTrapdoor(gd, world, wx, wy, wz, def, ATL_COLS, ATL_ROWS, INSET, world.getState(wx, wy, wz));
+          continue;
+        }
+        if (def.shape === "hook") {
+          emitHook(gd, world, wx, wy, wz, def, ATL_COLS, ATL_ROWS, INSET, world.getState(wx, wy, wz));
+          continue;
+        }
         // Opaque-кубы при включённом флаге рисует buildGreedyOpaque ниже.
         if (greedy && isOpaqueBlock(def)) continue;
 
@@ -739,9 +885,10 @@ export function buildChunkGeometry(world, cx, cy, cz) {
           // back-face culling появляются z-fighting и мерцание.
           if (layer === "alpha" && nb === id) continue;
           if (isOpaqueBlock(def)) {
-            // Половина плиты не закрывает грань целиком (см. faceHiddenByNeighbor).
-            const nbState = nbDef && nbDef.shape === "slab" ? world.getState(nx, ny, nz) : 0;
-            if (faceHiddenByNeighbor(n[1], 0, 1, nbDef, nbState)) continue;
+            // Неполный сосед закрывает грань не целиком (см. faceHiddenByNeighbor).
+            const partial = nbDef && (nbDef.shape === "slab" || nbDef.shape === "stairs");
+            const nbState = partial ? world.getState(nx, ny, nz) : 0;
+            if (faceHiddenByNeighbor(n[0], n[1], n[2], 0, 1, nbDef, nbState)) continue;
           }
           pushFace(gd, wx, wy, wz, face, tileFor(def, n), face.shade, ATL_COLS, ATL_ROWS, INSET);
         }
@@ -836,8 +983,9 @@ function buildGreedyOpaque(world, gd, cx, cy, cz) {
           // Внутренняя грань между полными кубами не нужна. Рядом с половиной
           // плиты грань видна хотя бы частично — клетку включаем в merge,
           // перекрытая часть закроется соседом по глубине.
-          const nbState = nbDef && nbDef.shape === "slab" ? world.getState(nbx, nby, nbz) : 0;
-          if (faceHiddenByNeighbor(n[1], 0, 1, nbDef, nbState)) continue;
+          const partial = nbDef && (nbDef.shape === "slab" || nbDef.shape === "stairs");
+          const nbState = partial ? world.getState(nbx, nby, nbz) : 0;
+          if (faceHiddenByNeighbor(n[0], n[1], n[2], 0, 1, nbDef, nbState)) continue;
           mask[v * CHUNK + u] = id;
         }
       }
