@@ -184,6 +184,8 @@ function placeSchematic(plan, cx, cz, floorY = 1, replaceWorld = false) {
     const oldWorld = world;
     world = targetWorld;
     oldWorld.clear();
+    // Вместе с миром сносим и рамки: они привязаны к старым координатам.
+    clearBuildings();
     // Свет факелов запечён в вершины мешей при flushMeshes выше — отдельные
     // источники света не нужны.
     resetMapTransientState();
@@ -209,7 +211,19 @@ function importSchematicBytes(bytes, fileName) {
       showMsg("В схеме нет распознанных блоков");
       return;
     }
-    const res = placeSchematic(plan, Math.round(player.x), Math.round(player.z), 1, true);
+    const cx = Math.round(player.x);
+    const cz = Math.round(player.z);
+    const res = placeSchematic(plan, cx, cz, 1, true);
+    recordBuilding({
+      name: fileName,
+      file: fileName,
+      x0: cx - Math.floor(plan.W / 2),
+      y0: 1 - (plan.minY ?? 0),
+      z0: cz - Math.floor(plan.L / 2),
+      W: plan.W, H: plan.H, L: plan.L,
+      rot: 0,
+      placed: res.placed,
+    });
     showMsg(`Схема «${fileName}» (${plan.format}) · поставлено ${res.placed} блоков · ${plan.W}×${plan.H}×${plan.L}`);
   } catch (err) {
     console.error("Не удалось загрузить схему", err);
@@ -377,92 +391,49 @@ window.addEventListener("keyup", (e) => {
   }
 });
 
-// ---------- inventory ----------
-const inventory = new Map(); // blockId -> { id, count } (order = добыча)
-let activeToolId = null; // выбранный для установки блок; null = ставить нечего
+// ---------- песочница: бесконечные блоки, выживания больше нет ----------
 let mouseDown = { 0: false, 2: false };
 
-// Состояние креатива объявлено здесь (а не в секции ниже), т.к. updateHotbar()
+// Слоты объявлены здесь (а не в секции ниже), т.к. updateHotbar()
 // вызывается при инициализации модуля и читает эти флаги.
-let creative = false;
-let flying = false;
+let flying = true; // в песочнице полёт включён сразу
 let creativeSlots = new Array(9).fill(null);
 let creativeSel = 0;
-
-function getEntries() {
-  return [...inventory.values()].filter((e) => e.count > 0);
-}
-function activeEntry() {
-  if (activeToolId == null) return null;
-  const e = inventory.get(activeToolId);
-  if (!e || e.count <= 0) return null;
-  return e;
-}
 const hudEl = document.getElementById("hud");
 const defaultHud = hudEl.innerHTML;
 const hotbarEl = document.getElementById("hotbar");
 const selBlockEl = document.getElementById("selBlock");
 
 function updateHotbar() {
-  if (creative) {
-    const marks = [];
-    for (let i = 0; i < 9; i++) {
-      const id = creativeSlots[i];
-      if (id == null) {
-        marks.push('<div class="hslot"></div>');
-        continue;
-      }
-      const b = BLOCKS[id];
-      const active = i === creativeSel ? ' active' : '';
-      marks.push(
-        `<div class="hslot${active}"><span class="sw" style="background:${b.color}"></span>` +
-        `<span class="cnt">∞</span><span class="nm">${b.name}</span></div>`
-      );
-    }
-    hotbarEl.innerHTML = marks.join("");
-    const name = creativeSlots[creativeSel] != null ? BLOCKS[creativeSlots[creativeSel]].name : "—";
-    if (selBlockEl.textContent !== name) selBlockEl.textContent = name;
-    return;
-  }
-  const entries = getEntries();
-  if (activeToolId != null && !inventory.get(activeToolId)) activeToolId = null;
-  const selId = activeToolId != null && inventory.get(activeToolId)?.count > 0 ? activeToolId : null;
   const marks = [];
-  const N = Math.max(9, entries.length);
-  for (let i = 0; i < N; i++) {
-    const e = entries[i];
-    if (!e) {
+  for (let i = 0; i < 9; i++) {
+    const id = creativeSlots[i];
+    if (id == null) {
       marks.push('<div class="hslot"></div>');
       continue;
     }
-    const b = BLOCKS[e.id];
-    const active = e.id === selId ? ' active' : '';
+    const b = BLOCKS[id];
+    const active = i === creativeSel ? ' active' : '';
     marks.push(
       `<div class="hslot${active}"><span class="sw" style="background:${b.color}"></span>` +
-      `<span class="cnt">${e.count}</span><span class="nm">${b.name}</span></div>`
+      `<span class="cnt">∞</span><span class="nm">${b.name}</span></div>`
     );
   }
   hotbarEl.innerHTML = marks.join("");
-  const name = activeToolId != null && selId != null ? BLOCKS[activeToolId].name : "руки";
+  const name = creativeSlots[creativeSel] != null ? BLOCKS[creativeSlots[creativeSel]].name : "—";
   if (selBlockEl.textContent !== name) selBlockEl.textContent = name;
 }
 
 window.addEventListener("keydown", (e) => {
   const n = Number(e.code.replace("Digit", ""));
   if (n >= 1 && n <= 9) {
-    if (creative) {
-      creativeSel = n - 1;
-      updateHotbar();
-      return;
-    }
-    const entries = getEntries();
-    if (entries.length > 0 && n <= entries.length) activeToolId = entries[n - 1].id;
+    creativeSel = n - 1;
     updateHotbar();
   }
 });
 updateHotbar();
 
-// ---------- creative mode ----------
+// ---------- песочница: призрак и постановка схем ----------
 let previewPlan = null; // { plan, name, rot, rotated }
 let previewAnchor = null;
 let ghostLines = null;
@@ -485,29 +456,133 @@ for (const [p, url] of Object.entries(schemeThumbUrls)) {
   schemeThumbByFile[p.split("/").pop().replace(/\.png$/i, "")] = url;
 }
 
-const creativeBtn = document.getElementById("creativeBtn");
+const viewBtn = document.getElementById("viewBtn");
+const framesBtn = document.getElementById("framesBtn");
 const blocksBtn = document.getElementById("blocksBtn");
 const schemesBtn = document.getElementById("schemesBtn");
 const pickerEl = document.getElementById("picker");
 const pickGridEl = document.getElementById("pickGrid");
 const schemesPanelEl = document.getElementById("schemesPanel");
 const schemeListEl = document.getElementById("schemeList");
+const labelsEl = document.getElementById("labels");
 
-function setCreative(on) {
-  creative = on;
-  document.body.classList.toggle("creative", on);
-  creativeBtn.textContent = on ? "Креатив: вкл" : "Креатив: выкл";
-  creativeBtn.classList.toggle("active", on);
-  if (!on) {
-    flying = false;
+// ---------- режимы: песочница (стройка) и просмотр (рамки + инфо) ----------
+let viewMode = false;
+let showFrames = true;
+
+function setViewMode(on) {
+  viewMode = on;
+  document.body.classList.toggle("view", on);
+  viewBtn.textContent = on ? "Стройка (V)" : "Просмотр (V)";
+  viewBtn.classList.toggle("active", on);
+  if (on) {
     cancelPreview();
     closePanels();
   }
-  updateHotbar();
+  applyBuildingVisibility();
   hudEl.innerHTML = on
-    ? "Креатив &middot; E — блоки &middot; T — постройки &middot; Tab — выживание &middot; двойной Space — полёт"
+    ? "Просмотр &middot; рамки построек с информацией &middot; V — вернуться к стройке"
     : defaultHud;
-  showMsg(on ? "Креатив: полёт, любые блоки, постройки" : "Выживание");
+  showMsg(on ? "Просмотр: рамки и информация о постройках" : "Песочница: стройте что угодно");
+}
+
+function setShowFrames(on) {
+  showFrames = on;
+  framesBtn.textContent = on ? "Рамки: вкл" : "Рамки: выкл";
+  framesBtn.classList.toggle("active", on);
+  applyBuildingVisibility();
+}
+
+// ---------- реестр поставленных построек ----------
+let nextBuildingId = 1;
+const buildings = []; // { id, name, file, x0,y0,z0, W,H,L, rot, placed, at, lines, fill, label, css }
+// Разные цвета рамок, чтобы постройки различались с первого взгляда.
+const FRAME_COLORS = [
+  { c3: [1, 0.35, 0.3], css: "#ff5952" },
+  { c3: [0.35, 1, 0.45], css: "#59ff73" },
+  { c3: [0.35, 0.65, 1], css: "#59a6ff" },
+  { c3: [1, 0.85, 0.3], css: "#ffd94d" },
+  { c3: [0.85, 0.45, 1], css: "#d973ff" },
+  { c3: [0.35, 1, 0.9], css: "#59ffe6" },
+  { c3: [1, 0.55, 0.25], css: "#ff8c40" },
+  { c3: [1, 0.45, 0.75], css: "#ff73bf" },
+];
+
+function recordBuilding({ name, file, x0, y0, z0, W, H, L, rot, placed }) {
+  const id = nextBuildingId++;
+  const col = FRAME_COLORS[(id - 1) % FRAME_COLORS.length];
+  const v = (x, y, z) => new BABYLON.Vector3(x, y, z);
+  const corners = [v(0, 0, 0), v(W, 0, 0), v(W, 0, L), v(0, 0, L), v(0, H, 0), v(W, H, 0), v(W, H, L), v(0, H, L)];
+  const edges = [[0, 1], [1, 2], [2, 3], [3, 0], [4, 5], [5, 6], [6, 7], [7, 4], [0, 4], [1, 5], [2, 6], [3, 7]];
+  const lines = BABYLON.MeshBuilder.CreateLineSystem(`bldLines${id}`, {
+    lines: edges.map(([a, b]) => [corners[a], corners[b]]),
+  }, scene);
+  lines.color = new BABYLON.Color3(...col.c3);
+  lines.position.set(x0, y0, z0);
+  lines.isPickable = false;
+  const fill = BABYLON.MeshBuilder.CreateBox(`bldFill${id}`, { width: W, height: H, depth: L }, scene);
+  const fm = new BABYLON.StandardMaterial(`bldMat${id}`, scene);
+  fm.diffuseColor = new BABYLON.Color3(...col.c3);
+  fm.emissiveColor = new BABYLON.Color3(col.c3[0] * 0.25, col.c3[1] * 0.25, col.c3[2] * 0.25);
+  fm.alpha = 0.05;
+  fm.backFaceCulling = false;
+  fm.disableLighting = true;
+  fill.material = fm;
+  fill.position.set(x0 + W / 2, y0 + H / 2, z0 + L / 2);
+  fill.isPickable = false;
+  const label = document.createElement("div");
+  label.className = "blabel";
+  label.style.borderColor = col.css;
+  label.innerHTML =
+    `<b style="color:${col.css}">▮ ${name}</b><br>` +
+    `${W}×${H}×${L} · блоков: ${placed}<br>` +
+    `x:${x0} y:${y0} z:${z0}` + (rot ? ` · ↻${rot * 90}°` : "");
+  label.style.display = "none";
+  labelsEl.appendChild(label);
+  const b = { id, name, file: file || "", x0, y0, z0, W, H, L, rot, placed, at: Date.now(), lines, fill, label, css: col.css };
+  buildings.push(b);
+  applyBuildingVisibility();
+  return b;
+}
+
+function applyBuildingVisibility() {
+  const vis = viewMode && showFrames;
+  for (const b of buildings) {
+    b.lines.isVisible = vis;
+    b.fill.isVisible = vis;
+    if (!viewMode) b.label.style.display = "none";
+  }
+}
+
+function clearBuildings() {
+  for (const b of buildings) {
+    b.lines.dispose();
+    b.fill.dispose();
+    b.label.remove();
+  }
+  buildings.length = 0;
+}
+
+// Проекция инфо-меток над постройками (только в просмотре).
+const projV = new BABYLON.Vector3();
+function updateBuildingLabels() {
+  if (!viewMode || !mapReady) {
+    if (!viewMode) for (const b of buildings) b.label.style.display = "none";
+    return;
+  }
+  const w = engine.getRenderWidth();
+  const h = engine.getRenderHeight();
+  for (const b of buildings) {
+    projV.set(b.x0 + b.W / 2, b.y0 + b.H + 0.8, b.z0 + b.L / 2);
+    const p = BABYLON.Vector3.Project(projV, BABYLON.Matrix.Identity(), scene.getTransformMatrix(), camera.viewport);
+    if (p.z > 1 || p.x < 0 || p.x > w || p.y < 0 || p.y > h) {
+      b.label.style.display = "none";
+      continue;
+    }
+    b.label.style.display = "block";
+    b.label.style.left = `${(p.x / w) * 100}%`;
+    b.label.style.top = `${(p.y / h) * 100}%`;
+  }
 }
 
 function closePanels() {
@@ -516,7 +591,7 @@ function closePanels() {
 }
 
 function togglePicker() {
-  if (!creative) return;
+  if (viewMode) setViewMode(false);
   schemesPanelEl.classList.remove("show");
   pickerEl.classList.toggle("show");
   if (pickerEl.classList.contains("show") && document.pointerLockElement) {
@@ -525,7 +600,7 @@ function togglePicker() {
 }
 
 function toggleSchemes() {
-  if (!creative) return;
+  if (viewMode) setViewMode(false);
   pickerEl.classList.remove("show");
   schemesPanelEl.classList.toggle("show");
   if (schemesPanelEl.classList.contains("show")) {
@@ -754,16 +829,30 @@ function placePreview() {
     return;
   }
   try {
-    const res = pasteSchematic(world, previewPlan.rotated, previewAnchor.x, previewAnchor.z, previewAnchor.y, { clear: false });
+    const r = previewPlan.rotated;
+    const minY = r.minY ?? previewPlan.plan.minY ?? 0;
+    const res = pasteSchematic(world, r, previewAnchor.x, previewAnchor.z, previewAnchor.y, { clear: false });
     world.flushMeshes(scene, blockMat, cutoutMat, alphaMat, torchMat);
-    showMsg(`Поставлено ${res.placed} блоков`);
+    // Рамка = фактические границы вставки (pasteSchematic центрирует так же).
+    recordBuilding({
+      name: previewPlan.name,
+      file: selectedSchemeFile,
+      x0: previewAnchor.x - Math.floor(r.W / 2),
+      y0: previewAnchor.y - minY,
+      z0: previewAnchor.z - Math.floor(r.L / 2),
+      W: r.W, H: r.H, L: r.L,
+      rot: previewPlan.rot,
+      placed: res.placed,
+    });
+    showMsg(`Поставлено ${res.placed} блоков · рамка — в просмотре (V)`);
   } catch (err) {
     console.error("Не удалось поставить схему", err);
     showMsg(`Ошибка: ${err.message}`);
   }
 }
 
-creativeBtn.addEventListener("click", () => setCreative(!creative));
+viewBtn.addEventListener("click", () => setViewMode(!viewMode));
+framesBtn.addEventListener("click", () => setShowFrames(!showFrames));
 blocksBtn.addEventListener("click", togglePicker);
 schemesBtn.addEventListener("click", toggleSchemes);
 buildPicker();
@@ -771,10 +860,14 @@ buildPicker();
 window.addEventListener("keydown", (e) => {
   if (e.code === "Tab") {
     e.preventDefault();
-    setCreative(!creative);
+    setViewMode(!viewMode);
     return;
   }
-  if (!creative) return;
+  if (e.code === "KeyV" && !e.repeat) {
+    setViewMode(!viewMode);
+    return;
+  }
+  if (viewMode) return;
   if (e.code === "KeyE") {
     togglePicker();
   } else if (e.code === "KeyT") {
@@ -805,7 +898,8 @@ canvas.addEventListener("pointerdown", (e) => {
     if (req && req.catch) req.catch(() => {});
     return;
   }
-  if (creative && previewPlan) {
+  if (viewMode) return; // в просмотре стройка отключена
+  if (previewPlan) {
     if (e.button === 0) placePreview();
     return;
   }
@@ -890,18 +984,12 @@ function placeData(id, hit) {
 function handlePlace() {
   const hit = lastHit;
   if (!hit) return;
-  let entry;
-  if (creative) {
-    const id = creativeSlots[creativeSel];
-    if (id == null) {
-      showMsg("Выбери блок: нажми E");
-      return;
-    }
-    entry = { id, count: Infinity };
-  } else {
-    entry = activeEntry();
-    if (!entry) return;
+  const id = creativeSlots[creativeSel];
+  if (id == null) {
+    showMsg("Выбери блок: нажми E");
+    return;
   }
+  const entry = { id, count: Infinity };
   const def = BLOCKS[entry.id];
   // Дабл-слэб как в майнкрафте: клик по верхней грани нижней плиты той же
   // породы собирает её в полный блок вместо установки нового.
@@ -910,7 +998,6 @@ function handlePlace() {
       world.getState(hit.x, hit.y, hit.z) === SLAB_BOTTOM) {
     if (!world.setState(hit.x, hit.y, hit.z, SLAB_DOUBLE)) return;
     world.flushMeshes(scene, blockMat, cutoutMat, alphaMat, torchMat);
-    if (!creative) entry.count--;
     updateHotbar();
     return;
   }
@@ -935,7 +1022,6 @@ function handlePlace() {
       return;
     }
     world.flushMeshes(scene, blockMat, cutoutMat, alphaMat, torchMat);
-    if (!creative) entry.count--;
     updateHotbar();
     return;
   }
@@ -943,22 +1029,6 @@ function handlePlace() {
   // Поставленный факел засветится сам: setBlock пометил чанк грязным,
   // flushMeshes ниже перестроит меш уже с запечённым светом.
   world.flushMeshes(scene, blockMat, cutoutMat, alphaMat, torchMat);
-  if (!creative) entry.count--;
-  updateHotbar();
-}
-
-function doBreak(x, y, z) {
-  if (!isInsideWorldBounds(x, y, z)) return;
-  const id = world.getBlock(x, y, z);
-  if (id === AIR) return;
-  if (!world.setBlock(x, y, z, AIR)) return;
-  world.flushMeshes(scene, blockMat, cutoutMat, alphaMat, torchMat);
-  let entry = inventory.get(id);
-  if (!entry) {
-    entry = { id, count: 0 };
-    inventory.set(id, entry);
-  }
-  entry.count++;
   updateHotbar();
 }
 
@@ -1016,7 +1086,7 @@ scene.registerBeforeRender(() => {
   // Physics waits until the starting world is committed.
   if (!mapReady) return;
   const dt = Math.min(engine.getDeltaTime() / 1000, 0.05);
-  const speed = creative && flying ? FLY_SPEED : keys.shift ? SPRINT_SPEED : WALK_SPEED;
+  const speed = flying ? FLY_SPEED : keys.shift ? SPRINT_SPEED : WALK_SPEED;
 
   // Бесконечный плоский пол: догенерируем чанки травы вокруг игрока.
   genTimer += dt;
@@ -1052,7 +1122,7 @@ scene.registerBeforeRender(() => {
   player.x = moveAxis(player, world, "x", mx * speed * dt);
   player.z = moveAxis(player, world, "z", mz * speed * dt);
 
-  if (creative && flying) {
+  if (flying) {
     // Полёт: гравитации нет, Space вверх, Shift вниз, столкновения остаются.
     let vy = 0;
     if (keys.jump) vy += FLY_SPEED;
@@ -1092,7 +1162,7 @@ scene.registerBeforeRender(() => {
   }
 
   // ---- ghost preview for schemes (long reach) ----
-  if (creative && previewPlan && ghostLines && ghostFill) {
+  if (!viewMode && previewPlan && ghostLines && ghostFill) {
     const far = raycast(camera.position.x, camera.position.y, camera.position.z, rayDir.x, rayDir.y, rayDir.z, 120);
     if (far) {
       previewAnchor = { x: far.x + far.nx, y: far.y + far.ny, z: far.z + far.nz };
@@ -1110,25 +1180,23 @@ scene.registerBeforeRender(() => {
     }
   }
 
-  // ---- breaking (hold LMB): мгновенно ----
-  // В креативе без добычи, в обычном режиме блок падает в инвентарь.
+  // ---- breaking (hold LMB): мгновенно, без добычи ----
   // При активном предпросмотре схемы ЛКМ ставит её, а не ломает.
-  if (locked && lastHit && mouseDown[0] && !previewPlan) {
-    if (creative) {
-      if (world.getBlock(lastHit.x, lastHit.y, lastHit.z) !== AIR) {
-        world.setBlock(lastHit.x, lastHit.y, lastHit.z, AIR);
-        world.flushMeshes(scene, blockMat, cutoutMat, alphaMat, torchMat);
-      }
-    } else {
-      doBreak(lastHit.x, lastHit.y, lastHit.z);
+  // В просмотре ломание отключено.
+  if (!viewMode && locked && lastHit && mouseDown[0] && !previewPlan) {
+    if (world.getBlock(lastHit.x, lastHit.y, lastHit.z) !== AIR) {
+      world.setBlock(lastHit.x, lastHit.y, lastHit.z, AIR);
+      world.flushMeshes(scene, blockMat, cutoutMat, alphaMat, torchMat);
     }
   }
+
+  // ---- метки построек в просмотре ----
+  updateBuildingLabels();
 });
 
-// ---------- построение мира по умолчанию ----------
 // ---------- стартовый мир: пустая плоская местность ----------
-// Тюрьмы по умолчанию больше нет: вокруг спавна догенерируется трава,
-// игрок начинает на ней и строит сам (постройки — через кнопку или T в креативе).
+// Вокруг спавна догенерируется трава, игрок начинает на ней и строит сам
+// (блоки — E, постройки — T; V — просмотр рамок построек).
 function initFlatWorld() {
   world.ensureFlatAround(0, 0);
   world.flushMeshes(scene, blockMat, cutoutMat, alphaMat, torchMat);
@@ -1141,7 +1209,7 @@ function initFlatWorld() {
   resetMapTransientState();
   mapReady = true;
   camera.position.set(player.x, player.y + EYE, player.z);
-  showMsg("Пустой мир: стройте что угодно (креатив — Tab)");
+  showMsg("Песочница: E — блоки, T — постройки, V — просмотр");
 }
 
 engine.runRenderLoop(() => scene.render());

@@ -116,10 +116,12 @@
     }
     .topbtn:hover { background: rgba(255, 213, 74, 0.25); border-color: #ffd54a; }
     .topbtn.active { background: rgba(255, 213, 74, 0.35); border-color: #ffd54a; color: #ffd54a; }
-    #creativeBtn { top: 48px; }
-    #blocksBtn { top: 84px; display: none; }
-    #schemesBtn { top: 120px; display: none; }
-    body.creative #blocksBtn, body.creative #schemesBtn { display: block; }
+    #viewBtn { top: 48px; }
+    #framesBtn { top: 84px; }
+    #blocksBtn { top: 120px; }
+    #schemesBtn { top: 156px; }
+    #labels { position: fixed; inset: 0; pointer-events: none; z-index: 11; overflow: hidden; }
+    .blabel { position: absolute; transform: translate(-50%, -100%); background: rgba(8, 10, 14, 0.82); border: 1px solid #fff; border-left-width: 4px; border-radius: 6px; color: #fff; font: 12px 'Segoe UI', Arial, sans-serif; padding: 4px 8px; white-space: nowrap; text-align: left; line-height: 1.45; }
     .panel {
       position: fixed;
       top: 50%;
@@ -253,18 +255,20 @@
 </head>
 <body>
   <div id="hud">
-    ЛКМ - ломать &middot; ПКМ - поставить &middot; 1-9 - предмет: <span class="block" id="selBlock">руки</span><br />
-    WASD - движение &middot; Мышь - камера &middot; Space - прыжок &middot; Shift - бег &middot; Клик - захват мыши
+    ЛКМ — ломать &middot; ПКМ — поставить &middot; 1–9 — блок: <span class="block" id="selBlock">—</span><br />
+    WASD — движение &middot; мышь — камера &middot; Space — полёт &middot; E — блоки &middot; T — постройки &middot; V — просмотр
   </div>
   <div id="hotbar"></div>
   <div id="crosshair"></div>
   <div id="msg"></div>
-  <button id="loadBtn" title="Загрузить постройку из Minecraft (.schem / .schematic / .nbt)">Загрузить схему</button>
-  <button id="creativeBtn" class="topbtn" title="Креатив/выживание (Tab)">Креатив: выкл</button>
+  <div id="labels"></div>
+  <button id="loadBtn" title="Загрузить постройку из файла (.schem / .schematic / .nbt)">Загрузить схему</button>
+  <button id="viewBtn" class="topbtn" title="Просмотр рамок построек (V)">Просмотр (V)</button>
+  <button id="framesBtn" class="topbtn active" title="Показать или скрыть рамки построек">Рамки: вкл</button>
   <button id="blocksBtn" class="topbtn" title="Выбор блоков (E)">Блоки</button>
   <button id="schemesBtn" class="topbtn" title="Постройки из schemes (T)">Постройки</button>
   <div id="picker" class="panel">
-    <h3>Блоки креатива</h3>
+    <h3>Блоки песочницы</h3>
     <div class="hint">Клик — положить в выбранный слот (1–9) · E — закрыть</div>
     <div id="pickGrid"></div>
   </div>
