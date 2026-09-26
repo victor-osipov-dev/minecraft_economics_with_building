@@ -808,7 +808,11 @@ function renderLayer(def) {
   // Torches get their own emissive layer so the flame reads as lit even in
   // daylight.  A shared cutout material cannot glow per-tile.
   if (def.shape === "torch") return "torch";
-  // Alpha-tested textures (fences, panes, cobwebs and small decorations) do
+  // Стеклянные панели и вода идут в blend-слой: бинарный cutout делал
+  // панели глухими (альфа 0.68 > порога 0.5), а у воды плодил внутренние
+  // грани без culling'а соседей. Частичная альфа требует именно бленд.
+  if (def.blend) return "alpha";
+  // Alpha-tested textures (fences, cobwebs and small decorations) do
   // not need a second translucent pass.  Keeping them in a separate layer
   // makes their binary cutout independent from glass/water blending.
   if (def.bars || (!def.solid && def.transparent)) return "cutout";
@@ -926,6 +930,9 @@ export function buildChunkGeometry(world, cx, cy, cz) {
           // Это особенно важно для стекла и воды: иначе при выключенном
           // back-face culling появляются z-fighting и мерцание.
           if (layer === "alpha" && nb === id) continue;
+          // Грань стекла/воды к opaque-соседу тоже не рисуем: его собственная
+          // грань уже закрывает плоскость, а две копланарные грани мерцают.
+          if (layer === "alpha" && isOpaqueBlock(nbDef)) continue;
           if (isOpaqueBlock(def)) {
             // Неполный сосед закрывает грань не целиком (см. faceHiddenByNeighbor).
             const partial = nbDef && (nbDef.shape === "slab" || nbDef.shape === "stairs");

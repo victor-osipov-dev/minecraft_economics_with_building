@@ -1,6 +1,5 @@
 import * as BABYLON from "@babylonjs/core";
 import { CustomMaterial } from "@babylonjs/materials/custom/customMaterial";
-import defaultSchematicUrl from "../schemes/high-security-jail.schem?url";
 import {
   AIR,
   BLOCKS,
@@ -36,8 +35,6 @@ import {
 } from "./blocks.js";
 import { World, WORLD_H } from "./world.js";
 import { HALF, HEIGHT, moveAxis, updateGrounded, clampPlayerToWorld } from "./physics.js";
-import { buildPrison, SPAWN } from "./prison.js";
-import { Guard } from "./npcs.js";
 import { parseSchematicFile, pasteSchematic, rotatePlan } from "./schematic.js";
 import schemesIndex from "../schemes/index.json";
 
@@ -63,12 +60,11 @@ sun.diffuse = new BABYLON.Color3(1, 0.96, 0.9);
 
 // ---------- world ----------
 // The reference is replaced only after a complete staged import has passed
-// parsing, placement, route and spawn validation.  A failed import therefore
+// parsing, placement and spawn validation.  A failed import therefore
 // leaves the currently playable world untouched.
 let world = new World();
-let respawnPoint = { ...SPAWN };
-let worldBounds = { minX: -57, maxX: 57, minZ: -57, maxZ: 57 };
-let fallbackLights = [];
+// Стартовая точка на плоской траве (тюрьмы по умолчанию больше нет).
+let respawnPoint = { x: 0.5, y: 2, z: 0.5 };
 
 // ---------- block materials ----------
 const atlas = createAtlas(scene);
@@ -154,8 +150,6 @@ function showMsg(text) {
 }
 
 // ---------- импорт построек Minecraft (схематики) ----------
-const DEFAULT_SCHEMATIC_NAME = "high-security-jail.schem";
-const DEFAULT_BUILD_CENTER = { x: 0, z: 0, floorY: 1 };
 const loadBtnEl = document.getElementById("loadBtn");
 const schemInputEl = document.getElementById("schemFile");
 const dropOverlayEl = document.getElementById("dropOverlay");
@@ -163,8 +157,9 @@ let mapReady = false;
 
 function placeSchematic(plan, cx, cz, floorY = 1, replaceWorld = false) {
   // Manual imports replace the complete world.  Build that replacement in a
-  // detached World first; no live chunk, mesh, guard or player state is
-  // touched until every potentially failing operation below succeeds.
+  // detached World first; no live chunk, mesh or player state is touched
+  // until every potentially failing operation below succeeds.
+  // NPC скрыты: маршруты и спавн охраны не строим (см. src/npcs.js — пригодится).
   const targetWorld = replaceWorld ? new World() : world;
   const result = pasteSchematic(targetWorld, plan, cx, cz, floorY, {
     clear: !replaceWorld,
@@ -174,7 +169,6 @@ function placeSchematic(plan, cx, cz, floorY = 1, replaceWorld = false) {
     if (replaceWorld) targetWorld.clear();
     throw new Error("в схеме нет безопасной поддерживаемой точки появления");
   }
-  const routes = routesForSchematic(result, plan, targetWorld);
 
   // Flush the detached meshes before swapping the world reference.  This
   // keeps a Babylon allocation/geometry failure from publishing a half-loaded
@@ -187,55 +181,26 @@ function placeSchematic(plan, cx, cz, floorY = 1, replaceWorld = false) {
   }
 
   if (replaceWorld) {
-    // Stage guards against the detached world so a Guard allocation failure
-    // discards the staged world instead of publishing a world without guards.
-    let stagedGuards = [];
-    try {
-      for (const route of routes) {
-        if (!Array.isArray(route) || route.length === 0) continue;
-        const first = route[0];
-        if (!first || !Number.isFinite(first.x) || !Number.isFinite(first.z)) continue;
-        const startY = Number.isFinite(first.y) ? first.y : 1;
-        stagedGuards.push(new Guard(scene, targetWorld, route, () => playerCaught(), startY));
-      }
-    } catch (error) {
-      for (const guard of stagedGuards) {
-        try { guard.dispose(); } catch { /* ignore */ }
-      }
-      targetWorld.clear();
-      throw error;
-    }
     const oldWorld = world;
-    const oldGuards = guards;
     world = targetWorld;
-    guards = stagedGuards;
     oldWorld.clear();
-    for (const guard of oldGuards) guard.dispose();
-    clearPointLights();
     // Свет факелов запечён в вершины мешей при flushMeshes выше — отдельные
     // источники света не нужны.
     resetMapTransientState();
   }
 
-  worldBounds = {
-    minX: result.x0,
-    maxX: result.x0 + plan.W,
-    minZ: result.z0,
-    maxZ: result.z0 + plan.L,
-  };
   respawnPoint = spawn;
   player.x = respawnPoint.x;
   player.y = respawnPoint.y;
   player.z = respawnPoint.z;
   player.vy = 0;
   player.grounded = false;
-  breaking = null;
-  return { ...result, spawn, routes };
+  return { ...result, spawn };
 }
 
 function importSchematicBytes(bytes, fileName) {
   if (!mapReady) {
-    showMsg("Дождитесь загрузки карты по умолчанию");
+    showMsg("Дождитесь готовности мира");
     return;
   }
   try {
@@ -245,8 +210,6 @@ function importSchematicBytes(bytes, fileName) {
       return;
     }
     const res = placeSchematic(plan, Math.round(player.x), Math.round(player.z), 1, true);
-    // Guards are already staged inside placeSchematic against the new world;
-    // do not recreate them here to avoid a second failure window after swap.
     showMsg(`Схема «${fileName}» (${plan.format}) · поставлено ${res.placed} блоков · ${plan.W}×${plan.H}×${plan.L}`);
   } catch (err) {
     console.error("Не удалось загрузить схему", err);
@@ -281,26 +244,14 @@ window.addEventListener("drop", (e) => {
   readSchematicFile(f);
 });
 
-// ---------- guards (Фаза 3: патруль / шум / погоня) ----------
-let noiseEvents = [];
-let noiseTime = 0;
+// ---------- NPC скрыты ----------
+// Охранники, шум, маршруты и патруль отключены целиком (тюремного геймплея
+// больше нет), но src/npcs.js оставлен как есть — пригодится позже.
+// Здесь остаётся только поиск опорной поверхности для спавна и сам спавн.
 function resetMapTransientState() {
-  noiseEvents = [];
-  noiseTime = 0;
-  noiseLevel = 0;
   lastHit = null;
   mouseDown = { 0: false, 2: false };
-  breaking = null;
 }
-function emitNoise(x, y, z, value) {
-  noiseEvents.push({ x, y, z, value, time: noiseTime, acquired: false });
-}
-const FALLBACK_GUARD_ROUTES = [
-  [{ x: -24, z: -4 }, { x: 24, z: -4 }, { x: 24, z: -26 }, { x: -24, z: -26 }],
-  [{ x: -16, z: 2 }, { x: 16, z: 2 }, { x: 16, z: -18 }, { x: -16, z: -18 }],
-  [{ x: -29, z: -2 }, { x: -29, z: 16 }, { x: -29, z: -8 }],
-];
-let guards = [];
 
 function guardSurfaceY(x, z, targetWorld = world) {
   if (!Number.isFinite(x) || !Number.isFinite(z)) return null;
@@ -316,245 +267,6 @@ function guardSurfaceY(x, z, targetWorld = world) {
   return null;
 }
 
-function guardBodyClear(x, y, z, targetWorld = world) {
-  if (![x, y, z].every(Number.isFinite)) return false;
-  const h1 = Math.floor(y + 0.05);
-  const h2 = Math.floor(y + 1.7 - 1e-6);
-  const xs = [x - 0.35, x + 0.35];
-  const zs = [z - 0.35, z + 0.35];
-  for (let yy = h1; yy <= h2; yy++) {
-    for (const xx of xs) {
-      for (const zz of zs) {
-        if (targetWorld.isSolid(xx, yy, zz)) return false;
-      }
-    }
-  }
-  return true;
-}
-
-function guardNodeAt(x, z, targetWorld = world) {
-  const y = guardSurfaceY(x, z, targetWorld);
-  if (y == null || !guardBodyClear(x, y, z, targetWorld)) return null;
-  return { x, z, y };
-}
-
-function guardNodeKey(x, z) {
-  return `${x},${z}`;
-}
-
-function buildGuardNodes(result, plan, targetWorld = world) {
-  const nodes = new Map();
-  for (let z = result.z0; z < result.z0 + plan.L; z++) {
-    for (let x = result.x0; x < result.x0 + plan.W; x++) {
-      const node = guardNodeAt(x, z, targetWorld);
-      if (node) nodes.set(guardNodeKey(x, z), node);
-    }
-  }
-  return nodes;
-}
-
-function nearestGuardNode(nodes, x, z) {
-  if (!Number.isFinite(x) || !Number.isFinite(z)) return null;
-  const px = Math.round(x);
-  const pz = Math.round(z);
-  if (!Number.isSafeInteger(px) || !Number.isSafeInteger(pz)) return null;
-  const direct = nodes.get(guardNodeKey(px, pz));
-  if (direct) return direct;
-
-  let best = null;
-  let bestDistance = Infinity;
-  for (const node of nodes.values()) {
-    const distance = (node.x - px) ** 2 + (node.z - pz) ** 2;
-    if (distance < bestDistance) {
-      best = node;
-      bestDistance = distance;
-    }
-  }
-  return best;
-}
-
-function guardEdgeClear(a, b, targetWorld = world) {
-  // Проверяем не только концы отрезка, но и промежуточную позицию: так
-  // маршрут не пытается протащить Guard через блок на повороте.
-  const steps = Math.max(4, Math.min(64, Math.ceil(Math.hypot(b.x - a.x, b.z - a.z) * 4)));
-  for (let i = 0; i <= steps; i++) {
-    const t = i / steps;
-    const x = a.x + (b.x - a.x) * t;
-    const z = a.z + (b.z - a.z) * t;
-    const y = a.y + (b.y - a.y) * t;
-    if (!guardBodyClear(x, y, z, targetWorld)) return false;
-  }
-  return true;
-}
-
-function findGuardPath(nodes, start, goal, targetWorld = world) {
-  if (!start || !goal) return null;
-  const startKey = guardNodeKey(start.x, start.z);
-  const goalKey = guardNodeKey(goal.x, goal.z);
-  if (!nodes.has(startKey) || !nodes.has(goalKey)) return null;
-  if (startKey === goalKey) return [start];
-
-  const queue = [startKey];
-  const distance = new Map([[startKey, 0]]);
-  const previous = new Map();
-  const directions = [[1, 0], [-1, 0], [0, 1], [0, -1]];
-  let head = 0;
-
-  while (head < queue.length) {
-    const currentKey = queue[head++];
-    if (currentKey === goalKey) break;
-    const current = nodes.get(currentKey);
-    for (const [dx, dz] of directions) {
-      const next = nodes.get(guardNodeKey(current.x + dx, current.z + dz));
-      if (!next) continue;
-      const nextKey = guardNodeKey(next.x, next.z);
-      if (distance.has(nextKey)) continue;
-      if (!guardEdgeClear(current, next, targetWorld)) continue;
-      distance.set(nextKey, distance.get(currentKey) + 1);
-      previous.set(nextKey, currentKey);
-      queue.push(nextKey);
-    }
-  }
-
-  if (!previous.has(goalKey)) return null;
-  const path = [];
-  for (let key = goalKey; key != null; key = previous.get(key)) {
-    path.push(nodes.get(key));
-  }
-  path.reverse();
-  return path;
-}
-
-function compressGuardPath(path) {
-  if (path.length < 3) return path;
-  const result = [path[0]];
-  for (let i = 1; i < path.length; i++) {
-    const point = path[i];
-    const last = result[result.length - 1];
-    const before = result[result.length - 2];
-    if (before) {
-      const straightX = (last.x - before.x) * (point.z - last.z);
-      const straightZ = (last.z - before.z) * (point.x - last.x);
-      if (straightX === straightZ) {
-        result[result.length - 1] = point;
-        continue;
-      }
-    }
-    result.push(point);
-  }
-  return result;
-}
-
-function routeThrough(nodes, anchors, targetWorld = world) {
-  if (!Array.isArray(anchors) || anchors.length === 0) return [];
-  const points = anchors.map((point) => nearestGuardNode(nodes, point.x, point.z));
-  if (points.some((point) => !point)) return [];
-
-  const route = [points[0]];
-  for (let i = 1; i < points.length; i++) {
-    const leg = findGuardPath(nodes, points[i - 1], points[i], targetWorld);
-    if (!leg) return [];
-    route.push(...leg.slice(1));
-  }
-  return compressGuardPath(route);
-}
-
-function snapGuardWaypoint(x, z, nodes = null, targetWorld = world) {
-  if (nodes) return nearestGuardNode(nodes, x, z);
-  const px = Math.round(x);
-  const pz = Math.round(z);
-  return guardNodeAt(px, pz, targetWorld);
-}
-
-function routesForSchematic(result, plan, targetWorld = world) {
-  // В high-security-jail открытый двор образует внешнее кольцо вокруг
-  // центральных корпусов. Путь между опорными точками строится по реальной
-  // сетке после вставки схемы, поэтому Guard огибает стены и проломы.
-  const leftX = result.x0 + 20;
-  const rightX = result.x0 + plan.W - 33;
-  const innerLeftX = result.x0 + 27;
-  const plazaX = result.x0 + 90;
-  const topZ = result.z0 + 15;
-  const bottomZ = result.z0 + plan.L - 14;
-  const middleZ = result.z0 + Math.floor((plan.L + 1) / 2);
-
-  const requestedRoutes = [
-    [
-      { x: leftX, z: topZ },
-      { x: rightX, z: topZ },
-      { x: rightX, z: bottomZ },
-      { x: leftX, z: bottomZ },
-    ],
-    [
-      { x: leftX, z: topZ },
-      { x: leftX, z: middleZ },
-      { x: leftX, z: bottomZ },
-      { x: innerLeftX, z: bottomZ },
-      { x: innerLeftX, z: topZ },
-    ],
-    [
-      { x: rightX, z: topZ },
-      { x: plazaX, z: middleZ },
-      { x: rightX, z: bottomZ },
-    ],
-  ];
-
-  const nodes = buildGuardNodes(result, plan, targetWorld);
-  const routed = requestedRoutes
-    .map((anchors) => routeThrough(nodes, anchors, targetWorld))
-    .filter((route) => route.length > 0);
-  if (routed.length > 0) return routed;
-
-  // Импортированная маленькая схема может не иметь полноценной сетки
-  // маршрута.  Сначала пытаемся собрать маршруты только из реальных узлов;
-  // неvalidated точки никогда не попадают в Guard.
-  const fallback = [];
-  for (const anchors of requestedRoutes) {
-    const route = [];
-    for (const anchor of anchors) {
-      const point = nearestGuardNode(nodes, anchor.x, anchor.z);
-      if (!point) continue;
-      const previous = route[route.length - 1];
-      if (previous && previous.x === point.x && previous.z === point.z) continue;
-      const leg = previous ? findGuardPath(nodes, previous, point, targetWorld) : [point];
-      if (!leg) continue;
-      route.push(...(previous ? leg.slice(1) : leg));
-    }
-    if (route.length > 0) fallback.push(compressGuardPath(route));
-  }
-  if (fallback.length > 0) return fallback;
-
-  // A one-node patrol is still preferable to spawning a Guard inside a wall;
-  // if even that is impossible there are simply no guards for this tiny map.
-  const allNodes = [...nodes.values()];
-  if (allNodes.length === 0) return [];
-  const centerX = result.x0 + plan.W / 2;
-  const centerZ = result.z0 + plan.L / 2;
-  const first = nearestGuardNode(nodes, centerX, centerZ) || allNodes[0];
-  return [[first]];
-}
-
-function createGuards(routes, worldRef = world) {
-  if (!Array.isArray(routes)) routes = [];
-  const staged = [];
-  try {
-    for (const route of routes) {
-      if (!Array.isArray(route) || route.length === 0) continue;
-      const first = route[0];
-      if (!first || !Number.isFinite(first.x) || !Number.isFinite(first.z)) continue;
-      const startY = Number.isFinite(first.y) ? first.y : 1;
-      staged.push(new Guard(scene, worldRef, route, () => playerCaught(), startY));
-    }
-  } catch (error) {
-    for (const guard of staged) {
-      try { guard.dispose(); } catch { /* ignore cleanup errors */ }
-    }
-    throw error;
-  }
-  for (const guard of guards) guard.dispose();
-  guards = staged;
-}
-
 function respawnPlayer() {
   player.x = respawnPoint.x;
   player.y = respawnPoint.y;
@@ -562,11 +274,6 @@ function respawnPlayer() {
   player.vy = 0;
   player.grounded = false;
   clampPlayerToWorld(player, WORLD_H);
-  breaking = null;
-}
-function playerCaught() {
-  respawnPlayer();
-  showMsg("Охранник вернул вас в камеру!");
 }
 
 // ---------- camera ----------
@@ -670,17 +377,9 @@ window.addEventListener("keyup", (e) => {
   }
 });
 
-// ---------- inventory / tools ----------
+// ---------- inventory ----------
 const inventory = new Map(); // blockId -> { id, count } (order = добыча)
-const BREAK_BASE = 0.9;
-const HAND_DRAIN = 16;   // % рук в секунду при ломании голыми руками
-const HAND_REGEN = 7;    // % рук в секунду восстановления
-const NOISE_DECAY = 0.05;
-const MAX_HANDS = 100;
-let activeToolId = null; // выбранный предмет (id блока) -> инструмент; null = руки
-let handHP = MAX_HANDS;
-let noiseLevel = 0;
-let breaking = null;     // { key, x, y, z, dur, progress }
+let activeToolId = null; // выбранный для установки блок; null = ставить нечего
 let mouseDown = { 0: false, 2: false };
 
 // Состояние креатива объявлено здесь (а не в секции ниже), т.к. updateHotbar()
@@ -699,21 +398,9 @@ function activeEntry() {
   if (!e || e.count <= 0) return null;
   return e;
 }
-function breakTime(targetId, toolId) {
-  const target = BLOCKS[targetId];
-  const tool = toolId != null ? BLOCKS[toolId] : null;
-  const power = tool ? tool.toolPower : 1;
-  return Math.max(0.4, (target.hardness / power) * BREAK_BASE + 0.35);
-}
-
 const hudEl = document.getElementById("hud");
 const defaultHud = hudEl.innerHTML;
 const hotbarEl = document.getElementById("hotbar");
-const handsFillEl = document.getElementById("handsFill");
-const noiseFillEl = document.getElementById("noiseFill");
-const handsWarnEl = document.getElementById("handsWarn");
-const breakWrapEl = document.getElementById("breakWrap");
-const breakBarEl = document.getElementById("breakBar");
 const selBlockEl = document.getElementById("selBlock");
 
 function updateHotbar() {
@@ -758,25 +445,6 @@ function updateHotbar() {
   hotbarEl.innerHTML = marks.join("");
   const name = activeToolId != null && selId != null ? BLOCKS[activeToolId].name : "руки";
   if (selBlockEl.textContent !== name) selBlockEl.textContent = name;
-}
-
-function updateBars() {
-  const hp = Math.max(0, handHP) / MAX_HANDS;
-  handsFillEl.style.width = `${Math.round(hp * 100)}%`;
-  handsFillEl.style.background = `hsl(${Math.round(120 * hp)}, 75%, 45%)`;
-  const no = Math.min(1, Math.max(0, noiseLevel));
-  noiseFillEl.style.width = `${Math.round(no * 100)}%`;
-  noiseFillEl.style.background = `hsl(${Math.round(120 * (1 - no))}, 80%, 45%)`;
-  handsWarnEl.textContent = handHP <= 0 ? " руки устали" : "";
-}
-
-function updateBreakBar() {
-  if (breaking) {
-    breakWrapEl.style.visibility = "visible";
-    breakBarEl.style.width = `${Math.round(breaking.progress * 100)}%`;
-  } else {
-    breakWrapEl.style.visibility = "hidden";
-  }
 }
 
 window.addEventListener("keydown", (e) => {
@@ -1146,11 +814,9 @@ canvas.addEventListener("pointerdown", (e) => {
 });
 window.addEventListener("pointerup", (e) => {
   mouseDown[e.button] = false;
-  breaking = null;
 });
 document.addEventListener("pointerlockchange", () => {
   mouseDown = { 0: false, 2: false };
-  breaking = null;
 });
 document.addEventListener("contextmenu", (e) => e.preventDefault());
 document.addEventListener("mousemove", (e) => {
@@ -1244,11 +910,7 @@ function handlePlace() {
       world.getState(hit.x, hit.y, hit.z) === SLAB_BOTTOM) {
     if (!world.setState(hit.x, hit.y, hit.z, SLAB_DOUBLE)) return;
     world.flushMeshes(scene, blockMat, cutoutMat, alphaMat, torchMat);
-    if (!creative) {
-      entry.count--;
-      emitNoise(hit.x, hit.y, hit.z, 20);
-      noiseLevel = Math.min(1, noiseLevel + 0.22);
-    }
+    if (!creative) entry.count--;
     updateHotbar();
     return;
   }
@@ -1273,11 +935,7 @@ function handlePlace() {
       return;
     }
     world.flushMeshes(scene, blockMat, cutoutMat, alphaMat, torchMat);
-    if (!creative) {
-      entry.count--;
-      emitNoise(px, py, pz, 20);
-      noiseLevel = Math.min(1, noiseLevel + 0.22);
-    }
+    if (!creative) entry.count--;
     updateHotbar();
     return;
   }
@@ -1285,15 +943,11 @@ function handlePlace() {
   // Поставленный факел засветится сам: setBlock пометил чанк грязным,
   // flushMeshes ниже перестроит меш уже с запечённым светом.
   world.flushMeshes(scene, blockMat, cutoutMat, alphaMat, torchMat);
-  if (!creative) {
-    entry.count--;
-    emitNoise(px, py, pz, 20);
-    noiseLevel = Math.min(1, noiseLevel + 0.22);
-  }
+  if (!creative) entry.count--;
   updateHotbar();
 }
 
-function doBreak(x, y, z, toolId) {
+function doBreak(x, y, z) {
   if (!isInsideWorldBounds(x, y, z)) return;
   const id = world.getBlock(x, y, z);
   if (id === AIR) return;
@@ -1305,9 +959,6 @@ function doBreak(x, y, z, toolId) {
     inventory.set(id, entry);
   }
   entry.count++;
-  const evValue = toolId == null ? 10 + BLOCKS[id].hardness * 8 : 25 + BLOCKS[id].hardness * 12;
-  emitNoise(x, y, z, evValue);
-  noiseLevel = Math.min(1, noiseLevel + 0.1 + BLOCKS[id].hardness * 0.035);
   updateHotbar();
 }
 
@@ -1362,8 +1013,7 @@ const rayDir = new BABYLON.Vector3();
 let genTimer = 0;
 
 scene.registerBeforeRender(() => {
-  // During the initial fetch the canvas can already render, but physics and
-  // NPC updates wait until either the imported map or fallback is committed.
+  // Physics waits until the starting world is committed.
   if (!mapReady) return;
   const dt = Math.min(engine.getDeltaTime() / 1000, 0.05);
   const speed = creative && flying ? FLY_SPEED : keys.shift ? SPRINT_SPEED : WALK_SPEED;
@@ -1430,11 +1080,6 @@ scene.registerBeforeRender(() => {
 
   camera.position.set(player.x, player.y + EYE, player.z);
 
-  // ---- guards ----
-  noiseTime += dt;
-  while (noiseEvents.length > 0 && noiseTime - noiseEvents[0].time > 5) noiseEvents.shift();
-  for (const g of guards) g.update(dt, player, noiseEvents, noiseTime);
-
   // ---- targeting ----
   camera.getDirectionToRef(new BABYLON.Vector3(0, 0, 1), rayDir);
   const locked = document.pointerLockElement === canvas;
@@ -1465,145 +1110,40 @@ scene.registerBeforeRender(() => {
     }
   }
 
-  // ---- breaking (hold LMB) ----
-  const toolId = activeEntry()?.id ?? null;
-  if (creative && !previewPlan) {
-    // Креатив: ломается мгновенно и тихо (без рук, шума и добычи).
-    breaking = null;
-    if (locked && lastHit && mouseDown[0]) {
+  // ---- breaking (hold LMB): мгновенно ----
+  // В креативе без добычи, в обычном режиме блок падает в инвентарь.
+  // При активном предпросмотре схемы ЛКМ ставит её, а не ломает.
+  if (locked && lastHit && mouseDown[0] && !previewPlan) {
+    if (creative) {
       if (world.getBlock(lastHit.x, lastHit.y, lastHit.z) !== AIR) {
         world.setBlock(lastHit.x, lastHit.y, lastHit.z, AIR);
         world.flushMeshes(scene, blockMat, cutoutMat, alphaMat, torchMat);
       }
+    } else {
+      doBreak(lastHit.x, lastHit.y, lastHit.z);
     }
-  } else if (creative && previewPlan) {
-    breaking = null;
-  } else {
-    const canBreak = lastHit && mouseDown[0] && (toolId != null || handHP > 0);
-    if (canBreak) {
-    let dur = breakTime(lastHit.id, toolId);
-    if (toolId == null) {
-      if (handHP < 40) dur *= 2.4;
-      else if (handHP < 70) dur *= 1.5;
-    }
-    const key = `${lastHit.x},${lastHit.y},${lastHit.z}`;
-    if (!breaking || breaking.key !== key) {
-      breaking = { key, x: lastHit.x, y: lastHit.y, z: lastHit.z, dur, progress: 0 };
-    }
-    breaking.progress += dt / dur;
-    noiseLevel = Math.min(1, noiseLevel + dt * 0.06);
-    if (toolId == null) {
-      handHP = Math.max(0, handHP - dt * HAND_DRAIN);
-      if (handHP <= 0) {
-        handHP = 0;
-        breaking = null;
-      }
-    }
-    if (breaking && breaking.progress >= 1) {
-      doBreak(breaking.x, breaking.y, breaking.z, toolId);
-      breaking = null;
-    }
-  } else {
-    breaking = null;
   }
-  }
-
-  // ---- hands recovery / noise decay ----
-  const draining = toolId == null && mouseDown[0] && lastHit != null;
-  if (!draining) handHP = Math.min(MAX_HANDS, handHP + dt * HAND_REGEN);
-  noiseLevel = Math.max(0, noiseLevel - dt * NOISE_DECAY);
-
-  updateBars();
-  updateBreakBar();
 });
 
 // ---------- построение мира по умолчанию ----------
-function clearPointLights() {
-  for (const light of fallbackLights) light.dispose();
-  fallbackLights = [];
-}
-
-function addPointLights(lights, opts = {}) {
-  clearPointLights();
-  const { intensity = 2.4, range = 16, color = [1, 0.78, 0.55] } = opts;
-  for (const light of lights) {
-    const point = new BABYLON.PointLight(
-      `lamp_${light.pos.join("_")}`,
-      new BABYLON.Vector3(light.pos[0], light.pos[1], light.pos[2]),
-      scene
-    );
-    point.diffuse = new BABYLON.Color3(color[0], color[1], color[2]);
-    point.intensity = intensity;
-    point.range = range;
-    fallbackLights.push(point);
-  }
-}
-
-// Свет факелов запекается в vertex colors при построении мешей чанка
-// (см. collectTorchGlow/pushBakedColor в world.js): светят все факелы на
-// любом расстоянии без пула PointLight и щелчков при ходьбе.
-function buildFallbackWorld(error) {
-  console.error("Не удалось загрузить схему по умолчанию", error);
-  const fallbackWorld = new World();
-  const lights = buildPrison(fallbackWorld);
-  fallbackWorld.markAll();
-  fallbackWorld.flushMeshes(scene, blockMat, cutoutMat, alphaMat, torchMat);
-
-  const oldWorld = world;
-  world = fallbackWorld;
-  oldWorld.clear();
-  clearPointLights();
-  worldBounds = { minX: -56, maxX: 57, minZ: -56, maxZ: 57 };
-  addPointLights(lights);
-  respawnPoint = { ...SPAWN };
+// ---------- стартовый мир: пустая плоская местность ----------
+// Тюрьмы по умолчанию больше нет: вокруг спавна догенерируется трава,
+// игрок начинает на ней и строит сам (постройки — через кнопку или T в креативе).
+function initFlatWorld() {
+  world.ensureFlatAround(0, 0);
+  world.flushMeshes(scene, blockMat, cutoutMat, alphaMat, torchMat);
+  respawnPoint = { x: 0.5, y: 2, z: 0.5 };
   player.x = respawnPoint.x;
   player.y = respawnPoint.y;
   player.z = respawnPoint.z;
   player.vy = 0;
   player.grounded = false;
-  clampPlayerToWorld(player, WORLD_H);
   resetMapTransientState();
-  createGuards(FALLBACK_GUARD_ROUTES);
-  showMsg("Схема по умолчанию недоступна — загружена резервная тюрьма");
-}
-
-async function loadDefaultWorld() {
-  loadBtnEl.disabled = true;
-  const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 15000);
-  try {
-    const response = await fetch(defaultSchematicUrl, { signal: controller.signal });
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    const bytes = new Uint8Array(await response.arrayBuffer());
-    const plan = parseSchematicFile(bytes);
-    if (!plan || plan.blocks.length === 0) throw new Error("в схеме нет распознанных блоков");
-
-    const result = placeSchematic(
-      plan,
-      DEFAULT_BUILD_CENTER.x,
-      DEFAULT_BUILD_CENTER.z,
-      DEFAULT_BUILD_CENTER.floorY,
-      true
-    );
-    // placeSchematic already staged guards; see importSchematicBytes.
-    showMsg(`Тюрьма «${DEFAULT_SCHEMATIC_NAME}» загружена · ${result.placed} блоков · ${plan.W}×${plan.H}×${plan.L}`);
-  } catch (error) {
-    buildFallbackWorld(error);
-  } finally {
-    clearTimeout(timeoutId);
-    mapReady = true;
-    loadBtnEl.disabled = false;
-    camera.position.set(player.x, player.y + EYE, player.z);
-  }
-}
-
-// Рендер стартует сразу, поэтому медленная/зависшая загрузка не оставляет
-// страницу с пустым canvas. Физика всё ещё ждёт mapReady.
-engine.runRenderLoop(() => scene.render());
-void loadDefaultWorld().catch((error) => {
-  // На случай ошибки самого fallback-пути: не оставляем кнопку заблокированной.
-  console.error("Критическая ошибка загрузки мира", error);
   mapReady = true;
-  loadBtnEl.disabled = false;
-});
+  camera.position.set(player.x, player.y + EYE, player.z);
+  showMsg("Пустой мир: стройте что угодно (креатив — Tab)");
+}
+
+engine.runRenderLoop(() => scene.render());
+initFlatWorld();
 window.addEventListener("resize", () => engine.resize());

@@ -26,41 +26,6 @@
       text-align: center;
     }
     #hud .block { color: #aaffaa; }
-    #statbar {
-      position: fixed;
-      top: 12px;
-      left: 12px;
-      width: 230px;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      font: 12px 'Segoe UI', Arial, sans-serif;
-      color: #fff;
-      pointer-events: none;
-      user-select: none;
-      z-index: 12;
-      text-shadow: 0 1px 2px #000;
-    }
-    .stat { display: flex; align-items: center; gap: 8px; }
-    .stat .lbl { width: 42px; opacity: 0.95; }
-    .track { flex: 1; height: 12px; background: rgba(0, 0, 0, 0.55); border: 1px solid rgba(255, 255, 255, 0.25); border-radius: 6px; overflow: hidden; }
-    .fill { height: 100%; width: 100%; border-radius: 6px; transition: width 80ms linear; }
-    #handsWarn { color: #ff6b6b; font-weight: 700; }
-    #breakWrap {
-      position: fixed;
-      bottom: 86px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 190px;
-      height: 8px;
-      background: rgba(0, 0, 0, 0.6);
-      border: 1px solid rgba(255, 255, 255, 0.35);
-      border-radius: 4px;
-      visibility: hidden;
-      pointer-events: none;
-      z-index: 12;
-    }
-    #breakBar { height: 100%; width: 0%; background: #ffd54a; border-radius: 3px; }
     #msg {
       position: fixed;
       bottom: 130px;
@@ -288,14 +253,9 @@
 </head>
 <body>
   <div id="hud">
-    ЛКМ (держать) - ломать &middot; ПКМ - поставить &middot; 1-9 - предмет: <span class="block" id="selBlock">руки</span><br />
+    ЛКМ - ломать &middot; ПКМ - поставить &middot; 1-9 - предмет: <span class="block" id="selBlock">руки</span><br />
     WASD - движение &middot; Мышь - камера &middot; Space - прыжок &middot; Shift - бег &middot; Клик - захват мыши
   </div>
-  <div id="statbar">
-    <div class="stat"><span class="lbl">Руки</span><div class="track"><div class="fill" id="handsFill"></div></div></div>
-    <div class="stat"><span class="lbl">Шум</span><div class="track"><div class="fill" id="noiseFill"></div></div><span id="handsWarn"></span></div>
-  </div>
-  <div id="breakWrap"><div id="breakBar"></div></div>
   <div id="hotbar"></div>
   <div id="crosshair"></div>
   <div id="msg"></div>

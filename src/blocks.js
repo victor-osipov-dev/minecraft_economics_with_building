@@ -186,7 +186,7 @@ export const BLOCKS = [
   block("Травяной блок", { tiles: T.grass, hardness: 0.8, color: "#668744" }),
   block("Воронка", { tiles: T.hopper, hardness: 4, toolPower: 1.8, color: "#3b4048" }),
   block("Стекло", { transparent: true, tiles: T.glass, hardness: 0.5, color: "#b9e7ef" }),
-  block("Стеклянная панель", { bars: true, transparent: true, tiles: T.glassPane, hardness: 0.5, color: "#b9e7ef" }),
+  block("Стеклянная панель", { bars: true, transparent: true, blend: true, tiles: T.glassPane, hardness: 0.5, color: "#b9e7ef" }),
   block("Железный блок", { tiles: T.ironBlock, hardness: 7, toolPower: 2.3, color: "#d5d8da" }),
   block("Железная дверь", { tiles: T.ironDoor, hardness: 7, toolPower: 2.1, color: "#aeb5ba" }),
   block("Кирпичный забор", { bars: true, transparent: true, tiles: T.netherFence, hardness: 4, toolPower: 1.5, color: "#382027" }),
@@ -209,7 +209,7 @@ export const BLOCKS = [
   block("Факел", { solid: false, transparent: true, shape: "torch", tiles: T.torch, hardness: 0.1, color: "#f5c65a", light: 8 }),
   block("Красный камень", { solid: false, transparent: true, shape: "torch", tiles: T.redstoneTorch, hardness: 0.1, color: "#d43c35", light: 5 }),
   block("Крюк натянутой проволоки", { solid: false, transparent: true, shape: "hook", tiles: T.wood, hardness: 0.4, color: "#7a5833" }),
-  block("Вода", { solid: false, transparent: true, tiles: T.water, hardness: 0, color: "#3f83c5" }),
+  block("Вода", { solid: false, transparent: true, blend: true, tiles: T.water, hardness: 0, color: "#3f83c5" }),
 ];
 
 const TILE = 64;
