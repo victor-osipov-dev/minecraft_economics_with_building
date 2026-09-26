@@ -363,14 +363,17 @@ export class World {
     }
   }
 
-  flushMeshes(scene, opaqueMaterial, cutoutMaterial = opaqueMaterial, alphaMaterial = cutoutMaterial, torchMaterial = cutoutMaterial) {
+  flushMeshes(scene, opaqueMaterial, cutoutMaterial = opaqueMaterial, alphaMaterial = cutoutMaterial, torchMaterial = cutoutMaterial, limit = Infinity) {
     const materials = [
       ["opaque", opaqueMaterial],
       ["cutout", cutoutMaterial],
       ["alpha", alphaMaterial],
       ["torch", torchMaterial],
     ];
+    let done = 0;
     for (const key of this.dirty) {
+      if (done >= limit) break;
+      done++;
       const [cx, cy, cz] = key.split(",").map(Number);
       const layers = buildChunkGeometry(this, cx, cy, cz);
       for (const [layer, material] of materials) {
@@ -390,8 +393,8 @@ export class World {
           this.meshes.delete(meshKey);
         }
       }
+      this.dirty.delete(key);
     }
-    this.dirty.clear();
   }
 }
 

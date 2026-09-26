@@ -35,7 +35,7 @@ import {
   TRAP_TOP,
 } from "./blocks.js";
 import { World, WORLD_H } from "./world.js";
-import { HALF, HEIGHT, moveAxis, updateGrounded } from "./physics.js";
+import { HALF, HEIGHT, moveAxis, updateGrounded, clampPlayerToWorld } from "./physics.js";
 import { buildPrison, SPAWN } from "./prison.js";
 import { Guard } from "./npcs.js";
 import { parseSchematicFile, pasteSchematic, rotatePlan } from "./schematic.js";
@@ -561,7 +561,7 @@ function respawnPlayer() {
   player.z = respawnPoint.z;
   player.vy = 0;
   player.grounded = false;
-  clampPlayerToWorld();
+  clampPlayerToWorld(player, WORLD_H);
   breaking = null;
 }
 function playerCaught() {
@@ -585,56 +585,13 @@ const SPRINT_SPEED = 10.5;
 const EYE = 1.7;
 const REACH = 6;
 
-// В креативе можно летать за границы постройки: запас 128 блоков
-// (там уже ждёт бесконечный плоский пол). Вертикаль ограничена всегда.
-const CREATIVE_MARGIN = 128;
-function activeBounds() {
-  if (!creative) return worldBounds;
-  return {
-    minX: worldBounds.minX - CREATIVE_MARGIN,
-    maxX: worldBounds.maxX + CREATIVE_MARGIN,
-    minZ: worldBounds.minZ - CREATIVE_MARGIN,
-    maxZ: worldBounds.maxZ + CREATIVE_MARGIN,
-  };
-}
-
-function playerHorizontalBounds() {
-  const wb = activeBounds();
-  let minX = wb.minX + HALF + 1e-3;
-  let maxX = wb.maxX - HALF - 1e-3;
-  let minZ = wb.minZ + HALF + 1e-3;
-  let maxZ = wb.maxZ - HALF - 1e-3;
-  if (minX > maxX) {
-    const center = (wb.minX + wb.maxX) / 2;
-    minX = maxX = center;
-  }
-  if (minZ > maxZ) {
-    const center = (wb.minZ + wb.maxZ) / 2;
-    minZ = maxZ = center;
-  }
-  return { minX, maxX, minZ, maxZ };
-}
-
+// Горизонтальных границ нет вообще: мир бесконечный (пол догенерируется,
+// чанки создаются по требованию). Вертикаль ограничена высотой мира.
+// worldBounds остался только как зона спавна/патрулей, но не клетка.
 function isInsideWorldBounds(x, y, z) {
-  const wb = activeBounds();
   return Number.isFinite(x) && Number.isFinite(y) && Number.isFinite(z) &&
-    x >= wb.minX && x < wb.maxX &&
-    z >= wb.minZ && z < wb.maxZ &&
+    Number.isSafeInteger(Math.floor(x)) && Number.isSafeInteger(Math.floor(z)) &&
     y >= 0 && y < WORLD_H;
-}
-
-function clampPlayerToWorld() {
-  const bounds = playerHorizontalBounds();
-  player.x = Math.max(bounds.minX, Math.min(bounds.maxX, player.x));
-  player.z = Math.max(bounds.minZ, Math.min(bounds.maxZ, player.z));
-  const maxY = Math.max(0, WORLD_H - HEIGHT);
-  if (player.y < 0) {
-    player.y = 0;
-    if (player.vy < 0) player.vy = 0;
-  } else if (player.y > maxY) {
-    player.y = maxY;
-    if (player.vy > 0) player.vy = 0;
-  }
 }
 
 function playerSpawnClear(x, y, z, targetWorld = world) {
@@ -1417,6 +1374,9 @@ scene.registerBeforeRender(() => {
     genTimer = 0;
     world.ensureFlatAround(player.x, player.z);
   }
+  // Свежие чанки (пол, правки) превращаем в меши по несколько за кадр,
+  // иначе сгенерированный пол виден только после ломания блока.
+  world.flushMeshes(scene, blockMat, cutoutMat, alphaMat, torchMat, 3);
 
   camera.rotation.set(camPitch, camYaw, 0);
 
@@ -1464,10 +1424,9 @@ scene.registerBeforeRender(() => {
     if (player.grounded && player.vy <= 0) player.vy = 0;
   }
 
-  // Ограничиваем игрока фактическими границами текущей схемы, а не
-  // предположением, что любая карта центрирована в начале координат.
+  // Ниже мира — респаун; вертикаль жёстко ограничена высотой мира.
   if (player.y < -20) respawnPlayer();
-  clampPlayerToWorld();
+  clampPlayerToWorld(player, WORLD_H);
 
   camera.position.set(player.x, player.y + EYE, player.z);
 
@@ -1602,7 +1561,7 @@ function buildFallbackWorld(error) {
   player.z = respawnPoint.z;
   player.vy = 0;
   player.grounded = false;
-  clampPlayerToWorld();
+  clampPlayerToWorld(player, WORLD_H);
   resetMapTransientState();
   createGuards(FALLBACK_GUARD_ROUTES);
   showMsg("Схема по умолчанию недоступна — загружена резервная тюрьма");

@@ -112,6 +112,17 @@ export function isBoxFree(world, x0, x1, y0, y1, z0, z1) {
   return true;
 }
 
+export function clampPlayerToWorld(player, worldH) {
+  const maxY = Math.max(0, worldH - HEIGHT);
+  if (player.y < 0) {
+    player.y = 0;
+    if (player.vy < 0) player.vy = 0;
+  } else if (player.y > maxY) {
+    player.y = maxY;
+    if (player.vy > 0) player.vy = 0;
+  }
+}
+
 export function updateGrounded(player, world) {
   // Стоим, если ступни в пределах ступеньки над верхом опоры. Проверять
   // просто "клетка снизу твёрдая" нельзя: над нижней плитой grounded
