@@ -564,7 +564,10 @@ function clearBuildings() {
 }
 
 // Проекция инфо-меток над постройками (только в просмотре).
+// Project умножает на размеры переданного viewport, а camera.viewport
+// нормализован (0..1) — поэтому проецируем в пиксельный viewport.
 const projV = new BABYLON.Vector3();
+const pixelViewport = new BABYLON.Viewport(0, 0, 1, 1);
 function updateBuildingLabels() {
   if (!viewMode || !mapReady) {
     if (!viewMode) for (const b of buildings) b.label.style.display = "none";
@@ -572,9 +575,11 @@ function updateBuildingLabels() {
   }
   const w = engine.getRenderWidth();
   const h = engine.getRenderHeight();
+  pixelViewport.width = w;
+  pixelViewport.height = h;
   for (const b of buildings) {
     projV.set(b.x0 + b.W / 2, b.y0 + b.H + 0.8, b.z0 + b.L / 2);
-    const p = BABYLON.Vector3.Project(projV, BABYLON.Matrix.Identity(), scene.getTransformMatrix(), camera.viewport);
+    const p = BABYLON.Vector3.Project(projV, BABYLON.Matrix.Identity(), scene.getTransformMatrix(), pixelViewport);
     if (p.z > 1 || p.x < 0 || p.x > w || p.y < 0 || p.y > h) {
       b.label.style.display = "none";
       continue;

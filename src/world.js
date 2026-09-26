@@ -532,10 +532,10 @@ function emitStairs(gd, world, wx, wy, wz, def, COLS, ROWS, INSET, data) {
       0.5, 0.5, 0, 1, 1, 1, null);
   } else if (data === 3) {
     emitPartialBox(gd, world, wx, wy, wz, def, COLS, ROWS, INSET,
-      0, 0.5, 0.5, 1, 1, 1, null);
+      0, 0.5, 0, 1, 1, 0.5, null);
   } else if (data === 4) {
     emitPartialBox(gd, world, wx, wy, wz, def, COLS, ROWS, INSET,
-      0, 0.5, 0, 1, 1, 0.5, null);
+      0, 0.5, 0.5, 1, 1, 1, null);
   } else {
     // 1 (+X, спуск на восток) и неизвестные: верхняя западная половина.
     emitPartialBox(gd, world, wx, wy, wz, def, COLS, ROWS, INSET,
@@ -626,18 +626,29 @@ function emitPartialBox(gd, world, wx, wy, wz, def, COLS, ROWS, INSET,
     x0, y0, z0, x1, y1, z1, sideFrac, tileFn = null) {
   const boxMin = [wx + x0, wy + y0, wz + z0];
   const boxMax = [wx + x1, wy + y1, wz + z1];
+  const EPS = 1e-6;
   for (let f = 0; f < FACES.length; f++) {
     const face = FACES[f];
     const n = face.n;
-    const nx = wx + n[0];
-    const ny = wy + n[1];
-    const nz = wz + n[2];
-    const nbDef = BLOCKS[world.getBlock(nx, ny, nz)];
-    // Свой бокс меньше куба: неполного соседа не прячем целиком,
-    // иначе между разными половинами останутся щели без граней.
-    const partial = nbDef && (nbDef.shape === "slab" || nbDef.shape === "stairs");
-    const nbState = partial ? world.getState(nx, ny, nz) : 0;
-    if (faceHiddenByNeighbor(n[0], n[1], n[2], y0, y1, nbDef, nbState)) continue;
+    // Грань внутри клетки (ступенька-подступенок, верх нижней половины,
+    // бока кнопок): соседняя клетка начинается только за границей клетки,
+    // между ними всегда воздушный зазор — куллинг по соседу неприменим.
+    // Прячем по соседу только грани, лежащие ровно на границе клетки.
+    const onBoundary =
+      (n[0] === 1 && x1 >= 1 - EPS) || (n[0] === -1 && x0 <= EPS) ||
+      (n[1] === 1 && y1 >= 1 - EPS) || (n[1] === -1 && y0 <= EPS) ||
+      (n[2] === 1 && z1 >= 1 - EPS) || (n[2] === -1 && z0 <= EPS);
+    if (onBoundary) {
+      const nx = wx + n[0];
+      const ny = wy + n[1];
+      const nz = wz + n[2];
+      const nbDef = BLOCKS[world.getBlock(nx, ny, nz)];
+      // Свой бокс меньше куба: неполного соседа не прячем целиком,
+      // иначе между разными половинами останутся щели без граней.
+      const partial = nbDef && (nbDef.shape === "slab" || nbDef.shape === "stairs");
+      const nbState = partial ? world.getState(nx, ny, nz) : 0;
+      if (faceHiddenByNeighbor(n[0], n[1], n[2], y0, y1, nbDef, nbState)) continue;
+    }
     let fBot = 1;
     let fTop = 0;
     if (sideFrac && n[1] === 0) {

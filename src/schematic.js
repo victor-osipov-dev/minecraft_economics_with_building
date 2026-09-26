@@ -1445,15 +1445,16 @@ function legacyWallSignData(data) {
   return 4;
 }
 
-// Ступени в legacy Data: биты 0-1 — сторона ПОЛНОГО блока (0=East, 1=West,
-// 2=South, 3=North), т.е. facing (сторона спуска) наоборот. Бит 0x4
-// upside-down игнорируем: перевернутых ступеней у нас нет.
+// Ступени в legacy Data: биты 0-1 — facing (сторона спуска), как в modern
+// facing: 0=South, 1=West, 2=North, 3=East (та же шкала, что facingData:
+// south=3, west=2, north=4, east=1). Бит 0x4 upside-down игнорируем:
+// перевернутых ступеней у нас нет.
 function legacyStairData(data) {
   switch (data & 3) {
-    case 0: return 2; // full east -> спуск на запад
-    case 1: return 1; // full west -> спуск на восток
-    case 2: return 4; // full south -> спуск на север
-    default: return 3; // full north -> спуск на юг
+    case 0: return 3; // south -> спуск на юг
+    case 1: return 2; // west -> спуск на запад
+    case 2: return 4; // north -> спуск на север
+    default: return 1; // east -> спуск на восток
   }
 }
 
