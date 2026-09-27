@@ -42,6 +42,9 @@ import {
   newCityState, buildCostFor, addBuilding, charge,
   damageAt, repair, repairPrice, tick,
 } from "./city/city.js";
+import {
+  createResident, assignTarget, stepResidents, desiredAgents,
+} from "./city/residents.js";
 import schemesIndex from "../schemes/index.json";
 
 // ---------- engine / scene ----------
@@ -666,6 +669,7 @@ function renderCity() {
     ["Еда", `${city.food}`],
     ["Энергия", `${city.energy}`],
     ["Загрязнение", `${city.pollution}`],
+    ["Жители на карте", `${residents.length} <button data-residents="">${showResidents ? "скрыть" : "показать"}</button>`],
   ];
   cityStatsEl.innerHTML = rows.map(([k, v]) =>
     `<div class="crow"><span>${k}</span><b>${v}</b></div>`).join("");
@@ -690,7 +694,15 @@ function renderCity() {
   }
 }
 
-cityBuildingsEl.addEventListener("click", (e) => {
+cityPanelEl.addEventListener("click", (e) => {
+  const tog = e.target.closest("[data-residents]");
+  if (tog) {
+    showResidents = !showResidents;
+    syncResidents();
+    renderCity();
+    showMsg(showResidents ? "Жители: показаны" : "Жители: скрыты");
+    return;
+  }
   const btn = e.target.closest("[data-repair]");
   if (!btn || btn.disabled) return;
   const res = repair(city, btn.dataset.repair);
@@ -709,9 +721,77 @@ cityBtn.addEventListener("click", toggleCity);
 function tickCity() {
   tick(city);
   for (const rec of buildings) refreshRecordLabel(rec);
+  syncResidents();
   if (cityPanelEl.classList.contains("show")) renderCity();
 }
 setInterval(() => { if (mapReady) tickCity(); }, 5000);
+
+// ---------- визуальные жители: кружочки, не источник истины ----------
+let residents = [];
+let resInstances = [];
+let resBase = null;
+let showResidents = true;
+let residentPoolsCache = { home: [], work: [], shop: [], park: [] };
+
+function residentPools() {
+  const pools = { home: [], work: [], shop: [], park: [] };
+  for (const b of city.buildings) {
+    if (b.health <= 0) continue;
+    const p = { x: b.x0 + b.W / 2, y: b.y0 + 0.9, z: b.z0 + b.L / 2 };
+    if (b.stats.housing > 0) pools.home.push(p);
+    if (b.stats.jobs > 0) pools.work.push(p);
+    if (b.stats.foodProd > 0 || b.typeId === "shop") pools.shop.push(p);
+    if (b.typeId === "park" || b.typeId === "entertainment") pools.park.push(p);
+  }
+  return pools;
+}
+
+function ensureResidentMeshes(n) {
+  if (!resBase) {
+    resBase = BABYLON.MeshBuilder.CreateSphere("resident", { diameter: 0.45 }, scene);
+    const m = new BABYLON.StandardMaterial("residentMat", scene);
+    m.diffuseColor = new BABYLON.Color3(1, 0.85, 0.3);
+    m.emissiveColor = new BABYLON.Color3(0.9, 0.7, 0.2);
+    m.disableLighting = true;
+    resBase.material = m;
+    resBase.position.set(0, -100, 0);
+    resBase.freezeWorldMatrix();
+    resBase.isPickable = false;
+    resBase.alwaysSelectAsActiveMesh = true;
+  }
+  while (resInstances.length < n) {
+    const inst = resBase.createInstance("res" + resInstances.length);
+    inst.isPickable = false;
+    inst.alwaysSelectAsActiveMesh = true;
+    resInstances.push(inst);
+  }
+  for (let i = 0; i < resInstances.length; i++) {
+    resInstances[i].isVisible = showResidents && i < n;
+  }
+}
+
+function syncResidents() {
+  const want = showResidents ? desiredAgents(city.population) : 0;
+  residentPoolsCache = residentPools();
+  while (residents.length < want) {
+    const h = residentPoolsCache.home.length > 0
+      ? residentPoolsCache.home[residents.length % residentPoolsCache.home.length]
+      : { x: player.x, y: player.y + 1, z: player.z };
+    const a = createResident("r" + residents.length, h.x, h.y, h.z);
+    assignTarget(a, residentPoolsCache);
+    residents.push(a);
+  }
+  if (residents.length > want) residents.length = want;
+  ensureResidentMeshes(residents.length);
+}
+
+function stepResidentMeshes(dt) {
+  if (residents.length === 0) return;
+  stepResidents(residents, residentPoolsCache, dt);
+  for (let i = 0; i < residents.length; i++) {
+    resInstances[i].position.set(residents[i].x, residents[i].y, residents[i].z);
+  }
+}
 
 // Проекция инфо-меток над постройками (только в просмотре).
 // Project умножает на размеры переданного viewport, а camera.viewport
@@ -1441,6 +1521,9 @@ scene.registerBeforeRender(() => {
 
   // ---- метки построек в просмотре ----
   updateBuildingLabels();
+
+  // ---- визуальные жители ----
+  stepResidentMeshes(dt);
 });
 
 // ---------- стартовый мир: пустая плоская местность ----------

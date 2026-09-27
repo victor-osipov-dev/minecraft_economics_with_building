@@ -66,6 +66,7 @@ export const TYPES = {
     housing: 0, jobs: 0,
     foodProd: 0, energyProd: 0, energyCons: 0,
     income: 0, happiness: 4, entertainment: 2, safety: 0, pollution: 0,
+    radius: 30,
   },
   school: {
     name: "Школа", desc: "Счастье и рабочие места",
@@ -73,6 +74,7 @@ export const TYPES = {
     housing: 0, jobs: 8,
     foodProd: 0, energyProd: 0, energyCons: 3,
     income: 0, happiness: 3, entertainment: 1, safety: 0, pollution: 0,
+    radius: 20,
   },
   hospital: {
     name: "Больница", desc: "Здоровье и безопасность города",
@@ -80,6 +82,7 @@ export const TYPES = {
     housing: 0, jobs: 10,
     foodProd: 0, energyProd: 0, energyCons: 4,
     income: 0, happiness: 3, entertainment: 0, safety: 3, pollution: 0,
+    radius: 20,
   },
   service: {
     name: "Общественное здание", desc: "Культура и услуги",
@@ -87,6 +90,7 @@ export const TYPES = {
     housing: 0, jobs: 4,
     foodProd: 0, energyProd: 0, energyCons: 2,
     income: 5, happiness: 2, entertainment: 1, safety: 0, pollution: 0,
+    radius: 15,
   },
   entertainment: {
     name: "Развлечения", desc: "Стадион, бассейн — досуг горожан",
@@ -94,6 +98,7 @@ export const TYPES = {
     housing: 0, jobs: 6,
     foodProd: 0, energyProd: 0, energyCons: 3,
     income: 10, happiness: 2, entertainment: 4, safety: 0, pollution: 0,
+    radius: 25,
   },
   road: {
     name: "Инфраструктура", desc: "Дороги и транспорт: связывают город",

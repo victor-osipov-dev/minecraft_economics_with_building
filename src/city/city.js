@@ -39,6 +39,7 @@ export function addBuilding(state, { typeId, name, dims, pos, placedBlocks }) {
     W: dims.W, H: dims.H, L: dims.L,
     health: 100,
     workers: 0,
+    bonus: 0,
     stats,
     placedBlocks: Math.max(1, placedBlocks || 1),
   };
@@ -141,18 +142,45 @@ export function tick(state) {
   const foodScore = hunger ? 15 : state.food > pop * 2 ? 100 : 60;
   const employmentScore = jobsTotal === 0 ? (pop === 0 ? 100 : 25)
     : clamp(employmentRate * 110, 0, 100);
-  let entCap = 0, safeBonus = 0, happyBonus = 0;
+  let entCap = 0, safeBonus = 0, happyGlobal = 0;
+  const amenities = [];
   for (const b of state.buildings) {
     const e = effOf(b);
     entCap += b.stats.entertainment * e;
     safeBonus += b.stats.safety * e;
-    happyBonus += b.stats.happiness * e;
+    const t = TYPES[b.typeId];
+    // Удобства с радиусом влияют только на дома рядом, остальные — на всех.
+    if (t && t.radius > 0) {
+      if (e > 0) amenities.push(b);
+    } else {
+      happyGlobal += b.stats.happiness * e;
+    }
   }
+  // Локальные бонусы домов: проверять расстояние до каждого жителя не нужно,
+  // достаточно влияния удобств на дома (дёшево: дома × удобства раз в тик).
+  let bonusSum = 0, houseCount = 0;
+  for (const h of state.buildings) {
+    if (h.stats.housing <= 0) {
+      h.bonus = 0;
+      continue;
+    }
+    const hx = h.x0 + h.W / 2, hz = h.z0 + h.L / 2;
+    let bonus = 0;
+    for (const a of amenities) {
+      const t = TYPES[a.typeId];
+      const dx = a.x0 + a.W / 2 - hx, dz = a.z0 + a.L / 2 - hz;
+      if (dx * dx + dz * dz <= t.radius * t.radius) bonus += a.stats.happiness * effOf(a);
+    }
+    h.bonus = Math.round(Math.min(15, bonus) * 10) / 10;
+    bonusSum += h.bonus;
+    houseCount++;
+  }
+  const localAvg = houseCount > 0 ? bonusSum / houseCount : 0;
   const entertainmentScore = pop === 0 ? 100 : clamp((entCap * 15 / Math.max(1, pop)) * 100, 0, 100);
   const safetyScore = clamp(70 + safeBonus - state.pollution * 0.5, 0, 100);
   state.happiness = clamp(Math.round(
     (housingScore + foodScore + employmentScore + entertainmentScore + safetyScore) / 5 +
-    clamp(happyBonus * 0.5, -10, 10)
+    clamp(happyGlobal * 0.5, -10, 10) + clamp(localAvg, 0, 10)
   ), 0, 100);
 
   // 9-10. Миграция, рождения и смерти.
