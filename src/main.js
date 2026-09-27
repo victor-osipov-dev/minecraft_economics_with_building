@@ -1136,35 +1136,22 @@ const ECO_DEFS = [
 const ECO_OF_TYPE = {};
 for (const e of ECO_DEFS) for (const t of e.types) (ECO_OF_TYPE[t] = ECO_OF_TYPE[t] || []).push(e.id);
 
-// Группы построек по игровому назначению (а не по исходным MC-категориям):
-// так легче найти «дом под жителей» или «что-нибудь под еду».
-const SCHEME_GROUPS = [
-  { id: "live", name: "Жильё", types: ["house", "apartment"] },
-  { id: "work", name: "Работа", types: ["factory", "farm", "fishery", "shop", "office", "powerplant", "waterplant"] },
-  { id: "city", name: "Город", types: ["school", "hospital", "service", "entertainment", "park", "police", "fire", "landfill"] },
-  { id: "other", name: "Дороги и декор", types: ["road", "decor", "generic"] },
-];
-const GROUP_OF_TYPE = {};
-for (const g of SCHEME_GROUPS) for (const t of g.types) GROUP_OF_TYPE[t] = g.id;
 const indexFiles = new Set(schemesIndex.items.map((i) => i.file));
 const extraSchemeItems = Object.keys(schemeUrlByFile)
   .filter((f) => !indexFiles.has(f) && /\.(schem|schematic|nbt)$/i.test(f))
   .map((f) => ({ file: f, name: f, category: "new", w: "?", h: "?", l: "?", blocks: "?", tags: [] }));
 const allSchemeItems = [...schemesIndex.items, ...extraSchemeItems];
 for (const it of allSchemeItems) {
-  it._group = GROUP_OF_TYPE[resolveType(it)] || "other";
   it._eco = ECO_OF_TYPE[resolveType(it)] || [];
 }
-const schemeFilter = { q: "", cat: "all", eco: "all", tags: new Set() };
+const schemeFilter = { q: "", eco: "all", tags: new Set() };
 let selectedSchemeFile = null;
 const schemeSearchEl = document.getElementById("schemeSearch");
-const schemeCatsEl = document.getElementById("schemeCats");
 const schemeEcoEl = document.getElementById("schemeEco");
 const schemeTagsEl = document.getElementById("schemeTags");
 const schemeCountEl = document.getElementById("schemeCount");
 
 function schemeMatches(item) {
-  if (schemeFilter.cat !== "all" && item._group !== schemeFilter.cat) return false;
   if (schemeFilter.eco !== "all" && !(item._eco || []).includes(schemeFilter.eco)) return false;
   for (const t of schemeFilter.tags) {
     if (!item.tags.includes(t)) return false;
@@ -1175,23 +1162,6 @@ function schemeMatches(item) {
 }
 
 function buildSchemeChips() {
-  schemeCatsEl.innerHTML = "";
-  const present = new Set(allSchemeItems.map((i) => i._group));
-  const groups = [{ id: "all", name: "Все" },
-    ...SCHEME_GROUPS.filter((g) => present.has(g.id))];
-  for (const g of groups) {
-    const n = g.id === "all" ? allSchemeItems.length
-      : allSchemeItems.filter((i) => i._group === g.id).length;
-    const chip = document.createElement("span");
-    chip.className = "chip cat" + (schemeFilter.cat === g.id ? " active" : "");
-    chip.textContent = g.name + ` (${n})`;
-    chip.addEventListener("click", () => {
-      schemeFilter.cat = g.id;
-      buildSchemeChips();
-      renderSchemeTiles();
-    });
-    schemeCatsEl.appendChild(chip);
-  }
   schemeEcoEl.innerHTML = "";
   const presentEco = new Set();
   for (const i of allSchemeItems) for (const e of i._eco || []) presentEco.add(e);
