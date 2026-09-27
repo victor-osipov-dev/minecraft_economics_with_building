@@ -61,3 +61,12 @@
 - Trailing pad bytes tolerated; NaN floats tolerated; AddBlocks +1 length tolerated; Blocks+BlockIDs duplicates prefer BlockIDs.
 - Block mapping extended: lever, lantern/end_rod/campfire→torch, sea_lantern/froglight→glass, prismarine→bricks, ice→glass, snow_block→quartz, clay→concrete, anvil→iron, redstone_block→red wool, barrel→chest, shelf/lectern→bookshelf, smoker→dark metal, jack_o→red terracotta, bricks→red terracotta, note_block/crafting_table→wood, furnace→dark metal, pumpkin→sandstone, nether_portal→glass, diamond_block→iron, monster_egg→stone, flowers/bushes/corals/candles/tripwire/potatoes→ignored.
 - Legacy numeric table fixed (76–84, 96–100, 110–113, 140–154 were shifted/wrong) + orientations for stairs/buttons/trapdoor/hook/lever.
+
+## Top-up attempt 2026-09-27 (new service buildings)
+- Goal: fire (0 in lib), landfill (1), farm (2), police (5), powerplant (5), hospital (4), school (10), supermarket, metro, stadium.
+- Result: 0 new files. All direct endpoints now serve ad-gate HTML: buildschematics dl2 hosts (both), mcbuild.org downloads (even with session+cookies+Referer+UA), mc-mod.net dl2, minecraft-schematics.com (Cloudflare 403).
+- NOTE: the 2026-09-26 batch used the same URLs successfully - gates appeared overnight. Full URL list above with status=blocked for retry.
+- Triage 2026-09-27: all 777 files parse OK (0 fail, 0 empty, 0 tiny). Nothing deleted.
+- Near-duplicate pairs noticed (kept both - differ slightly, maybe variants): sand-palace-station (mc-mod vs mcbuild), cove-house luxurious vs secluded-with-shops (same 129x45x128), villa vs modern-villa-with-survival-features (same 112x44x158).
+- Odd-but-legit giants kept: 1000-long lava tunnel, 229x199 grocery, 314-long gas station, 426k-block parking garage, whole-village-as-one-scheme.
+- 101 tall builds (H>64) still clipped at paste by design.
