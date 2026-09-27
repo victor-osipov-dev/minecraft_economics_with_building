@@ -1122,28 +1122,24 @@ pickSearchEl.addEventListener("input", () => {
   renderPicker();
 });
 
-const CAT_LABELS = {
-  residential: "Жилые",
-  towers: "Башни",
-  commercial: "Коммерция",
-  public: "Общество",
-  transport: "Транспорт",
-  roads: "Дороги",
-  intersections: "Перекрёстки",
-  bridges: "Мосты",
-  parks: "Парки",
-  industrial: "Промзона",
-  waterfront: "Набережная",
-  decor: "Декор",
-  vehicles: "Техника",
-  new: "Новые",
-};
-const CAT_ORDER = ["residential", "towers", "commercial", "public", "transport", "roads", "intersections", "bridges", "parks", "industrial", "waterfront", "decor", "vehicles", "new"];
+// Группы построек по игровому назначению (а не по исходным MC-категориям):
+// так легче найти «дом под жителей» или «что-нибудь под еду».
+const SCHEME_GROUPS = [
+  { id: "live", name: "Жильё", types: ["house", "apartment"] },
+  { id: "work", name: "Работа", types: ["factory", "farm", "fishery", "shop", "office", "powerplant", "waterplant"] },
+  { id: "city", name: "Город", types: ["school", "hospital", "service", "entertainment", "park", "police", "fire", "landfill"] },
+  { id: "other", name: "Дороги и декор", types: ["road", "decor", "generic"] },
+];
+const GROUP_OF_TYPE = {};
+for (const g of SCHEME_GROUPS) for (const t of g.types) GROUP_OF_TYPE[t] = g.id;
 const indexFiles = new Set(schemesIndex.items.map((i) => i.file));
 const extraSchemeItems = Object.keys(schemeUrlByFile)
   .filter((f) => !indexFiles.has(f) && /\.(schem|schematic|nbt)$/i.test(f))
   .map((f) => ({ file: f, name: f, category: "new", w: "?", h: "?", l: "?", blocks: "?", tags: [] }));
 const allSchemeItems = [...schemesIndex.items, ...extraSchemeItems];
+for (const it of allSchemeItems) {
+  it._group = GROUP_OF_TYPE[resolveType(it)] || "other";
+}
 const schemeFilter = { q: "", cat: "all", tags: new Set() };
 let selectedSchemeFile = null;
 const schemeSearchEl = document.getElementById("schemeSearch");
@@ -1152,7 +1148,7 @@ const schemeTagsEl = document.getElementById("schemeTags");
 const schemeCountEl = document.getElementById("schemeCount");
 
 function schemeMatches(item) {
-  if (schemeFilter.cat !== "all" && item.category !== schemeFilter.cat) return false;
+  if (schemeFilter.cat !== "all" && item._group !== schemeFilter.cat) return false;
   for (const t of schemeFilter.tags) {
     if (!item.tags.includes(t)) return false;
   }
@@ -1163,15 +1159,17 @@ function schemeMatches(item) {
 
 function buildSchemeChips() {
   schemeCatsEl.innerHTML = "";
-  const present = new Set(allSchemeItems.map((i) => i.category));
-  const cats = ["all", ...CAT_ORDER.filter((c) => present.has(c))];
-  for (const c of cats) {
-    const n = c === "all" ? allSchemeItems.length : allSchemeItems.filter((i) => i.category === c).length;
+  const present = new Set(allSchemeItems.map((i) => i._group));
+  const groups = [{ id: "all", name: "Все" },
+    ...SCHEME_GROUPS.filter((g) => present.has(g.id))];
+  for (const g of groups) {
+    const n = g.id === "all" ? allSchemeItems.length
+      : allSchemeItems.filter((i) => i._group === g.id).length;
     const chip = document.createElement("span");
-    chip.className = "chip cat" + (schemeFilter.cat === c ? " active" : "");
-    chip.textContent = (c === "all" ? "Все" : CAT_LABELS[c] || c) + ` (${n})`;
+    chip.className = "chip cat" + (schemeFilter.cat === g.id ? " active" : "");
+    chip.textContent = g.name + ` (${n})`;
     chip.addEventListener("click", () => {
-      schemeFilter.cat = c;
+      schemeFilter.cat = g.id;
       buildSchemeChips();
       renderSchemeTiles();
     });
