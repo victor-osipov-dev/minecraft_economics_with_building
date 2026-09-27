@@ -9,6 +9,8 @@ export const TYPES = {
     buildCost: 500, maintenance: 2,
     housing: 8, jobs: 0,
     foodProd: 0, energyProd: 0, energyCons: 2,
+    waterProd: 0, waterCons: 3,
+    wasteProd: 1, wasteCap: 0,
     income: 0, happiness: 1, entertainment: 0, safety: 0, pollution: 0,
   },
   apartment: {
@@ -16,6 +18,8 @@ export const TYPES = {
     buildCost: 1500, maintenance: 6,
     housing: 30, jobs: 0,
     foodProd: 0, energyProd: 0, energyCons: 6,
+    waterProd: 0, waterCons: 8,
+    wasteProd: 3, wasteCap: 0,
     income: 0, happiness: 1, entertainment: 0, safety: 0, pollution: 0,
   },
   shop: {
@@ -23,6 +27,8 @@ export const TYPES = {
     buildCost: 800, maintenance: 4,
     housing: 0, jobs: 6,
     foodProd: 6, energyProd: 0, energyCons: 3,
+    waterProd: 0, waterCons: 2,
+    wasteProd: 2, wasteCap: 0,
     income: 30, happiness: 1, entertainment: 1, safety: 0, pollution: 0,
   },
   office: {
@@ -30,6 +36,8 @@ export const TYPES = {
     buildCost: 1200, maintenance: 5,
     housing: 0, jobs: 12,
     foodProd: 0, energyProd: 0, energyCons: 4,
+    waterProd: 0, waterCons: 3,
+    wasteProd: 2, wasteCap: 0,
     income: 45, happiness: 0, entertainment: 0, safety: 0, pollution: 0,
   },
   factory: {
@@ -37,6 +45,8 @@ export const TYPES = {
     buildCost: 2000, maintenance: 10,
     housing: 0, jobs: 20,
     foodProd: 0, energyProd: 0, energyCons: 12,
+    waterProd: 0, waterCons: 8,
+    wasteProd: 4, wasteCap: 0,
     income: 90, happiness: -1, entertainment: 0, safety: 0, pollution: 2,
   },
   fishery: {
@@ -44,6 +54,8 @@ export const TYPES = {
     buildCost: 700, maintenance: 3,
     housing: 0, jobs: 4,
     foodProd: 20, energyProd: 0, energyCons: 2,
+    waterProd: 0, waterCons: 4,
+    wasteProd: 1, wasteCap: 0,
     income: 10, happiness: 0, entertainment: 0, safety: 0, pollution: 0,
   },
   farm: {
@@ -51,6 +63,8 @@ export const TYPES = {
     buildCost: 600, maintenance: 3,
     housing: 0, jobs: 4,
     foodProd: 25, energyProd: 0, energyCons: 1,
+    waterProd: 0, waterCons: 6,
+    wasteProd: 1, wasteCap: 0,
     income: 8, happiness: 0, entertainment: 0, safety: 0, pollution: 0,
   },
   powerplant: {
@@ -58,6 +72,8 @@ export const TYPES = {
     buildCost: 1500, maintenance: 8,
     housing: 0, jobs: 6,
     foodProd: 0, energyProd: 80, energyCons: 0,
+    waterProd: 0, waterCons: 0,
+    wasteProd: 1, wasteCap: 0,
     income: 0, happiness: -1, entertainment: 0, safety: 0, pollution: 1,
   },
   park: {
@@ -73,6 +89,8 @@ export const TYPES = {
     buildCost: 1000, maintenance: 5,
     housing: 0, jobs: 8,
     foodProd: 0, energyProd: 0, energyCons: 3,
+    waterProd: 0, waterCons: 2,
+    wasteProd: 1, wasteCap: 0,
     income: 0, happiness: 3, entertainment: 1, safety: 0, pollution: 0,
     radius: 20,
   },
@@ -81,6 +99,8 @@ export const TYPES = {
     buildCost: 1400, maintenance: 7,
     housing: 0, jobs: 10,
     foodProd: 0, energyProd: 0, energyCons: 4,
+    waterProd: 0, waterCons: 4,
+    wasteProd: 2, wasteCap: 0,
     income: 0, happiness: 3, entertainment: 0, safety: 3, pollution: 0,
     radius: 20,
   },
@@ -89,6 +109,8 @@ export const TYPES = {
     buildCost: 600, maintenance: 3,
     housing: 0, jobs: 4,
     foodProd: 0, energyProd: 0, energyCons: 2,
+    waterProd: 0, waterCons: 1,
+    wasteProd: 1, wasteCap: 0,
     income: 5, happiness: 2, entertainment: 1, safety: 0, pollution: 0,
     radius: 15,
   },
@@ -97,7 +119,47 @@ export const TYPES = {
     buildCost: 900, maintenance: 4,
     housing: 0, jobs: 6,
     foodProd: 0, energyProd: 0, energyCons: 3,
+    waterProd: 0, waterCons: 2,
+    wasteProd: 2, wasteCap: 0,
     income: 10, happiness: 2, entertainment: 4, safety: 0, pollution: 0,
+    radius: 25,
+  },
+  waterplant: {
+    name: "Водокачка", desc: "Вода для города",
+    buildCost: 900, maintenance: 5,
+    housing: 0, jobs: 4,
+    foodProd: 0, energyProd: 0, energyCons: 4,
+    waterProd: 40, waterCons: 0,
+    wasteProd: 0, wasteCap: 0,
+    income: 0, happiness: 0, entertainment: 0, safety: 0, pollution: 0,
+  },
+  landfill: {
+    name: "Свалка", desc: "Перерабатывает мусор, но грязная и неприятная",
+    buildCost: 500, maintenance: 4,
+    housing: 0, jobs: 4,
+    foodProd: 0, energyProd: 0, energyCons: 1,
+    waterProd: 0, waterCons: 0,
+    wasteProd: 0, wasteCap: 60,
+    income: 0, happiness: -1, entertainment: 0, safety: 0, pollution: 2,
+  },
+  police: {
+    name: "Полиция", desc: "Снижает преступность в радиусе 25",
+    buildCost: 1200, maintenance: 6,
+    housing: 0, jobs: 8,
+    foodProd: 0, energyProd: 0, energyCons: 3,
+    waterProd: 0, waterCons: 1,
+    wasteProd: 1, wasteCap: 0,
+    income: 0, happiness: 0, entertainment: 0, safety: 0, pollution: 0,
+    radius: 25,
+  },
+  fire: {
+    name: "Пожарная", desc: "Не даёт зданиям гореть в радиусе 25",
+    buildCost: 1200, maintenance: 6,
+    housing: 0, jobs: 8,
+    foodProd: 0, energyProd: 0, energyCons: 3,
+    waterProd: 0, waterCons: 2,
+    wasteProd: 1, wasteCap: 0,
+    income: 0, happiness: 1, entertainment: 0, safety: 1, pollution: 0,
     radius: 25,
   },
   road: {
@@ -147,6 +209,10 @@ export function instStats(typeId, dims) {
     foodProd: Math.round(t.foodProd * s * 10) / 10,
     energyProd: Math.round(t.energyProd * s * 10) / 10,
     energyCons: Math.round(t.energyCons * s * 10) / 10,
+    waterProd: Math.round((t.waterProd || 0) * s * 10) / 10,
+    waterCons: Math.round((t.waterCons || 0) * s * 10) / 10,
+    wasteProd: Math.round((t.wasteProd || 0) * s * 10) / 10,
+    wasteCap: Math.round((t.wasteCap || 0) * s * 10) / 10,
     income: money(t.income),
     happiness: t.happiness,
     entertainment: Math.round(t.entertainment * s * 10) / 10,
@@ -157,6 +223,10 @@ export function instStats(typeId, dims) {
 
 const POWER_RE = /(power|solar|wind|nuclear|reactor|turbine|generator|transmission|substation|pylon)/i;
 const FARM_RE = /(farm|greenhouse|field|crop|mill\b|ranch|plantation)/i;
+const WATER_RE = /(water\s*plant|pump(\s*station|\s*house)?|waterworks|reservoir|pumping)/i;
+const LANDFILL_RE = /(landfill|garbage|waste|rubbish|\bdump\b|recycl|incinerator)/i;
+const POLICE_RE = /(police|precinct|sheriff|constabulary)/i;
+const FIRE_RE = /(fire\s*station|firehouse|fire\s*dept|fire\s*department)/i;
 
 // Теги проверяем в приоритетном порядке (первое совпадение побеждает).
 const TAG_MAP = [
@@ -204,7 +274,16 @@ export function resolveType(meta = {}) {
   const name = `${meta.file || ""} ${meta.name || ""}`;
   if (POWER_RE.test(name)) return "powerplant";
   if (FARM_RE.test(name)) return "farm";
+  if (WATER_RE.test(name)) return "waterplant";
+  if (LANDFILL_RE.test(name)) return "landfill";
+  if (POLICE_RE.test(name)) return "police";
+  if (FIRE_RE.test(name)) return "fire";
   const tags = meta.tags || [];
+  // Тег water (без фонтана/бассейна/парка рядом) — водокачка, а не декор.
+  if (tags.includes("water") &&
+      !tags.includes("fountain") && !tags.includes("pool") && !tags.includes("park")) {
+    return "waterplant";
+  }
   for (const [tag, typeId] of TAG_MAP) {
     if (typeId && tags.includes(tag)) return typeId;
   }

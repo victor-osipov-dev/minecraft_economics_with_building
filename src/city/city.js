@@ -4,10 +4,13 @@
 import { TYPES, instStats } from "./buildingTypes.js";
 
 export const FOOD_PER_CAPITA = 0.5; // еды на жителя в день
+export const TAX_PER_CAPITA = 0.3; // базовый налог с жителя в день
 const REPAIR_PRICE = 0.01; // доля buildCost за 1% здоровья (полный ремонт = цена постройки)
 const START_MONEY = 10000;
 const START_FOOD = 800;
 const START_ENERGY = 400;
+
+const START_WATER = 300;
 
 export function newCityState() {
   return {
@@ -15,6 +18,8 @@ export function newCityState() {
     population: 0,
     food: START_FOOD,
     energy: START_ENERGY,
+    water: START_WATER,
+    waste: 0,
     happiness: 70,
     pollution: 0,
     day: 0,
@@ -41,6 +46,7 @@ export function addBuilding(state, { typeId, name, dims, pos, placedBlocks }) {
     workers: 0,
     residents: 0,
     bonus: 0,
+    protection: 0,
     active: true,
     stats,
     placedBlocks: Math.max(1, placedBlocks || 1),
@@ -131,6 +137,27 @@ export function tick(state) {
   const energyEff = state.energy > 0 || energyProd >= energyCons
     ? 1 : energyCons > 0 ? 0.35 + 0.65 * (energyProd / energyCons) : 1;
 
+  // Вода: производство водокачек против потребления зданий.
+  let waterProd = 0, waterCons = 0;
+  for (const b of state.buildings) {
+    waterProd += b.stats.waterProd * effOf(b) * staffing;
+    waterCons += b.stats.waterCons * effOf(b);
+  }
+  state.water = clamp(Math.round((state.water + waterProd - waterCons) * 10) / 10, 0, 99999);
+  const waterShortage = state.water <= 0 && waterCons > 0;
+
+  // Мусор: производство против мощности свалок; избыток копится городом.
+  // Если мощностей хватает — город постепенно разгребает завалы.
+  let wasteProd = 0, wasteCap = 0;
+  for (const b of state.buildings) {
+    wasteProd += b.stats.wasteProd * effOf(b);
+    wasteCap += b.stats.wasteCap * effOf(b) * staffing;
+  }
+  if (wasteCap >= wasteProd) state.waste = state.waste * 0.9;
+  else state.waste = state.waste + (wasteProd - wasteCap);
+  state.waste = clamp(Math.round(state.waste * 10) / 10, 0, 500);
+  const wastePenalty = Math.min(10, Math.max(0, state.waste - 50) / 20);
+
   // 6-7. Доход и расходы.
   let income = 0, upkeep = 0;
   for (const b of state.buildings) {
@@ -139,6 +166,8 @@ export function tick(state) {
     // Черновые не стоят ничего и не приносят ничего.
     if (isActive(b)) upkeep += b.stats.maintenance * (0.4 + 0.6 * effOf(b) * staffing);
   }
+  // Базовый налог с жителей (без мэрии — плоская ставка; слайдер позже).
+  income += pop * TAX_PER_CAPITA;
   income = Math.round(income * 100) / 100;
   upkeep = Math.round(upkeep * 100) / 100;
   state.money = Math.round((state.money + income - upkeep) * 100) / 100;
@@ -182,18 +211,65 @@ export function tick(state) {
     houseCount++;
   }
   const localAvg = houseCount > 0 ? bonusSum / houseCount : 0;
+  // Преступность растёт от безработицы; полиция в радиусе защищает дома.
+  const crimeIdx = pop > 10 ? clamp((1 - employmentRate) * 60 + state.pollution * 0.2, 0, 100) : 0;
+  let protSum = 0, protTotal = 0;
+  for (const h of state.buildings) {
+    if (h.stats.housing <= 0) {
+      h.protection = 0;
+      continue;
+    }
+    const hx = h.x0 + h.W / 2, hz = h.z0 + h.L / 2;
+    let covered = false;
+    for (const p of state.buildings) {
+      if (p.typeId !== "police" || effOf(p) <= 0) continue;
+      const dx = p.x0 + p.W / 2 - hx, dz = p.z0 + p.L / 2 - hz;
+      if (dx * dx + dz * dz <= TYPES.police.radius * TYPES.police.radius) {
+        covered = true;
+        break;
+      }
+    }
+    h.protection = covered ? 1 : 0;
+    const w = h.stats.housing * effOf(h);
+    protSum += covered ? w : 0;
+    protTotal += w;
+  }
+  const unprotected = protTotal > 0 ? 1 - protSum / protTotal : 1;
   const entertainmentScore = pop === 0 ? 100 : clamp((entCap * 15 / Math.max(1, pop)) * 100, 0, 100);
-  const safetyScore = clamp(70 + safeBonus - state.pollution * 0.5, 0, 100);
+  const safetyScore = clamp(70 + safeBonus - state.pollution * 0.5 - crimeIdx * unprotected * 0.5, 0, 100);
   state.happiness = clamp(Math.round(
     (housingScore + foodScore + employmentScore + entertainmentScore + safetyScore) / 5 +
-    clamp(happyGlobal * 0.5, -10, 10) + clamp(localAvg, 0, 10)
+    clamp(happyGlobal * 0.5, -10, 10) + clamp(localAvg, 0, 10) -
+    (waterShortage ? 15 : 0) - wastePenalty
   ), 0, 100);
+
+  // Пожары: 0.2% на здание в день без покрытия пожарной в радиусе (макс 2).
+  // Бьют по здоровью через готовую систему урона/ремонта.
+  const fires = [];
+  for (const b of state.buildings) {
+    // Сами пожарные не горят.
+    if (fires.length >= 2 || effOf(b) <= 0 || b.typeId === "fire") continue;
+    const bx = b.x0 + b.W / 2, bz = b.z0 + b.L / 2;
+    let covered = false;
+    for (const f of state.buildings) {
+      if (f.typeId !== "fire" || effOf(f) <= 0 || f === b) continue;
+      const dx = f.x0 + f.W / 2 - bx, dz = f.z0 + f.L / 2 - bz;
+      if (dx * dx + dz * dz <= TYPES.fire.radius * TYPES.fire.radius) {
+        covered = true;
+        break;
+      }
+    }
+    if (!covered && Math.random() < 0.002) {
+      b.health = Math.max(0, Math.round((b.health - 25) * 10) / 10);
+      fires.push({ id: b.id, name: b.name, health: b.health });
+    }
+  }
 
   // 9-10. Миграция, рождения и смерти.
   const freeHousing = housingCap - pop;
   const freeJobs = jobsTotal - Math.min(pop, jobsTotal);
   const attract = (state.happiness - 55) / 8 + (freeJobs > 0 ? 1.5 : 0) +
-    (freeHousing > 0 ? 1 : -3) + (hunger ? -4 : 0);
+    (freeHousing > 0 ? 1 : -3) + (hunger ? -4 : 0) + (waterShortage ? -2 : 0);
   let migrants = clamp(Math.round(attract), -6, 8);
   if (migrants > 0) migrants = Math.min(migrants, Math.max(0, Math.floor(freeHousing)));
   const births = Math.floor(pop * 0.012);
@@ -235,6 +311,7 @@ export function tick(state) {
     employmentRatio: Math.round(employmentRatio * 100) / 100,
     employmentRate: Math.round(employmentRate * 100) / 100,
     housingCap, jobsTotal, energyEff: Math.round(energyEff * 100) / 100, hunger,
+    waterShortage, waste: state.waste, crime: Math.round(crimeIdx * 10) / 10, fires,
   };
   return state.last;
 }

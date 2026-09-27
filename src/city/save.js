@@ -34,6 +34,8 @@ export function serializeCity(city) {
     population: city.population,
     food: city.food,
     energy: city.energy,
+    water: city.water || 0,
+    waste: city.waste || 0,
     happiness: city.happiness,
     pollution: city.pollution,
     day: city.day,
@@ -61,6 +63,7 @@ export function deserializeCity(data) {
   Object.assign(st, {
     money: data.money, population: Math.max(0, Math.floor(data.population)),
     food: Math.max(0, data.food), energy: Math.max(0, data.energy),
+    water: Math.max(0, data.water || 0), waste: Math.max(0, data.waste || 0),
     happiness: Math.min(100, Math.max(0, data.happiness)),
     pollution: Math.min(100, Math.max(0, data.pollution)),
     day: Math.max(0, Math.floor(data.day)),

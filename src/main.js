@@ -680,6 +680,9 @@ function renderCity() {
     ["Работы", `${workers} / ${jobsCap}`],
     ["Еда", `${city.food}`],
     ["Энергия", `${city.energy}`],
+    ["Вода", `${city.water}${city.last && city.last.waterShortage ? " — нет воды!" : ""}`],
+    ["Мусор", `${Math.round(city.waste)}`],
+    ["Преступность", `${city.last ? city.last.crime : 0}`],
     ["Загрязнение", `${city.pollution}`],
     ["Жители на карте", `${residents.length} <button data-residents="">${showResidents ? "скрыть" : "показать"}</button>`],
   ];
@@ -797,6 +800,7 @@ function loadGame() {
     Object.assign(city, {
       money: parsed.city.money, population: parsed.city.population,
       food: parsed.city.food, energy: parsed.city.energy,
+      water: parsed.city.water || 0, waste: parsed.city.waste || 0,
       happiness: parsed.city.happiness, pollution: parsed.city.pollution,
       day: parsed.city.day, nextId: 1, last: parsed.city.last,
     });
@@ -861,6 +865,13 @@ function tickCity() {
   for (const rec of buildings) refreshRecordLabel(rec);
   syncResidents();
   refreshTileFunds();
+  if (city.last && city.last.fires) {
+    for (const f of city.last.fires) {
+      showMsg(`Пожар: «${f.name}» горит! Состояние ${Math.round(f.health)}% — чините (C)`);
+      const rec = buildings.find((b) => b.cityId === f.id);
+      if (rec) refreshRecordLabel(rec);
+    }
+  }
   if (cityPanelEl.classList.contains("show")) renderCity();
 }
 setInterval(() => { if (mapReady && !paused) tickCity(); }, 5000);
@@ -1217,6 +1228,8 @@ function renderSchemeTiles() {
         if (s.jobs > 0) parts.push(`работы ${s.jobs}`);
         if (s.foodProd > 0) parts.push(`еда +${s.foodProd}`);
         if (s.energyProd > 0) parts.push(`энергия +${s.energyProd}`);
+        if (s.waterProd > 0) parts.push(`вода +${s.waterProd}`);
+        if (s.wasteCap > 0) parts.push(`мусор −${s.wasteCap}`);
         if (s.income > 0) parts.push(`доход $${s.income}`);
       }
       info.textContent = parts.join(" · ");
