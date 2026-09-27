@@ -39,6 +39,7 @@ export function addBuilding(state, { typeId, name, dims, pos, placedBlocks }) {
     W: dims.W, H: dims.H, L: dims.L,
     health: 100,
     workers: 0,
+    residents: 0,
     bonus: 0,
     stats,
     placedBlocks: Math.max(1, placedBlocks || 1),
@@ -194,6 +195,28 @@ export function tick(state) {
   const births = Math.floor(pop * 0.012);
   const deaths = Math.floor(pop * 0.008 + (hunger ? pop * 0.03 : 0));
   state.population = Math.max(0, pop + migrants + births - deaths);
+
+  // Расселение жителей по домам пропорционально вместимости (для отображения).
+  {
+    let total = 0;
+    for (const b of state.buildings) total += b.stats.housing * effOf(b);
+    let assigned = 0;
+    for (const b of state.buildings) {
+      b.residents = total > 0
+        ? Math.floor((state.population * b.stats.housing * effOf(b)) / total) : 0;
+      assigned += b.residents;
+    }
+    let rest = state.population - assigned;
+    if (total > 0 && rest > 0) {
+      const order = state.buildings
+        .filter((b) => b.stats.housing > 0 && effOf(b) > 0)
+        .sort((x, y) => y.stats.housing * effOf(y) - x.stats.housing * effOf(x));
+      for (let i = 0; rest > 0 && order.length > 0; i++) {
+        order[i % order.length].residents++;
+        rest--;
+      }
+    }
+  }
 
   // 11. Загрязнение: выбросы − естественное рассеивание.
   let emission = 0;

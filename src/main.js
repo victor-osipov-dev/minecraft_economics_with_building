@@ -640,9 +640,12 @@ function refreshRecordLabel(rec) {
   }
   const t = TYPES[inst.typeId];
   const hp = Math.round(inst.health);
+  const parts = [`состояние ${hp}%`];
+  if (inst.stats.housing > 0) parts.push(`жители ${inst.residents || 0}/${inst.stats.housing}`);
+  if (inst.stats.jobs > 0) parts.push(`работники ${inst.workers}/${inst.stats.jobs}`);
   rec.label.innerHTML = rec.labelBase +
     `<br><span style="color:${rec.css}">[${t ? t.name : inst.typeId}] ` +
-    `состояние ${hp}% · работники ${inst.workers}/${inst.stats.jobs}</span>`;
+    parts.join(" · ") + `</span>`;
 }
 
 function findRecordAt(x, y, z) {
@@ -704,10 +707,13 @@ function renderCity() {
     const row = document.createElement("div");
     row.className = "cbld";
     const hp = Math.round(inst.health);
+    const parts = [`состояние ${hp}%`];
+    if (inst.stats.housing > 0) parts.push(`жители ${inst.residents || 0}/${inst.stats.housing}`);
+    if (inst.stats.jobs > 0) parts.push(`работники ${inst.workers}/${inst.stats.jobs}`);
     row.innerHTML =
       `<div class="cbhead"><b>${inst.name}</b><span class="cdim">${t ? t.name : inst.typeId}</span></div>` +
-      `<div class="cbar"><div class="cfill" style="width:${hp}%;${hp < 35 ? "background:#ff5952;" : hp < 70 ? "background:#ffd94d;" : ""}"></div></div>` +
-      `<div class="cbsub"><span>состояние ${hp}% · работники ${inst.workers}/${inst.stats.jobs}</span>` +
+      `<div class="cbar"><div class="cfill" style="width:${hp}%;${hp < 35 ? "background:#ff5952;" : hp < 70 ? "background:#ffd54d;" : ""}"></div></div>` +
+      `<div class="cbsub"><span>${parts.join(" · ")}</span>` +
       `<button data-repair="${inst.id}"${can ? "" : " disabled"}>Ремонт ${inst.health >= 100 ? "" : fmtMoney(cost)}</button></div>`;
     cityBuildingsEl.appendChild(row);
   }
