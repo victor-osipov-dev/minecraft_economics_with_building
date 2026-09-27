@@ -66,12 +66,14 @@
       align-items: center;
       justify-content: flex-end;
       position: relative;
+      overflow: hidden;
       color: #eee;
       font: 13px 'Segoe UI', Arial, sans-serif;
       font-weight: 700;
     }
     .hslot.active { border-color: #ffd54a; box-shadow: 0 0 10px rgba(255, 213, 74, 0.6); }
     .hslot .sw { position: absolute; top: 6px; left: 6px; width: 14px; height: 14px; border-radius: 3px; border: 1px solid rgba(255, 255, 255, 0.35); }
+    .hslot .tx { position: absolute; top: 3px; left: 50%; transform: translateX(-50%); width: 34px; height: 34px; border-radius: 4px; image-rendering: pixelated; }
     .hslot .cnt { padding-bottom: 3px; }
     .hslot .nm { font-size: 9px; font-weight: 400; opacity: 0.9; padding: 0 2px 4px; text-align: center; line-height: 1.15; }
     #crosshair {
@@ -176,6 +178,8 @@
     }
     .pick:hover { border-color: #ffd54a; }
     .pick .sw { width: 16px; height: 16px; border-radius: 3px; border: 1px solid rgba(255,255,255,0.35); flex-shrink: 0; }
+    .pick { min-width: 0; }
+    .pick .nm { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
     .pick .tx { width: 34px; height: 34px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.35); flex-shrink: 0; image-rendering: pixelated; background-color: rgba(0,0,0,0.35); }
     #pickSearch { width: 100%; box-sizing: border-box; margin-bottom: 10px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; color: #eee; font: 13px 'Segoe UI', Arial, sans-serif; padding: 6px 10px; outline: none; }
     #pickSearch:focus { border-color: #ffd54a; }

@@ -430,8 +430,12 @@ function updateHotbar() {
     }
     const b = BLOCKS[id];
     const active = i === creativeSel ? ' active' : '';
+    const css = blockIconStyle(b);
+    const icon = css
+      ? `<span class="tx" style="${css}"></span>`
+      : `<span class="sw" style="background:${b.color}"></span>`;
     marks.push(
-      `<div class="hslot${active}"><span class="sw" style="background:${b.color}"></span>` +
+      `<div class="hslot${active}">${icon}` +
       `<span class="cnt">∞</span><span class="nm">${b.name}</span></div>`
     );
   }
@@ -441,12 +445,19 @@ function updateHotbar() {
 }
 
 window.addEventListener("keydown", (e) => {
+  if (isTyping(e)) return;
   const n = Number(e.code.replace("Digit", ""));
   if (n >= 1 && n <= 9) {
     creativeSel = n - 1;
     updateHotbar();
   }
 });
+
+// Ввод в полях поиска: сочетания клавиш не работают (кроме Esc).
+function isTyping(e) {
+  const t = e.target;
+  return !!t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA");
+}
 updateHotbar();
 
 // ---------- песочница: призрак и постановка схем ----------
@@ -1042,6 +1053,7 @@ function renderPicker() {
       icon.style.background = b.color;
     }
     const nm = document.createElement("span");
+    nm.className = "nm";
     nm.textContent = b.name;
     d.append(icon, nm);
     d.addEventListener("click", () => {
@@ -1149,16 +1161,28 @@ function renderSchemeTiles() {
     const dim = document.createElement("div");
     dim.className = "td";
     dim.textContent = `${item.w}×${item.h}×${item.l} · ${item.blocks}`;
-    const tags = document.createElement("div");
-    tags.className = "tt";
-    tags.textContent = item.tags.slice(0, 3).map((t) => "#" + t).join(" ");
-    tile.append(nm, dim, tags);
-    {
-      const q = schemeBuildCost(item, { W: item.w, H: item.h, L: item.l });
-      const t = q ? TYPES[q.typeId] : null;
-      tile.title = `${item.name} · ${item.w}×${item.h}×${item.l} · блоков: ${item.blocks}` +
-        (t ? ` · ${t.name} · $${q.cost}` : "");
+    // Вместо тегов — цена и важные числа: тип, жильё, работы, еда, доход.
+    const q = schemeBuildCost(item, { W: item.w, H: item.h, L: item.l });
+    const t = q ? TYPES[q.typeId] : null;
+    const info = document.createElement("div");
+    info.className = "tt";
+    if (t && q) {
+      const parts = [`$${q.cost}`, t.name];
+      const W = Number(item.w), H = Number(item.h), L = Number(item.l);
+      if (Number.isFinite(W) && Number.isFinite(H) && Number.isFinite(L)) {
+        const s = instStats(q.typeId, { W, H, L });
+        if (s.housing > 0) parts.push(`жильё ${s.housing}`);
+        if (s.jobs > 0) parts.push(`работы ${s.jobs}`);
+        if (s.foodProd > 0) parts.push(`еда +${s.foodProd}`);
+        if (s.energyProd > 0) parts.push(`энергия +${s.energyProd}`);
+        if (s.income > 0) parts.push(`доход $${s.income}`);
+      }
+      info.textContent = parts.join(" · ");
+      tile.title = `${item.name} · ${item.w}×${item.h}×${item.l} · блоков: ${item.blocks} · ` + parts.join(" · ");
+    } else {
+      tile.title = `${item.name} · ${item.w}×${item.h}×${item.l} · блоков: ${item.blocks}`;
     }
+    tile.append(nm, dim, info);
     tile.addEventListener("click", () => {
       const url = schemeUrlByFile[item.file];
       if (!url) {
@@ -1301,6 +1325,7 @@ schemesBtn.addEventListener("click", toggleSchemes);
 buildPicker();
 
 window.addEventListener("keydown", (e) => {
+  if (isTyping(e) && e.code !== "Escape") return;
   if (e.code === "Tab") {
     e.preventDefault();
     setViewMode(!viewMode);
