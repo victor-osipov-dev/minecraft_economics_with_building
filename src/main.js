@@ -909,14 +909,20 @@ canvas.addEventListener("pointerdown", (e) => {
     if (e.button === 0) placePreview();
     return;
   }
+  if (e.button === 0) {
+    lmbDownAt = performance.now();
+    lmbFresh = true;
+  }
   mouseDown[e.button] = true;
   if (e.button === 2) handlePlace();
 });
 window.addEventListener("pointerup", (e) => {
   mouseDown[e.button] = false;
+  if (e.button === 0) lmbFresh = false;
 });
 document.addEventListener("pointerlockchange", () => {
   mouseDown = { 0: false, 2: false };
+  lmbFresh = false;
 });
 document.addEventListener("contextmenu", (e) => e.preventDefault());
 document.addEventListener("mousemove", (e) => {
@@ -937,6 +943,17 @@ outline.material = outlineMat;
 outline.isVisible = false;
 
 let lastHit = null;
+// Один клик — один блок: свежее нажатие ломает сразу один, дальше при
+// зажатой кнопке быстрое ломание включается после паузы 250 мс.
+let lmbDownAt = 0;
+let lmbFresh = false;
+
+function breakOne(hit) {
+  if (world.getBlock(hit.x, hit.y, hit.z) !== AIR) {
+    world.setBlock(hit.x, hit.y, hit.z, AIR);
+    world.flushMeshes(scene, blockMat, cutoutMat, alphaMat, torchMat);
+  }
+}
 
 // ---------- interactions ----------
 // Направление взгляда по горизонтали (1..4 как facing): для ориентации
@@ -1186,13 +1203,15 @@ scene.registerBeforeRender(() => {
     }
   }
 
-  // ---- breaking (hold LMB): мгновенно, без добычи ----
+  // ---- breaking (LMB): один клик — один блок, зажатие — очередь ----
   // При активном предпросмотре схемы ЛКМ ставит её, а не ломает.
   // В просмотре ломание отключено.
   if (!viewMode && locked && lastHit && mouseDown[0] && !previewPlan) {
-    if (world.getBlock(lastHit.x, lastHit.y, lastHit.z) !== AIR) {
-      world.setBlock(lastHit.x, lastHit.y, lastHit.z, AIR);
-      world.flushMeshes(scene, blockMat, cutoutMat, alphaMat, torchMat);
+    if (lmbFresh) {
+      lmbFresh = false;
+      breakOne(lastHit);
+    } else if (performance.now() - lmbDownAt > 250) {
+      breakOne(lastHit);
     }
   }
 
