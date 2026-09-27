@@ -135,6 +135,9 @@
     .cbsub { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-top: 5px; font-size: 12px; opacity: 0.9; }
     .cbsub button { background: rgba(255,213,74,0.2); color: #ffd54a; border: 1px solid rgba(255,213,74,0.5); border-radius: 5px; padding: 3px 10px; cursor: pointer; font-size: 12px; }
     .cbsub button:disabled { opacity: 0.35; cursor: default; }
+    .cbtake { display: flex; gap: 6px; flex-wrap: wrap; margin: 6px 0; }
+    .cbtake button { background: rgba(255,213,74,0.2); color: #ffd54a; border: 1px solid rgba(255,213,74,0.5); border-radius: 5px; padding: 3px 8px; cursor: pointer; font-size: 12px; }
+    .cbtake button:disabled { opacity: 0.35; cursor: default; }
     .crow button { background: rgba(255,213,74,0.2); color: #ffd54a; border: 1px solid rgba(255,213,74,0.5); border-radius: 5px; padding: 2px 10px; cursor: pointer; font-size: 12px; }
     #labels { position: fixed; inset: 0; pointer-events: none; z-index: 11; overflow: hidden; }
     .blabel { position: absolute; transform: translate(-50%, -100%); background: rgba(8, 10, 14, 0.82); border: 1px solid #fff; border-left-width: 4px; border-radius: 6px; color: #fff; font: 12px 'Segoe UI', Arial, sans-serif; padding: 4px 8px; white-space: nowrap; text-align: left; line-height: 1.45; }
@@ -301,6 +304,8 @@
   <div id="cityPanel" class="panel wide">
     <h3>Город <span id="cityDay" class="cdim"></span></h3>
     <div id="cityStats"></div>
+    <h3 style="margin-top:12px">Кредиты</h3>
+    <div id="cityLoans"></div>
     <h3 style="margin-top:12px">Постройки</h3>
     <div id="cityBuildings"></div>
   </div>
@@ -309,8 +314,9 @@
     <button id="resumeBtn" class="mbtn">Продолжить</button>
     <button id="saveBtn" class="mbtn">Сохранить игру</button>
     <button id="loadSaveBtn" class="mbtn">Загрузить игру</button>
+    <button id="newGameBtn" class="mbtn">Начать заново</button>
     <div class="hint" id="saveInfo"></div>
-    <div class="hint">E — блоки · T — постройки · C — город · V — просмотр · P — пауза</div>
+    <div class="hint">E — блоки · T — постройки · C — город · V — просмотр · P — пауза · Tab — курсор</div>
   </div>
   <div id="picker" class="panel">
     <h3>Блоки песочницы</h3>

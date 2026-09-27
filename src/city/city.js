@@ -24,6 +24,7 @@ export function newCityState() {
     pollution: 0,
     day: 0,
     buildings: [],
+    loans: [],
     nextId: 1,
     last: null,
   };
@@ -59,6 +60,60 @@ export function charge(state, amount) {
   if (state.money < amount) return false;
   state.money = Math.round((state.money - amount) * 100) / 100;
   return true;
+}
+
+// ---------- кредиты: деньги сейчас, возврат с процентом потом ----------
+// Варианты займа: сумма / срок в днях / ставка за весь срок.
+export const LOAN_OPTIONS = [
+  { id: 0, amount: 1000, days: 15, rate: 0.10 },
+  { id: 1, amount: 5000, days: 20, rate: 0.15 },
+  { id: 2, amount: 15000, days: 30, rate: 0.20 },
+];
+export const MAX_LOANS = 3;
+
+export function takeLoan(state, optionId) {
+  const opt = LOAN_OPTIONS.find((o) => o.id === optionId);
+  if (!opt) return { ok: false, reason: "нет такого займа" };
+  if (state.loans.length >= MAX_LOANS) return { ok: false, reason: "слишком много займов" };
+  const owed = Math.round(opt.amount * (1 + opt.rate) * 100) / 100;
+  state.money = Math.round((state.money + opt.amount) * 100) / 100;
+  state.loans.push({ owed, total: owed, daysLeft: opt.days, principal: opt.amount });
+  return { ok: true, owed };
+}
+
+// Досрочное погашение целиком.
+export function repayLoan(state, idx) {
+  const loan = state.loans[idx];
+  if (!loan) return { ok: false };
+  if (!charge(state, loan.owed)) return { ok: false, cost: loan.owed };
+  state.loans.splice(idx, 1);
+  return { ok: true, cost: loan.owed };
+}
+
+// Ежедневные автоплатежи; просрочка растёт на 5% в день и бьёт по счастью.
+function processLoans(state) {
+  let paid = 0;
+  let overdue = false;
+  for (let i = state.loans.length - 1; i >= 0; i--) {
+    const loan = state.loans[i];
+    if (loan.daysLeft > 0) {
+      const part = loan.owed / loan.daysLeft;
+      const pay = state.money > 0 ? Math.min(state.money, part) : 0;
+      loan.owed = Math.round((loan.owed - pay) * 100) / 100;
+      state.money = Math.round((state.money - pay) * 100) / 100;
+      paid += pay;
+      loan.daysLeft--;
+    } else if (loan.owed > 0) {
+      overdue = true;
+      loan.owed = Math.round(loan.owed * 1.05 * 100) / 100;
+      const pay = state.money > 0 ? Math.min(state.money, loan.owed) : 0;
+      loan.owed = Math.round((loan.owed - pay) * 100) / 100;
+      state.money = Math.round((state.money - pay) * 100) / 100;
+      paid += pay;
+    }
+    if (loan.owed <= 0.005) state.loans.splice(i, 1);
+  }
+  return { paid: Math.round(paid * 100) / 100, overdue };
 }
 
 function contains(inst, x, y, z) {
@@ -172,6 +227,9 @@ export function tick(state) {
   upkeep = Math.round(upkeep * 100) / 100;
   state.money = Math.round((state.money + income - upkeep) * 100) / 100;
 
+  // Кредиты: автоплатёж после всех доходов/расходов дня.
+  const { paid: loanPaid, overdue } = processLoans(state);
+
   // 8. Счастье = среднее пяти факторов + прямые бонусы − загрязнение.
   const housingScore = pop === 0 ? 100 : clamp((housingCap / Math.max(1, pop)) * 100, 0, 100);
   const foodScore = hunger ? 15 : state.food > pop * 2 ? 100 : 60;
@@ -240,7 +298,7 @@ export function tick(state) {
   state.happiness = clamp(Math.round(
     (housingScore + foodScore + employmentScore + entertainmentScore + safetyScore) / 5 +
     clamp(happyGlobal * 0.5, -10, 10) + clamp(localAvg, 0, 10) -
-    (waterShortage ? 15 : 0) - wastePenalty
+    (waterShortage ? 15 : 0) - wastePenalty - (overdue ? 5 : 0)
   ), 0, 100);
 
   // Пожары: 0.2% на здание в день без покрытия пожарной в радиусе (макс 2).
@@ -312,6 +370,7 @@ export function tick(state) {
     employmentRate: Math.round(employmentRate * 100) / 100,
     housingCap, jobsTotal, energyEff: Math.round(energyEff * 100) / 100, hunger,
     waterShortage, waste: state.waste, crime: Math.round(crimeIdx * 10) / 10, fires,
+    loanPaid, overdue, debt: Math.round(state.loans.reduce((a, l) => a + l.owed, 0) * 100) / 100,
   };
   return state.last;
 }

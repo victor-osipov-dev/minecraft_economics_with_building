@@ -41,6 +41,12 @@ export function serializeCity(city) {
     day: city.day,
     nextId: city.nextId,
     last: city.last,
+    loans: (city.loans || []).map((l) => ({
+      owed: Math.max(0, l.owed || 0),
+      total: Math.max(0, l.total || 0),
+      daysLeft: Math.max(0, Math.floor(l.daysLeft || 0)),
+      principal: Math.max(0, l.principal || 0),
+    })),
     buildings: city.buildings.map((b) => ({
       id: b.id,
       typeId: TYPES[b.typeId] ? b.typeId : "generic",
@@ -69,6 +75,15 @@ export function deserializeCity(data) {
     day: Math.max(0, Math.floor(data.day)),
     nextId: Math.max(1, Math.floor(data.nextId)),
     last: data.last && typeof data.last === "object" ? data.last : null,
+    loans: Array.isArray(data.loans) ? data.loans
+      .filter((l) => l && isNum(l.owed) && l.owed > 0)
+      .slice(0, 10)
+      .map((l) => ({
+        owed: l.owed,
+        total: isNum(l.total) && l.total > 0 ? l.total : l.owed,
+        daysLeft: isNum(l.daysLeft) ? Math.max(0, Math.floor(l.daysLeft)) : 0,
+        principal: isNum(l.principal) ? Math.max(0, l.principal) : 0,
+      })) : [],
   });
   if (!Array.isArray(data.buildings)) throw new Error("сейв: нет списка построек");
   st._buildings = data.buildings.map((b, i) => {

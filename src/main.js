@@ -48,6 +48,7 @@ import {
 import {
   SAVE_VERSION, serializeWorld, serializeCity, parseSave,
 } from "./city/save.js";
+import { LOAN_OPTIONS, takeLoan, repayLoan } from "./city/city.js";
 import schemesIndex from "../schemes/index.json";
 
 // ---------- engine / scene ----------
@@ -688,6 +689,23 @@ function renderCity() {
   ];
   cityStatsEl.innerHTML = rows.map(([k, v]) =>
     `<div class="crow"><span>${k}</span><b>${v}</b></div>`).join("");
+  renderLoans();
+
+function renderLoans() {
+  const el = document.getElementById("cityLoans");
+  if (!el) return;
+  const debt = city.loans.reduce((a, l) => a + l.owed, 0);
+  let html = `<div class="crow"><span>Долг</span><b>${fmtMoney(debt)}</b></div><div class="cbtake">` +
+    LOAN_OPTIONS.map((o) =>
+      `<button data-loan-take="${o.id}"${city.loans.length >= 3 ? " disabled" : ""}>` +
+      `$${o.amount.toLocaleString("ru-RU")} / ${o.days} дн / ${Math.round(o.rate * 100)}%</button>`
+    ).join("") + `</div>`;
+  city.loans.forEach((l, i) => {
+    html += `<div class="cbsub"><span>$${Math.round(l.owed)} осталось · ${l.daysLeft} дн</span>` +
+      `<button data-loan-repay="${i}"${city.money >= l.owed ? "" : " disabled"}>Погасить</button></div>`;
+  });
+  el.innerHTML = html;
+}
   if (city.buildings.length === 0) {
     cityBuildingsEl.innerHTML = `<div class="chint">Построек пока нет — поставьте схему (T). Каждая постройка стоит денег.</div>`;
     return;
@@ -722,6 +740,23 @@ cityPanelEl.addEventListener("click", (e) => {
     showMsg(showResidents ? "Жители: показаны" : "Жители: скрыты");
     return;
   }
+  const take = e.target.closest("[data-loan-take]");
+  if (take && !take.disabled) {
+    const res = takeLoan(city, Number(take.dataset.loanTake));
+    showMsg(res.ok
+      ? `Кредит: +$${res.owed} к возврату (${fmtMoney(city.money)} на руках)`
+      : `Кредит: ${res.reason}`);
+    refreshTileFunds();
+    renderCity();
+    return;
+  }
+  const pay = e.target.closest("[data-loan-repay]");
+  if (pay && !pay.disabled) {
+    const res = repayLoan(city, Number(pay.dataset.loanRepay));
+    showMsg(res.ok ? `Погашено досрочно за ${fmtMoney(res.cost)}` : "Не хватает денег");
+    renderCity();
+    return;
+  }
   const btn = e.target.closest("[data-repair]");
   if (!btn || btn.disabled) return;
   const res = repair(city, btn.dataset.repair);
@@ -741,6 +776,34 @@ const pauseMenuEl = document.getElementById("pauseMenu");
 document.getElementById("resumeBtn").addEventListener("click", resumeGame);
 document.getElementById("saveBtn").addEventListener("click", saveGame);
 document.getElementById("loadSaveBtn").addEventListener("click", loadGame);
+document.getElementById("newGameBtn").addEventListener("click", () => {
+  if (!window.confirm("Начать заново? Мир, постройки и город будут стёрты.")) return;
+  resetGame();
+});
+
+// Новая игра: чистый плоский мир, стартовый город, игрок на спавне.
+function resetGame() {
+  world.clear();
+  clearBuildings();
+  nextBuildingId = 1;
+  city = newCityState();
+  respawnPoint = { x: 0.5, y: 2, z: 0.5 };
+  player.x = respawnPoint.x;
+  player.y = respawnPoint.y;
+  player.z = respawnPoint.z;
+  player.vy = 0;
+  player.grounded = false;
+  world.ensureFlatAround(player.x, player.z);
+  world.flushMeshes(scene, blockMat, cutoutMat, alphaMat, torchMat);
+  resetMapTransientState();
+  mapReady = true;
+  camera.position.set(player.x, player.y + EYE, player.z);
+  syncResidents();
+  closePanels();
+  setPaused(false);
+  refreshTileFunds();
+  showMsg("Новая игра: пустой мир и $10 000");
+}
 
 // ---------- сохранение/загрузка (этап 24): город отдельно от блоков ----------
 const SAVE_KEY = "babylon-city-save-v1";
@@ -803,6 +866,7 @@ function loadGame() {
       water: parsed.city.water || 0, waste: parsed.city.waste || 0,
       happiness: parsed.city.happiness, pollution: parsed.city.pollution,
       day: parsed.city.day, nextId: 1, last: parsed.city.last,
+      loans: Array.isArray(parsed.city.loans) ? parsed.city.loans : [],
     });
     for (const { key, cells } of parsed.chunks) {
       const [cx, cy, cz] = key.split(",").map(Number);
@@ -1453,6 +1517,12 @@ schemesBtn.addEventListener("click", toggleSchemes);
 buildPicker();
 
 window.addEventListener("keydown", (e) => {
+  // Tab всегда возвращает курсор (выход из захвата).
+  if (e.code === "Tab") {
+    e.preventDefault();
+    if (document.pointerLockElement) document.exitPointerLock();
+    return;
+  }
   if (isTyping(e) && e.code !== "Escape") return;
   if (e.code === "KeyV" && !e.repeat) {
     setLabelsOn(!labelsOn);
