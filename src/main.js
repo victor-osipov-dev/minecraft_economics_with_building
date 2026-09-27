@@ -1122,6 +1122,20 @@ pickSearchEl.addEventListener("input", () => {
   renderPicker();
 });
 
+// Фильтр по экономике: что даёт постройка городу.
+const ECO_DEFS = [
+  { id: "housing", name: "Жильё", types: ["house", "apartment"] },
+  { id: "food", name: "Еда", types: ["farm", "fishery", "shop"] },
+  { id: "water", name: "Вода", types: ["waterplant"] },
+  { id: "energy", name: "Электричество", types: ["powerplant"] },
+  { id: "waste", name: "Мусор", types: ["landfill"] },
+  { id: "jobs", name: "Работа", types: ["factory", "farm", "fishery", "shop", "office", "powerplant", "waterplant", "school", "hospital", "service", "entertainment", "police", "fire", "landfill"] },
+  { id: "happy", name: "Счастье", types: ["park", "entertainment", "school", "hospital", "service"] },
+  { id: "safety", name: "Защита", types: ["police", "fire", "hospital"] },
+];
+const ECO_OF_TYPE = {};
+for (const e of ECO_DEFS) for (const t of e.types) (ECO_OF_TYPE[t] = ECO_OF_TYPE[t] || []).push(e.id);
+
 // Группы построек по игровому назначению (а не по исходным MC-категориям):
 // так легче найти «дом под жителей» или «что-нибудь под еду».
 const SCHEME_GROUPS = [
@@ -1139,16 +1153,19 @@ const extraSchemeItems = Object.keys(schemeUrlByFile)
 const allSchemeItems = [...schemesIndex.items, ...extraSchemeItems];
 for (const it of allSchemeItems) {
   it._group = GROUP_OF_TYPE[resolveType(it)] || "other";
+  it._eco = ECO_OF_TYPE[resolveType(it)] || [];
 }
-const schemeFilter = { q: "", cat: "all", tags: new Set() };
+const schemeFilter = { q: "", cat: "all", eco: "all", tags: new Set() };
 let selectedSchemeFile = null;
 const schemeSearchEl = document.getElementById("schemeSearch");
 const schemeCatsEl = document.getElementById("schemeCats");
+const schemeEcoEl = document.getElementById("schemeEco");
 const schemeTagsEl = document.getElementById("schemeTags");
 const schemeCountEl = document.getElementById("schemeCount");
 
 function schemeMatches(item) {
   if (schemeFilter.cat !== "all" && item._group !== schemeFilter.cat) return false;
+  if (schemeFilter.eco !== "all" && !(item._eco || []).includes(schemeFilter.eco)) return false;
   for (const t of schemeFilter.tags) {
     if (!item.tags.includes(t)) return false;
   }
@@ -1174,6 +1191,24 @@ function buildSchemeChips() {
       renderSchemeTiles();
     });
     schemeCatsEl.appendChild(chip);
+  }
+  schemeEcoEl.innerHTML = "";
+  const presentEco = new Set();
+  for (const i of allSchemeItems) for (const e of i._eco || []) presentEco.add(e);
+  const ecos = [{ id: "all", name: "Всё" },
+    ...ECO_DEFS.filter((e) => presentEco.has(e.id))];
+  for (const e of ecos) {
+    const n = e.id === "all" ? allSchemeItems.length
+      : allSchemeItems.filter((i) => (i._eco || []).includes(e.id)).length;
+    const chip = document.createElement("span");
+    chip.className = "chip" + (schemeFilter.eco === e.id ? " active" : "");
+    chip.textContent = e.name + ` (${n})`;
+    chip.addEventListener("click", () => {
+      schemeFilter.eco = e.id;
+      buildSchemeChips();
+      renderSchemeTiles();
+    });
+    schemeEcoEl.appendChild(chip);
   }
   schemeTagsEl.innerHTML = "";
   for (const t of schemesIndex.tags) {
