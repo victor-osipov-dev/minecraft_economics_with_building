@@ -120,6 +120,19 @@
     #framesBtn { top: 84px; }
     #blocksBtn { top: 120px; }
     #schemesBtn { top: 156px; }
+    #cityBtn { top: 192px; }
+    .crow { display: flex; justify-content: space-between; gap: 10px; padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.07); }
+    .crow b { font-weight: 600; }
+    .cdim { opacity: 0.6; font-weight: 400; }
+    .chint { opacity: 0.7; font-size: 12px; margin: 8px 0; }
+    #cityBuildings { margin-top: 10px; display: flex; flex-direction: column; gap: 8px; }
+    .cbld { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); border-radius: 6px; padding: 7px 10px; }
+    .cbhead { display: flex; justify-content: space-between; gap: 8px; margin-bottom: 5px; }
+    .cbar { height: 8px; background: rgba(0,0,0,0.55); border: 1px solid rgba(255,255,255,0.25); border-radius: 4px; overflow: hidden; }
+    .cfill { height: 100%; background: #59ff73; }
+    .cbsub { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-top: 5px; font-size: 12px; opacity: 0.9; }
+    .cbsub button { background: rgba(255,213,74,0.2); color: #ffd54a; border: 1px solid rgba(255,213,74,0.5); border-radius: 5px; padding: 3px 10px; cursor: pointer; font-size: 12px; }
+    .cbsub button:disabled { opacity: 0.35; cursor: default; }
     #labels { position: fixed; inset: 0; pointer-events: none; z-index: 11; overflow: hidden; }
     .blabel { position: absolute; transform: translate(-50%, -100%); background: rgba(8, 10, 14, 0.82); border: 1px solid #fff; border-left-width: 4px; border-radius: 6px; color: #fff; font: 12px 'Segoe UI', Arial, sans-serif; padding: 4px 8px; white-space: nowrap; text-align: left; line-height: 1.45; }
     .panel {
@@ -269,7 +282,14 @@
   <button id="viewBtn" class="topbtn" title="Просмотр рамок построек (V)">Просмотр (V)</button>
   <button id="framesBtn" class="topbtn active" title="Показать или скрыть рамки построек">Рамки: вкл</button>
   <button id="blocksBtn" class="topbtn" title="Выбор блоков (E)">Блоки</button>
+  <button id="cityBtn" class="topbtn" title="Панель города (C)">Город (C)</button>
   <button id="schemesBtn" class="topbtn" title="Постройки из schemes (T)">Постройки</button>
+  <div id="cityPanel" class="panel wide">
+    <h3>Город <span id="cityDay" class="cdim"></span></h3>
+    <div id="cityStats"></div>
+    <h3 style="margin-top:12px">Постройки</h3>
+    <div id="cityBuildings"></div>
+  </div>
   <div id="picker" class="panel">
     <h3>Блоки песочницы</h3>
     <div class="hint">Клик — положить в выбранный слот (1–9) · E — закрыть</div>

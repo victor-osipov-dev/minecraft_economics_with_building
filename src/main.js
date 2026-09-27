@@ -37,6 +37,11 @@ import {
 import { World, WORLD_H } from "./world.js";
 import { HALF, HEIGHT, moveAxis, updateGrounded, clampPlayerToWorld } from "./physics.js";
 import { parseSchematicFile, pasteSchematic, rotatePlan } from "./schematic.js";
+import { TYPES, resolveType, instStats } from "./city/buildingTypes.js";
+import {
+  newCityState, buildCostFor, addBuilding, charge,
+  damageAt, repair, repairPrice, tick,
+} from "./city/city.js";
 import schemesIndex from "../schemes/index.json";
 
 // ---------- engine / scene ----------
@@ -215,7 +220,10 @@ function importSchematicBytes(bytes, fileName) {
     const cx = Math.round(player.x);
     const cz = Math.round(player.z);
     const res = placeSchematic(plan, cx, cz, 1, true);
-    recordBuilding({
+    // Импорт из файла начинает новый город: старая экономика сброшена,
+    // привезённая постройка регистрируется бесплатно.
+    city = newCityState();
+    const rec = recordBuilding({
       name: fileName,
       file: fileName,
       x0: cx - Math.floor(plan.W / 2),
@@ -225,6 +233,7 @@ function importSchematicBytes(bytes, fileName) {
       rot: 0,
       placed: res.placed,
     });
+    registerRecord(rec, resolveType({ file: fileName, name: fileName }));
     showMsg(`Схема «${fileName}» (${plan.format}) · поставлено ${res.placed} блоков · ${plan.W}×${plan.H}×${plan.L}`);
   } catch (err) {
     console.error("Не удалось загрузить схему", err);
@@ -565,6 +574,145 @@ function clearBuildings() {
   buildings.length = 0;
 }
 
+// ---------- город: экономика поверх построек ----------
+let city = newCityState();
+if (typeof window !== "undefined") window.CITY = { get state() { return city; } };
+
+const cityBtn = document.getElementById("cityBtn");
+const cityPanelEl = document.getElementById("cityPanel");
+const cityStatsEl = document.getElementById("cityStats");
+const cityBuildingsEl = document.getElementById("cityBuildings");
+
+function schemeMetaFor(file) {
+  return allSchemeItems.find((i) => i.file === file) || null;
+}
+
+function schemeBuildCost(item, dims) {
+  const typeId = resolveType(item || {});
+  const W = Number(dims.W), H = Number(dims.H), L = Number(dims.L);
+  if (!Number.isFinite(W) || !Number.isFinite(H) || !Number.isFinite(L)) return null;
+  return { typeId, cost: buildCostFor(typeId, { W, H, L }) };
+}
+
+// Привязка рамки к симуляции + строка города в метку рамки.
+function registerRecord(rec, typeId) {
+  const inst = addBuilding(city, {
+    typeId,
+    name: rec.name,
+    dims: { W: rec.W, H: rec.H, L: rec.L },
+    pos: { x0: rec.x0, y0: rec.y0, z0: rec.z0 },
+    placedBlocks: rec.placed,
+  });
+  rec.cityId = inst.id;
+  rec.labelBase = rec.label.innerHTML;
+  refreshRecordLabel(rec);
+  return inst;
+}
+
+function cityInstFor(rec) {
+  if (!rec.cityId) return null;
+  return city.buildings.find((b) => b.id === rec.cityId) || null;
+}
+
+function refreshRecordLabel(rec) {
+  if (rec.labelBase == null) rec.labelBase = rec.label.innerHTML;
+  const inst = cityInstFor(rec);
+  if (!inst) {
+    rec.label.innerHTML = rec.labelBase;
+    return;
+  }
+  const t = TYPES[inst.typeId];
+  const hp = Math.round(inst.health);
+  rec.label.innerHTML = rec.labelBase +
+    `<br><span style="color:${rec.css}">[${t ? t.name : inst.typeId}] ` +
+    `состояние ${hp}% · работники ${inst.workers}/${inst.stats.jobs}</span>`;
+}
+
+function findRecordAt(x, y, z) {
+  for (let i = buildings.length - 1; i >= 0; i--) {
+    const b = buildings[i];
+    if (x >= b.x0 && x < b.x0 + b.W && y >= b.y0 && y < b.y0 + b.H && z >= b.z0 && z < b.z0 + b.L) {
+      return b;
+    }
+  }
+  return null;
+}
+
+function toggleCity() {
+  cityPanelEl.classList.toggle("show");
+  if (cityPanelEl.classList.contains("show")) {
+    renderCity();
+    if (document.pointerLockElement) document.exitPointerLock();
+  }
+}
+
+function fmtMoney(v) {
+  const r = Math.round(v * 100) / 100;
+  return (r < 0 ? "−$" : "$") + Math.abs(r).toLocaleString("ru-RU");
+}
+
+function renderCity() {
+  document.getElementById("cityDay").textContent = `· день ${city.day}`;
+  const last = city.last;
+  const workers = city.buildings.reduce((a, b) => a + b.workers, 0);
+  const jobsCap = last ? last.jobsTotal : city.buildings.reduce((a, b) => a + b.stats.jobs, 0);
+  const rows = [
+    ["Деньги", `${fmtMoney(city.money)} <span class="cdim">(${(last && last.income >= 0 ? "+" : "") + (last ? last.income : 0)} / −${last ? last.upkeep : 0} в день)</span>`],
+    ["День", `${city.day}`],
+    ["Жители", `${city.population} <span class="cdim">(${last && last.migrants >= 0 ? "+" : ""}${last ? last.migrants : 0}/день)</span>`],
+    ["Счастье", `${city.happiness}%`],
+    ["Жильё", `${city.population} / ${last ? last.housingCap : 0}`],
+    ["Работы", `${workers} / ${jobsCap}`],
+    ["Еда", `${city.food}`],
+    ["Энергия", `${city.energy}`],
+    ["Загрязнение", `${city.pollution}`],
+  ];
+  cityStatsEl.innerHTML = rows.map(([k, v]) =>
+    `<div class="crow"><span>${k}</span><b>${v}</b></div>`).join("");
+  if (city.buildings.length === 0) {
+    cityBuildingsEl.innerHTML = `<div class="chint">Построек пока нет — поставьте схему (T). Каждая постройка стоит денег.</div>`;
+    return;
+  }
+  cityBuildingsEl.innerHTML = "";
+  for (const inst of city.buildings) {
+    const t = TYPES[inst.typeId];
+    const cost = repairPrice(inst);
+    const can = inst.health < 100 && city.money >= cost;
+    const row = document.createElement("div");
+    row.className = "cbld";
+    const hp = Math.round(inst.health);
+    row.innerHTML =
+      `<div class="cbhead"><b>${inst.name}</b><span class="cdim">${t ? t.name : inst.typeId}</span></div>` +
+      `<div class="cbar"><div class="cfill" style="width:${hp}%;${hp < 35 ? "background:#ff5952;" : hp < 70 ? "background:#ffd94d;" : ""}"></div></div>` +
+      `<div class="cbsub"><span>состояние ${hp}% · работники ${inst.workers}/${inst.stats.jobs}</span>` +
+      `<button data-repair="${inst.id}"${can ? "" : " disabled"}>Ремонт ${inst.health >= 100 ? "" : fmtMoney(cost)}</button></div>`;
+    cityBuildingsEl.appendChild(row);
+  }
+}
+
+cityBuildingsEl.addEventListener("click", (e) => {
+  const btn = e.target.closest("[data-repair]");
+  if (!btn || btn.disabled) return;
+  const res = repair(city, btn.dataset.repair);
+  if (res.ok) {
+    showMsg(`Отремонтировано за ${fmtMoney(res.cost)}`);
+    const rec = buildings.find((b) => b.cityId === btn.dataset.repair);
+    if (rec) refreshRecordLabel(rec);
+  } else {
+    showMsg("Не хватает денег на ремонт");
+  }
+  renderCity();
+});
+
+cityBtn.addEventListener("click", toggleCity);
+
+function tickCity() {
+  tick(city);
+  for (const rec of buildings) refreshRecordLabel(rec);
+  if (cityPanelEl.classList.contains("show")) renderCity();
+}
+setInterval(() => { if (mapReady) tickCity(); }, 5000);
+
 // Проекция инфо-меток над постройками (только в просмотре).
 // Project умножает на размеры переданного viewport, а camera.viewport
 // нормализован (0..1) — поэтому проецируем в пиксельный viewport.
@@ -775,7 +923,12 @@ function renderSchemeTiles() {
     tags.className = "tt";
     tags.textContent = item.tags.slice(0, 3).map((t) => "#" + t).join(" ");
     tile.append(nm, dim, tags);
-    tile.title = `${item.name} · ${item.w}×${item.h}×${item.l} · блоков: ${item.blocks}`;
+    {
+      const q = schemeBuildCost(item, { W: item.w, H: item.h, L: item.l });
+      const t = q ? TYPES[q.typeId] : null;
+      tile.title = `${item.name} · ${item.w}×${item.h}×${item.l} · блоков: ${item.blocks}` +
+        (t ? ` · ${t.name} · $${q.cost}` : "");
+    }
     tile.addEventListener("click", () => {
       const url = schemeUrlByFile[item.file];
       if (!url) {
@@ -880,10 +1033,19 @@ function placePreview() {
   try {
     const r = previewPlan.rotated;
     const minY = r.minY ?? previewPlan.plan.minY ?? 0;
+    // Город: стройка стоит денег — проверяем ДО вставки блоков.
+    const item = schemeMetaFor(selectedSchemeFile);
+    const quote = schemeBuildCost(item, r);
+    const typeId = quote ? quote.typeId : "generic";
+    if (quote && city.money < quote.cost) {
+      showMsg(`Не хватает денег: нужно ${fmtMoney(quote.cost)}, есть ${fmtMoney(city.money)} (город — C)`);
+      return;
+    }
     const res = pasteSchematic(world, r, previewAnchor.x, previewAnchor.z, previewAnchor.y, { clear: false });
+    if (quote) charge(city, quote.cost);
     world.flushMeshes(scene, blockMat, cutoutMat, alphaMat, torchMat);
     // Рамка = фактические границы вставки (pasteSchematic центрирует так же).
-    recordBuilding({
+    const rec = recordBuilding({
       name: previewPlan.name,
       file: selectedSchemeFile,
       x0: previewAnchor.x - Math.floor(r.W / 2),
@@ -893,7 +1055,9 @@ function placePreview() {
       rot: previewPlan.rot,
       placed: res.placed,
     });
-    showMsg(`Поставлено ${res.placed} блоков · рамка — в просмотре (V)`);
+    registerRecord(rec, typeId);
+    const t = TYPES[typeId];
+    showMsg(`Поставлено ${res.placed} блоков · ${t ? t.name : typeId} · −${fmtMoney(quote ? quote.cost : 0)}`);
   } catch (err) {
     console.error("Не удалось поставить схему", err);
     showMsg(`Ошибка: ${err.message}`);
@@ -914,6 +1078,12 @@ window.addEventListener("keydown", (e) => {
   }
   if (e.code === "KeyV" && !e.repeat) {
     setViewMode(!viewMode);
+    return;
+  }
+  if (e.code === "KeyC" && !e.repeat) {
+    const t = e.target;
+    if (t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA")) return;
+    toggleCity();
     return;
   }
   if (viewMode) return;
@@ -995,6 +1165,17 @@ function breakOne(hit) {
   if (world.getBlock(hit.x, hit.y, hit.z) !== AIR) {
     world.setBlock(hit.x, hit.y, hit.z, AIR);
     world.flushMeshes(scene, blockMat, cutoutMat, alphaMat, torchMat);
+    // Урон городу: сломанный блок бьёт по здоровью своей постройки.
+    const rec = findRecordAt(hit.x, hit.y, hit.z);
+    if (rec && rec.cityId) {
+      const inst = damageAt(city, hit.x, hit.y, hit.z);
+      if (inst) {
+        refreshRecordLabel(rec);
+        if (inst.health <= 0) {
+          showMsg(`«${inst.name}» разрушено! Ремонт — в панели города (C)`);
+        }
+      }
+    }
   }
 }
 
