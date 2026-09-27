@@ -645,7 +645,10 @@ function toggleCity() {
   cityPanelEl.classList.toggle("show");
   if (cityPanelEl.classList.contains("show")) {
     renderCity();
-    if (document.pointerLockElement) document.exitPointerLock();
+    if (document.pointerLockElement) {
+      unlockForPanel = true;
+      document.exitPointerLock();
+    }
   }
 }
 
@@ -718,13 +721,16 @@ cityPanelEl.addEventListener("click", (e) => {
 
 cityBtn.addEventListener("click", toggleCity);
 
+const pauseMenuEl = document.getElementById("pauseMenu");
+document.getElementById("resumeBtn").addEventListener("click", resumeGame);
+
 function tickCity() {
   tick(city);
   for (const rec of buildings) refreshRecordLabel(rec);
   syncResidents();
   if (cityPanelEl.classList.contains("show")) renderCity();
 }
-setInterval(() => { if (mapReady) tickCity(); }, 5000);
+setInterval(() => { if (mapReady && !paused) tickCity(); }, 5000);
 
 // ---------- визуальные жители: кружочки, не источник истины ----------
 let residents = [];
@@ -823,6 +829,27 @@ function updateBuildingLabels() {
 function closePanels() {
   pickerEl.classList.remove("show");
   schemesPanelEl.classList.remove("show");
+  cityPanelEl.classList.remove("show");
+  pauseMenuEl.classList.remove("show");
+}
+
+// Пауза: останавливает физику, жителей и тик города, показывает меню.
+// Esc в захвате отдаёт браузер (выход из lock) — меню открываем по факту
+// потери захвата, если её не заказывали панели (флаг unlockForPanel).
+let paused = false;
+let unlockForPanel = false;
+
+function setPaused(on) {
+  paused = on;
+  pauseMenuEl.classList.toggle("show", on);
+  if (on && document.pointerLockElement) document.exitPointerLock();
+}
+
+function resumeGame() {
+  setPaused(false);
+  const req = canvas.requestPointerLock?.();
+  // Chrome запрещает захват сразу после выхода по Esc (~1.2 с): ловим отказ.
+  if (req && req.catch) req.catch(() => showMsg("Подождите секунду и нажмите «Продолжить» ещё раз"));
 }
 
 function togglePicker() {
@@ -834,6 +861,7 @@ function togglePicker() {
     renderPicker();
   }
   if (pickerEl.classList.contains("show") && document.pointerLockElement) {
+    unlockForPanel = true;
     document.exitPointerLock();
   }
 }
@@ -844,7 +872,10 @@ function toggleSchemes() {
   schemesPanelEl.classList.toggle("show");
   if (schemesPanelEl.classList.contains("show")) {
     buildSchemeList();
-    if (document.pointerLockElement) document.exitPointerLock();
+    if (document.pointerLockElement) {
+      unlockForPanel = true;
+      document.exitPointerLock();
+    }
   }
 }
 
@@ -1166,6 +1197,14 @@ window.addEventListener("keydown", (e) => {
     toggleCity();
     return;
   }
+  if (e.code === "KeyP" && !e.repeat) {
+    const t = e.target;
+    if (t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA")) return;
+    if (document.pointerLockElement) document.exitPointerLock();
+    else if (paused) resumeGame();
+    else setPaused(true);
+    return;
+  }
   if (viewMode) return;
   if (e.code === "KeyE") {
     togglePicker();
@@ -1174,6 +1213,10 @@ window.addEventListener("keydown", (e) => {
   } else if (e.code === "KeyR") {
     rotatePreview();
   } else if (e.code === "Escape" && !document.pointerLockElement) {
+    if (paused) {
+      resumeGame();
+      return;
+    }
     closePanels();
     if (previewPlan) {
       cancelPreview();
@@ -1216,8 +1259,17 @@ window.addEventListener("pointerup", (e) => {
 document.addEventListener("pointerlockchange", () => {
   mouseDown = { 0: false, 2: false };
   lmbFresh = false;
-  // Курсор захвачен — вернулись в игру: меню выбора блоков/построек убираем.
-  if (document.pointerLockElement === canvas) closePanels();
+  if (document.pointerLockElement === canvas) {
+    // Курсор захвачен — вернулись в игру: меню убираем, паузу снимаем.
+    closePanels();
+    paused = false;
+  } else if (unlockForPanel) {
+    // Выход из захвата заказали панели (E/T/C) — меню паузы не показываем.
+    unlockForPanel = false;
+  } else if (mapReady) {
+    // Захват потерян сам (Esc, Alt+Tab) — это пауза.
+    setPaused(true);
+  }
 });
 document.addEventListener("contextmenu", (e) => e.preventDefault());
 document.addEventListener("mousemove", (e) => {
@@ -1414,6 +1466,7 @@ let genTimer = 0;
 scene.registerBeforeRender(() => {
   // Physics waits until the starting world is committed.
   if (!mapReady) return;
+  if (paused) return; // пауза: мир замер, рендер идёт
   const dt = Math.min(engine.getDeltaTime() / 1000, 0.05);
   const speed = flying ? FLY_SPEED : keys.shift ? SPRINT_SPEED : WALK_SPEED;
 
