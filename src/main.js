@@ -8,6 +8,7 @@ import {
   OAK_SIGN,
   ATLAS_COLS,
   ATLAS_ROWS,
+  ATLAS_WIDTH,
   createAtlas,
   TORCH_FLOOR,
   TORCH_PX,
@@ -600,6 +601,10 @@ function togglePicker() {
   if (viewMode) setViewMode(false);
   schemesPanelEl.classList.remove("show");
   pickerEl.classList.toggle("show");
+  if (pickerEl.classList.contains("show")) {
+    pickSearchEl.value = "";
+    renderPicker();
+  }
   if (pickerEl.classList.contains("show") && document.pointerLockElement) {
     document.exitPointerLock();
   }
@@ -615,19 +620,52 @@ function toggleSchemes() {
   }
 }
 
-function buildPicker() {
+const pickSearchEl = document.getElementById("pickSearch");
+// Иконки блоков — настоящие тайлы из атласа (side-текстура), а не заливка.
+let atlasUrl = null;
+function blockIconStyle(b) {
+  if (!atlasUrl) {
+    try {
+      atlasUrl = atlas.getContext().canvas.toDataURL();
+    } catch (err) {
+      atlasUrl = "";
+    }
+  }
+  const tile = b.tiles ? b.tiles.side : null;
+  if (!atlasUrl || tile == null) return null;
+  const px = 34; // размер иконки в меню
+  const scale = px / (ATLAS_WIDTH / ATLAS_COLS);
+  const col = tile % ATLAS_COLS;
+  const row = Math.floor(tile / ATLAS_COLS);
+  return (
+    `background-image:url(${atlasUrl});` +
+    `background-size:${ATLAS_COLS * px}px auto;` +
+    `background-position:-${col * px}px -${row * px}px;` +
+    `background-repeat:no-repeat;`
+  );
+}
+
+function renderPicker() {
+  const q = (pickSearchEl.value || "").trim().toLowerCase();
   pickGridEl.innerHTML = "";
   BLOCKS.forEach((b, id) => {
     if (id === AIR) return;
+    if (q && !(b.name || "").toLowerCase().includes(q)) return;
     const d = document.createElement("div");
     d.className = "pick";
     d.title = b.name;
-    const sw = document.createElement("span");
-    sw.className = "sw";
-    sw.style.background = b.color;
+    const icon = document.createElement("span");
+    const css = blockIconStyle(b);
+    if (css) {
+      icon.className = "tx";
+      icon.style.cssText = css;
+    } else {
+      icon.className = "sw";
+      icon.style.background = b.color;
+    }
     const nm = document.createElement("span");
     nm.textContent = b.name;
-    d.append(sw, nm);
+    d.append(icon, nm);
     d.addEventListener("click", () => {
       creativeSlots[creativeSel] = id;
       updateHotbar();
@@ -635,6 +673,11 @@ function buildPicker() {
     pickGridEl.appendChild(d);
   });
 }
+
+function buildPicker() {
+  renderPicker();
+}
+pickSearchEl.addEventListener("input", renderPicker);
 
 const CAT_LABELS = {
   residential: "Жилые",

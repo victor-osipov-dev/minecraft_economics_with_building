@@ -157,6 +157,9 @@
     }
     .pick:hover { border-color: #ffd54a; }
     .pick .sw { width: 16px; height: 16px; border-radius: 3px; border: 1px solid rgba(255,255,255,0.35); flex-shrink: 0; }
+    .pick .tx { width: 34px; height: 34px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.35); flex-shrink: 0; image-rendering: pixelated; background-color: rgba(0,0,0,0.35); }
+    #pickSearch { width: 100%; box-sizing: border-box; margin-bottom: 10px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; color: #eee; font: 13px 'Segoe UI', Arial, sans-serif; padding: 6px 10px; outline: none; }
+    #pickSearch:focus { border-color: #ffd54a; }
     .schemeRow {
       display: flex;
       align-items: center;
@@ -270,6 +273,7 @@
   <div id="picker" class="panel">
     <h3>Блоки песочницы</h3>
     <div class="hint">Клик — положить в выбранный слот (1–9) · E — закрыть</div>
+    <input id="pickSearch" type="text" placeholder="Поиск блока…" autocomplete="off" />
     <div id="pickGrid"></div>
   </div>
   <div id="schemesPanel" class="panel wide">
