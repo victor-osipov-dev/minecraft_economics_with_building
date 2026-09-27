@@ -41,6 +41,7 @@ export function addBuilding(state, { typeId, name, dims, pos, placedBlocks }) {
     workers: 0,
     residents: 0,
     bonus: 0,
+    active: true,
     stats,
     placedBlocks: Math.max(1, placedBlocks || 1),
   };
@@ -87,7 +88,9 @@ export function repair(state, id) {
 }
 
 const clamp = (v, a, b2) => Math.min(b2, Math.max(a, v));
-const effOf = (b) => (b.health > 0 ? b.health / 100 : 0);
+// Черновые постройки (active === false, режим построек) в симуляции не участвуют.
+const isActive = (b) => b.active !== false;
+const effOf = (b) => (!isActive(b) || !(b.health > 0) ? 0 : b.health / 100);
 
 export function tick(state) {
   // 1. Жильё и рабочие места (с учётом здоровья).
@@ -133,7 +136,8 @@ export function tick(state) {
   for (const b of state.buildings) {
     income += b.stats.income * effOf(b) * staffing * energyEff;
     // Простаивающее/разрушенное здание стоит дешевле (консервация 40%).
-    upkeep += b.stats.maintenance * (0.4 + 0.6 * effOf(b) * staffing);
+    // Черновые не стоят ничего и не приносят ничего.
+    if (isActive(b)) upkeep += b.stats.maintenance * (0.4 + 0.6 * effOf(b) * staffing);
   }
   income = Math.round(income * 100) / 100;
   upkeep = Math.round(upkeep * 100) / 100;

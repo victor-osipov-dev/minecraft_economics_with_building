@@ -47,6 +47,7 @@ export function serializeCity(city) {
       W: b.W, H: b.H, L: b.L,
       health: Math.min(100, Math.max(0, b.health)),
       placedBlocks: b.placedBlocks,
+      active: b.active !== false,
     })),
   };
 }
@@ -79,6 +80,7 @@ export function deserializeCity(data) {
       W: Math.max(1, Math.floor(b.W)), H: Math.max(1, Math.floor(b.H)), L: Math.max(1, Math.floor(b.L)),
       health: Math.min(100, Math.max(0, b.health)),
       placedBlocks: Math.max(1, Math.floor(b.placedBlocks || 1)),
+      active: b.active !== false,
     };
   });
   return st;

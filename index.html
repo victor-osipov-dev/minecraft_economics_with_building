@@ -284,14 +284,14 @@
 <body>
   <div id="hud">
     ЛКМ — ломать &middot; ПКМ — поставить &middot; 1–9 — блок: <span class="block" id="selBlock">—</span><br />
-    WASD — движение &middot; мышь — камера &middot; Space — полёт &middot; E — блоки &middot; T — постройки &middot; V — просмотр · P — пауза
+    WASD — движение &middot; мышь — камера &middot; Space — полёт &middot; E — блоки &middot; T — постройки &middot; V — подписи · P — пауза
   </div>
   <div id="hotbar"></div>
   <div id="crosshair"></div>
   <div id="msg"></div>
   <div id="labels"></div>
   <button id="loadBtn" title="Загрузить постройку из файла (.schem / .schematic / .nbt)">Загрузить схему</button>
-  <button id="viewBtn" class="topbtn" title="Просмотр рамок построек (V)">Просмотр (V)</button>
+  <button id="viewBtn" class="topbtn active" title="Подписи построек (V)">Подписи: вкл (V)</button>
   <button id="framesBtn" class="topbtn active" title="Показать или скрыть рамки построек">Рамки: вкл</button>
   <button id="blocksBtn" class="topbtn" title="Выбор блоков (E)">Блоки</button>
   <button id="cityBtn" class="topbtn" title="Панель города (C)">Город (C)</button>
@@ -322,7 +322,7 @@
     <input id="schemeSearch" type="text" placeholder="Поиск: название или #тег…" autocomplete="off" />
     <div id="schemeCats"></div>
     <div id="schemeTags"></div>
-    <div class="hint">Клик по плитке — призрак на прицеле · R — поворот · ЛКМ — поставить · Esc — отмена</div>
+    <div class="hint">Клик по плитке — призрак на прицеле · R — поворот · ЛКМ — поставить · ПКМ — отмена · Q — выйти</div>
     <div id="schemeList" class="tiles"></div>
   </div>
   <input type="file" id="schemFile" accept=".schem,.schematic,.nbt" hidden />

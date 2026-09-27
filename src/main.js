@@ -494,23 +494,14 @@ const schemeListEl = document.getElementById("schemeList");
 const labelsEl = document.getElementById("labels");
 
 // ---------- режимы: песочница (стройка) и просмотр (рамки + инфо) ----------
-let viewMode = false;
+let labelsOn = true;
 let showFrames = true;
 
-function setViewMode(on) {
-  viewMode = on;
-  document.body.classList.toggle("view", on);
-  viewBtn.textContent = on ? "Стройка (V)" : "Просмотр (V)";
+// V — просто подписи над рамками, отдельного режима нет: строить можно всегда.
+function setLabelsOn(on) {
+  labelsOn = on;
+  viewBtn.textContent = on ? "Подписи: вкл (V)" : "Подписи: выкл (V)";
   viewBtn.classList.toggle("active", on);
-  if (on) {
-    cancelPreview();
-    closePanels();
-  }
-  applyBuildingVisibility();
-  hudEl.innerHTML = on
-    ? "Просмотр &middot; рамки построек с информацией &middot; V — вернуться к стройке"
-    : defaultHud;
-  showMsg(on ? "Просмотр: рамки и информация о постройках" : "Песочница: стройте что угодно");
 }
 
 function setShowFrames(on) {
@@ -573,12 +564,10 @@ function recordBuilding({ name, file, x0, y0, z0, W, H, L, rot, placed }) {
 }
 
 function applyBuildingVisibility() {
-  // Рамки живут сами по себе (кнопка "Рамки"), от режима просмотра не зависят.
-  // Метки с информацией — только в просмотре.
+  // Рамки — кнопкой "Рамки", подписи — клавишей V, независимо друг от друга.
   for (const b of buildings) {
     b.lines.isVisible = showFrames;
     b.fill.isVisible = showFrames;
-    if (!viewMode) b.label.style.display = "none";
   }
 }
 
@@ -641,6 +630,7 @@ function refreshRecordLabel(rec) {
   const t = TYPES[inst.typeId];
   const hp = Math.round(inst.health);
   const parts = [`состояние ${hp}%`];
+  if (inst.active === false) parts.push("черновик");
   if (inst.stats.housing > 0) parts.push(`жители ${inst.residents || 0}/${inst.stats.housing}`);
   if (inst.stats.jobs > 0) parts.push(`работники ${inst.workers}/${inst.stats.jobs}`);
   rec.label.innerHTML = rec.labelBase +
@@ -708,6 +698,7 @@ function renderCity() {
     row.className = "cbld";
     const hp = Math.round(inst.health);
     const parts = [`состояние ${hp}%`];
+    if (inst.active === false) parts.push("черновик");
     if (inst.stats.housing > 0) parts.push(`жители ${inst.residents || 0}/${inst.stats.housing}`);
     if (inst.stats.jobs > 0) parts.push(`работники ${inst.workers}/${inst.stats.jobs}`);
     row.innerHTML =
@@ -838,6 +829,7 @@ function loadGame() {
       const inst = registerRecord(rec, sb.typeId);
       inst.id = sb.id;
       inst.health = sb.health;
+      inst.active = sb.active !== false;
       rec.cityId = sb.id;
       refreshRecordLabel(rec);
     }
@@ -936,8 +928,8 @@ function stepResidentMeshes(dt) {
 const projV = new BABYLON.Vector3();
 const pixelViewport = new BABYLON.Viewport(0, 0, 1, 1);
 function updateBuildingLabels() {
-  if (!viewMode || !mapReady) {
-    if (!viewMode) for (const b of buildings) b.label.style.display = "none";
+  if (!labelsOn || !mapReady) {
+    if (!labelsOn) for (const b of buildings) b.label.style.display = "none";
     return;
   }
   const w = engine.getRenderWidth();
@@ -986,7 +978,6 @@ function resumeGame() {
 }
 
 function togglePicker() {
-  if (viewMode) setViewMode(false);
   // Панели взаимоисключающие: открываем одну — остальные и пауза закрыты.
   const willShow = !pickerEl.classList.contains("show");
   closePanels();
@@ -1003,7 +994,6 @@ function togglePicker() {
 }
 
 function toggleSchemes() {
-  if (viewMode) setViewMode(false);
   const willShow = !schemesPanelEl.classList.contains("show");
   closePanels();
   setPaused(false);
@@ -1267,7 +1257,7 @@ async function selectScheme(url, name) {
     previewPlan = { plan, name, rot: 0, rotated: plan };
     closePanels();
     rebuildGhost();
-    showMsg(`${name}: ${plan.W}×${plan.H}×${plan.L} · R — поворот · ЛКМ — поставить · Esc — отмена`);
+    showMsg(`${name}: ${plan.W}×${plan.H}×${plan.L} · R — поворот · ЛКМ — поставить · ПКМ — отмена · Q — выйти`);
   } catch (err) {
     console.error("Не удалось прочитать схему", err);
     showMsg(`Ошибка схемы: ${err.message}`);
@@ -1306,10 +1296,58 @@ function rebuildGhost() {
   ghostFill.isVisible = false;
 }
 
+// Последняя постановка в режиме построек (для отмены ПКМ).
+let lastPlaced = null;
+
 function cancelPreview() {
+  if (previewPlan) activatePending();
   previewPlan = null;
   previewAnchor = null;
+  lastPlaced = null;
   clearGhost();
+}
+
+// Выход из режима построек: черновые здания оживают и входят в статистику.
+function activatePending() {
+  let n = 0;
+  for (const b of city.buildings) {
+    if (b.active === false) {
+      b.active = true;
+      n++;
+    }
+  }
+  lastPlaced = null;
+  for (const rec of buildings) refreshRecordLabel(rec);
+  if (cityPanelEl.classList.contains("show")) renderCity();
+  if (n > 0) showMsg(`Постройки активированы: ${n} (уже влияют на город)`);
+}
+
+// ПКМ в режиме построек: снести последнюю постановку целиком, вернуть деньги.
+// Убираем только клетки, совпадающие с планом, — правки игрока не трогаем.
+function undoLastPlaced() {
+  if (!previewPlan) return;
+  const u = lastPlaced;
+  if (!u) {
+    showMsg("Нечего отменять (Q — выйти из режима построек)");
+    return;
+  }
+  lastPlaced = null;
+  let cleared = 0;
+  for (const [x, y, z, id] of u.cells) {
+    if (world.getBlock(x, y, z) === id && world.setBlock(x, y, z, AIR)) cleared++;
+  }
+  world.flushMeshes(scene, blockMat, cutoutMat, alphaMat, torchMat);
+  const ri = buildings.findIndex((b) => b === u.rec);
+  if (ri >= 0) buildings.splice(ri, 1);
+  u.rec.lines.dispose();
+  u.rec.fill.dispose();
+  u.rec.label.remove();
+  const ci = city.buildings.findIndex((b) => b.id === u.instId);
+  if (ci >= 0) city.buildings.splice(ci, 1);
+  if (u.cost > 0) city.money = Math.round((city.money + u.cost) * 100) / 100;
+  applyBuildingVisibility();
+  if (cityPanelEl.classList.contains("show")) renderCity();
+  showMsg(`Отменено: «${u.name}» · убрано ${cleared} блоков · возврат ${fmtMoney(u.cost)}`);
 }
 
 function rotatePreview() {
@@ -1318,7 +1356,7 @@ function rotatePreview() {
   previewPlan.rotated = rotatePlan(previewPlan.plan, previewPlan.rot);
   rebuildGhost();
   const r = previewPlan.rotated;
-  showMsg(`${previewPlan.name}: поворот ${previewPlan.rot * 90}° · ${r.W}×${r.H}×${r.L} · ЛКМ — поставить`);
+  showMsg(`${previewPlan.name}: поворот ${previewPlan.rot * 90}° · ${r.W}×${r.H}×${r.L} · ЛКМ — поставить · ПКМ — отмена · Q — выйти`);
 }
 
 function placePreview() {
@@ -1351,16 +1389,27 @@ function placePreview() {
       rot: previewPlan.rot,
       placed: res.placed,
     });
-    registerRecord(rec, typeId);
+    const inst = registerRecord(rec, typeId);
+    // Черновая постройка: деньги списаны, но в статистику войдёт при выходе
+    // из режима (Q). До тех пор её можно отменить ПКМ целиком.
+    inst.active = false;
+    refreshRecordLabel(rec);
+    const ax0 = previewAnchor.x - Math.floor(r.W / 2);
+    const az0 = previewAnchor.z - Math.floor(r.L / 2);
+    const ay0 = previewAnchor.y - minY;
+    lastPlaced = {
+      rec, instId: inst.id, cost: quote ? quote.cost : 0, name: previewPlan.name,
+      cells: r.blocks.map(([x, y, z, id]) => [ax0 + x, ay0 + y, az0 + z, id]),
+    };
     const t = TYPES[typeId];
-    showMsg(`Поставлено ${res.placed} блоков · ${t ? t.name : typeId} · −${fmtMoney(quote ? quote.cost : 0)}`);
+    showMsg(`Поставлено ${res.placed} блоков · ${t ? t.name : typeId} · −${fmtMoney(quote ? quote.cost : 0)} · черновик (ПКМ — отмена, Q — выйти)`);
   } catch (err) {
     console.error("Не удалось поставить схему", err);
     showMsg(`Ошибка: ${err.message}`);
   }
 }
 
-viewBtn.addEventListener("click", () => setViewMode(!viewMode));
+viewBtn.addEventListener("click", () => setLabelsOn(!labelsOn));
 framesBtn.addEventListener("click", () => setShowFrames(!showFrames));
 blocksBtn.addEventListener("click", togglePicker);
 schemesBtn.addEventListener("click", toggleSchemes);
@@ -1368,13 +1417,17 @@ buildPicker();
 
 window.addEventListener("keydown", (e) => {
   if (isTyping(e) && e.code !== "Escape") return;
-  if (e.code === "Tab") {
-    e.preventDefault();
-    setViewMode(!viewMode);
+  if (e.code === "KeyV" && !e.repeat) {
+    setLabelsOn(!labelsOn);
     return;
   }
-  if (e.code === "KeyV" && !e.repeat) {
-    setViewMode(!viewMode);
+  if (e.code === "KeyQ" && !e.repeat) {
+    // Выход из режима построек (в захвате Esc занят браузером).
+    if (previewPlan) {
+      const n = city.buildings.filter((b) => b.active === false).length;
+      cancelPreview();
+      if (n === 0) showMsg("Режим построек выключен");
+    }
     return;
   }
   if (e.code === "KeyC" && !e.repeat) {
@@ -1391,7 +1444,6 @@ window.addEventListener("keydown", (e) => {
     else setPaused(true);
     return;
   }
-  if (viewMode) return;
   if (e.code === "KeyE") {
     togglePicker();
   } else if (e.code === "KeyT") {
@@ -1405,8 +1457,9 @@ window.addEventListener("keydown", (e) => {
     }
     closePanels();
     if (previewPlan) {
+      const n = city.buildings.filter((b) => b.active === false).length;
       cancelPreview();
-      showMsg("Предпросмотр отменён");
+      if (n === 0) showMsg("Предпросмотр отменён");
     }
   } else if (e.code === "Space" && !e.repeat) {
     const now = performance.now();
@@ -1426,9 +1479,10 @@ canvas.addEventListener("pointerdown", (e) => {
     if (req && req.catch) req.catch(() => {});
     return;
   }
-  if (viewMode) return; // в просмотре стройка отключена
+  // Режим построек: ЛКМ — поставить, ПКМ — отменить последнюю.
   if (previewPlan) {
     if (e.button === 0) placePreview();
+    else if (e.button === 2) undoLastPlaced();
     return;
   }
   if (e.button === 0) {
@@ -1730,7 +1784,7 @@ scene.registerBeforeRender(() => {
   }
 
   // ---- ghost preview for schemes (long reach) ----
-  if (!viewMode && previewPlan && ghostLines && ghostFill) {
+  if (previewPlan && ghostLines && ghostFill) {
     const far = raycast(camera.position.x, camera.position.y, camera.position.z, rayDir.x, rayDir.y, rayDir.z, 120);
     if (far) {
       previewAnchor = { x: far.x + far.nx, y: far.y + far.ny, z: far.z + far.nz };
@@ -1751,7 +1805,7 @@ scene.registerBeforeRender(() => {
   // ---- breaking (LMB): один клик — один блок, зажатие — очередь ----
   // При активном предпросмотре схемы ЛКМ ставит её, а не ломает.
   // В просмотре ломание отключено.
-  if (!viewMode && locked && lastHit && mouseDown[0] && !previewPlan) {
+  if (locked && lastHit && mouseDown[0] && !previewPlan) {
     if (lmbFresh) {
       lmbFresh = false;
       breakOne(lastHit);
