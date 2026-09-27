@@ -642,13 +642,15 @@ function findRecordAt(x, y, z) {
 }
 
 function toggleCity() {
-  cityPanelEl.classList.toggle("show");
-  if (cityPanelEl.classList.contains("show")) {
-    renderCity();
-    if (document.pointerLockElement) {
-      unlockForPanel = true;
-      document.exitPointerLock();
-    }
+  const willShow = !cityPanelEl.classList.contains("show");
+  closePanels();
+  setPaused(false);
+  if (!willShow) return;
+  cityPanelEl.classList.add("show");
+  renderCity();
+  if (document.pointerLockElement) {
+    unlockForPanel = true;
+    document.exitPointerLock();
   }
 }
 
@@ -841,6 +843,7 @@ let unlockForPanel = false;
 
 function setPaused(on) {
   paused = on;
+  if (on) closePanels(); // пауза тоже ни с кем не делит экран
   pauseMenuEl.classList.toggle("show", on);
   if (on && document.pointerLockElement) document.exitPointerLock();
 }
@@ -854,13 +857,15 @@ function resumeGame() {
 
 function togglePicker() {
   if (viewMode) setViewMode(false);
-  schemesPanelEl.classList.remove("show");
-  pickerEl.classList.toggle("show");
-  if (pickerEl.classList.contains("show")) {
-    pickSearchEl.value = "";
-    renderPicker();
-  }
-  if (pickerEl.classList.contains("show") && document.pointerLockElement) {
+  // Панели взаимоисключающие: открываем одну — остальные и пауза закрыты.
+  const willShow = !pickerEl.classList.contains("show");
+  closePanels();
+  setPaused(false);
+  if (!willShow) return;
+  pickerEl.classList.add("show");
+  pickSearchEl.value = "";
+  renderPicker();
+  if (document.pointerLockElement) {
     unlockForPanel = true;
     document.exitPointerLock();
   }
@@ -868,14 +873,15 @@ function togglePicker() {
 
 function toggleSchemes() {
   if (viewMode) setViewMode(false);
-  pickerEl.classList.remove("show");
-  schemesPanelEl.classList.toggle("show");
-  if (schemesPanelEl.classList.contains("show")) {
-    buildSchemeList();
-    if (document.pointerLockElement) {
-      unlockForPanel = true;
-      document.exitPointerLock();
-    }
+  const willShow = !schemesPanelEl.classList.contains("show");
+  closePanels();
+  setPaused(false);
+  if (!willShow) return;
+  schemesPanelEl.classList.add("show");
+  buildSchemeList();
+  if (document.pointerLockElement) {
+    unlockForPanel = true;
+    document.exitPointerLock();
   }
 }
 
