@@ -847,10 +847,20 @@ function loadGame() {
   refreshSaveInfo();
 }
 
+// Живое обновление серости плиток без перестройки списка (скролл не прыгает).
+function refreshTileFunds() {
+  if (!schemesPanelEl.classList.contains("show")) return;
+  for (const tile of schemeListEl.children) {
+    const cost = Number(tile.dataset.cost);
+    tile.classList.toggle("poor", tile.dataset.cost !== "" && cost > city.money);
+  }
+}
+
 function tickCity() {
   tick(city);
   for (const rec of buildings) refreshRecordLabel(rec);
   syncResidents();
+  refreshTileFunds();
   if (cityPanelEl.classList.contains("show")) renderCity();
 }
 setInterval(() => { if (mapReady && !paused) tickCity(); }, 5000);
@@ -1215,10 +1225,19 @@ function renderSchemeTiles() {
       tile.title = `${item.name} · ${item.w}×${item.h}×${item.l} · блоков: ${item.blocks}`;
     }
     tile.append(nm, dim, info);
+    tile.dataset.file = item.file;
+    // Недоступные по деньгам — серые; подсветка живая (см. refreshTileFunds).
+    tile.dataset.cost = q ? String(q.cost) : "";
+    if (q && q.cost > city.money) tile.classList.add("poor");
     tile.addEventListener("click", () => {
       const url = schemeUrlByFile[item.file];
       if (!url) {
         showMsg("Файл не найден в сборке");
+        return;
+      }
+      const live = schemeBuildCost(item, { W: item.w, H: item.h, L: item.l });
+      if (live && live.cost > city.money) {
+        showMsg(`Не хватает денег: нужно ${fmtMoney(live.cost)}, есть ${fmtMoney(city.money)}`);
         return;
       }
       selectedSchemeFile = item.file;
@@ -1346,6 +1365,7 @@ function undoLastPlaced() {
   if (ci >= 0) city.buildings.splice(ci, 1);
   if (u.cost > 0) city.money = Math.round((city.money + u.cost) * 100) / 100;
   applyBuildingVisibility();
+  refreshTileFunds();
   if (cityPanelEl.classList.contains("show")) renderCity();
   showMsg(`Отменено: «${u.name}» · убрано ${cleared} блоков · возврат ${fmtMoney(u.cost)}`);
 }
@@ -1402,6 +1422,7 @@ function placePreview() {
       cells: r.blocks.map(([x, y, z, id]) => [ax0 + x, ay0 + y, az0 + z, id]),
     };
     const t = TYPES[typeId];
+    refreshTileFunds();
     showMsg(`Поставлено ${res.placed} блоков · ${t ? t.name : typeId} · −${fmtMoney(quote ? quote.cost : 0)} · черновик (ПКМ — отмена, Q — выйти)`);
   } catch (err) {
     console.error("Не удалось поставить схему", err);
