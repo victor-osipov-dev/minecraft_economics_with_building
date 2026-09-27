@@ -1216,6 +1216,8 @@ window.addEventListener("pointerup", (e) => {
 document.addEventListener("pointerlockchange", () => {
   mouseDown = { 0: false, 2: false };
   lmbFresh = false;
+  // Курсор захвачен — вернулись в игру: меню выбора блоков/построек убираем.
+  if (document.pointerLockElement === canvas) closePanels();
 });
 document.addEventListener("contextmenu", (e) => e.preventDefault());
 document.addEventListener("mousemove", (e) => {
