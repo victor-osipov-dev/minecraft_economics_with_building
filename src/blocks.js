@@ -67,7 +67,7 @@ const T = {
   enderChest: { up: 16, side: 16, down: 16 },
   cobweb: { up: 17, side: 17, down: 17 },
   cyanTerracotta: { up: 18, side: 18, down: 18 },
-  grass: { up: 19, side: 19, down: 6 },
+  grass: { up: 53, side: 19, down: 6 },
   hopper: { up: 20, side: 20, down: 20 },
   glass: { up: 21, side: 21, down: 21 },
   glassPane: { up: 22, side: 22, down: 22 },
@@ -214,9 +214,10 @@ export const BLOCKS = [
 
 const TILE = 64;
 export const ATLAS_COLS = 4;
-// Тайлы 46..49 (верх/бок нажимных плит) живут за пределами BLOCKS, поэтому
-// высота атласа считается от максимального индекса тайла, а не от числа блоков.
-const MAX_TILE_INDEX = 52;
+// Тайлы 46..53 (верх/бок нажимных плит, верх травы) живут за пределами
+// BLOCKS, поэтому высота атласа считается от максимального индекса тайла,
+// а не от числа блоков.
+const MAX_TILE_INDEX = 53;
 export const ATLAS_ROWS = Math.ceil((MAX_TILE_INDEX + 1) / ATLAS_COLS);
 // Keep the physical texture dimensions in lockstep with the UV grid.  A
 // 1024px square with 4x12 UVs would sample only the top-left quarter of
@@ -454,6 +455,17 @@ function paintGrass(ctx, ox, oy) {
   ctx.fillStyle = "#75964e";
   for (let i = 0; i < 12; i++) {
     ctx.fillRect(ox + Math.random() * TILE, oy + 12 + Math.random() * 8, 2, 4);
+  }
+}
+
+// Верх травяного блока как в майнкрафте: сплошная ровная зелень без земли.
+function paintGrassTop(ctx, ox, oy) {
+  ctx.fillStyle = "#668744";
+  ctx.fillRect(ox, oy, TILE, TILE);
+  noiseFill(ctx, ox, oy, [102, 135, 68], 34, 1.5);
+  ctx.fillStyle = "rgba(70,95,45,0.8)";
+  for (let i = 0; i < 12; i++) {
+    ctx.fillRect(ox + (Math.random() * TILE) | 0, oy + (Math.random() * TILE) | 0, 3, 2);
   }
 }
 
@@ -843,6 +855,7 @@ export function createAtlas(scene) {
   paintPlateSide(ctx, 128, 768, "#7a562e"); // 50: боковина кнопки
   paintBedTop(ctx, 192, 768); // 51: верх кровати
   paintBedSide(ctx, 0, 832); // 52: бок кровати
+  paintGrassTop(ctx, 64, 832); // 53: верх травы
   dt.update(false);
   dt.hasAlpha = true;
   dt.wrapU = BABYLON.Texture.CLAMP_ADDRESSMODE;
