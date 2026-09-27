@@ -45,6 +45,9 @@ import {
 import {
   createResident, assignTarget, stepResidents, desiredAgents,
 } from "./city/residents.js";
+import {
+  SAVE_VERSION, serializeWorld, serializeCity, parseSave,
+} from "./city/save.js";
 import schemesIndex from "../schemes/index.json";
 
 // ---------- engine / scene ----------
@@ -725,6 +728,115 @@ cityBtn.addEventListener("click", toggleCity);
 
 const pauseMenuEl = document.getElementById("pauseMenu");
 document.getElementById("resumeBtn").addEventListener("click", resumeGame);
+document.getElementById("saveBtn").addEventListener("click", saveGame);
+document.getElementById("loadSaveBtn").addEventListener("click", loadGame);
+
+// ---------- сохранение/загрузка (этап 24): город отдельно от блоков ----------
+const SAVE_KEY = "babylon-city-save-v1";
+
+function refreshSaveInfo() {
+  const el = document.getElementById("saveInfo");
+  if (!el) return;
+  try {
+    const raw = localStorage.getItem(SAVE_KEY);
+    if (!raw) {
+      el.textContent = "Сохранений пока нет";
+      return;
+    }
+    el.textContent = "Сохранение: " + new Date(JSON.parse(raw).savedAt || 0).toLocaleString("ru-RU");
+  } catch (e) {
+    el.textContent = "Сохранение битое";
+  }
+}
+
+function saveGame() {
+  try {
+    const data = {
+      v: SAVE_VERSION,
+      savedAt: Date.now(),
+      player: { x: player.x, y: player.y, z: player.z },
+      city: serializeCity(city),
+      chunks: serializeWorld(world),
+    };
+    const json = JSON.stringify(data);
+    localStorage.setItem(SAVE_KEY, json);
+    showMsg(`Сохранено: день ${city.day}, построек ${city.buildings.length}, ${(json.length / 1024).toFixed(0)} КБ`);
+  } catch (e) {
+    console.error(e);
+    showMsg("Не сохранилось (переполнено?): " + (e.message || e));
+  }
+  refreshSaveInfo();
+}
+
+function loadGame() {
+  let parsed;
+  try {
+    const raw = localStorage.getItem(SAVE_KEY);
+    if (!raw) {
+      showMsg("Сохранений нет");
+      return;
+    }
+    parsed = parseSave(raw);
+  } catch (e) {
+    showMsg("Загрузка: " + (e.message || e));
+    return;
+  }
+  try {
+    world.clear();
+    clearBuildings();
+    nextBuildingId = 1;
+    city = newCityState();
+    Object.assign(city, {
+      money: parsed.city.money, population: parsed.city.population,
+      food: parsed.city.food, energy: parsed.city.energy,
+      happiness: parsed.city.happiness, pollution: parsed.city.pollution,
+      day: parsed.city.day, nextId: 1, last: parsed.city.last,
+    });
+    for (const { key, cells } of parsed.chunks) {
+      const [cx, cy, cz] = key.split(",").map(Number);
+      for (const cell of cells) {
+        const idx = cell[0], id = cell[1], s = cell[2] || 0;
+        world.setBlock(
+          cx * 16 + (idx % 16),
+          cy * 16 + Math.floor(idx / 256),
+          cz * 16 + (Math.floor(idx / 16) % 16),
+          id, s
+        );
+      }
+    }
+    respawnPoint = { x: parsed.player.x, y: parsed.player.y, z: parsed.player.z };
+    player.x = respawnPoint.x;
+    player.y = respawnPoint.y;
+    player.z = respawnPoint.z;
+    player.vy = 0;
+    player.grounded = false;
+    world.ensureFlatAround(player.x, player.z);
+    world.flushMeshes(scene, blockMat, cutoutMat, alphaMat, torchMat);
+    for (const sb of parsed.city._buildings) {
+      const rec = recordBuilding({
+        name: sb.name, file: "",
+        x0: sb.x0, y0: sb.y0, z0: sb.z0, W: sb.W, H: sb.H, L: sb.L,
+        rot: 0, placed: sb.placedBlocks,
+      });
+      const inst = registerRecord(rec, sb.typeId);
+      inst.id = sb.id;
+      inst.health = sb.health;
+      rec.cityId = sb.id;
+      refreshRecordLabel(rec);
+    }
+    city.nextId = parsed.city.nextId;
+    resetMapTransientState();
+    mapReady = true;
+    camera.position.set(player.x, player.y + EYE, player.z);
+    syncResidents();
+    closePanels();
+    showMsg(`Загружено: день ${city.day}, построек ${city.buildings.length}`);
+  } catch (e) {
+    console.error(e);
+    showMsg("Загрузка не удалась: " + (e.message || e));
+  }
+  refreshSaveInfo();
+}
 
 function tickCity() {
   tick(city);
@@ -845,6 +957,7 @@ function setPaused(on) {
   paused = on;
   if (on) closePanels(); // пауза тоже ни с кем не делит экран
   pauseMenuEl.classList.toggle("show", on);
+  if (on) refreshSaveInfo();
   if (on && document.pointerLockElement) document.exitPointerLock();
 }
 

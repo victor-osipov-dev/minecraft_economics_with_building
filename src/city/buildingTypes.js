@@ -22,7 +22,7 @@ export const TYPES = {
     name: "Магазин", desc: "Рабочие места, доход и немного еды",
     buildCost: 800, maintenance: 4,
     housing: 0, jobs: 6,
-    foodProd: 4, energyProd: 0, energyCons: 3,
+    foodProd: 6, energyProd: 0, energyCons: 3,
     income: 30, happiness: 1, entertainment: 1, safety: 0, pollution: 0,
   },
   office: {
@@ -37,7 +37,7 @@ export const TYPES = {
     buildCost: 2000, maintenance: 10,
     housing: 0, jobs: 20,
     foodProd: 0, energyProd: 0, energyCons: 12,
-    income: 90, happiness: -1, entertainment: 0, safety: 0, pollution: 3,
+    income: 90, happiness: -1, entertainment: 0, safety: 0, pollution: 2,
   },
   fishery: {
     name: "Рыбное хозяйство", desc: "Еда для города",
@@ -57,7 +57,7 @@ export const TYPES = {
     name: "Электростанция", desc: "Энергия для города",
     buildCost: 1500, maintenance: 8,
     housing: 0, jobs: 6,
-    foodProd: 0, energyProd: 40, energyCons: 0,
+    foodProd: 0, energyProd: 80, energyCons: 0,
     income: 0, happiness: -1, entertainment: 0, safety: 0, pollution: 1,
   },
   park: {

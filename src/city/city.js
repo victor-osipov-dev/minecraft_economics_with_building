@@ -131,7 +131,8 @@ export function tick(state) {
   let income = 0, upkeep = 0;
   for (const b of state.buildings) {
     income += b.stats.income * effOf(b) * staffing * energyEff;
-    upkeep += b.stats.maintenance;
+    // Простаивающее/разрушенное здание стоит дешевле (консервация 40%).
+    upkeep += b.stats.maintenance * (0.4 + 0.6 * effOf(b) * staffing);
   }
   income = Math.round(income * 100) / 100;
   upkeep = Math.round(upkeep * 100) / 100;
@@ -197,7 +198,7 @@ export function tick(state) {
   // 11. Загрязнение: выбросы − естественное рассеивание.
   let emission = 0;
   for (const b of state.buildings) emission += b.stats.pollution * effOf(b);
-  state.pollution = clamp(Math.round((state.pollution * 0.97 + emission * 0.05) * 10) / 10, 0, 100);
+  state.pollution = clamp(Math.round((state.pollution * 0.97 + emission * 0.02) * 10) / 10, 0, 100);
 
   // 12. Новый день.
   state.day += 1;
