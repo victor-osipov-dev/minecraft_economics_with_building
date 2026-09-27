@@ -165,6 +165,7 @@
     .panel h3 { margin: 0 0 10px; font-size: 14px; color: #ffd54a; font-weight: 600; }
     .panel .hint { opacity: 0.7; font-size: 12px; margin-bottom: 10px; }
     #picker { max-width: min(800px, 94vw); }
+    #pickCats { margin-bottom: 8px; }
     #pickGrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 6px; }
     .pick {
       display: flex;
@@ -312,6 +313,7 @@
   <div id="picker" class="panel">
     <h3>Блоки песочницы</h3>
     <div class="hint">Клик — положить в выбранный слот (1–9) · E — закрыть</div>
+    <div id="pickCats"></div>
     <input id="pickSearch" type="text" placeholder="Поиск блока…" autocomplete="off" />
     <div id="pickGrid"></div>
   </div>

@@ -988,6 +988,7 @@ function togglePicker() {
   if (!willShow) return;
   pickerEl.classList.add("show");
   pickSearchEl.value = "";
+  pickFilter.q = "";
   renderPicker();
   if (document.pointerLockElement) {
     unlockForPanel = true;
@@ -1034,11 +1035,43 @@ function blockIconStyle(b) {
   );
 }
 
+const BLOCK_CAT_LABELS = {
+  build: "Стройка",
+  nature: "Природа",
+  decor: "Декор",
+  parts: "Частичные",
+  mech: "Механизмы",
+};
+const BLOCK_CAT_ORDER = ["build", "nature", "decor", "parts", "mech"];
+const pickFilter = { q: "", cat: "all" };
+const pickCatsEl = document.getElementById("pickCats");
+
+function renderPickChips() {
+  pickCatsEl.innerHTML = "";
+  const total = BLOCKS.filter((b) => b).length - 1;
+  const cats = ["all", ...BLOCK_CAT_ORDER.filter((c) =>
+    BLOCKS.some((b, id) => id !== AIR && b && b.cat === c))];
+  for (const c of cats) {
+    const n = c === "all" ? total
+      : BLOCKS.filter((b, id) => id !== AIR && b && b.cat === c).length;
+    const chip = document.createElement("span");
+    chip.className = "chip cat" + (pickFilter.cat === c ? " active" : "");
+    chip.textContent = (c === "all" ? "Все" : BLOCK_CAT_LABELS[c] || c) + ` (${n})`;
+    chip.addEventListener("click", () => {
+      pickFilter.cat = c;
+      renderPicker();
+    });
+    pickCatsEl.appendChild(chip);
+  }
+}
+
 function renderPicker() {
-  const q = (pickSearchEl.value || "").trim().toLowerCase();
+  renderPickChips();
+  const q = pickFilter.q;
   pickGridEl.innerHTML = "";
   BLOCKS.forEach((b, id) => {
     if (id === AIR) return;
+    if (pickFilter.cat !== "all" && b.cat !== pickFilter.cat) return;
     if (q && !(b.name || "").toLowerCase().includes(q)) return;
     const d = document.createElement("div");
     d.className = "pick";
@@ -1067,7 +1100,10 @@ function renderPicker() {
 function buildPicker() {
   renderPicker();
 }
-pickSearchEl.addEventListener("input", renderPicker);
+pickSearchEl.addEventListener("input", () => {
+  pickFilter.q = (pickSearchEl.value || "").trim().toLowerCase();
+  renderPicker();
+});
 
 const CAT_LABELS = {
   residential: "Жилые",
