@@ -1,0 +1,575 @@
+{
+ "batch": 6,
+ "items": [
+  {
+   "file": "residential_lakehouse_mcbuild_x-2.schem",
+   "name": "Lakehouse ",
+   "category": "residential",
+   "tags": [
+    "house",
+    "medium"
+   ],
+   "dims": "37x26x49",
+   "blocks": 9758,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_lakehouse_mcbuild_x-2.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_iron-man-s-mansion_mcbuild_x.schem",
+   "name": "Iron Man's Mansion",
+   "category": "residential",
+   "tags": [
+    "house",
+    "huge"
+   ],
+   "dims": "142x35x147",
+   "blocks": 35276,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_iron-man-s-mansion_mcbuild_x.png",
+   "metaFlags": [
+    "franchise",
+    "duplicate-name"
+   ]
+  },
+  {
+   "file": "residential_classic-modern-house_mcbuild_x.schem",
+   "name": "Classic Modern House",
+   "category": "residential",
+   "tags": [
+    "house",
+    "large",
+    "modern"
+   ],
+   "dims": "68x36x70",
+   "blocks": 87011,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_classic-modern-house_mcbuild_x.png",
+   "metaFlags": [
+    "duplicate-name"
+   ]
+  },
+  {
+   "file": "residential_modern-apartment-building_mcbuild_x-2.schem",
+   "name": "Modern Apartment Building",
+   "category": "residential",
+   "tags": [
+    "apartment",
+    "large",
+    "modern",
+    "tall"
+   ],
+   "dims": "58x63x57",
+   "blocks": 29595,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_modern-apartment-building_mcbuild_x-2.png",
+   "metaFlags": [
+    "duplicate-name"
+   ]
+  },
+  {
+   "file": "residential_lighthouse_mcbuild_x.schem",
+   "name": "Lighthouse ",
+   "category": "residential",
+   "tags": [
+    "house",
+    "medium",
+    "tall",
+    "water"
+   ],
+   "dims": "21x98x32",
+   "blocks": 8490,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_lighthouse_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_clock-tower_mcbuild_x.schem",
+   "name": " Clock Tower",
+   "category": "towers",
+   "tags": [
+    "medium",
+    "tall",
+    "tower"
+   ],
+   "dims": "29x50x35",
+   "blocks": 4015,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_clock-tower_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_colonial-mansion_mcbuild_x.schem",
+   "name": "Colonial Mansion",
+   "category": "residential",
+   "tags": [
+    "house",
+    "large"
+   ],
+   "dims": "82x32x125",
+   "blocks": 44661,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_colonial-mansion_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "commercial_small-town_mcbuild_x.schem",
+   "name": "Small Town",
+   "category": "commercial",
+   "tags": [
+    "large",
+    "shop"
+   ],
+   "dims": "68x28x75",
+   "blocks": 21060,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_small-town_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "parks_skate-park_mcbuild_x.schem",
+   "name": "Skate Park",
+   "category": "parks",
+   "tags": [
+    "large",
+    "park"
+   ],
+   "dims": "86x33x109",
+   "blocks": 23072,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\parks_skate-park_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "industrial_factory-building_mcbuild_x.schem",
+   "name": "Factory Building",
+   "category": "industrial",
+   "tags": [
+    "large",
+    "tall"
+   ],
+   "dims": "68x48x75",
+   "blocks": 28457,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\industrial_factory-building_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_traditional-house_mcbuild_x.schem",
+   "name": "Traditional House",
+   "category": "residential",
+   "tags": [
+    "house",
+    "large"
+   ],
+   "dims": "76x24x66",
+   "blocks": 15201,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_traditional-house_mcbuild_x.png",
+   "metaFlags": [
+    "duplicate-name"
+   ]
+  },
+  {
+   "file": "residential_beach-house_mcbuild_x.schem",
+   "name": "Beach House",
+   "category": "residential",
+   "tags": [
+    "house",
+    "medium"
+   ],
+   "dims": "35x32x33",
+   "blocks": 5323,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_beach-house_mcbuild_x.png",
+   "metaFlags": [
+    "duplicate-name"
+   ]
+  },
+  {
+   "file": "residential_dream-survival-house_mcbuild_x.schem",
+   "name": "Dream Survival House",
+   "category": "residential",
+   "tags": [
+    "house",
+    "small"
+   ],
+   "dims": "29x17x18",
+   "blocks": 2764,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_dream-survival-house_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_harbor-village_mcbuild_x.schem",
+   "name": "Harbor Village",
+   "category": "residential",
+   "tags": [
+    "boat",
+    "house",
+    "large",
+    "tall",
+    "water"
+   ],
+   "dims": "87x51x62",
+   "blocks": 71594,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_harbor-village_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "waterfront_furnished-yacht_mcbuild_x.schem",
+   "name": "Furnished Yacht ",
+   "category": "waterfront",
+   "tags": [
+    "boat",
+    "large",
+    "tall"
+   ],
+   "dims": "39x43x169",
+   "blocks": 21400,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\waterfront_furnished-yacht_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "waterfront_large-yacht_mcbuild_x.schem",
+   "name": "Large Yacht",
+   "category": "waterfront",
+   "tags": [
+    "boat",
+    "medium"
+   ],
+   "dims": "76x19x19",
+   "blocks": 7330,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\waterfront_large-yacht_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_giant-church_mcbuild_x.schem",
+   "name": "Giant Church",
+   "category": "public",
+   "tags": [
+    "church",
+    "large",
+    "tall"
+   ],
+   "dims": "141x43x47",
+   "blocks": 116000,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_giant-church_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_most-secured-house_mcbuild_x.schem",
+   "name": "Most Secured House",
+   "category": "residential",
+   "tags": [
+    "house",
+    "large",
+    "tall"
+   ],
+   "dims": "73x53x70",
+   "blocks": 26335,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_most-secured-house_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "decor_desert-city_mcbuild_x.schem",
+   "name": "Desert City",
+   "category": "decor",
+   "tags": [
+    "large"
+   ],
+   "dims": "79x25x84",
+   "blocks": 30147,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\decor_desert-city_mcbuild_x.png",
+   "metaFlags": [
+    "duplicate-name"
+   ]
+  },
+  {
+   "file": "towers_skyscraper_mcbuild_x.schem",
+   "name": "Skyscraper ",
+   "category": "towers",
+   "tags": [
+    "large",
+    "tall",
+    "tower"
+   ],
+   "dims": "33x142x33",
+   "blocks": 53588,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_skyscraper_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_japanese-style-house_mcbuild_x.schem",
+   "name": "Japanese Style House",
+   "category": "residential",
+   "tags": [
+    "house",
+    "small"
+   ],
+   "dims": "21x17x24",
+   "blocks": 2060,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_japanese-style-house_mcbuild_x.png",
+   "metaFlags": [
+    "duplicate-name"
+   ]
+  },
+  {
+   "file": "residential_seaside-nordic-mansion_mcbuild_x-2.schem",
+   "name": "Seaside Nordic Mansion",
+   "category": "residential",
+   "tags": [
+    "house",
+    "large",
+    "tall"
+   ],
+   "dims": "57x49x57",
+   "blocks": 7478,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_seaside-nordic-mansion_mcbuild_x-2.png",
+   "metaFlags": [
+    "duplicate-name"
+   ]
+  },
+  {
+   "file": "commercial_little-shop_mcbuild_x.schem",
+   "name": "Little Shop",
+   "category": "commercial",
+   "tags": [
+    "shop",
+    "small"
+   ],
+   "dims": "15x27x13",
+   "blocks": 1618,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_little-shop_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_apartment-building_mcbuild_x.schem",
+   "name": "Apartment Building",
+   "category": "residential",
+   "tags": [
+    "apartment",
+    "medium",
+    "tall"
+   ],
+   "dims": "22x55x38",
+   "blocks": 13000,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_apartment-building_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_small-cozy-house_mcbuild_x.schem",
+   "name": "Small Cozy House",
+   "category": "residential",
+   "tags": [
+    "house",
+    "shop",
+    "small"
+   ],
+   "dims": "21x12x13",
+   "blocks": 1577,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_small-cozy-house_mcbuild_x.png",
+   "metaFlags": [
+    "duplicate-name"
+   ]
+  },
+  {
+   "file": "towers_assassins-creed-tower_mcbuild_x.schem",
+   "name": "Assassins Creed Tower",
+   "category": "towers",
+   "tags": [
+    "huge",
+    "tall",
+    "tower"
+   ],
+   "dims": "64x124x64",
+   "blocks": 25846,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_assassins-creed-tower_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_twins-towers-gate_mcbuild_x.schem",
+   "name": "Twins Towers Gate",
+   "category": "towers",
+   "tags": [
+    "small",
+    "tower"
+   ],
+   "dims": "10x20x18",
+   "blocks": 1087,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_twins-towers-gate_mcbuild_x.png",
+   "metaFlags": [
+    "non-building-in-name"
+   ]
+  },
+  {
+   "file": "residential_hollywood-hills-mansion_mcbuild_x.schem",
+   "name": "Hollywood Hills Mansion",
+   "category": "residential",
+   "tags": [
+    "house",
+    "medium"
+   ],
+   "dims": "78x26x41",
+   "blocks": 36388,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_hollywood-hills-mansion_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_modern-hotel_mcbuild_x.schem",
+   "name": "Modern Hotel",
+   "category": "towers",
+   "tags": [
+    "hotel",
+    "large",
+    "modern",
+    "tall"
+   ],
+   "dims": "80x46x106",
+   "blocks": 100538,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_modern-hotel_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_beach-hotel_mcbuild_x.schem",
+   "name": "Beach Hotel",
+   "category": "towers",
+   "tags": [
+    "hotel",
+    "large",
+    "tall"
+   ],
+   "dims": "35x102x42",
+   "blocks": 62453,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_beach-hotel_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "transport_train-station_mcbuild_x.schem",
+   "name": "Train Station",
+   "category": "transport",
+   "tags": [
+    "medium",
+    "station",
+    "tall"
+   ],
+   "dims": "17x41x37",
+   "blocks": 2754,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\transport_train-station_mcbuild_x.png",
+   "metaFlags": [
+    "duplicate-name"
+   ]
+  },
+  {
+   "file": "residential_modern-house-on-a-hilltop_mcbuild_x.schem",
+   "name": "Modern House on a Hilltop",
+   "category": "residential",
+   "tags": [
+    "house",
+    "large",
+    "modern"
+   ],
+   "dims": "91x38x97",
+   "blocks": 100157,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_modern-house-on-a-hilltop_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_villa_mcbuild_x.schem",
+   "name": "Villa",
+   "category": "residential",
+   "tags": [
+    "house",
+    "huge",
+    "tall"
+   ],
+   "dims": "112x44x158",
+   "blocks": 151577,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_villa_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_resident-evil-4-church_mcbuild_x.schem",
+   "name": "Resident Evil 4 Church",
+   "category": "public",
+   "tags": [
+    "church",
+    "medium"
+   ],
+   "dims": "37x40x33",
+   "blocks": 4890,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_resident-evil-4-church_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_the-majestic-hotel_mcbuild_x.schem",
+   "name": "The Majestic Hotel",
+   "category": "towers",
+   "tags": [
+    "hotel",
+    "medium",
+    "tall"
+   ],
+   "dims": "14x45x27",
+   "blocks": 4194,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_the-majestic-hotel_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_mansion-and-place_mcbuild_x.schem",
+   "name": "Mansion and Place",
+   "category": "residential",
+   "tags": [
+    "house",
+    "tiny"
+   ],
+   "dims": "1x11x63",
+   "blocks": 375,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_mansion-and-place_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_saltillo-cathedral-tower_mcbuild_x.schem",
+   "name": "Saltillo Cathedral Tower",
+   "category": "towers",
+   "tags": [
+    "church",
+    "large",
+    "tall",
+    "tower"
+   ],
+   "dims": "37x152x37",
+   "blocks": 25546,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_saltillo-cathedral-tower_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_rustic-mansion_mcbuild_x.schem",
+   "name": "Rustic Mansion",
+   "category": "residential",
+   "tags": [
+    "house",
+    "medium"
+   ],
+   "dims": "37x23x50",
+   "blocks": 10066,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_rustic-mansion_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "commercial_apple-store_mcbuild_x.schem",
+   "name": "Apple Store",
+   "category": "commercial",
+   "tags": [
+    "medium",
+    "shop"
+   ],
+   "dims": "27x36x41",
+   "blocks": 9237,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_apple-store_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_sydney-museum-of-modern-art_mcbuild_x.schem",
+   "name": "Sydney Museum of Modern Art",
+   "category": "public",
+   "tags": [
+    "large",
+    "modern",
+    "museum",
+    "tall"
+   ],
+   "dims": "105x55x58",
+   "blocks": 36697,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_sydney-museum-of-modern-art_mcbuild_x.png",
+   "metaFlags": []
+  }
+ ]
+}

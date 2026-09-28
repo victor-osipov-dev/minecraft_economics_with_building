@@ -1,0 +1,573 @@
+{
+ "batch": 26,
+ "items": [
+  {
+   "file": "towers_maxs-tower-outpost_mc-mod_x.schematic",
+   "name": "Max’s Tower Outpost",
+   "category": "towers",
+   "tags": [
+    "small",
+    "tower"
+   ],
+   "dims": "13x16x13",
+   "blocks": 622,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_maxs-tower-outpost_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_big-ben-clock-tower-replica-oak-birch-build_mc-mod_x.schematic",
+   "name": "Big Ben Clock Tower Replica – Oak & Birch Build",
+   "category": "towers",
+   "tags": [
+    "medium",
+    "tall",
+    "tower",
+    "tree"
+   ],
+   "dims": "21x100x24",
+   "blocks": 4676,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_big-ben-clock-tower-replica-oak-birch-build_mc-mod_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "residential_small-storage-house-2_mc-mod_x.schematic",
+   "name": "Small Storage House",
+   "category": "residential",
+   "tags": [
+    "house",
+    "shop",
+    "small",
+    "tall"
+   ],
+   "dims": "7x256x7",
+   "blocks": 320,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_small-storage-house-2_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_spacious-modern-mansion-estate_mc-mod_x.schematic",
+   "name": "Spacious Modern Mansion Estate",
+   "category": "residential",
+   "tags": [
+    "house",
+    "medium",
+    "modern"
+   ],
+   "dims": "73x15x62",
+   "blocks": 19612,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_spacious-modern-mansion-estate_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_modern-quartz-and-dirt-residence_mc-mod_x.schematic",
+   "name": "Modern Quartz and Dirt Residence",
+   "category": "residential",
+   "tags": [
+    "apartment",
+    "modern",
+    "small"
+   ],
+   "dims": "39x11x31",
+   "blocks": 5750,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_modern-quartz-and-dirt-residence_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_medium-town-house-with-three-floors_mc-mod_x.schematic",
+   "name": "Medium Town House with Three Floors",
+   "category": "residential",
+   "tags": [
+    "house",
+    "medium"
+   ],
+   "dims": "29x22x58",
+   "blocks": 4023,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_medium-town-house-with-three-floors_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_medium-brick-cottage-house_mc-mod_x.schematic",
+   "name": "Medium Brick Cottage House",
+   "category": "residential",
+   "tags": [
+    "house",
+    "medium"
+   ],
+   "dims": "41x23x47",
+   "blocks": 6180,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_medium-brick-cottage-house_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_modern-house-design-with-soartex-textures_mc-mod_x.schematic",
+   "name": "Modern House Design with Soartex Textures",
+   "category": "residential",
+   "tags": [
+    "house",
+    "medium",
+    "modern",
+    "tall"
+   ],
+   "dims": "31x58x29",
+   "blocks": 5279,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_modern-house-design-with-soartex-textures_mc-mod_x.png",
+   "metaFlags": [
+    "non-building-in-name"
+   ]
+  },
+  {
+   "file": "residential_small-decorative-town-house_mc-mod_x.schematic",
+   "name": "Small Decorative Town House",
+   "category": "residential",
+   "tags": [
+    "house",
+    "shop",
+    "small"
+   ],
+   "dims": "16x8x24",
+   "blocks": 667,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_small-decorative-town-house_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_starter-cottage-oak-quartz_mc-mod_x.schematic",
+   "name": "Starter Cottage – Oak & Quartz",
+   "category": "residential",
+   "tags": [
+    "house",
+    "small",
+    "tree"
+   ],
+   "dims": "19x11x28",
+   "blocks": 1889,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_starter-cottage-oak-quartz_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_basic-house-structure_mc-mod_x.schematic",
+   "name": "Basic House Structure",
+   "category": "residential",
+   "tags": [
+    "house",
+    "tiny"
+   ],
+   "dims": "13x7x11",
+   "blocks": 490,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_basic-house-structure_mc-mod_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "residential_large-estate-house_mc-mod_x.schematic",
+   "name": "Large Estate House",
+   "category": "residential",
+   "tags": [
+    "house",
+    "small"
+   ],
+   "dims": "35x22x17",
+   "blocks": 3562,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_large-estate-house_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_furnished-brick-townhouse_mc-mod_x.schematic",
+   "name": "Furnished Brick Townhouse",
+   "category": "residential",
+   "tags": [
+    "house",
+    "medium"
+   ],
+   "dims": "31x16x40",
+   "blocks": 5821,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_furnished-brick-townhouse_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_cozy-small-wooden-cottage_mc-mod_x.schematic",
+   "name": "Cozy Small Wooden Cottage",
+   "category": "residential",
+   "tags": [
+    "house",
+    "medium",
+    "shop"
+   ],
+   "dims": "30x31x26",
+   "blocks": 8643,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_cozy-small-wooden-cottage_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_snowy-small-house_mc-mod_x.schematic",
+   "name": "Snowy Small House",
+   "category": "residential",
+   "tags": [
+    "house",
+    "shop",
+    "tiny"
+   ],
+   "dims": "15x5x14",
+   "blocks": 461,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_snowy-small-house_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_spacious-modern-mansion-with-furnished-interior_mc-mod_x.schematic",
+   "name": "Spacious Modern Mansion with Furnished Interior",
+   "category": "residential",
+   "tags": [
+    "house",
+    "large",
+    "modern",
+    "tall"
+   ],
+   "dims": "63x43x50",
+   "blocks": 17048,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_spacious-modern-mansion-with-furnished-interior_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_contemporary-residence-schematic_mc-mod_x.schematic",
+   "name": "Contemporary Residence Schematic",
+   "category": "residential",
+   "tags": [
+    "apartment",
+    "modern",
+    "small"
+   ],
+   "dims": "21x14x21",
+   "blocks": 1243,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_contemporary-residence-schematic_mc-mod_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "residential_condensed-townhouse-compound-structure_mc-mod_x.schematic",
+   "name": "Condensed Townhouse Compound Structure",
+   "category": "residential",
+   "tags": [
+    "house",
+    "huge"
+   ],
+   "dims": "251x20x203",
+   "blocks": 208838,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_condensed-townhouse-compound-structure_mc-mod_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "residential_rustic-log-cabin-house_mc-mod_x.schematic",
+   "name": "Rustic Log Cabin House",
+   "category": "residential",
+   "tags": [
+    "house",
+    "medium"
+   ],
+   "dims": "14x35x41",
+   "blocks": 5570,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_rustic-log-cabin-house_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_small-house-with-kitchen-and-shower_mc-mod_x.schematic",
+   "name": "Small House With Kitchen and Shower",
+   "category": "residential",
+   "tags": [
+    "house",
+    "large",
+    "shop",
+    "tall"
+   ],
+   "dims": "41x76x52",
+   "blocks": 14033,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_small-house-with-kitchen-and-shower_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_large-three-story-mansion_mc-mod_x.schematic",
+   "name": "Large Three-Story Mansion",
+   "category": "residential",
+   "tags": [
+    "house",
+    "large",
+    "tall"
+   ],
+   "dims": "62x69x62",
+   "blocks": 34343,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_large-three-story-mansion_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_large-modern-villa-residence_mc-mod_x.schematic",
+   "name": "Large Modern Villa Residence",
+   "category": "residential",
+   "tags": [
+    "apartment",
+    "house",
+    "medium",
+    "modern"
+   ],
+   "dims": "45x12x31",
+   "blocks": 2764,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_large-modern-villa-residence_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_cozy-town-house-with-hay-roof_mc-mod_x.schematic",
+   "name": "Cozy Town House with Hay Roof",
+   "category": "residential",
+   "tags": [
+    "house",
+    "small"
+   ],
+   "dims": "19x12x13",
+   "blocks": 1248,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_cozy-town-house-with-hay-roof_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_birch-cottage-house-with-furnishings_mc-mod_x.schematic",
+   "name": "Birch Cottage House with Furnishings",
+   "category": "residential",
+   "tags": [
+    "house",
+    "small",
+    "tree"
+   ],
+   "dims": "30x19x19",
+   "blocks": 2455,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_birch-cottage-house-with-furnishings_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_cozy-hillside-house_mc-mod_x.schematic",
+   "name": "Cozy Hillside House",
+   "category": "residential",
+   "tags": [
+    "house",
+    "medium",
+    "tall"
+   ],
+   "dims": "33x48x33",
+   "blocks": 4652,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_cozy-hillside-house_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_small-villa-house-with-storage_mc-mod_x.schematic",
+   "name": "Small Villa House with Storage",
+   "category": "residential",
+   "tags": [
+    "house",
+    "medium",
+    "shop"
+   ],
+   "dims": "63x33x57",
+   "blocks": 33062,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_small-villa-house-with-storage_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_modern-villa-residence-dirt-white-concrete_mc-mod_x.schematic",
+   "name": "Modern Villa Residence – Dirt & White Concrete",
+   "category": "residential",
+   "tags": [
+    "apartment",
+    "house",
+    "medium",
+    "modern"
+   ],
+   "dims": "55x25x33",
+   "blocks": 24777,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_modern-villa-residence-dirt-white-concrete_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_rustic-country-cottage_mc-mod_x.schematic",
+   "name": "Rustic Country Cottage",
+   "category": "residential",
+   "tags": [
+    "house",
+    "small"
+   ],
+   "dims": "25x16x23",
+   "blocks": 1565,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_rustic-country-cottage_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_rustic-3-story-mansion_mc-mod_x.schematic",
+   "name": "Rustic 3-Story Mansion",
+   "category": "residential",
+   "tags": [
+    "house",
+    "large",
+    "tall"
+   ],
+   "dims": "39x57x55",
+   "blocks": 18229,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_rustic-3-story-mansion_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_small-brick-townhouse-with-jack-o-lanterns_mc-mod_1.19.2.schem",
+   "name": "Small Brick Townhouse With Jack-o-Lanterns",
+   "category": "residential",
+   "tags": [
+    "house",
+    "shop",
+    "small"
+   ],
+   "dims": "13x24x22",
+   "blocks": 2796,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_small-brick-townhouse-with-jack-o-lanterns_mc-mod_1.19.2.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_spruce-log-cabin-house_mc-mod_x.schematic",
+   "name": "Spruce Log Cabin House",
+   "category": "residential",
+   "tags": [
+    "house",
+    "medium",
+    "tree"
+   ],
+   "dims": "42x37x35",
+   "blocks": 9829,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_spruce-log-cabin-house_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_asian-style-house-with-furnished-interior_mc-mod_x.schematic",
+   "name": "Asian Style House with Furnished Interior",
+   "category": "residential",
+   "tags": [
+    "house",
+    "medium"
+   ],
+   "dims": "30x29x25",
+   "blocks": 4487,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_asian-style-house-with-furnished-interior_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_modern-blue-villa_mc-mod_x.schematic",
+   "name": "Modern Blue Villa",
+   "category": "residential",
+   "tags": [
+    "house",
+    "medium",
+    "modern"
+   ],
+   "dims": "58x30x56",
+   "blocks": 12587,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_modern-blue-villa_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "parks_modern-square-residence_mc-mod_x.schematic",
+   "name": "Modern Square Residence",
+   "category": "parks",
+   "tags": [
+    "apartment",
+    "modern",
+    "park",
+    "tiny"
+   ],
+   "dims": "11x9x13",
+   "blocks": 228,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\parks_modern-square-residence_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_new-york-style-townhouses-with-pool_mc-mod_1.19.4.schem",
+   "name": "New York Style Townhouses With Pool",
+   "category": "public",
+   "tags": [
+    "house",
+    "medium",
+    "pool",
+    "water"
+   ],
+   "dims": "48x25x47",
+   "blocks": 11281,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_new-york-style-townhouses-with-pool_mc-mod_1.19.4.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_cozy-woodcutter-s-cottage_mc-mod_x.schematic",
+   "name": "Cozy Woodcutter’s Cottage",
+   "category": "residential",
+   "tags": [
+    "house",
+    "small"
+   ],
+   "dims": "21x13x16",
+   "blocks": 747,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_cozy-woodcutter-s-cottage_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_modern-two-story-house-over-pond_mc-mod_x.schematic",
+   "name": "Modern Two-Story House Over Pond",
+   "category": "residential",
+   "tags": [
+    "house",
+    "medium",
+    "modern",
+    "pool",
+    "water"
+   ],
+   "dims": "62x23x63",
+   "blocks": 45103,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_modern-two-story-house-over-pond_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_modern-mansion-with-fire-safety-upgrades_mc-mod_x.schematic",
+   "name": "Modern Mansion with Fire Safety Upgrades",
+   "category": "residential",
+   "tags": [
+    "house",
+    "medium",
+    "modern"
+   ],
+   "dims": "63x32x48",
+   "blocks": 17046,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_modern-mansion-with-fire-safety-upgrades_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_simple-birch-cottage_mc-mod_1.16.1.schem",
+   "name": "Simple Birch Cottage",
+   "category": "residential",
+   "tags": [
+    "house",
+    "tiny",
+    "tree"
+   ],
+   "dims": "14x6x14",
+   "blocks": 676,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_simple-birch-cottage_mc-mod_1.16.1.png",
+   "metaFlags": []
+  },
+  {
+   "file": "vehicles_snowy-house-and-vehicles_mc-mod_1.21.1.nbt",
+   "name": "Snowy House and Vehicles",
+   "category": "vehicles",
+   "tags": [
+    "house",
+    "medium"
+   ],
+   "dims": "74x16x97",
+   "blocks": 3328,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\vehicles_snowy-house-and-vehicles_mc-mod_1.21.1.png",
+   "metaFlags": []
+  }
+ ]
+}

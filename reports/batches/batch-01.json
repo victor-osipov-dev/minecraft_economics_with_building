@@ -1,0 +1,579 @@
+{
+ "batch": 1,
+ "items": [
+  {
+   "file": "residential_apartment-building-06_buildschematics_x.schem",
+   "name": "Apartment Building 06",
+   "category": "residential",
+   "tags": [
+    "apartment",
+    "large",
+    "tall"
+   ],
+   "dims": "48x88x36",
+   "blocks": 31842,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_apartment-building-06_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "industrial_automated-andesite-alloy-factory_buildschematics_x.nbt",
+   "name": "Automated Andesite Alloy Factory",
+   "category": "industrial",
+   "tags": [
+    "medium",
+    "tall"
+   ],
+   "dims": "36x43x73",
+   "blocks": 11067,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\industrial_automated-andesite-alloy-factory_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "decor_automatic-wooden-streetlight_buildschematics_x.schem",
+   "name": "Automatic Wooden Streetlight",
+   "category": "decor",
+   "tags": [
+    "road",
+    "tiny",
+    "tree"
+   ],
+   "dims": "3x8x3",
+   "blocks": 32,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\decor_automatic-wooden-streetlight_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "vehicles_axiumsa-medium-boat_buildschematics_x.schem",
+   "name": "AxiumSA Medium Boat",
+   "category": "vehicles",
+   "tags": [
+    "boat",
+    "medium",
+    "tall"
+   ],
+   "dims": "29x46x65",
+   "blocks": 2851,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\vehicles_axiumsa-medium-boat_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "commercial_blacksmith-shop-house_buildschematics_x.schem",
+   "name": "Blacksmith Shop House",
+   "category": "commercial",
+   "tags": [
+    "house",
+    "shop",
+    "small"
+   ],
+   "dims": "34x15x15",
+   "blocks": 2543,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_blacksmith-shop-house_buildschematics_x.png",
+   "metaFlags": [
+    "non-real/fantasy"
+   ]
+  },
+  {
+   "file": "residential_blue-house-minecraft-build_buildschematics_262.schem",
+   "name": "Blue House Minecraft Build",
+   "category": "residential",
+   "tags": [
+    "house",
+    "small"
+   ],
+   "dims": "13x14x13",
+   "blocks": 796,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_blue-house-minecraft-build_buildschematics_262.png",
+   "metaFlags": [
+    "franchise",
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "transport_brass-and-glass-worm-train-vehicle_buildschematics_x.nbt",
+   "name": "Brass and Glass Worm Train Vehicle",
+   "category": "transport",
+   "tags": [
+    "tiny"
+   ],
+   "dims": "7x6x35",
+   "blocks": 70,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\transport_brass-and-glass-worm-train-vehicle_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "industrial_brick-factory-building-5037-blocks_buildschematics_x.nbt",
+   "name": "Brick Factory Building - 5037 Blocks",
+   "category": "industrial",
+   "tags": [
+    "medium"
+   ],
+   "dims": "24x29x35",
+   "blocks": 4851,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\industrial_brick-factory-building-5037-blocks_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_cardiff-townhouse-multi-story-shop-and-resid_buildschematics_x.schem",
+   "name": "Cardiff Townhouse - Multi-Story Shop and Residence",
+   "category": "residential",
+   "tags": [
+    "apartment",
+    "car",
+    "house",
+    "medium",
+    "shop"
+   ],
+   "dims": "22x30x26",
+   "blocks": 5775,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_cardiff-townhouse-multi-story-shop-and-resid_buildschematics_x.png",
+   "metaFlags": [
+    "non-building-in-name"
+   ]
+  },
+  {
+   "file": "vehicles_catering-truck-for-airports_buildschematics_x.schem",
+   "name": "Catering Truck for Airports",
+   "category": "vehicles",
+   "tags": [
+    "car",
+    "tiny"
+   ],
+   "dims": "5x6x12",
+   "blocks": 103,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\vehicles_catering-truck-for-airports_buildschematics_x.png",
+   "metaFlags": [
+    "non-building-in-name"
+   ]
+  },
+  {
+   "file": "vehicles_champion-race-car_buildschematics_x.nbt",
+   "name": "Champion Race Car",
+   "category": "vehicles",
+   "tags": [
+    "car",
+    "small"
+   ],
+   "dims": "18x12x11",
+   "blocks": 240,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\vehicles_champion-race-car_buildschematics_x.png",
+   "metaFlags": [
+    "non-building-in-name"
+   ]
+  },
+  {
+   "file": "public_city-gas-station_buildschematics_x.schem",
+   "name": "City Gas Station",
+   "category": "public",
+   "tags": [
+    "medium",
+    "station"
+   ],
+   "dims": "48x11x39",
+   "blocks": 4306,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_city-gas-station_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_city-hospital-with-elevator-10890-blocks_buildschematics_x.nbt",
+   "name": "City Hospital with Elevator - 10890 Blocks",
+   "category": "public",
+   "tags": [
+    "hospital",
+    "medium"
+   ],
+   "dims": "45x20x27",
+   "blocks": 9709,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_city-hospital-with-elevator-10890-blocks_buildschematics_x.png",
+   "metaFlags": [
+    "non-building-in-name"
+   ]
+  },
+  {
+   "file": "intersections_cobbled-deepslate-4-way-train-intersection_buildschematics_x.nbt",
+   "name": "Cobbled Deepslate 4-Way Train Intersection",
+   "category": "intersections",
+   "tags": [
+    "medium"
+   ],
+   "dims": "57x9x57",
+   "blocks": 1393,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\intersections_cobbled-deepslate-4-way-train-intersection_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "vehicles_compact-japanese-kei-car_buildschematics_x.schem",
+   "name": "Compact Japanese Kei Car",
+   "category": "vehicles",
+   "tags": [
+    "car",
+    "tiny"
+   ],
+   "dims": "5x3x2",
+   "blocks": 12,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\vehicles_compact-japanese-kei-car_buildschematics_x.png",
+   "metaFlags": [
+    "non-building-in-name",
+    "almost-empty"
+   ]
+  },
+  {
+   "file": "residential_contemporary-residence-with-two-unfurnished-_buildschematics_x.schem",
+   "name": "Contemporary Residence with Two Unfurnished Floors",
+   "category": "residential",
+   "tags": [
+    "apartment",
+    "modern",
+    "small"
+   ],
+   "dims": "23x11x20",
+   "blocks": 2054,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_contemporary-residence-with-two-unfurnished-_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_cozy-duplex-house-for-two-families_buildschematics_x.schem",
+   "name": "Cozy Duplex House for Two Families",
+   "category": "residential",
+   "tags": [
+    "house",
+    "small"
+   ],
+   "dims": "15x14x15",
+   "blocks": 1001,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_cozy-duplex-house-for-two-families_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_cozy-wooden-house-for-roleplay-servers_buildschematics_x.schem",
+   "name": "Cozy Wooden House for Roleplay Servers",
+   "category": "residential",
+   "tags": [
+    "house",
+    "small"
+   ],
+   "dims": "16x10x17",
+   "blocks": 764,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_cozy-wooden-house-for-roleplay-servers_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_deepslate-dual-train-station_buildschematics_x.nbt",
+   "name": "Deepslate Dual Train Station",
+   "category": "public",
+   "tags": [
+    "small",
+    "station"
+   ],
+   "dims": "33x9x36",
+   "blocks": 1475,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_deepslate-dual-train-station_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_desert-home-with-extra-rooms_buildschematics_x.schem",
+   "name": "Desert Home With Extra Rooms",
+   "category": "residential",
+   "tags": [
+    "house",
+    "tiny"
+   ],
+   "dims": "12x8x20",
+   "blocks": 955,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_desert-home-with-extra-rooms_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "decor_desert-oasis-treehouse-village_buildschematics_x.schem",
+   "name": "Desert Oasis Treehouse Village",
+   "category": "decor",
+   "tags": [
+    "house",
+    "large",
+    "tree"
+   ],
+   "dims": "95x40x99",
+   "blocks": 19240,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\decor_desert-oasis-treehouse-village_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_detailed-wood-villa-with-pool_buildschematics_x.schem",
+   "name": "Detailed Wood Villa with Pool",
+   "category": "residential",
+   "tags": [
+    "house",
+    "pool",
+    "small",
+    "water"
+   ],
+   "dims": "22x20x25",
+   "blocks": 2487,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_detailed-wood-villa-with-pool_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "vehicles_double-cab-crane-truck_buildschematics_x.schem",
+   "name": "Double Cab Crane Truck",
+   "category": "vehicles",
+   "tags": [
+    "car",
+    "tiny"
+   ],
+   "dims": "5x4x13",
+   "blocks": 61,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\vehicles_double-cab-crane-truck_buildschematics_x.png",
+   "metaFlags": [
+    "non-building-in-name"
+   ]
+  },
+  {
+   "file": "transport_electric-passenger-train-coach-first-class_buildschematics_x.nbt",
+   "name": "Electric Passenger Train Coach - First Class",
+   "category": "transport",
+   "tags": [
+    "tiny"
+   ],
+   "dims": "7x7x32",
+   "blocks": 317,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\transport_electric-passenger-train-coach-first-class_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_elegant-mansion-with-garden_buildschematics_x.schem",
+   "name": "Elegant Mansion With Garden",
+   "category": "residential",
+   "tags": [
+    "house",
+    "park",
+    "small"
+   ],
+   "dims": "20x15x47",
+   "blocks": 4516,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_elegant-mansion-with-garden_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "bridges_elegant-quartz-bridge_buildschematics_x.schem",
+   "name": "Elegant Quartz Bridge",
+   "category": "bridges",
+   "tags": [
+    "bridge",
+    "medium"
+   ],
+   "dims": "7x25x114",
+   "blocks": 10292,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\bridges_elegant-quartz-bridge_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "transport_factory-and-train-station-structure_buildschematics_x.nbt",
+   "name": "Factory and Train Station Structure",
+   "category": "transport",
+   "tags": [
+    "medium",
+    "station"
+   ],
+   "dims": "34x20x30",
+   "blocks": 2262,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\transport_factory-and-train-station-structure_buildschematics_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "industrial_fallout-3-broadcast-tower-structure_buildschematics_x.schem",
+   "name": "Fallout 3 Broadcast Tower Structure",
+   "category": "industrial",
+   "tags": [
+    "road",
+    "tiny",
+    "tower"
+   ],
+   "dims": "7x40x7",
+   "blocks": 504,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\industrial_fallout-3-broadcast-tower-structure_buildschematics_x.png",
+   "metaFlags": [
+    "franchise",
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "transport_first-class-passenger-train-car_buildschematics_x.nbt",
+   "name": "First Class Passenger Train Car",
+   "category": "transport",
+   "tags": [
+    "car",
+    "tiny"
+   ],
+   "dims": "35x7x7",
+   "blocks": 390,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\transport_first-class-passenger-train-car_buildschematics_x.png",
+   "metaFlags": [
+    "non-building-in-name"
+   ]
+  },
+  {
+   "file": "parks_four-tier-garden-structure_buildschematics_x.schem",
+   "name": "Four Tier Garden Structure",
+   "category": "parks",
+   "tags": [
+    "medium",
+    "park",
+    "tall"
+   ],
+   "dims": "36x69x37",
+   "blocks": 14348,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\parks_four-tier-garden-structure_buildschematics_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "parks_futuristic-arcology-garden_buildschematics_x.schem",
+   "name": "Futuristic Arcology Garden",
+   "category": "parks",
+   "tags": [
+    "medium",
+    "modern",
+    "park",
+    "tall"
+   ],
+   "dims": "46x50x47",
+   "blocks": 7675,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\parks_futuristic-arcology-garden_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "industrial_futuristic-industrial-complex_buildschematics_x.schem",
+   "name": "Futuristic Industrial Complex",
+   "category": "industrial",
+   "tags": [
+    "large",
+    "modern",
+    "tall"
+   ],
+   "dims": "52x55x76",
+   "blocks": 11335,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\industrial_futuristic-industrial-complex_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_futuristic-stadium-entrance-gate_buildschematics_x.schem",
+   "name": "Futuristic Stadium Entrance Gate",
+   "category": "public",
+   "tags": [
+    "medium",
+    "modern",
+    "stadium",
+    "tall"
+   ],
+   "dims": "24x43x55",
+   "blocks": 9003,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_futuristic-stadium-entrance-gate_buildschematics_x.png",
+   "metaFlags": [
+    "non-building-in-name"
+   ]
+  },
+  {
+   "file": "public_gothic-cathedral-structure-2_buildschematics_x.schem",
+   "name": "Gothic Cathedral Structure",
+   "category": "public",
+   "tags": [
+    "church",
+    "large",
+    "tall"
+   ],
+   "dims": "66x52x107",
+   "blocks": 29871,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_gothic-cathedral-structure-2_buildschematics_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "public_gothic-church-structure_buildschematics_x.schem",
+   "name": "Gothic Church Structure",
+   "category": "public",
+   "tags": [
+    "church",
+    "medium"
+   ],
+   "dims": "25x31x22",
+   "blocks": 2032,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_gothic-church-structure_buildschematics_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "intersections_gravel-crossroads-with-lighting_buildschematics_x.nbt",
+   "name": "Gravel Crossroads with Lighting",
+   "category": "intersections",
+   "tags": [
+    "road",
+    "small"
+   ],
+   "dims": "21x7x21",
+   "blocks": 480,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\intersections_gravel-crossroads-with-lighting_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "parks_hawkseye-pavilion-event-stage_buildschematics_x.schem",
+   "name": "Hawkseye Pavilion Event Stage",
+   "category": "parks",
+   "tags": [
+    "large",
+    "tall"
+   ],
+   "dims": "90x43x66",
+   "blocks": 37670,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\parks_hawkseye-pavilion-event-stage_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "vehicles_heavy-duty-off-road-dump-truck_buildschematics_x.schem",
+   "name": "Heavy Duty Off-Road Dump Truck",
+   "category": "vehicles",
+   "tags": [
+    "car",
+    "road",
+    "tiny"
+   ],
+   "dims": "18x7x7",
+   "blocks": 177,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\vehicles_heavy-duty-off-road-dump-truck_buildschematics_x.png",
+   "metaFlags": [
+    "non-building-in-name"
+   ]
+  },
+  {
+   "file": "vehicles_heavy-duty-tractor-trailer-with-self-loader-_buildschematics_x.schem",
+   "name": "Heavy-Duty Tractor-Trailer with Self-Loader Truck",
+   "category": "vehicles",
+   "tags": [
+    "car",
+    "tiny"
+   ],
+   "dims": "24x6x5",
+   "blocks": 177,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\vehicles_heavy-duty-tractor-trailer-with-self-loader-_buildschematics_x.png",
+   "metaFlags": [
+    "non-building-in-name"
+   ]
+  },
+  {
+   "file": "residential_hollywood-style-mansion_buildschematics_x.schem",
+   "name": "Hollywood Style Mansion",
+   "category": "residential",
+   "tags": [
+    "house",
+    "large"
+   ],
+   "dims": "100x24x92",
+   "blocks": 41510,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_hollywood-style-mansion_buildschematics_x.png",
+   "metaFlags": []
+  }
+ ]
+}

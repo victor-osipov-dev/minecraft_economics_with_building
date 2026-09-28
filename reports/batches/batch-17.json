@@ -1,0 +1,573 @@
+{
+ "batch": 17,
+ "items": [
+  {
+   "file": "residential_portuguese-style-house_mc-mod_x.schem",
+   "name": "Portuguese Style House",
+   "category": "residential",
+   "tags": [
+    "house",
+    "medium"
+   ],
+   "dims": "19x27x38",
+   "blocks": 5951,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_portuguese-style-house_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_prismarine-island-tower_mc-mod_x.schem",
+   "name": "Prismarine Island Tower",
+   "category": "towers",
+   "tags": [
+    "small",
+    "tower"
+   ],
+   "dims": "17x31x17",
+   "blocks": 1966,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_prismarine-island-tower_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_quad-steam-turbine-warehouse_mc-mod_x.schem",
+   "name": "Quad Steam Turbine Warehouse",
+   "category": "residential",
+   "tags": [
+    "house",
+    "medium"
+   ],
+   "dims": "30x7x147",
+   "blocks": 11770,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_quad-steam-turbine-warehouse_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_quaint-library-structure_mc-mod_x.schem",
+   "name": "Quaint Library Structure",
+   "category": "public",
+   "tags": [
+    "library",
+    "medium",
+    "tall"
+   ],
+   "dims": "9x256x14",
+   "blocks": 749,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_quaint-library-structure_mc-mod_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "parks_quartz-pool-garden-feature_mc-mod_x.schem",
+   "name": "Quartz Pool Garden Feature",
+   "category": "parks",
+   "tags": [
+    "park",
+    "pool",
+    "small",
+    "water"
+   ],
+   "dims": "13x9x20",
+   "blocks": 580,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\parks_quartz-pool-garden-feature_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_quartz-spruce-small-house_mc-mod_x.schem",
+   "name": "Quartz Spruce Small House",
+   "category": "residential",
+   "tags": [
+    "house",
+    "shop",
+    "small",
+    "tree"
+   ],
+   "dims": "23x18x13",
+   "blocks": 1694,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_quartz-spruce-small-house_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_quickdeli-cargo-services-warehouse-and-offic_mc-mod_x.schem",
+   "name": "QuickDeli Cargo Services Warehouse and Office",
+   "category": "towers",
+   "tags": [
+    "car",
+    "house",
+    "huge",
+    "office"
+   ],
+   "dims": "161x21x177",
+   "blocks": 57634,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_quickdeli-cargo-services-warehouse-and-offic_mc-mod_x.png",
+   "metaFlags": [
+    "non-building-in-name"
+   ]
+  },
+  {
+   "file": "transport_railway-station-building_mc-mod_x.schem",
+   "name": "Railway Station Building",
+   "category": "transport",
+   "tags": [
+    "small",
+    "station"
+   ],
+   "dims": "25x22x20",
+   "blocks": 2087,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\transport_railway-station-building_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_rainbow-lighthouse_mc-mod_x.schem",
+   "name": "Rainbow Lighthouse",
+   "category": "residential",
+   "tags": [
+    "house",
+    "tiny",
+    "water"
+   ],
+   "dims": "2x23x2",
+   "blocks": 25,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_rainbow-lighthouse_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_red-bureaucratic-office-building_mc-mod_x.schem",
+   "name": "Red Bureaucratic Office Building",
+   "category": "towers",
+   "tags": [
+    "medium",
+    "office",
+    "tall"
+   ],
+   "dims": "40x65x25",
+   "blocks": 21639,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_red-bureaucratic-office-building_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_renaissance-church-structure_mc-mod_x.schem",
+   "name": "Renaissance Church Structure",
+   "category": "public",
+   "tags": [
+    "church",
+    "medium",
+    "tall"
+   ],
+   "dims": "61x42x27",
+   "blocks": 11064,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_renaissance-church-structure_mc-mod_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "bridges_river-crossing-bridge_mc-mod_x.schem",
+   "name": "River Crossing Bridge",
+   "category": "bridges",
+   "tags": [
+    "bridge",
+    "small"
+   ],
+   "dims": "61x9x8",
+   "blocks": 865,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\bridges_river-crossing-bridge_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_rivertown-library-structure_mc-mod_x.schem",
+   "name": "Rivertown Library Structure",
+   "category": "public",
+   "tags": [
+    "library",
+    "medium",
+    "tall"
+   ],
+   "dims": "39x41x53",
+   "blocks": 12202,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_rivertown-library-structure_mc-mod_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "residential_rustic-cottage-house-3_mc-mod_x.schem",
+   "name": "Rustic Cottage House",
+   "category": "residential",
+   "tags": [
+    "house",
+    "small"
+   ],
+   "dims": "23x12x30",
+   "blocks": 1792,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_rustic-cottage-house-3_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_rustic-furnished-wooden-house_mc-mod_x.schem",
+   "name": "Rustic Furnished Wooden House",
+   "category": "residential",
+   "tags": [
+    "house",
+    "medium"
+   ],
+   "dims": "29x15x35",
+   "blocks": 3258,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_rustic-furnished-wooden-house_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_rustic-modern-house-with-pool-and-barn_mc-mod_x.schem",
+   "name": "Rustic Modern House with Pool and Barn",
+   "category": "residential",
+   "tags": [
+    "house",
+    "medium",
+    "modern",
+    "pool",
+    "water"
+   ],
+   "dims": "33x31x34",
+   "blocks": 7198,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_rustic-modern-house-with-pool-and-barn_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "bridges_rustic-stone-bridge_mc-mod_x.schem",
+   "name": "Rustic Stone Bridge",
+   "category": "bridges",
+   "tags": [
+    "bridge",
+    "tiny"
+   ],
+   "dims": "8x6x21",
+   "blocks": 286,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\bridges_rustic-stone-bridge_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_rustic-wood-tower-build_mc-mod_x.schem",
+   "name": "Rustic Wood Tower Build",
+   "category": "towers",
+   "tags": [
+    "small",
+    "tall",
+    "tower"
+   ],
+   "dims": "11x50x11",
+   "blocks": 1434,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_rustic-wood-tower-build_mc-mod_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "commercial_rustic-wooden-shop-medium-size_mc-mod_x.schem",
+   "name": "Rustic Wooden Shop &#8211; Medium Size",
+   "category": "commercial",
+   "tags": [
+    "large",
+    "shop"
+   ],
+   "dims": "64x33x64",
+   "blocks": 25504,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_rustic-wooden-shop-medium-size_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_sam-and-taurtis-roleplay-house_mc-mod_x.schem",
+   "name": "Sam and Taurtis&#8217; Roleplay House",
+   "category": "residential",
+   "tags": [
+    "house",
+    "small"
+   ],
+   "dims": "10x23x9",
+   "blocks": 800,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_sam-and-taurtis-roleplay-house_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "transport_sand-palace-station_mc-mod_x.schem",
+   "name": "Sand Palace Station",
+   "category": "transport",
+   "tags": [
+    "large",
+    "station",
+    "tall"
+   ],
+   "dims": "87x45x115",
+   "blocks": 247767,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\transport_sand-palace-station_mc-mod_x.png",
+   "metaFlags": [
+    "duplicate-name"
+   ]
+  },
+  {
+   "file": "towers_sandstone-hotel_mc-mod_x.schem",
+   "name": "Sandstone Hotel",
+   "category": "towers",
+   "tags": [
+    "hotel",
+    "large",
+    "tall"
+   ],
+   "dims": "50x54x45",
+   "blocks": 16158,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_sandstone-hotel_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_sandstone-office-tower-126k-blocks_mc-mod_x.schem",
+   "name": "Sandstone Office Tower &#8211; 126k Blocks",
+   "category": "towers",
+   "tags": [
+    "large",
+    "office",
+    "tall",
+    "tower"
+   ],
+   "dims": "56x97x56",
+   "blocks": 126155,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_sandstone-office-tower-126k-blocks_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "bridges_scalable-long-bridge_mc-mod_x.schem",
+   "name": "Scalable Long Bridge",
+   "category": "bridges",
+   "tags": [
+    "bridge",
+    "large",
+    "tall"
+   ],
+   "dims": "102x72x41",
+   "blocks": 7697,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\bridges_scalable-long-bridge_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_seaside-lighthouse-tower_mc-mod_x.schem",
+   "name": "Seaside Lighthouse Tower",
+   "category": "towers",
+   "tags": [
+    "house",
+    "huge",
+    "tall",
+    "tower",
+    "water"
+   ],
+   "dims": "51x176x61",
+   "blocks": 76555,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_seaside-lighthouse-tower_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_seaside-multi-story-house_mc-mod_x.schem",
+   "name": "Seaside Multi-Story House",
+   "category": "residential",
+   "tags": [
+    "house",
+    "medium"
+   ],
+   "dims": "49x35x31",
+   "blocks": 10289,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_seaside-multi-story-house_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_secluded-cove-house-with-shops_mc-mod_x.schem",
+   "name": "Secluded Cove House With Shops",
+   "category": "residential",
+   "tags": [
+    "house",
+    "huge",
+    "shop",
+    "tall"
+   ],
+   "dims": "129x45x128",
+   "blocks": 505687,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_secluded-cove-house-with-shops_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "commercial_shady-oaks-hotel-townhouse_mc-mod_x.schem",
+   "name": "Shady Oaks Hotel Townhouse",
+   "category": "commercial",
+   "tags": [
+    "hotel",
+    "house",
+    "medium",
+    "tree"
+   ],
+   "dims": "38x17x45",
+   "blocks": 5605,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_shady-oaks-hotel-townhouse_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_shard-tower-tall-unfurnished-structure_mc-mod_x.schem",
+   "name": "Shard Tower &#8211; Tall Unfurnished Structure",
+   "category": "towers",
+   "tags": [
+    "large",
+    "tall",
+    "tower"
+   ],
+   "dims": "44x185x44",
+   "blocks": 31644,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_shard-tower-tall-unfurnished-structure_mc-mod_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "residential_shop-house-building_mc-mod_x.schem",
+   "name": "Shop House Building",
+   "category": "residential",
+   "tags": [
+    "house",
+    "shop",
+    "small"
+   ],
+   "dims": "27x20x25",
+   "blocks": 2350,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_shop-house-building_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_shop-house-for-sale_mc-mod_x.schem",
+   "name": "Shop House for Sale",
+   "category": "residential",
+   "tags": [
+    "house",
+    "shop",
+    "small"
+   ],
+   "dims": "14x16x29",
+   "blocks": 2735,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_shop-house-for-sale_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_shop-or-house-design_mc-mod_x.schem",
+   "name": "Shop or House Design",
+   "category": "residential",
+   "tags": [
+    "house",
+    "medium",
+    "shop"
+   ],
+   "dims": "31x23x32",
+   "blocks": 3503,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_shop-or-house-design_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_simple-defense-tower_mc-mod_x.schem",
+   "name": "Simple Defense Tower",
+   "category": "towers",
+   "tags": [
+    "tiny",
+    "tower"
+   ],
+   "dims": "8x14x9",
+   "blocks": 433,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_simple-defense-tower_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "industrial_simple-factory-shed_mc-mod_x.schem",
+   "name": "Simple Factory Shed",
+   "category": "industrial",
+   "tags": [
+    "medium"
+   ],
+   "dims": "34x21x53",
+   "blocks": 4709,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\industrial_simple-factory-shed_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_simple-minecraft-church-building_mc-mod_x.schem",
+   "name": "Simple Minecraft Church Building",
+   "category": "public",
+   "tags": [
+    "church",
+    "medium"
+   ],
+   "dims": "39x38x59",
+   "blocks": 8431,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_simple-minecraft-church-building_mc-mod_x.png",
+   "metaFlags": [
+    "franchise"
+   ]
+  },
+  {
+   "file": "residential_simple-small-house_mc-mod_x.schem",
+   "name": "Simple Small House",
+   "category": "residential",
+   "tags": [
+    "house",
+    "medium",
+    "shop",
+    "tall"
+   ],
+   "dims": "11x256x11",
+   "blocks": 629,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_simple-small-house_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "bridges_simple-stone-bridge_mc-mod_x.schem",
+   "name": "Simple Stone Bridge",
+   "category": "bridges",
+   "tags": [
+    "bridge",
+    "tiny"
+   ],
+   "dims": "5x8x41",
+   "blocks": 657,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\bridges_simple-stone-bridge_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "bridges_simple-stone-river-bridge_mc-mod_x.schem",
+   "name": "Simple Stone River Bridge",
+   "category": "bridges",
+   "tags": [
+    "bridge",
+    "small"
+   ],
+   "dims": "6x11x49",
+   "blocks": 758,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\bridges_simple-stone-river-bridge_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "transport_simple-train-station_mc-mod_x.schem",
+   "name": "Simple Train Station",
+   "category": "transport",
+   "tags": [
+    "station",
+    "tiny"
+   ],
+   "dims": "6x11x16",
+   "blocks": 432,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\transport_simple-train-station_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_simple-yellow-house_mc-mod_x.schem",
+   "name": "Simple Yellow House",
+   "category": "residential",
+   "tags": [
+    "house",
+    "tiny"
+   ],
+   "dims": "11x11x16",
+   "blocks": 751,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_simple-yellow-house_mc-mod_x.png",
+   "metaFlags": []
+  }
+ ]
+}

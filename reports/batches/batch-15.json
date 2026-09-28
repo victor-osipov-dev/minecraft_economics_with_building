@@ -1,0 +1,605 @@
+{
+ "batch": 15,
+ "items": [
+  {
+   "file": "towers_modern-city-hotel-building_mc-mod_x.schem",
+   "name": "Modern City Hotel Building",
+   "category": "towers",
+   "tags": [
+    "hotel",
+    "large",
+    "modern",
+    "tall"
+   ],
+   "dims": "49x112x41",
+   "blocks": 50688,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_modern-city-hotel-building_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "intersections_modern-city-intersection-road_mc-mod_x.schem",
+   "name": "Modern City Intersection Road",
+   "category": "intersections",
+   "tags": [
+    "medium",
+    "modern",
+    "road"
+   ],
+   "dims": "171x1x171",
+   "blocks": 29241,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\intersections_modern-city-intersection-road_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_modern-city-skyscraper_mc-mod_x.schem",
+   "name": "Modern City Skyscraper",
+   "category": "towers",
+   "tags": [
+    "large",
+    "modern",
+    "tall",
+    "tower"
+   ],
+   "dims": "73x49x42",
+   "blocks": 11204,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_modern-city-skyscraper_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "commercial_modern-coffee-shop_mc-mod_x.schem",
+   "name": "Modern Coffee Shop",
+   "category": "commercial",
+   "tags": [
+    "modern",
+    "shop",
+    "small"
+   ],
+   "dims": "21x20x20",
+   "blocks": 1350,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_modern-coffee-shop_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "parks_modern-concrete-park_mc-mod_x.schem",
+   "name": "Modern Concrete Park",
+   "category": "parks",
+   "tags": [
+    "modern",
+    "park",
+    "tiny"
+   ],
+   "dims": "19x4x19",
+   "blocks": 48,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\parks_modern-concrete-park_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_modern-cyan-terracotta-house_mc-mod_x.schem",
+   "name": "Modern Cyan Terracotta House",
+   "category": "residential",
+   "tags": [
+    "house",
+    "medium",
+    "modern"
+   ],
+   "dims": "67x22x53",
+   "blocks": 26211,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_modern-cyan-terracotta-house_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_modern-decorated-tower_mc-mod_x.schem",
+   "name": "Modern Decorated Tower",
+   "category": "towers",
+   "tags": [
+    "modern",
+    "small",
+    "tall",
+    "tower"
+   ],
+   "dims": "15x46x11",
+   "blocks": 2239,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_modern-decorated-tower_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_modern-diamond-skyscraper_mc-mod_x.schem",
+   "name": "Modern Diamond Skyscraper",
+   "category": "towers",
+   "tags": [
+    "large",
+    "modern",
+    "tall",
+    "tower"
+   ],
+   "dims": "51x145x49",
+   "blocks": 75860,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_modern-diamond-skyscraper_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_modern-eco-skyscraper_mc-mod_x.schem",
+   "name": "Modern Eco Skyscraper",
+   "category": "towers",
+   "tags": [
+    "huge",
+    "modern",
+    "tall",
+    "tower"
+   ],
+   "dims": "59x174x59",
+   "blocks": 105395,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_modern-eco-skyscraper_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "commercial_modern-food-shop_mc-mod_x.schem",
+   "name": "Modern Food Shop",
+   "category": "commercial",
+   "tags": [
+    "modern",
+    "shop",
+    "small"
+   ],
+   "dims": "11x18x22",
+   "blocks": 1517,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_modern-food-shop_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "parks_modern-fountain-design_mc-mod_x.schem",
+   "name": "Modern Fountain Design",
+   "category": "parks",
+   "tags": [
+    "fountain",
+    "modern",
+    "tiny",
+    "water"
+   ],
+   "dims": "13x11x13",
+   "blocks": 275,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\parks_modern-fountain-design_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_modern-four-story-hotel_mc-mod_x.schem",
+   "name": "Modern Four-Story Hotel",
+   "category": "towers",
+   "tags": [
+    "hotel",
+    "large",
+    "modern",
+    "tall"
+   ],
+   "dims": "80x46x106",
+   "blocks": 100386,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_modern-four-story-hotel_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "roads_modern-four-story-shopping-mall-with-roads_mc-mod_x.schem",
+   "name": "Modern Four Story Shopping Mall With Roads",
+   "category": "roads",
+   "tags": [
+    "medium",
+    "modern",
+    "road",
+    "shop"
+   ],
+   "dims": "28x28x36",
+   "blocks": 2661,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\roads_modern-four-story-shopping-mall-with-roads_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "commercial_modern-gas-station-and-shop_mc-mod_x.schem",
+   "name": "Modern Gas Station And Shop",
+   "category": "commercial",
+   "tags": [
+    "medium",
+    "modern",
+    "shop",
+    "station"
+   ],
+   "dims": "69x9x40",
+   "blocks": 4147,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_modern-gas-station-and-shop_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "commercial_modern-gas-station-exterior_mc-mod_x.schem",
+   "name": "Modern Gas Station Exterior",
+   "category": "commercial",
+   "tags": [
+    "modern",
+    "small",
+    "station"
+   ],
+   "dims": "17x8x26",
+   "blocks": 1638,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_modern-gas-station-exterior_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "commercial_modern-gas-station-truck-stop_mc-mod_x.schem",
+   "name": "Modern Gas Station &amp; Truck Stop",
+   "category": "commercial",
+   "tags": [
+    "car",
+    "medium",
+    "modern",
+    "station"
+   ],
+   "dims": "62x11x114",
+   "blocks": 8958,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_modern-gas-station-truck-stop_mc-mod_x.png",
+   "metaFlags": [
+    "non-building-in-name"
+   ]
+  },
+  {
+   "file": "commercial_modern-gas-station-with-store_mc-mod_x.schem",
+   "name": "Modern Gas Station With Store",
+   "category": "commercial",
+   "tags": [
+    "large",
+    "modern",
+    "shop",
+    "station"
+   ],
+   "dims": "74x22x128",
+   "blocks": 19194,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_modern-gas-station-with-store_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_modern-glass-office-tower-building_mc-mod_x.schem",
+   "name": "Modern Glass Office Tower Building",
+   "category": "towers",
+   "tags": [
+    "large",
+    "modern",
+    "office",
+    "tall",
+    "tower"
+   ],
+   "dims": "44x121x44",
+   "blocks": 35389,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_modern-glass-office-tower-building_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "parks_modern-grand-fountain-medium-garden_mc-mod_x.schem",
+   "name": "Modern Grand Fountain &#8211; Medium Garden",
+   "category": "parks",
+   "tags": [
+    "fountain",
+    "medium",
+    "modern",
+    "park",
+    "tall",
+    "water"
+   ],
+   "dims": "33x48x33",
+   "blocks": 6156,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\parks_modern-grand-fountain-medium-garden_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_modern-hotel-building_mc-mod_x.schem",
+   "name": "Modern Hotel Building",
+   "category": "towers",
+   "tags": [
+    "hotel",
+    "medium",
+    "modern",
+    "tall"
+   ],
+   "dims": "49x49x49",
+   "blocks": 26530,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_modern-hotel-building_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_modern-house-design-with-library_mc-mod_x.schem",
+   "name": "Modern House Design With Library",
+   "category": "residential",
+   "tags": [
+    "house",
+    "large",
+    "library",
+    "modern"
+   ],
+   "dims": "50x27x89",
+   "blocks": 21630,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_modern-house-design-with-library_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_modern-lakehouse-mansion_mc-mod_x.schem",
+   "name": "Modern Lakehouse Mansion",
+   "category": "residential",
+   "tags": [
+    "house",
+    "large",
+    "modern"
+   ],
+   "dims": "67x35x96",
+   "blocks": 23476,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_modern-lakehouse-mansion_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_modern-library-design_mc-mod_x.schem",
+   "name": "Modern Library Design",
+   "category": "public",
+   "tags": [
+    "library",
+    "modern",
+    "small"
+   ],
+   "dims": "31x12x7",
+   "blocks": 1264,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_modern-library-design_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_modern-library-house_mc-mod_x.schem",
+   "name": "Modern Library House",
+   "category": "residential",
+   "tags": [
+    "house",
+    "library",
+    "modern",
+    "small"
+   ],
+   "dims": "15x17x15",
+   "blocks": 611,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_modern-library-house_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_modern-luxury-residence_mc-mod_x.schem",
+   "name": "Modern Luxury Residence",
+   "category": "residential",
+   "tags": [
+    "apartment",
+    "medium",
+    "modern"
+   ],
+   "dims": "39x12x35",
+   "blocks": 3728,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_modern-luxury-residence_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_modern-office-building-sketch_mc-mod_x.schem",
+   "name": "Modern Office Building Sketch",
+   "category": "towers",
+   "tags": [
+    "medium",
+    "modern",
+    "office"
+   ],
+   "dims": "31x34x36",
+   "blocks": 6368,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_modern-office-building-sketch_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_modern-office-tower-building_mc-mod_x.schem",
+   "name": "Modern Office Tower Building",
+   "category": "towers",
+   "tags": [
+    "medium",
+    "modern",
+    "office",
+    "tall",
+    "tower"
+   ],
+   "dims": "18x91x20",
+   "blocks": 13404,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_modern-office-tower-building_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_modern-office-tower-with-elevator_mc-mod_x.schem",
+   "name": "Modern Office Tower with Elevator",
+   "category": "towers",
+   "tags": [
+    "modern",
+    "office",
+    "small",
+    "tall",
+    "tower"
+   ],
+   "dims": "18x41x17",
+   "blocks": 6014,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_modern-office-tower-with-elevator_mc-mod_x.png",
+   "metaFlags": [
+    "non-building-in-name"
+   ]
+  },
+  {
+   "file": "towers_modern-office-tower_mc-mod_x.schem",
+   "name": "Modern Office Tower",
+   "category": "towers",
+   "tags": [
+    "medium",
+    "modern",
+    "office",
+    "tall",
+    "tower"
+   ],
+   "dims": "36x54x23",
+   "blocks": 16314,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_modern-office-tower_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "commercial_modern-parallel-heights-hotel-building_mc-mod_x.schem",
+   "name": "Modern Parallel Heights Hotel Building",
+   "category": "commercial",
+   "tags": [
+    "hotel",
+    "medium",
+    "modern"
+   ],
+   "dims": "30x30x64",
+   "blocks": 8905,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_modern-parallel-heights-hotel-building_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "parks_modern-park-with-fountain-and-benches_mc-mod_x.schem",
+   "name": "Modern Park with Fountain and Benches",
+   "category": "parks",
+   "tags": [
+    "fountain",
+    "modern",
+    "park",
+    "small",
+    "water"
+   ],
+   "dims": "20x12x11",
+   "blocks": 425,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\parks_modern-park-with-fountain-and-benches_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "transport_modern-parking-garage-structure_mc-mod_x.schem",
+   "name": "Modern Parking Garage Structure",
+   "category": "transport",
+   "tags": [
+    "modern",
+    "park",
+    "parking",
+    "small"
+   ],
+   "dims": "28x10x33",
+   "blocks": 2612,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\transport_modern-parking-garage-structure_mc-mod_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "public_modern-police-station-building_mc-mod_x.schem",
+   "name": "Modern Police Station Building",
+   "category": "public",
+   "tags": [
+    "medium",
+    "modern",
+    "station"
+   ],
+   "dims": "26x38x41",
+   "blocks": 6901,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_modern-police-station-building_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_modern-police-station-design_mc-mod_x.schem",
+   "name": "Modern Police Station Design",
+   "category": "public",
+   "tags": [
+    "medium",
+    "modern",
+    "station"
+   ],
+   "dims": "47x26x71",
+   "blocks": 20242,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_modern-police-station-design_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_modern-quartz-city-tower_mc-mod_x.schem",
+   "name": "Modern Quartz City Tower",
+   "category": "towers",
+   "tags": [
+    "medium",
+    "modern",
+    "tall",
+    "tower"
+   ],
+   "dims": "34x47x33",
+   "blocks": 9780,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_modern-quartz-city-tower_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_modern-quartz-house-with-birch-accents_mc-mod_x.schem",
+   "name": "Modern Quartz House With Birch Accents",
+   "category": "residential",
+   "tags": [
+    "house",
+    "modern",
+    "small",
+    "tree"
+   ],
+   "dims": "24x13x24",
+   "blocks": 2956,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_modern-quartz-house-with-birch-accents_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "commercial_modern-quartz-reserve-bank_mc-mod_x.schem",
+   "name": "Modern Quartz Reserve Bank",
+   "category": "commercial",
+   "tags": [
+    "bank",
+    "medium",
+    "modern"
+   ],
+   "dims": "25x26x37",
+   "blocks": 5996,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_modern-quartz-reserve-bank_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_modern-quartz-skyscraper-tower_mc-mod_x.schem",
+   "name": "Modern Quartz Skyscraper Tower",
+   "category": "towers",
+   "tags": [
+    "medium",
+    "modern",
+    "tall",
+    "tower"
+   ],
+   "dims": "29x65x29",
+   "blocks": 13475,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_modern-quartz-skyscraper-tower_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_modern-school-building_mc-mod_x.schem",
+   "name": "Modern School Building",
+   "category": "public",
+   "tags": [
+    "medium",
+    "modern",
+    "school"
+   ],
+   "dims": "28x23x60",
+   "blocks": 6319,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_modern-school-building_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_modern-skyscraper-build_mc-mod_x.schem",
+   "name": "Modern Skyscraper Build",
+   "category": "towers",
+   "tags": [
+    "medium",
+    "modern",
+    "tall",
+    "tower"
+   ],
+   "dims": "27x105x40",
+   "blocks": 39496,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_modern-skyscraper-build_mc-mod_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  }
+ ]
+}

@@ -1,0 +1,584 @@
+{
+ "batch": 18,
+ "items": [
+  {
+   "file": "roads_six-lane-highway_mc-mod_x.schem",
+   "name": "Six Lane Highway",
+   "category": "roads",
+   "tags": [
+    "road",
+    "small"
+   ],
+   "dims": "27x3x30",
+   "blocks": 1680,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\roads_six-lane-highway_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_six-story-hotel-with-furnished-rooms_mc-mod_x.schem",
+   "name": "Six Story Hotel With Furnished Rooms",
+   "category": "towers",
+   "tags": [
+    "hotel",
+    "small"
+   ],
+   "dims": "20x31x17",
+   "blocks": 4297,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_six-story-hotel-with-furnished-rooms_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "transport_six-story-parking-garage_mc-mod_x.schem",
+   "name": "Six Story Parking Garage",
+   "category": "transport",
+   "tags": [
+    "large",
+    "park",
+    "parking"
+   ],
+   "dims": "59x27x91",
+   "blocks": 33082,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\transport_six-story-parking-garage_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_skyscraper-city-building_mc-mod_x.schem",
+   "name": "Skyscraper City Building",
+   "category": "towers",
+   "tags": [
+    "medium",
+    "tall",
+    "tower"
+   ],
+   "dims": "13x115x13",
+   "blocks": 5844,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_skyscraper-city-building_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_skyscraper_mc-mod_x.schem",
+   "name": "Iron Quartz Skyscraper Near Build Limit",
+   "category": "towers",
+   "tags": [
+    "medium",
+    "tall",
+    "tower"
+   ],
+   "dims": "12x240x12",
+   "blocks": 19856,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_skyscraper_mc-mod_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "residential_small-apartment-building_mc-mod_x.schem",
+   "name": "Small Apartment Building",
+   "category": "residential",
+   "tags": [
+    "apartment",
+    "shop",
+    "small"
+   ],
+   "dims": "23x18x23",
+   "blocks": 3735,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_small-apartment-building_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_small-asian-style-house_mc-mod_x.schem",
+   "name": "Small Asian Style House",
+   "category": "residential",
+   "tags": [
+    "house",
+    "shop",
+    "small"
+   ],
+   "dims": "26x12x19",
+   "blocks": 636,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_small-asian-style-house_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "commercial_small-carwash-station_mc-mod_x.schem",
+   "name": "Small Carwash Station",
+   "category": "commercial",
+   "tags": [
+    "car",
+    "shop",
+    "station",
+    "tiny"
+   ],
+   "dims": "13x7x9",
+   "blocks": 395,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_small-carwash-station_mc-mod_x.png",
+   "metaFlags": [
+    "non-building-in-name"
+   ]
+  },
+  {
+   "file": "commercial_small-chapel-structure_mc-mod_x.schem",
+   "name": "Small Chapel Structure",
+   "category": "commercial",
+   "tags": [
+    "church",
+    "shop",
+    "small"
+   ],
+   "dims": "19x21x20",
+   "blocks": 971,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_small-chapel-structure_mc-mod_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "commercial_small-church_mc-mod_x.schem",
+   "name": "Small Church",
+   "category": "commercial",
+   "tags": [
+    "church",
+    "medium",
+    "shop",
+    "tall"
+   ],
+   "dims": "23x115x29",
+   "blocks": 29481,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_small-church_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "commercial_small-concrete-bus-stop-schematic_mc-mod_x.schem",
+   "name": "Small Concrete Bus Stop Schematic",
+   "category": "commercial",
+   "tags": [
+    "shop",
+    "small"
+   ],
+   "dims": "15x6x25",
+   "blocks": 235,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_small-concrete-bus-stop-schematic_mc-mod_x.png",
+   "metaFlags": [
+    "non-building-in-name",
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "commercial_small-desert-cactus-fountain_mc-mod_x.schem",
+   "name": "Small Desert Cactus Fountain",
+   "category": "commercial",
+   "tags": [
+    "fountain",
+    "shop",
+    "small",
+    "water"
+   ],
+   "dims": "13x12x13",
+   "blocks": 448,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_small-desert-cactus-fountain_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "commercial_small-double-modern-church-with-interior_mc-mod_x.schem",
+   "name": "Small Double Modern Church With Interior",
+   "category": "commercial",
+   "tags": [
+    "church",
+    "large",
+    "modern",
+    "shop",
+    "tall"
+   ],
+   "dims": "56x46x50",
+   "blocks": 3606,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_small-double-modern-church-with-interior_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "commercial_small-driving-school_mc-mod_x.schem",
+   "name": "Small Driving School",
+   "category": "commercial",
+   "tags": [
+    "medium",
+    "school",
+    "shop"
+   ],
+   "dims": "41x6x76",
+   "blocks": 5448,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_small-driving-school_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "commercial_small-faction-base-for-hardcore-players_mc-mod_x.schem",
+   "name": "Small Faction Base for Hardcore Players",
+   "category": "commercial",
+   "tags": [
+    "shop",
+    "small"
+   ],
+   "dims": "16x13x16",
+   "blocks": 1358,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_small-faction-base-for-hardcore-players_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "commercial_small-factory-shell-template_mc-mod_x.schem",
+   "name": "Small Factory Shell Template",
+   "category": "commercial",
+   "tags": [
+    "shop",
+    "tiny"
+   ],
+   "dims": "13x7x9",
+   "blocks": 432,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_small-factory-shell-template_mc-mod_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "residential_small-fancy-wooden-house_mc-mod_x.schem",
+   "name": "Small Fancy Wooden House",
+   "category": "residential",
+   "tags": [
+    "house",
+    "shop",
+    "small"
+   ],
+   "dims": "14x11x13",
+   "blocks": 613,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_small-fancy-wooden-house_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "commercial_small-garden-fountain-3_mc-mod_x.schem",
+   "name": "Small Garden Fountain",
+   "category": "commercial",
+   "tags": [
+    "fountain",
+    "park",
+    "shop",
+    "tiny",
+    "water"
+   ],
+   "dims": "7x9x7",
+   "blocks": 188,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_small-garden-fountain-3_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_small-house-with-garden-path_mc-mod_x.schem",
+   "name": "Small House with Garden Path",
+   "category": "residential",
+   "tags": [
+    "house",
+    "large",
+    "park",
+    "shop",
+    "tall"
+   ],
+   "dims": "50x56x49",
+   "blocks": 62455,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_small-house-with-garden-path_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "commercial_small-minecraft-church-building_mc-mod_x.schem",
+   "name": "Small Minecraft Church Building",
+   "category": "commercial",
+   "tags": [
+    "church",
+    "medium",
+    "shop"
+   ],
+   "dims": "19x34x34",
+   "blocks": 2840,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_small-minecraft-church-building_mc-mod_x.png",
+   "metaFlags": [
+    "franchise"
+   ]
+  },
+  {
+   "file": "commercial_small-miscellaneous-structure-2_mc-mod_x.schem",
+   "name": "Small Miscellaneous Structure",
+   "category": "commercial",
+   "tags": [
+    "huge",
+    "road",
+    "shop",
+    "tall"
+   ],
+   "dims": "78x185x72",
+   "blocks": 338124,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_small-miscellaneous-structure-2_mc-mod_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "towers_small-office-building_mc-mod_x.schem",
+   "name": "Small Office Building",
+   "category": "towers",
+   "tags": [
+    "medium",
+    "office",
+    "shop",
+    "tall"
+   ],
+   "dims": "10x256x17",
+   "blocks": 974,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_small-office-building_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "commercial_small-open-cafe-design_mc-mod_x.schem",
+   "name": "Small Open Cafe Design",
+   "category": "commercial",
+   "tags": [
+    "medium",
+    "shop",
+    "tall"
+   ],
+   "dims": "10x256x9",
+   "blocks": 511,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_small-open-cafe-design_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "commercial_small-police-car-schematic_mc-mod_x.schem",
+   "name": "Small Police Car Schematic",
+   "category": "commercial",
+   "tags": [
+    "car",
+    "medium",
+    "shop"
+   ],
+   "dims": "22x21x56",
+   "blocks": 3393,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_small-police-car-schematic_mc-mod_x.png",
+   "metaFlags": [
+    "non-building-in-name",
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "residential_small-schoolhouse-with-blackboard_mc-mod_x.schem",
+   "name": "Small Schoolhouse With Blackboard",
+   "category": "residential",
+   "tags": [
+    "house",
+    "school",
+    "shop",
+    "tiny"
+   ],
+   "dims": "12x5x8",
+   "blocks": 293,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_small-schoolhouse-with-blackboard_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "commercial_small-shop-building_mc-mod_x.schem",
+   "name": "Small Shop Building",
+   "category": "commercial",
+   "tags": [
+    "shop",
+    "small"
+   ],
+   "dims": "21x25x19",
+   "blocks": 1665,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_small-shop-building_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "commercial_small-shopping-mall_mc-mod_x.schem",
+   "name": "Small Shopping Mall",
+   "category": "commercial",
+   "tags": [
+    "medium",
+    "shop"
+   ],
+   "dims": "43x18x50",
+   "blocks": 12966,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_small-shopping-mall_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "bridges_small-skybridge-design_mc-mod_x.schem",
+   "name": "Small Skybridge Design",
+   "category": "bridges",
+   "tags": [
+    "bridge",
+    "shop",
+    "tiny"
+   ],
+   "dims": "10x9x17",
+   "blocks": 274,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\bridges_small-skybridge-design_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "commercial_small-spade-shop_mc-mod_x.schem",
+   "name": "Small Spade Shop",
+   "category": "commercial",
+   "tags": [
+    "medium",
+    "shop",
+    "tall"
+   ],
+   "dims": "25x61x20",
+   "blocks": 14656,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_small-spade-shop_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "commercial_small-terracotta-vase-decoration_mc-mod_x.schem",
+   "name": "Small Terracotta Vase Decoration",
+   "category": "commercial",
+   "tags": [
+    "shop",
+    "small"
+   ],
+   "dims": "18x28x18",
+   "blocks": 1019,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_small-terracotta-vase-decoration_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "commercial_small-underground-faction-shop_mc-mod_x.schem",
+   "name": "Small Underground Faction Shop",
+   "category": "commercial",
+   "tags": [
+    "medium",
+    "shop"
+   ],
+   "dims": "40x13x29",
+   "blocks": 12323,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_small-underground-faction-shop_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_small-waterfront-house_mc-mod_x.schem",
+   "name": "Small Waterfront House",
+   "category": "residential",
+   "tags": [
+    "house",
+    "shop",
+    "small"
+   ],
+   "dims": "33x12x23",
+   "blocks": 2372,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_small-waterfront-house_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "commercial_small-wooden-shop-with-multiple-entrances_mc-mod_x.schem",
+   "name": "Small Wooden Shop with Multiple Entrances",
+   "category": "commercial",
+   "tags": [
+    "medium",
+    "shop"
+   ],
+   "dims": "43x14x43",
+   "blocks": 3938,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_small-wooden-shop-with-multiple-entrances_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_soviet-style-apartment-building_mc-mod_x.schem",
+   "name": "Soviet Style Apartment Building",
+   "category": "residential",
+   "tags": [
+    "apartment",
+    "small"
+   ],
+   "dims": "30x14x19",
+   "blocks": 3376,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_soviet-style-apartment-building_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_spacious-mansion-with-park_mc-mod_x.schem",
+   "name": "Spacious Mansion With Park",
+   "category": "residential",
+   "tags": [
+    "house",
+    "large",
+    "park",
+    "tall"
+   ],
+   "dims": "125x43x77",
+   "blocks": 41957,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_spacious-mansion-with-park_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "parks_spawn-fountain-garden_mc-mod_x.schem",
+   "name": "Spawn Fountain Garden",
+   "category": "parks",
+   "tags": [
+    "fountain",
+    "park",
+    "tiny",
+    "water"
+   ],
+   "dims": "21x1x21",
+   "blocks": 433,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\parks_spawn-fountain-garden_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_st-pancras-old-church-exterior-replica_mc-mod_x.schem",
+   "name": "St. Pancras Old Church Exterior Replica",
+   "category": "public",
+   "tags": [
+    "church",
+    "medium"
+   ],
+   "dims": "80x34x27",
+   "blocks": 2802,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_st-pancras-old-church-exterior-replica_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "roads_standard-railroad-station_mc-mod_x.schem",
+   "name": "Standard Railroad Station",
+   "category": "roads",
+   "tags": [
+    "road",
+    "station",
+    "tiny"
+   ],
+   "dims": "11x8x11",
+   "blocks": 401,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\roads_standard-railroad-station_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "bridges_stone-and-wood-survival-bridge_mc-mod_x.schem",
+   "name": "Stone and Wood Survival Bridge",
+   "category": "bridges",
+   "tags": [
+    "bridge",
+    "tiny"
+   ],
+   "dims": "7x8x29",
+   "blocks": 317,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\bridges_stone-and-wood-survival-bridge_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_stone-church-building_mc-mod_x.schem",
+   "name": "Stone Church Building",
+   "category": "public",
+   "tags": [
+    "church",
+    "large",
+    "tall"
+   ],
+   "dims": "65x80x64",
+   "blocks": 17302,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_stone-church-building_mc-mod_x.png",
+   "metaFlags": []
+  }
+ ]
+}

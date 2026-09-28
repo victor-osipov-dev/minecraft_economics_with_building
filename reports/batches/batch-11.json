@@ -1,0 +1,563 @@
+{
+ "batch": 11,
+ "items": [
+  {
+   "file": "public_compact-hospital-structure_mc-mod_x.schem",
+   "name": "Compact Hospital Structure",
+   "category": "public",
+   "tags": [
+    "hospital",
+    "medium"
+   ],
+   "dims": "28x31x36",
+   "blocks": 2368,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_compact-hospital-structure_mc-mod_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "residential_compact-quartz-modern-house_mc-mod_x.schem",
+   "name": "Compact Quartz Modern House",
+   "category": "residential",
+   "tags": [
+    "house",
+    "modern",
+    "small"
+   ],
+   "dims": "16x11x17",
+   "blocks": 897,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_compact-quartz-modern-house_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_compact-two-story-office-building_mc-mod_x.schem",
+   "name": "Compact Two-Story Office Building",
+   "category": "towers",
+   "tags": [
+    "medium",
+    "office"
+   ],
+   "dims": "57x27x63",
+   "blocks": 27435,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_compact-two-story-office-building_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "industrial_compressed-cobblestone-factory_mc-mod_x.schem",
+   "name": "Compressed Cobblestone Factory",
+   "category": "industrial",
+   "tags": [
+    "tiny"
+   ],
+   "dims": "63x1x1",
+   "blocks": 31,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\industrial_compressed-cobblestone-factory_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "industrial_concrete-factory-structure_mc-mod_x.schem",
+   "name": "Concrete Factory Structure",
+   "category": "industrial",
+   "tags": [
+    "large",
+    "tall"
+   ],
+   "dims": "63x47x52",
+   "blocks": 31478,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\industrial_concrete-factory-structure_mc-mod_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "residential_concrete-warehouse-structure_mc-mod_x.schem",
+   "name": "Concrete Warehouse Structure",
+   "category": "residential",
+   "tags": [
+    "house",
+    "small"
+   ],
+   "dims": "25x20x25",
+   "blocks": 1781,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_concrete-warehouse-structure_mc-mod_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "towers_corporate-office-building-2_mc-mod_x.schem",
+   "name": "Large Corporate Office Building",
+   "category": "towers",
+   "tags": [
+    "large",
+    "office",
+    "tall"
+   ],
+   "dims": "86x61x85",
+   "blocks": 175017,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_corporate-office-building-2_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_corporate-office-building_mc-mod_x.schem",
+   "name": "Corporate Office Building",
+   "category": "towers",
+   "tags": [
+    "large",
+    "office",
+    "tall"
+   ],
+   "dims": "51x67x40",
+   "blocks": 34060,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_corporate-office-building_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_country-library-building_mc-mod_x.schem",
+   "name": "Country Library Building",
+   "category": "public",
+   "tags": [
+    "library",
+    "small"
+   ],
+   "dims": "23x15x27",
+   "blocks": 5757,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_country-library-building_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "bridges_covered-minecraft-bridge_mc-mod_x.schem",
+   "name": "Covered Minecraft Bridge",
+   "category": "bridges",
+   "tags": [
+    "bridge",
+    "tiny"
+   ],
+   "dims": "4x5x29",
+   "blocks": 290,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\bridges_covered-minecraft-bridge_mc-mod_x.png",
+   "metaFlags": [
+    "franchise"
+   ]
+  },
+  {
+   "file": "residential_cozy-medium-house-with-garden_mc-mod_x.schem",
+   "name": "Cozy Medium House With Garden",
+   "category": "residential",
+   "tags": [
+    "house",
+    "medium",
+    "park"
+   ],
+   "dims": "39x19x25",
+   "blocks": 3790,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_cozy-medium-house-with-garden_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_cozy-small-hotel-building_mc-mod_x.schem",
+   "name": "Cozy Small Hotel Building",
+   "category": "towers",
+   "tags": [
+    "hotel",
+    "medium",
+    "shop",
+    "tall"
+   ],
+   "dims": "25x61x27",
+   "blocks": 17669,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_cozy-small-hotel-building_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_cozy-small-house-with-attic-and-basement_mc-mod_x.schem",
+   "name": "Cozy Small House with Attic and Basement",
+   "category": "residential",
+   "tags": [
+    "house",
+    "medium",
+    "shop"
+   ],
+   "dims": "29x21x40",
+   "blocks": 9458,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_cozy-small-house-with-attic-and-basement_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_cyan-tower-build_mc-mod_x.schem",
+   "name": "Cyan Tower Build",
+   "category": "towers",
+   "tags": [
+    "small",
+    "tall",
+    "tower"
+   ],
+   "dims": "13x60x13",
+   "blocks": 2068,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_cyan-tower-build_mc-mod_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "towers_dark-luminous-night-tower_mc-mod_x.schem",
+   "name": "Dark Luminous Night Tower",
+   "category": "towers",
+   "tags": [
+    "huge",
+    "tall",
+    "tower"
+   ],
+   "dims": "108x165x46",
+   "blocks": 43637,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_dark-luminous-night-tower_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_desert-sand-tower_mc-mod_x.schem",
+   "name": "Desert Sand Tower",
+   "category": "towers",
+   "tags": [
+    "tiny",
+    "tower"
+   ],
+   "dims": "9x23x9",
+   "blocks": 415,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_desert-sand-tower_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_dirt-church-structure_mc-mod_x.schem",
+   "name": "Dirt Church Structure",
+   "category": "public",
+   "tags": [
+    "church",
+    "medium"
+   ],
+   "dims": "33x30x43",
+   "blocks": 9934,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_dirt-church-structure_mc-mod_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "commercial_doughnut-shop-building_mc-mod_x.schem",
+   "name": "Doughnut Shop Building",
+   "category": "commercial",
+   "tags": [
+    "shop",
+    "small"
+   ],
+   "dims": "21x16x16",
+   "blocks": 583,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_doughnut-shop-building_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "parks_dreamy-fountain-build_mc-mod_x.schem",
+   "name": "Dreamy Fountain Build",
+   "category": "parks",
+   "tags": [
+    "fountain",
+    "small",
+    "water"
+   ],
+   "dims": "13x28x15",
+   "blocks": 996,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\parks_dreamy-fountain-build_mc-mod_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "residential_early-20th-century-schoolhouse_mc-mod_x.schem",
+   "name": "Early 20th Century Schoolhouse",
+   "category": "residential",
+   "tags": [
+    "house",
+    "school",
+    "small"
+   ],
+   "dims": "40x17x18",
+   "blocks": 4884,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_early-20th-century-schoolhouse_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_early-american-library-building_mc-mod_x.schem",
+   "name": "Early American Library Building",
+   "category": "public",
+   "tags": [
+    "library",
+    "small"
+   ],
+   "dims": "14x32x14",
+   "blocks": 1811,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_early-american-library-building_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_eight-story-hotel_mc-mod_x.schem",
+   "name": "Eight Story Hotel",
+   "category": "towers",
+   "tags": [
+    "hotel",
+    "medium",
+    "tall"
+   ],
+   "dims": "21x49x22",
+   "blocks": 9201,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_eight-story-hotel_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_eldorado-house-lakeside-residence_mc-mod_x.schem",
+   "name": "Eldorado House Lakeside Residence",
+   "category": "residential",
+   "tags": [
+    "apartment",
+    "house",
+    "medium"
+   ],
+   "dims": "46x25x57",
+   "blocks": 13230,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_eldorado-house-lakeside-residence_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_eldwyn-library-structure_mc-mod_x.schem",
+   "name": "Eldwyn Library Structure",
+   "category": "public",
+   "tags": [
+    "large",
+    "library",
+    "tall"
+   ],
+   "dims": "73x60x101",
+   "blocks": 23651,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_eldwyn-library-structure_mc-mod_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "commercial_elegant-city-hall-for-small-towns_mc-mod_x.schem",
+   "name": "Elegant City Hall For Small Towns",
+   "category": "commercial",
+   "tags": [
+    "medium",
+    "shop"
+   ],
+   "dims": "36x27x29",
+   "blocks": 5999,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_elegant-city-hall-for-small-towns_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_elegant-grand-hotel_mc-mod_x.schem",
+   "name": "Elegant Grand Hotel",
+   "category": "towers",
+   "tags": [
+    "hotel",
+    "huge",
+    "tall"
+   ],
+   "dims": "106x67x134",
+   "blocks": 52862,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_elegant-grand-hotel_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "commercial_elegant-hotel-with-bar-and-dining_mc-mod_x.schem",
+   "name": "Elegant Hotel With Bar And Dining",
+   "category": "commercial",
+   "tags": [
+    "hotel",
+    "small"
+   ],
+   "dims": "18x25x23",
+   "blocks": 3815,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_elegant-hotel-with-bar-and-dining_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "bridges_elegant-marble-bridge-design_mc-mod_x.schem",
+   "name": "Elegant Marble Bridge Design",
+   "category": "bridges",
+   "tags": [
+    "bridge",
+    "small"
+   ],
+   "dims": "20x21x7",
+   "blocks": 573,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\bridges_elegant-marble-bridge-design_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_elegant-modern-office-tower_mc-mod_x.schem",
+   "name": "Elegant Modern Office Tower",
+   "category": "towers",
+   "tags": [
+    "huge",
+    "modern",
+    "office",
+    "tall",
+    "tower"
+   ],
+   "dims": "55x123x83",
+   "blocks": 22282,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_elegant-modern-office-tower_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "parks_elegant-quartz-fountain_mc-mod_x.schem",
+   "name": "Elegant Quartz Fountain",
+   "category": "parks",
+   "tags": [
+    "fountain",
+    "small",
+    "water"
+   ],
+   "dims": "15x10x15",
+   "blocks": 328,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\parks_elegant-quartz-fountain_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "parks_elegant-quartz-water-fountain_mc-mod_x.schem",
+   "name": "Elegant Quartz Water Fountain",
+   "category": "parks",
+   "tags": [
+    "fountain",
+    "small",
+    "water"
+   ],
+   "dims": "29x13x29",
+   "blocks": 1568,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\parks_elegant-quartz-water-fountain_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_elementary-school-building_mc-mod_x.schem",
+   "name": "Elementary School Building",
+   "category": "public",
+   "tags": [
+    "large",
+    "school"
+   ],
+   "dims": "58x27x93",
+   "blocks": 29155,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_elementary-school-building_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "transport_elevated-metro-station-building_mc-mod_x.schem",
+   "name": "Elevated Metro Station Building",
+   "category": "transport",
+   "tags": [
+    "small",
+    "station"
+   ],
+   "dims": "21x18x32",
+   "blocks": 3993,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\transport_elevated-metro-station-building_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "transport_elevated-metro-station-exterior_mc-mod_x.schem",
+   "name": "Elevated Metro Station Exterior",
+   "category": "transport",
+   "tags": [
+    "small",
+    "station"
+   ],
+   "dims": "25x17x35",
+   "blocks": 4324,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\transport_elevated-metro-station-exterior_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "transport_elevated-metro-station-with-side-platform_mc-mod_x.schem",
+   "name": "Elevated Metro Station With Side Platform",
+   "category": "transport",
+   "tags": [
+    "small",
+    "station"
+   ],
+   "dims": "25x17x35",
+   "blocks": 4810,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\transport_elevated-metro-station-with-side-platform_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "transport_elevated-railway-station_mc-mod_x.schem",
+   "name": "Elevated Railway Station",
+   "category": "transport",
+   "tags": [
+    "station",
+    "tiny"
+   ],
+   "dims": "9x7x20",
+   "blocks": 396,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\transport_elevated-railway-station_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_emerald-skyscraper-tower_mc-mod_x.schem",
+   "name": "Emerald Skyscraper Tower",
+   "category": "towers",
+   "tags": [
+    "small",
+    "tower"
+   ],
+   "dims": "11x29x7",
+   "blocks": 272,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_emerald-skyscraper-tower_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "commercial_essentialsx-shop-setup_mc-mod_x.schem",
+   "name": "EssentialsX Shop Setup",
+   "category": "commercial",
+   "tags": [
+    "large",
+    "shop",
+    "tall"
+   ],
+   "dims": "85x46x84",
+   "blocks": 63930,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_essentialsx-shop-setup_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "industrial_factory-hall-2-0_mc-mod_x.schem",
+   "name": "Factory Hall 2.0",
+   "category": "industrial",
+   "tags": [
+    "large",
+    "tall"
+   ],
+   "dims": "68x48x75",
+   "blocks": 28377,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\industrial_factory-hall-2-0_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "bridges_fallout-3-inspired-overpass-ramp_mc-mod_x.schem",
+   "name": "Fallout 3 Inspired Overpass Ramp",
+   "category": "bridges",
+   "tags": [
+    "medium",
+    "tall"
+   ],
+   "dims": "47x45x29",
+   "blocks": 4943,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\bridges_fallout-3-inspired-overpass-ramp_mc-mod_x.png",
+   "metaFlags": [
+    "franchise"
+   ]
+  }
+ ]
+}

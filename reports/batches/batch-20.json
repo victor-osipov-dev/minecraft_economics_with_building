@@ -1,0 +1,579 @@
+{
+ "batch": 20,
+ "items": [
+  {
+   "file": "towers_water-wall-skyscraper_mc-mod_x.schem",
+   "name": "Water Wall Skyscraper",
+   "category": "towers",
+   "tags": [
+    "medium",
+    "tall",
+    "tower"
+   ],
+   "dims": "36x51x36",
+   "blocks": 27001,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_water-wall-skyscraper_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "transport_western-train-station-structure_mc-mod_x.schem",
+   "name": "Western Train Station Structure",
+   "category": "transport",
+   "tags": [
+    "small",
+    "station"
+   ],
+   "dims": "26x11x15",
+   "blocks": 1086,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\transport_western-train-station-structure_mc-mod_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "commercial_wii-island-hotel_mc-mod_x.schem",
+   "name": "Wii Island Hotel",
+   "category": "commercial",
+   "tags": [
+    "hotel",
+    "medium"
+   ],
+   "dims": "41x24x52",
+   "blocks": 5005,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_wii-island-hotel_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_willis-tower-overhaul-schematic_mc-mod_x.schem",
+   "name": "Willis Tower Overhaul Schematic",
+   "category": "towers",
+   "tags": [
+    "large",
+    "tall",
+    "tower"
+   ],
+   "dims": "51x194x50",
+   "blocks": 100695,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_willis-tower-overhaul-schematic_mc-mod_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "towers_willis-tower-skyscraper-build_mc-mod_x.schem",
+   "name": "Willis Tower Skyscraper Build",
+   "category": "towers",
+   "tags": [
+    "huge",
+    "tall",
+    "tower"
+   ],
+   "dims": "62x254x61",
+   "blocks": 23439,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_willis-tower-skyscraper-build_mc-mod_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "bridges_wooden-bridge-design_mc-mod_x.schem",
+   "name": "Wooden Bridge Design",
+   "category": "bridges",
+   "tags": [
+    "bridge",
+    "small"
+   ],
+   "dims": "9x10x32",
+   "blocks": 606,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\bridges_wooden-bridge-design_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "bridges_wooden-bridge-with-fences_mc-mod_x.schem",
+   "name": "Wooden Bridge with Fences",
+   "category": "bridges",
+   "tags": [
+    "bridge",
+    "small"
+   ],
+   "dims": "14x9x21",
+   "blocks": 512,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\bridges_wooden-bridge-with-fences_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_working-lighthouse-tower_mc-mod_x.schem",
+   "name": "Working Lighthouse Tower",
+   "category": "towers",
+   "tags": [
+    "house",
+    "medium",
+    "tall",
+    "tower",
+    "water"
+   ],
+   "dims": "22x66x24",
+   "blocks": 6520,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_working-lighthouse-tower_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_world-relics-museum-build_mc-mod_x.schem",
+   "name": "World Relics Museum Build",
+   "category": "public",
+   "tags": [
+    "huge",
+    "museum",
+    "tall"
+   ],
+   "dims": "114x58x77",
+   "blocks": 96360,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_world-relics-museum-build_mc-mod_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "public_yandere-high-school-electric-chair-room_mc-mod_x.schem",
+   "name": "Yandere High School Electric Chair Room",
+   "category": "public",
+   "tags": [
+    "school",
+    "tiny"
+   ],
+   "dims": "8x5x9",
+   "blocks": 289,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_yandere-high-school-electric-chair-room_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "commercial_yetis-alpine-shop_mc-mod_x.schem",
+   "name": "Yeti&#8217;s Alpine Shop",
+   "category": "commercial",
+   "tags": [
+    "medium",
+    "shop",
+    "tall"
+   ],
+   "dims": "29x81x49",
+   "blocks": 18437,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_yetis-alpine-shop_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "parks_yin-yang-garden-fountain_mc-mod_x.schem",
+   "name": "Yin Yang Garden Fountain",
+   "category": "parks",
+   "tags": [
+    "fountain",
+    "medium",
+    "park",
+    "water"
+   ],
+   "dims": "40x19x26",
+   "blocks": 5719,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\parks_yin-yang-garden-fountain_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_youcube-office-structure_mc-mod_x.schem",
+   "name": "Youcube Office Structure",
+   "category": "towers",
+   "tags": [
+    "medium",
+    "office",
+    "tall"
+   ],
+   "dims": "21x41x28",
+   "blocks": 5748,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_youcube-office-structure_mc-mod_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "towers_zambias-tallest-skyscraper-findeco-house_mc-mod_x.schem",
+   "name": "Zambia&#8217;s Tallest Skyscraper &#8211; Findeco House",
+   "category": "towers",
+   "tags": [
+    "house",
+    "huge",
+    "tall",
+    "tower"
+   ],
+   "dims": "80x112x96",
+   "blocks": 118581,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_zambias-tallest-skyscraper-findeco-house_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "high-security-jail.schem",
+   "name": "High Security Jail (default map)",
+   "category": "public",
+   "tags": [
+    "huge",
+    "tall"
+   ],
+   "dims": "131x54x119",
+   "blocks": 88508,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\high-security-jail.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "modern_house_n_2.schem",
+   "name": "Modern house N2",
+   "category": "residential",
+   "tags": [
+    "house",
+    "medium",
+    "modern"
+   ],
+   "dims": "30x23x31",
+   "blocks": 2352,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\modern_house_n_2.png",
+   "metaFlags": []
+  },
+  {
+   "file": "radeon-prison.schem",
+   "name": "Radeon prison",
+   "category": "public",
+   "tags": [
+    "large",
+    "tall"
+   ],
+   "dims": "69x61x85",
+   "blocks": 102272,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\radeon-prison.png",
+   "metaFlags": []
+  },
+  {
+   "file": "decor_magenta-storage-container_mc-mod_1.21.8.schem",
+   "name": "Magenta Storage Container",
+   "category": "decor",
+   "tags": [
+    "tiny"
+   ],
+   "dims": "7x6x19",
+   "blocks": 398,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\decor_magenta-storage-container_mc-mod_1.21.8.png",
+   "metaFlags": []
+  },
+  {
+   "file": "decor_blue-container-outdoor-decoration_mc-mod_1.21.8.schem",
+   "name": "Blue Container Outdoor Decoration",
+   "category": "decor",
+   "tags": [
+    "tiny"
+   ],
+   "dims": "7x6x19",
+   "blocks": 406,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\decor_blue-container-outdoor-decoration_mc-mod_1.21.8.png",
+   "metaFlags": []
+  },
+  {
+   "file": "decor_pink-container-decoration_mc-mod_1.21.8.schem",
+   "name": "Pink Container Decoration",
+   "category": "decor",
+   "tags": [
+    "tiny"
+   ],
+   "dims": "7x6x19",
+   "blocks": 406,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\decor_pink-container-decoration_mc-mod_1.21.8.png",
+   "metaFlags": []
+  },
+  {
+   "file": "intersections_modern-city-stoplight_mc-mod_x.schematic",
+   "name": "Modern City Stoplight",
+   "category": "intersections",
+   "tags": [
+    "modern",
+    "tiny"
+   ],
+   "dims": "3x9x3",
+   "blocks": 65,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\intersections_modern-city-stoplight_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "waterfront_automatic-ice-boat-crossing_mc-mod_x.schematic",
+   "name": "Automatic Ice Boat Crossing",
+   "category": "waterfront",
+   "tags": [
+    "boat",
+    "medium"
+   ],
+   "dims": "37x13x37",
+   "blocks": 835,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\waterfront_automatic-ice-boat-crossing_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "roads_off-road-6x6-tanker-truck_mc-mod_x.schematic",
+   "name": "Off-Road 6×6 Tanker Truck",
+   "category": "roads",
+   "tags": [
+    "car",
+    "road",
+    "tiny"
+   ],
+   "dims": "12x6x5",
+   "blocks": 78,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\roads_off-road-6x6-tanker-truck_mc-mod_x.png",
+   "metaFlags": [
+    "non-building-in-name"
+   ]
+  },
+  {
+   "file": "residential_toll-booth-structure_mc-mod_x.schematic",
+   "name": "Toll Booth Structure",
+   "category": "residential",
+   "tags": [
+    "huge"
+   ],
+   "dims": "440x17x115",
+   "blocks": 57768,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_toll-booth-structure_mc-mod_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "roads_street-cleaning-tanker-truck_mc-mod_x.schematic",
+   "name": "Street Cleaning Tanker Truck",
+   "category": "roads",
+   "tags": [
+    "car",
+    "road",
+    "tiny",
+    "tree"
+   ],
+   "dims": "14x6x5",
+   "blocks": 91,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\roads_street-cleaning-tanker-truck_mc-mod_x.png",
+   "metaFlags": [
+    "non-building-in-name"
+   ]
+  },
+  {
+   "file": "roads_street-lantern_mc-mod_x.schematic",
+   "name": "Street Lantern",
+   "category": "roads",
+   "tags": [
+    "road",
+    "tiny",
+    "tree"
+   ],
+   "dims": "1x3x1",
+   "blocks": 3,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\roads_street-lantern_mc-mod_x.png",
+   "metaFlags": [
+    "almost-empty"
+   ]
+  },
+  {
+   "file": "decor_fallout-3-billboard-structure_mc-mod_x.schematic",
+   "name": "Fallout 3 Billboard Structure",
+   "category": "decor",
+   "tags": [
+    "tiny"
+   ],
+   "dims": "10x6x4",
+   "blocks": 80,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\decor_fallout-3-billboard-structure_mc-mod_x.png",
+   "metaFlags": [
+    "franchise",
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "vehicles_garbage-truck-with-front-loader_mc-mod_x.schematic",
+   "name": "Garbage Truck with Front Loader",
+   "category": "vehicles",
+   "tags": [
+    "car",
+    "tiny"
+   ],
+   "dims": "11x4x7",
+   "blocks": 41,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\vehicles_garbage-truck-with-front-loader_mc-mod_x.png",
+   "metaFlags": [
+    "non-building-in-name"
+   ]
+  },
+  {
+   "file": "public_bedwars-bed-defence-structure_mc-mod_x.schematic",
+   "name": "Bedwars Bed Defence Structure",
+   "category": "public",
+   "tags": [
+    "small"
+   ],
+   "dims": "13x13x19",
+   "blocks": 405,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_bedwars-bed-defence-structure_mc-mod_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "decor_large-advertisement-billboard-structure_mc-mod_x.schematic",
+   "name": "Large Advertisement Billboard Structure",
+   "category": "decor",
+   "tags": [
+    "medium",
+    "tall"
+   ],
+   "dims": "49x41x13",
+   "blocks": 2765,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\decor_large-advertisement-billboard-structure_mc-mod_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "vehicles_japanese-garbage-compactor-structure_mc-mod_x.schematic",
+   "name": "Japanese Garbage Compactor Structure",
+   "category": "vehicles",
+   "tags": [
+    "tiny"
+   ],
+   "dims": "5x4x8",
+   "blocks": 49,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\vehicles_japanese-garbage-compactor-structure_mc-mod_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "industrial_industrial-warehouse-fence-and-gate_mc-mod_x.schematic",
+   "name": "Industrial Warehouse Fence and Gate",
+   "category": "industrial",
+   "tags": [
+    "house",
+    "tiny"
+   ],
+   "dims": "1x5x49",
+   "blocks": 245,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\industrial_industrial-warehouse-fence-and-gate_mc-mod_x.png",
+   "metaFlags": [
+    "non-building-in-name"
+   ]
+  },
+  {
+   "file": "decor_meme-billboard-advertisement_mc-mod_x.schematic",
+   "name": "Meme Billboard Advertisement",
+   "category": "decor",
+   "tags": [
+    "medium",
+    "tall"
+   ],
+   "dims": "49x41x13",
+   "blocks": 5215,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\decor_meme-billboard-advertisement_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_automatic-trashcan-build_mc-mod_x.schematic",
+   "name": "Automatic Trashcan Build",
+   "category": "public",
+   "tags": [
+    "tiny"
+   ],
+   "dims": "8x5x6",
+   "blocks": 156,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_automatic-trashcan-build_mc-mod_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "decor_fence-totem-structure_mc-mod_x.schematic",
+   "name": "Fence Totem Structure",
+   "category": "decor",
+   "tags": [
+    "small"
+   ],
+   "dims": "17x17x16",
+   "blocks": 302,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\decor_fence-totem-structure_mc-mod_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "vehicles_realistic-car-trailer-468-blocks_mc-mod_1.21.1.nbt",
+   "name": "Realistic Car Trailer – 468 Blocks",
+   "category": "vehicles",
+   "tags": [
+    "car",
+    "tiny"
+   ],
+   "dims": "25x9x6",
+   "blocks": 3,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\vehicles_realistic-car-trailer-468-blocks_mc-mod_1.21.1.png",
+   "metaFlags": [
+    "non-building-in-name",
+    "almost-empty"
+   ]
+  },
+  {
+   "file": "vehicles_1994-nissan-dump-truck-vehicle_mc-mod_x.schematic",
+   "name": "1994 Nissan Dump Truck Vehicle",
+   "category": "vehicles",
+   "tags": [
+    "car",
+    "tiny"
+   ],
+   "dims": "9x4x5",
+   "blocks": 68,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\vehicles_1994-nissan-dump-truck-vehicle_mc-mod_x.png",
+   "metaFlags": [
+    "non-building-in-name"
+   ]
+  },
+  {
+   "file": "vehicles_super-motorcycle-design_mc-mod_x.schematic",
+   "name": "Super Motorcycle Design",
+   "category": "vehicles",
+   "tags": [
+    "medium"
+   ],
+   "dims": "256x1x128",
+   "blocks": 32727,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\vehicles_super-motorcycle-design_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "vehicles_tow-truck-semi-trailer_mc-mod_x.schematic",
+   "name": "Tow Truck Semi-Trailer",
+   "category": "vehicles",
+   "tags": [
+    "car",
+    "tiny"
+   ],
+   "dims": "5x4x13",
+   "blocks": 88,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\vehicles_tow-truck-semi-trailer_mc-mod_x.png",
+   "metaFlags": [
+    "non-building-in-name"
+   ]
+  },
+  {
+   "file": "vehicles_aluminum-van-truck-6x6_mc-mod_x.schematic",
+   "name": "Aluminum Van Truck 6×6",
+   "category": "vehicles",
+   "tags": [
+    "car",
+    "tiny"
+   ],
+   "dims": "11x6x5",
+   "blocks": 53,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\vehicles_aluminum-van-truck-6x6_mc-mod_x.png",
+   "metaFlags": [
+    "non-building-in-name"
+   ]
+  }
+ ]
+}

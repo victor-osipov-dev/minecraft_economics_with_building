@@ -1,0 +1,584 @@
+{
+ "batch": 5,
+ "items": [
+  {
+   "file": "commercial_asian-hotel_mcbuild_x.schem",
+   "name": "Asian Hotel",
+   "category": "commercial",
+   "tags": [
+    "hotel",
+    "medium"
+   ],
+   "dims": "37x22x54",
+   "blocks": 9646,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_asian-hotel_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_dark-oak-house_mcbuild_x.schem",
+   "name": "Dark Oak House",
+   "category": "residential",
+   "tags": [
+    "house",
+    "small",
+    "tree"
+   ],
+   "dims": "25x39x15",
+   "blocks": 1994,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_dark-oak-house_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_contemporary-home_mcbuild_x.schem",
+   "name": "Contemporary Home",
+   "category": "residential",
+   "tags": [
+    "house",
+    "large",
+    "modern"
+   ],
+   "dims": "81x34x53",
+   "blocks": 13666,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_contemporary-home_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_modern-house-green---update-from-2016-_mcbuild_x.schem",
+   "name": "Modern House(Green) [Update from 2016]",
+   "category": "residential",
+   "tags": [
+    "house",
+    "large",
+    "modern",
+    "tall"
+   ],
+   "dims": "52x60x52",
+   "blocks": 29486,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_modern-house-green---update-from-2016-_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_big-spruce-house_mcbuild_x.schem",
+   "name": "Big spruce house",
+   "category": "residential",
+   "tags": [
+    "house",
+    "medium",
+    "tree"
+   ],
+   "dims": "42x37x35",
+   "blocks": 10459,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_big-spruce-house_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_tower-gate--zerohero1458-_mcbuild_x.schem",
+   "name": "Tower Gate (ZeroHero1458)",
+   "category": "towers",
+   "tags": [
+    "small",
+    "tall",
+    "tower"
+   ],
+   "dims": "23x49x13",
+   "blocks": 2451,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_tower-gate--zerohero1458-_mcbuild_x.png",
+   "metaFlags": [
+    "non-building-in-name"
+   ]
+  },
+  {
+   "file": "residential_spruce-village-pack---church_mcbuild_x.schem",
+   "name": "Spruce Village Pack - Church",
+   "category": "residential",
+   "tags": [
+    "church",
+    "house",
+    "small",
+    "tree"
+   ],
+   "dims": "16x26x11",
+   "blocks": 839,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_spruce-village-pack---church_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "decor_big-tree--v-1-0-_mcbuild_x.schem",
+   "name": "Big Tree [v.1.0]",
+   "category": "decor",
+   "tags": [
+    "medium",
+    "tall",
+    "tree"
+   ],
+   "dims": "47x49x44",
+   "blocks": 7406,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\decor_big-tree--v-1-0-_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_nice-looking-house_mcbuild_x.schem",
+   "name": "Nice looking House",
+   "category": "residential",
+   "tags": [
+    "house",
+    "small"
+   ],
+   "dims": "20x18x19",
+   "blocks": 2960,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_nice-looking-house_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_minecraft---vet-clinic_mcbuild_x.schem",
+   "name": "Minecraft - Vet Clinic",
+   "category": "public",
+   "tags": [
+    "hospital",
+    "medium"
+   ],
+   "dims": "38x25x46",
+   "blocks": 6804,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_minecraft---vet-clinic_mcbuild_x.png",
+   "metaFlags": [
+    "franchise"
+   ]
+  },
+  {
+   "file": "decor_big-tree_mcbuild_x.schem",
+   "name": "Big Tree",
+   "category": "decor",
+   "tags": [
+    "large",
+    "tall",
+    "tree"
+   ],
+   "dims": "56x58x51",
+   "blocks": 2833,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\decor_big-tree_mcbuild_x.png",
+   "metaFlags": [
+    "duplicate-name"
+   ]
+  },
+  {
+   "file": "industrial_factory-2-0_mcbuild_x.schem",
+   "name": "Factory 2.0",
+   "category": "industrial",
+   "tags": [
+    "large",
+    "tall"
+   ],
+   "dims": "68x48x75",
+   "blocks": 28457,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\industrial_factory-2-0_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "decor_ancient-oak-tree_mcbuild_x.schem",
+   "name": "Ancient oak tree",
+   "category": "decor",
+   "tags": [
+    "small",
+    "tree"
+   ],
+   "dims": "21x14x18",
+   "blocks": 63,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\decor_ancient-oak-tree_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_modern-house-1_mcbuild_x.schem",
+   "name": "Modern house 1",
+   "category": "residential",
+   "tags": [
+    "house",
+    "medium",
+    "modern"
+   ],
+   "dims": "36x29x52",
+   "blocks": 6414,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_modern-house-1_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_modern-house-2_mcbuild_x.schem",
+   "name": "Modern house 2",
+   "category": "residential",
+   "tags": [
+    "house",
+    "medium",
+    "modern"
+   ],
+   "dims": "41x39x57",
+   "blocks": 5074,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_modern-house-2_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_mediterranean-style---traditional-house_mcbuild_x.schem",
+   "name": "Mediterranean Style | Traditional House",
+   "category": "residential",
+   "tags": [
+    "house",
+    "large"
+   ],
+   "dims": "84x35x85",
+   "blocks": 29269,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_mediterranean-style---traditional-house_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_modern-apartment-building---1-6-2_mcbuild_x.schem",
+   "name": "Modern Apartment Building | 1.6.2",
+   "category": "residential",
+   "tags": [
+    "apartment",
+    "large",
+    "modern",
+    "tall"
+   ],
+   "dims": "58x63x57",
+   "blocks": 29595,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_modern-apartment-building---1-6-2_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "decor_tree-in-minecraft_mcbuild_x.schem",
+   "name": "Tree in Minecraft",
+   "category": "decor",
+   "tags": [
+    "small",
+    "tall",
+    "tree"
+   ],
+   "dims": "10x58x13",
+   "blocks": 43,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\decor_tree-in-minecraft_mcbuild_x.png",
+   "metaFlags": [
+    "franchise"
+   ]
+  },
+  {
+   "file": "commercial_wood-shop_mcbuild_x.schem",
+   "name": "Wood Shop",
+   "category": "commercial",
+   "tags": [
+    "large",
+    "shop",
+    "tall"
+   ],
+   "dims": "69x87x70",
+   "blocks": 65191,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_wood-shop_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_mansion_mcbuild_x.schem",
+   "name": "Mansion",
+   "category": "residential",
+   "tags": [
+    "house",
+    "large"
+   ],
+   "dims": "81x40x76",
+   "blocks": 56861,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_mansion_mcbuild_x.png",
+   "metaFlags": [
+    "duplicate-name"
+   ]
+  },
+  {
+   "file": "towers_tower-with-clock_mcbuild_x.schem",
+   "name": "Tower with clock",
+   "category": "towers",
+   "tags": [
+    "medium",
+    "tall",
+    "tower"
+   ],
+   "dims": "29x50x35",
+   "blocks": 4015,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_tower-with-clock_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_spawn-house_mcbuild_x.schem",
+   "name": "Spawn House",
+   "category": "residential",
+   "tags": [
+    "house",
+    "small"
+   ],
+   "dims": "17x13x17",
+   "blocks": 1069,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_spawn-house_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_wood-modern-house_mcbuild_x.schem",
+   "name": "Wood Modern House",
+   "category": "residential",
+   "tags": [
+    "house",
+    "modern",
+    "small"
+   ],
+   "dims": "23x16x23",
+   "blocks": 1677,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_wood-modern-house_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_modern-apartment-building_mcbuild_x.schem",
+   "name": "Modern Apartment Building",
+   "category": "residential",
+   "tags": [
+    "apartment",
+    "large",
+    "modern",
+    "tall"
+   ],
+   "dims": "47x83x46",
+   "blocks": 29718,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_modern-apartment-building_mcbuild_x.png",
+   "metaFlags": [
+    "duplicate-name"
+   ]
+  },
+  {
+   "file": "residential_seaside-nordic-mansion_mcbuild_x.schem",
+   "name": "Seaside Nordic Mansion",
+   "category": "residential",
+   "tags": [
+    "house",
+    "large",
+    "tall"
+   ],
+   "dims": "57x49x57",
+   "blocks": 7478,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_seaside-nordic-mansion_mcbuild_x.png",
+   "metaFlags": [
+    "duplicate-name"
+   ]
+  },
+  {
+   "file": "residential_wood-house_mcbuild_x.schem",
+   "name": "Wood house",
+   "category": "residential",
+   "tags": [
+    "house",
+    "small"
+   ],
+   "dims": "19x19x19",
+   "blocks": 1624,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_wood-house_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_blue-modern-tower_mcbuild_x.schem",
+   "name": "Blue Modern Tower",
+   "category": "towers",
+   "tags": [
+    "medium",
+    "modern",
+    "tall",
+    "tower"
+   ],
+   "dims": "27x102x38",
+   "blocks": 12551,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_blue-modern-tower_mcbuild_x.png",
+   "metaFlags": [
+    "duplicate-name"
+   ]
+  },
+  {
+   "file": "residential_stylish-house_mcbuild_x.schem",
+   "name": "Stylish House",
+   "category": "residential",
+   "tags": [
+    "house",
+    "medium"
+   ],
+   "dims": "28x25x36",
+   "blocks": 8019,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_stylish-house_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "commercial_small-pond-1_mcbuild_x.schem",
+   "name": "Small pond 1",
+   "category": "commercial",
+   "tags": [
+    "pool",
+    "shop",
+    "small",
+    "water"
+   ],
+   "dims": "16x12x14",
+   "blocks": 662,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_small-pond-1_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "decor_cherry-tree_mcbuild_x.schem",
+   "name": "Cherry Tree",
+   "category": "decor",
+   "tags": [
+    "medium",
+    "tree"
+   ],
+   "dims": "36x33x36",
+   "blocks": 3037,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\decor_cherry-tree_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_stark-tower_mcbuild_x.schem",
+   "name": "Stark Tower",
+   "category": "towers",
+   "tags": [
+    "large",
+    "tall",
+    "tower"
+   ],
+   "dims": "57x133x37",
+   "blocks": 24507,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_stark-tower_mcbuild_x.png",
+   "metaFlags": [
+    "duplicate-name"
+   ]
+  },
+  {
+   "file": "residential_a-small-modern-house_mcbuild_x.schem",
+   "name": "A Small Modern House",
+   "category": "residential",
+   "tags": [
+    "house",
+    "modern",
+    "shop",
+    "small"
+   ],
+   "dims": "19x11x17",
+   "blocks": 1123,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_a-small-modern-house_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "commercial_real-kfc-restaurant_mcbuild_x.schem",
+   "name": "Real KFC Restaurant",
+   "category": "commercial",
+   "tags": [
+    "medium"
+   ],
+   "dims": "84x11x49",
+   "blocks": 11920,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_real-kfc-restaurant_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_starting-house--mansion-_mcbuild_x.schem",
+   "name": "Starting House (Mansion)",
+   "category": "residential",
+   "tags": [
+    "house",
+    "medium"
+   ],
+   "dims": "33x23x33",
+   "blocks": 5961,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_starting-house--mansion-_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_simple-resource-warehouse_mcbuild_x.schem",
+   "name": "Simple resource warehouse",
+   "category": "residential",
+   "tags": [
+    "house",
+    "small"
+   ],
+   "dims": "17x10x13",
+   "blocks": 1032,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_simple-resource-warehouse_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_big-minecraft-modern-house_mcbuild_x.schem",
+   "name": "Big minecraft modern house",
+   "category": "residential",
+   "tags": [
+    "house",
+    "medium",
+    "modern"
+   ],
+   "dims": "68x17x85",
+   "blocks": 40078,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_big-minecraft-modern-house_mcbuild_x.png",
+   "metaFlags": [
+    "franchise"
+   ]
+  },
+  {
+   "file": "residential_market-with-the-villagers_mcbuild_x.schem",
+   "name": "Market with the villagers",
+   "category": "residential",
+   "tags": [
+    "house",
+    "shop",
+    "small"
+   ],
+   "dims": "28x22x15",
+   "blocks": 3915,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_market-with-the-villagers_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_stark-tower_mcbuild_x-2.schem",
+   "name": "Stark Tower",
+   "category": "towers",
+   "tags": [
+    "large",
+    "tall",
+    "tower"
+   ],
+   "dims": "57x133x37",
+   "blocks": 23343,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_stark-tower_mcbuild_x-2.png",
+   "metaFlags": [
+    "duplicate-name"
+   ]
+  },
+  {
+   "file": "residential_modern-mansion_mcbuild_x.schem",
+   "name": "Modern Mansion",
+   "category": "residential",
+   "tags": [
+    "house",
+    "large",
+    "modern"
+   ],
+   "dims": "140x27x112",
+   "blocks": 125163,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_modern-mansion_mcbuild_x.png",
+   "metaFlags": [
+    "duplicate-name"
+   ]
+  },
+  {
+   "file": "towers_blue-modern-tower_mcbuild_x-2.schem",
+   "name": "Blue Modern Tower",
+   "category": "towers",
+   "tags": [
+    "medium",
+    "modern",
+    "tall",
+    "tower"
+   ],
+   "dims": "27x102x38",
+   "blocks": 12551,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_blue-modern-tower_mcbuild_x-2.png",
+   "metaFlags": [
+    "duplicate-name"
+   ]
+  }
+ ]
+}

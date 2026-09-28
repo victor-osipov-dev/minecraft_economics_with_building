@@ -1,0 +1,542 @@
+{
+ "batch": 24,
+ "items": [
+  {
+   "file": "industrial_diorite-stone-factory-2605-blocks_mc-mod_1.21.1.nbt",
+   "name": "Diorite Stone Factory – 2605 Blocks",
+   "category": "industrial",
+   "tags": [
+    "small"
+   ],
+   "dims": "41x8x21",
+   "blocks": 2036,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\industrial_diorite-stone-factory-2605-blocks_mc-mod_1.21.1.png",
+   "metaFlags": []
+  },
+  {
+   "file": "industrial_industrial-warehouse-building_mc-mod_x.schematic",
+   "name": "Industrial Warehouse Building",
+   "category": "industrial",
+   "tags": [
+    "house",
+    "large"
+   ],
+   "dims": "76x20x148",
+   "blocks": 27864,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\industrial_industrial-warehouse-building_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_rustic-water-tower_mc-mod_1.16.3.schem",
+   "name": "Rustic Water Tower",
+   "category": "towers",
+   "tags": [
+    "small",
+    "tower"
+   ],
+   "dims": "11x22x13",
+   "blocks": 669,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_rustic-water-tower_mc-mod_1.16.3.png",
+   "metaFlags": []
+  },
+  {
+   "file": "industrial_fallout-3-style-grain-silo_mc-mod_x.schematic",
+   "name": "Fallout 3 Style Grain Silo",
+   "category": "industrial",
+   "tags": [
+    "small"
+   ],
+   "dims": "13x22x13",
+   "blocks": 556,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\industrial_fallout-3-style-grain-silo_mc-mod_x.png",
+   "metaFlags": [
+    "franchise"
+   ]
+  },
+  {
+   "file": "industrial_small-industrial-factory-structure_mc-mod_x.schematic",
+   "name": "Small Industrial Factory Structure",
+   "category": "industrial",
+   "tags": [
+    "shop",
+    "small"
+   ],
+   "dims": "22x32x19",
+   "blocks": 1171,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\industrial_small-industrial-factory-structure_mc-mod_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "industrial_granite-concrete-factory-8286-blocks_mc-mod_1.21.1.nbt",
+   "name": "Granite Concrete Factory – 8286 Blocks",
+   "category": "industrial",
+   "tags": [
+    "medium"
+   ],
+   "dims": "29x14x55",
+   "blocks": 7300,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\industrial_granite-concrete-factory-8286-blocks_mc-mod_1.21.1.png",
+   "metaFlags": []
+  },
+  {
+   "file": "industrial_village-warehouse-structure_mc-mod_x.schematic",
+   "name": "Village Warehouse Structure",
+   "category": "industrial",
+   "tags": [
+    "house",
+    "small"
+   ],
+   "dims": "31x18x18",
+   "blocks": 2737,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\industrial_village-warehouse-structure_mc-mod_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "towers_solarpunk-quartz-tower_mc-mod_1.20.1.schem",
+   "name": "Solarpunk Quartz Tower",
+   "category": "towers",
+   "tags": [
+    "large",
+    "tall",
+    "tower"
+   ],
+   "dims": "35x232x35",
+   "blocks": 13562,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_solarpunk-quartz-tower_mc-mod_1.20.1.png",
+   "metaFlags": []
+  },
+  {
+   "file": "industrial_modern-water-mill-structure_mc-mod_x.schematic",
+   "name": "Modern Water Mill Structure",
+   "category": "industrial",
+   "tags": [
+    "modern",
+    "small"
+   ],
+   "dims": "17x37x17",
+   "blocks": 1414,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\industrial_modern-water-mill-structure_mc-mod_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "industrial_spacious-industrial-warehouse-building_mc-mod_x.schematic",
+   "name": "Spacious Industrial Warehouse Building",
+   "category": "industrial",
+   "tags": [
+    "house",
+    "huge"
+   ],
+   "dims": "98x29x237",
+   "blocks": 40448,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\industrial_spacious-industrial-warehouse-building_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "industrial_stone-brick-factory-building_mc-mod_1.20.1.nbt",
+   "name": "Stone Brick Factory Building",
+   "category": "industrial",
+   "tags": [
+    "small"
+   ],
+   "dims": "16x11x28",
+   "blocks": 1794,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\industrial_stone-brick-factory-building_mc-mod_1.20.1.png",
+   "metaFlags": []
+  },
+  {
+   "file": "industrial_industrial-warehouse-storage-facility_mc-mod_x.schematic",
+   "name": "Industrial Warehouse Storage Facility",
+   "category": "industrial",
+   "tags": [
+    "house",
+    "large"
+   ],
+   "dims": "100x24x155",
+   "blocks": 31351,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\industrial_industrial-warehouse-storage-facility_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "industrial_minecraft-lumber-mill-structure_mc-mod_x.schematic",
+   "name": "Minecraft Lumber Mill Structure",
+   "category": "industrial",
+   "tags": [
+    "tiny"
+   ],
+   "dims": "9x11x19",
+   "blocks": 684,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\industrial_minecraft-lumber-mill-structure_mc-mod_x.png",
+   "metaFlags": [
+    "franchise",
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "industrial_industrial-pipe-with-pressure-gauge_mc-mod_x.schematic",
+   "name": "Industrial Pipe with Pressure Gauge",
+   "category": "industrial",
+   "tags": [
+    "tiny"
+   ],
+   "dims": "13x23x5",
+   "blocks": 540,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\industrial_industrial-pipe-with-pressure-gauge_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "industrial_warehouse-7-industrial-building_mc-mod_x.schematic",
+   "name": "Warehouse 7 Industrial Building",
+   "category": "industrial",
+   "tags": [
+    "house",
+    "large"
+   ],
+   "dims": "157x18x105",
+   "blocks": 30693,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\industrial_warehouse-7-industrial-building_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "bridges_industrial-style-bridge_mc-mod_x.schematic",
+   "name": "Industrial Style Bridge",
+   "category": "bridges",
+   "tags": [
+    "bridge",
+    "medium"
+   ],
+   "dims": "85x19x13",
+   "blocks": 2574,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\bridges_industrial-style-bridge_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "industrial_industrial-factory-hall_mc-mod_x.schematic",
+   "name": "Industrial Factory Hall",
+   "category": "industrial",
+   "tags": [
+    "medium",
+    "tall"
+   ],
+   "dims": "29x58x62",
+   "blocks": 7135,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\industrial_industrial-factory-hall_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "industrial_create-mod-birch-lumber-mill-and-factory_mc-mod_1.21.1.nbt",
+   "name": "Create Mod Birch Lumber Mill and Factory",
+   "category": "industrial",
+   "tags": [
+    "small",
+    "tree"
+   ],
+   "dims": "16x22x16",
+   "blocks": 1062,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\industrial_create-mod-birch-lumber-mill-and-factory_mc-mod_1.21.1.png",
+   "metaFlags": []
+  },
+  {
+   "file": "industrial_rustic-wood-workshop_mc-mod_x.schematic",
+   "name": "Rustic Wood Workshop",
+   "category": "industrial",
+   "tags": [
+    "large",
+    "shop",
+    "tall"
+   ],
+   "dims": "69x87x70",
+   "blocks": 65191,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\industrial_rustic-wood-workshop_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "industrial_abandoned-textile-mill-structure_mc-mod_x.schematic",
+   "name": "Abandoned Textile Mill Structure",
+   "category": "industrial",
+   "tags": [
+    "medium"
+   ],
+   "dims": "44x24x57",
+   "blocks": 41032,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\industrial_abandoned-textile-mill-structure_mc-mod_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "industrial_create-mod-basic-workshop_mc-mod_1.21.1.nbt",
+   "name": "Create Mod Basic Workshop",
+   "category": "industrial",
+   "tags": [
+    "shop",
+    "small"
+   ],
+   "dims": "16x12x16",
+   "blocks": 555,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\industrial_create-mod-basic-workshop_mc-mod_1.21.1.png",
+   "metaFlags": []
+  },
+  {
+   "file": "industrial_create-mod-andesite-factory_mc-mod_1.21.1.nbt",
+   "name": "Create Mod Andesite Factory",
+   "category": "industrial",
+   "tags": [
+    "small"
+   ],
+   "dims": "15x33x15",
+   "blocks": 2034,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\industrial_create-mod-andesite-factory_mc-mod_1.21.1.png",
+   "metaFlags": []
+  },
+  {
+   "file": "industrial_mega-clothing-store-with-workshop_mc-mod_1.14.4.schem",
+   "name": "Mega Clothing Store With Workshop",
+   "category": "industrial",
+   "tags": [
+    "medium",
+    "shop",
+    "tall"
+   ],
+   "dims": "33x41x21",
+   "blocks": 8348,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\industrial_mega-clothing-store-with-workshop_mc-mod_1.14.4.png",
+   "metaFlags": []
+  },
+  {
+   "file": "industrial_create-16x16-andesite-alloy-factory_mc-mod_1.21.1.nbt",
+   "name": "Create 16×16 Andesite Alloy Factory",
+   "category": "industrial",
+   "tags": [
+    "small"
+   ],
+   "dims": "16x29x16",
+   "blocks": 2243,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\industrial_create-16x16-andesite-alloy-factory_mc-mod_1.21.1.png",
+   "metaFlags": []
+  },
+  {
+   "file": "industrial_aik-foundry-structure_mc-mod_1.14.4.schem",
+   "name": "AIK Foundry Structure",
+   "category": "industrial",
+   "tags": [
+    "medium",
+    "tall"
+   ],
+   "dims": "29x60x36",
+   "blocks": 61258,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\industrial_aik-foundry-structure_mc-mod_1.14.4.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "industrial_factory-build-v3_mc-mod_1.20.1.nbt",
+   "name": "Factory Build V3",
+   "category": "industrial",
+   "tags": [
+    "large",
+    "tall"
+   ],
+   "dims": "84x57x81",
+   "blocks": 24644,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\industrial_factory-build-v3_mc-mod_1.20.1.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "industrial_advanced-syngas-industrial-complex_mc-mod_x.schematic",
+   "name": "Advanced Syngas Industrial Complex",
+   "category": "industrial",
+   "tags": [
+    "car",
+    "medium"
+   ],
+   "dims": "89x18x47",
+   "blocks": 18268,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\industrial_advanced-syngas-industrial-complex_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "industrial_create-mod-gravel-factory-16x16_mc-mod_1.21.1.nbt",
+   "name": "Create Mod Gravel Factory 16×16",
+   "category": "industrial",
+   "tags": [
+    "small"
+   ],
+   "dims": "16x15x16",
+   "blocks": 894,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\industrial_create-mod-gravel-factory-16x16_mc-mod_1.21.1.png",
+   "metaFlags": []
+  },
+  {
+   "file": "industrial_create-mod-andesite-factory-16x16-taiga_mc-mod_1.21.1.nbt",
+   "name": "Create Mod Andesite Factory 16×16 Taiga",
+   "category": "industrial",
+   "tags": [
+    "small"
+   ],
+   "dims": "16x33x16",
+   "blocks": 2895,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\industrial_create-mod-andesite-factory-16x16-taiga_mc-mod_1.21.1.png",
+   "metaFlags": []
+  },
+  {
+   "file": "industrial_industrial-style-modern-house_mc-mod_1.14.4.schem",
+   "name": "Industrial Style Modern House",
+   "category": "industrial",
+   "tags": [
+    "house",
+    "medium",
+    "modern",
+    "tall"
+   ],
+   "dims": "30x42x31",
+   "blocks": 9071,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\industrial_industrial-style-modern-house_mc-mod_1.14.4.png",
+   "metaFlags": []
+  },
+  {
+   "file": "industrial_create-mod-andesite-factory-in-16x16-chunk_mc-mod_1.21.1.nbt",
+   "name": "Create Mod Andesite Factory In 16×16 Chunk",
+   "category": "industrial",
+   "tags": [
+    "small"
+   ],
+   "dims": "15x34x15",
+   "blocks": 2126,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\industrial_create-mod-andesite-factory-in-16x16-chunk_mc-mod_1.21.1.png",
+   "metaFlags": []
+  },
+  {
+   "file": "industrial_industrial-style-house_mc-mod_1.14.4.schem",
+   "name": "Industrial Style House",
+   "category": "industrial",
+   "tags": [
+    "house",
+    "medium",
+    "tall"
+   ],
+   "dims": "30x60x31",
+   "blocks": 12542,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\industrial_industrial-style-house_mc-mod_1.14.4.png",
+   "metaFlags": []
+  },
+  {
+   "file": "industrial_industrial-factory-building-4_mc-mod_1.14.4.schem",
+   "name": "Stone Brick Industrial Factory",
+   "category": "industrial",
+   "tags": [
+    "medium"
+   ],
+   "dims": "20x27x34",
+   "blocks": 4762,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\industrial_industrial-factory-building-4_mc-mod_1.14.4.png",
+   "metaFlags": []
+  },
+  {
+   "file": "commercial_rustic-farmhouse-shop_mc-mod_x.schematic",
+   "name": "Rustic Farmhouse & Shop",
+   "category": "commercial",
+   "tags": [
+    "house",
+    "shop",
+    "small"
+   ],
+   "dims": "33x15x28",
+   "blocks": 2766,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_rustic-farmhouse-shop_mc-mod_x.png",
+   "metaFlags": [
+    "non-building-in-name"
+   ]
+  },
+  {
+   "file": "residential_town-layout-with-plots-for-houses-and-markets_mc-mod_x.schematic",
+   "name": "Town Layout with Plots for Houses and Markets",
+   "category": "residential",
+   "tags": [
+    "house",
+    "large",
+    "shop"
+   ],
+   "dims": "130x11x144",
+   "blocks": 4237,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_town-layout-with-plots-for-houses-and-markets_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "commercial_modern-mcdonalds-restaurant-with-exterior_mc-mod_x.schematic",
+   "name": "Modern McDonald’s Restaurant With Exterior",
+   "category": "commercial",
+   "tags": [
+    "medium",
+    "modern"
+   ],
+   "dims": "35x21x44",
+   "blocks": 2854,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_modern-mcdonalds-restaurant-with-exterior_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "commercial_union-bank-building_mc-mod_x.schematic",
+   "name": "Union Bank Building",
+   "category": "commercial",
+   "tags": [
+    "bank",
+    "huge",
+    "tall"
+   ],
+   "dims": "85x173x45",
+   "blocks": 610233,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_union-bank-building_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "commercial_classical-greek-market_mc-mod_1.21.schem",
+   "name": "Classical Greek Market",
+   "category": "commercial",
+   "tags": [
+    "large",
+    "shop",
+    "tall"
+   ],
+   "dims": "75x46x75",
+   "blocks": 11314,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_classical-greek-market_mc-mod_1.21.png",
+   "metaFlags": []
+  },
+  {
+   "file": "commercial_unique-treehouse-restaurant_mc-mod_x.schematic",
+   "name": "Unique Treehouse Restaurant",
+   "category": "commercial",
+   "tags": [
+    "house",
+    "small",
+    "tree"
+   ],
+   "dims": "15x8x17",
+   "blocks": 961,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_unique-treehouse-restaurant_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "commercial_the-x-mall_mc-mod_1.16.4.schem",
+   "name": "The X Mall",
+   "category": "commercial",
+   "tags": [
+    "shop",
+    "small"
+   ],
+   "dims": "20x20x21",
+   "blocks": 2488,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_the-x-mall_mc-mod_1.16.4.png",
+   "metaFlags": []
+  }
+ ]
+}

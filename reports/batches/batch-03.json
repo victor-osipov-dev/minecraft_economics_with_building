@@ -1,0 +1,578 @@
+{
+ "batch": 3,
+ "items": [
+  {
+   "file": "transport_monorail-maglev-transportation-system_buildschematics_x.nbt",
+   "name": "Monorail Maglev Transportation System",
+   "category": "transport",
+   "tags": [
+    "tiny"
+   ],
+   "dims": "6x6x51",
+   "blocks": 263,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\transport_monorail-maglev-transportation-system_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "transport_narrow-gauge-train-with-caboose_buildschematics_x.nbt",
+   "name": "Narrow Gauge Train With Caboose",
+   "category": "transport",
+   "tags": [
+    "tiny"
+   ],
+   "dims": "5x6x18",
+   "blocks": 86,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\transport_narrow-gauge-train-with-caboose_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "transport_passenger-train-carriage_buildschematics_x.nbt",
+   "name": "Passenger Train Carriage",
+   "category": "transport",
+   "tags": [
+    "car",
+    "tiny"
+   ],
+   "dims": "5x6x21",
+   "blocks": 181,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\transport_passenger-train-carriage_buildschematics_x.png",
+   "metaFlags": [
+    "non-building-in-name"
+   ]
+  },
+  {
+   "file": "industrial_pennsylvania-railroad-coaling-tower_buildschematics_x.nbt",
+   "name": "Pennsylvania Railroad Coaling Tower",
+   "category": "industrial",
+   "tags": [
+    "car",
+    "medium",
+    "road",
+    "tower"
+   ],
+   "dims": "33x24x40",
+   "blocks": 5649,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\industrial_pennsylvania-railroad-coaling-tower_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "commercial_pokemart-shop_buildschematics_x.schem",
+   "name": "PokeMart Shop",
+   "category": "commercial",
+   "tags": [
+    "shop",
+    "tiny"
+   ],
+   "dims": "15x9x10",
+   "blocks": 711,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_pokemart-shop_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_portland-style-townhouse-two-story-design_buildschematics_x.schem",
+   "name": "Portland-Style Townhouse - Two Story Design",
+   "category": "residential",
+   "tags": [
+    "house",
+    "small"
+   ],
+   "dims": "12x19x20",
+   "blocks": 2180,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_portland-style-townhouse-two-story-design_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_quartz-home_buildschematics_x.schem",
+   "name": "Quartz Home",
+   "category": "residential",
+   "tags": [
+    "house",
+    "medium"
+   ],
+   "dims": "48x20x57",
+   "blocks": 8888,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_quartz-home_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "roads_realistic-highway-tunnel-for-minecraft_buildschematics_x.schem",
+   "name": "Realistic Highway Tunnel For Minecraft",
+   "category": "roads",
+   "tags": [
+    "large",
+    "road"
+   ],
+   "dims": "51x25x382",
+   "blocks": 293201,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\roads_realistic-highway-tunnel-for-minecraft_buildschematics_x.png",
+   "metaFlags": [
+    "franchise",
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "residential_red-japanese-house-2-minecraft-build_buildschematics_262.schem",
+   "name": "Red Japanese House 2 Minecraft Build",
+   "category": "residential",
+   "tags": [
+    "house",
+    "medium"
+   ],
+   "dims": "21x34x45",
+   "blocks": 4378,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_red-japanese-house-2-minecraft-build_buildschematics_262.png",
+   "metaFlags": [
+    "franchise",
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "transport_ridable-german-ice-train_buildschematics_x.nbt",
+   "name": "Ridable German ICE Train",
+   "category": "transport",
+   "tags": [
+    "small"
+   ],
+   "dims": "71x6x7",
+   "blocks": 1076,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\transport_ridable-german-ice-train_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_ridge-mansion-with-pool-and-tower_buildschematics_x.schem",
+   "name": "Ridge Mansion With Pool And Tower",
+   "category": "residential",
+   "tags": [
+    "house",
+    "huge",
+    "pool",
+    "tall",
+    "tower",
+    "water"
+   ],
+   "dims": "80x57x179",
+   "blocks": 155086,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_ridge-mansion-with-pool-and-tower_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "waterfront_riverside-log-cabin-with-dock_buildschematics_x.schem",
+   "name": "Riverside Log Cabin with Dock",
+   "category": "waterfront",
+   "tags": [
+    "boat",
+    "house",
+    "small",
+    "water"
+   ],
+   "dims": "23x27x22",
+   "blocks": 3584,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\waterfront_riverside-log-cabin-with-dock_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_row-house-facade-design_buildschematics_x.schem",
+   "name": "Row House Facade Design",
+   "category": "residential",
+   "tags": [
+    "house",
+    "medium"
+   ],
+   "dims": "36x21x36",
+   "blocks": 5633,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_row-house-facade-design_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "commercial_rustic-log-cabin-shop_buildschematics_x.schem",
+   "name": "Rustic Log Cabin Shop",
+   "category": "commercial",
+   "tags": [
+    "house",
+    "shop",
+    "tiny"
+   ],
+   "dims": "11x8x15",
+   "blocks": 652,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_rustic-log-cabin-shop_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_rustic-overgrown-church_buildschematics_x.schem",
+   "name": "Rustic Overgrown Church",
+   "category": "public",
+   "tags": [
+    "church",
+    "small"
+   ],
+   "dims": "22x21x23",
+   "blocks": 1487,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_rustic-overgrown-church_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_rustic-wooden-train-station_buildschematics_x.schem",
+   "name": "Rustic Wooden Train Station",
+   "category": "public",
+   "tags": [
+    "small",
+    "station"
+   ],
+   "dims": "27x15x26",
+   "blocks": 5928,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_rustic-wooden-train-station_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "decor_sakura-tree-decoration_buildschematics_x.schem",
+   "name": "Sakura Tree Decoration",
+   "category": "decor",
+   "tags": [
+    "huge",
+    "tall",
+    "tree"
+   ],
+   "dims": "92x91x95",
+   "blocks": 42053,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\decor_sakura-tree-decoration_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "transport_sandstone-cliffside-mansion-with-boat-dock_buildschematics_x.schem",
+   "name": "Sandstone Cliffside Mansion with Boat Dock",
+   "category": "transport",
+   "tags": [
+    "boat",
+    "house",
+    "huge",
+    "water"
+   ],
+   "dims": "163x36x110",
+   "blocks": 216123,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\transport_sandstone-cliffside-mansion-with-boat-dock_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_sandstone-library-building_buildschematics_x.schem",
+   "name": "Sandstone Library Building",
+   "category": "public",
+   "tags": [
+    "library",
+    "small"
+   ],
+   "dims": "15x20x34",
+   "blocks": 3681,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_sandstone-library-building_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_sao-paulo-central-train-station-structure_buildschematics_x.schem",
+   "name": "Sao Paulo Central Train Station Structure",
+   "category": "public",
+   "tags": [
+    "large",
+    "station",
+    "tall"
+   ],
+   "dims": "69x77x68",
+   "blocks": 40838,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_sao-paulo-central-train-station-structure_buildschematics_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "decor_sazayama-prefecture-decoration-tree-big-7_buildschematics_x.schem",
+   "name": "Sazayama Prefecture Decoration Tree Big 7",
+   "category": "decor",
+   "tags": [
+    "tiny",
+    "tree"
+   ],
+   "dims": "8x29x6",
+   "blocks": 14,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\decor_sazayama-prefecture-decoration-tree-big-7_buildschematics_x.png",
+   "metaFlags": [
+    "almost-empty"
+   ]
+  },
+  {
+   "file": "decor_sazayama-prefecture-decoration-tree-big-9_buildschematics_x.schem",
+   "name": "Sazayama Prefecture Decoration Tree Big 9",
+   "category": "decor",
+   "tags": [
+    "small",
+    "tree"
+   ],
+   "dims": "11x26x11",
+   "blocks": 52,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\decor_sazayama-prefecture-decoration-tree-big-9_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "decor_sazayama-prefecture-decoration-tree-cherry-1_buildschematics_x.schem",
+   "name": "Sazayama Prefecture Decoration Tree Cherry 1",
+   "category": "decor",
+   "tags": [
+    "small",
+    "tree"
+   ],
+   "dims": "24x18x21",
+   "blocks": 102,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\decor_sazayama-prefecture-decoration-tree-cherry-1_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "decor_sazayama-prefecture-decoration-tree-normal-7_buildschematics_x.schem",
+   "name": "Sazayama Prefecture Decoration Tree Normal 7",
+   "category": "decor",
+   "tags": [
+    "tiny",
+    "tree"
+   ],
+   "dims": "5x15x3",
+   "blocks": 19,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\decor_sazayama-prefecture-decoration-tree-normal-7_buildschematics_x.png",
+   "metaFlags": [
+    "almost-empty"
+   ]
+  },
+  {
+   "file": "decor_sazayama-prefecture-decoration-tree-palm-2_buildschematics_x.schem",
+   "name": "Sazayama Prefecture Decoration Tree Palm 2",
+   "category": "decor",
+   "tags": [
+    "tiny",
+    "tree"
+   ],
+   "dims": "5x11x5",
+   "blocks": 27,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\decor_sazayama-prefecture-decoration-tree-palm-2_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_shakespearean-theater-structure_buildschematics_x.schem",
+   "name": "Shakespearean Theater Structure",
+   "category": "public",
+   "tags": [
+    "small"
+   ],
+   "dims": "26x12x33",
+   "blocks": 3778,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_shakespearean-theater-structure_buildschematics_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "commercial_shopping-mall-elevator-with-floor-selection_buildschematics_x.schem",
+   "name": "Shopping Mall Elevator with Floor Selection",
+   "category": "commercial",
+   "tags": [
+    "medium",
+    "shop"
+   ],
+   "dims": "28x30x23",
+   "blocks": 7321,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_shopping-mall-elevator-with-floor-selection_buildschematics_x.png",
+   "metaFlags": [
+    "non-building-in-name"
+   ]
+  },
+  {
+   "file": "decor_simple-beginner-treehouse_buildschematics_262.schem",
+   "name": "Simple Beginner Treehouse",
+   "category": "decor",
+   "tags": [
+    "hotel",
+    "house",
+    "small",
+    "tree"
+   ],
+   "dims": "22x31x18",
+   "blocks": 4612,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\decor_simple-beginner-treehouse_buildschematics_262.png",
+   "metaFlags": []
+  },
+  {
+   "file": "transport_single-cart-metro-train_buildschematics_x.nbt",
+   "name": "Single Cart Metro Train",
+   "category": "transport",
+   "tags": [
+    "car",
+    "tiny"
+   ],
+   "dims": "14x5x5",
+   "blocks": 92,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\transport_single-cart-metro-train_buildschematics_x.png",
+   "metaFlags": [
+    "non-building-in-name"
+   ]
+  },
+  {
+   "file": "residential_small-apartment-building-exterior_buildschematics_x.schem",
+   "name": "Small Apartment Building Exterior",
+   "category": "residential",
+   "tags": [
+    "apartment",
+    "shop",
+    "small"
+   ],
+   "dims": "15x14x15",
+   "blocks": 1560,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_small-apartment-building-exterior_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_small-arabian-house_buildschematics_x.schem",
+   "name": "Small Arabian House",
+   "category": "residential",
+   "tags": [
+    "house",
+    "shop",
+    "tiny"
+   ],
+   "dims": "8x6x7",
+   "blocks": 208,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_small-arabian-house_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_small-furnished-apartment-building_buildschematics_x.schem",
+   "name": "Small Furnished Apartment Building",
+   "category": "residential",
+   "tags": [
+    "apartment",
+    "shop",
+    "small"
+   ],
+   "dims": "26x19x8",
+   "blocks": 1950,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_small-furnished-apartment-building_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "industrial_small-grain-elevator-structure_buildschematics_x.schem",
+   "name": "Small Grain Elevator Structure",
+   "category": "industrial",
+   "tags": [
+    "large",
+    "shop",
+    "tall"
+   ],
+   "dims": "26x67x72",
+   "blocks": 10390,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\industrial_small-grain-elevator-structure_buildschematics_x.png",
+   "metaFlags": [
+    "non-building-in-name",
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "commercial_small-hotel-with-garden_buildschematics_x.schem",
+   "name": "Small Hotel With Garden",
+   "category": "commercial",
+   "tags": [
+    "hotel",
+    "park",
+    "shop",
+    "small"
+   ],
+   "dims": "23x18x8",
+   "blocks": 1154,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_small-hotel-with-garden_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "waterfront_small-lighthouse-tower_buildschematics_x.schem",
+   "name": "Small Lighthouse Tower",
+   "category": "waterfront",
+   "tags": [
+    "house",
+    "medium",
+    "shop",
+    "tall",
+    "tower",
+    "water"
+   ],
+   "dims": "24x45x23",
+   "blocks": 2798,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\waterfront_small-lighthouse-tower_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_small-modern-house-2_buildschematics_x.schem",
+   "name": "Small Modern House",
+   "category": "residential",
+   "tags": [
+    "house",
+    "modern",
+    "shop",
+    "small"
+   ],
+   "dims": "23x14x25",
+   "blocks": 1525,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_small-modern-house-2_buildschematics_x.png",
+   "metaFlags": [
+    "duplicate-name"
+   ]
+  },
+  {
+   "file": "public_small-modern-train-station_buildschematics_x.schem",
+   "name": "Small Modern Train Station",
+   "category": "public",
+   "tags": [
+    "medium",
+    "modern",
+    "shop",
+    "station"
+   ],
+   "dims": "34x40x33",
+   "blocks": 10394,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_small-modern-train-station_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "waterfront_small-motorboat-vehicle_buildschematics_x.nbt",
+   "name": "Small Motorboat Vehicle",
+   "category": "waterfront",
+   "tags": [
+    "boat",
+    "shop",
+    "tiny"
+   ],
+   "dims": "8x3x5",
+   "blocks": 35,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\waterfront_small-motorboat-vehicle_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_small-rustic-log-cabin-house_buildschematics_x.schem",
+   "name": "Small Rustic Log Cabin House",
+   "category": "residential",
+   "tags": [
+    "house",
+    "shop",
+    "small"
+   ],
+   "dims": "18x14x41",
+   "blocks": 3882,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_small-rustic-log-cabin-house_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "bridges_small-single-track-railway-bridge_buildschematics_x.schem",
+   "name": "Small Single-Track Railway Bridge",
+   "category": "bridges",
+   "tags": [
+    "bridge",
+    "shop",
+    "tiny"
+   ],
+   "dims": "5x9x29",
+   "blocks": 397,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\bridges_small-single-track-railway-bridge_buildschematics_x.png",
+   "metaFlags": []
+  }
+ ]
+}
