@@ -40,7 +40,8 @@ import { parseSchematicFile, pasteSchematic, rotatePlan } from "./schematic.js";
 import { TYPES, resolveType, instStats } from "./city/buildingTypes.js";
 import {
   newCityState, buildCostFor, addBuilding, charge,
-  damageAt, repair, repairPrice, tick,
+  damageAt, repair, repairPrice, demolish, tick,
+  MILESTONES, BANKRUPT_AT, TAX_PER_CAPITA,
 } from "./city/city.js";
 import {
   createResident, assignTarget, stepResidents, desiredAgents,
@@ -605,6 +606,8 @@ function registerRecord(rec, typeId) {
     dims: { W: rec.W, H: rec.H, L: rec.L },
     pos: { x0: rec.x0, y0: rec.y0, z0: rec.z0 },
     placedBlocks: rec.placed,
+    file: rec.file,
+    rot: rec.rot,
   });
   rec.cityId = inst.id;
   rec.labelBase = rec.label.innerHTML;
@@ -628,6 +631,7 @@ function refreshRecordLabel(rec) {
   const hp = Math.round(inst.health);
   const parts = [`состояние ${hp}%`];
   if (inst.active === false) parts.push("черновик");
+  if (inst.roadAccess === false && inst.active !== false) parts.push("без дороги!");
   if (inst.stats.housing > 0) parts.push(`жители ${inst.residents || 0}/${inst.stats.housing}`);
   if (inst.stats.jobs > 0) parts.push(`работники ${inst.workers}/${inst.stats.jobs}`);
   rec.label.innerHTML = rec.labelBase +
@@ -668,11 +672,16 @@ function renderCity() {
   const last = city.last;
   const workers = city.buildings.reduce((a, b) => a + b.workers, 0);
   const jobsCap = last ? last.jobsTotal : city.buildings.reduce((a, b) => a + b.stats.jobs, 0);
+  const taxRate = Number.isFinite(city.taxRate) ? city.taxRate : TAX_PER_CAPITA;
+  const nextMs = MILESTONES.find((m) => !(city.milestones || []).includes(m.id));
+  const moneyNote = city.money < 0 ? ` <span class="cdim">банкротство при −$${Math.abs(BANKRUPT_AT).toLocaleString("ru-RU")}!</span>` : "";
   const rows = [
-    ["Деньги", `${fmtMoney(city.money)} <span class="cdim">(${(last && last.income >= 0 ? "+" : "") + (last ? last.income : 0)} / −${last ? last.upkeep : 0} в день)</span>`],
+    ["Деньги", `${fmtMoney(city.money)} <span class="cdim">(${(last && last.income >= 0 ? "+" : "") + (last ? last.income : 0)} / −${last ? last.upkeep : 0} в день)</span>${moneyNote}`],
     ["День", `${city.day}`],
     ["Жители", `${city.population} <span class="cdim">(${last && last.migrants >= 0 ? "+" : ""}${last ? last.migrants : 0}/день)</span>`],
     ["Счастье", `${city.happiness}%`],
+    ["Налоги", `<input type="range" id="taxRange" min="0" max="1" step="0.05" value="${taxRate}" style="width:130px;vertical-align:middle"> <b>$${taxRate.toFixed(2)}/жит</b> <span class="cdim">${taxRate > TAX_PER_CAPITA ? "давят на счастье" : taxRate < TAX_PER_CAPITA ? "радуют горожан" : "базовая ставка"}</span>`],
+    ["Цель", nextMs ? `${nextMs.name} <span class="cdim">бонус $${nextMs.bonus.toLocaleString("ru-RU")}</span>` : "все вехи достигнуты!"],
     ["Жильё", `${city.population} / ${last ? last.housingCap : 0}`],
     ["Работы", `${workers} / ${jobsCap}`],
     ["Еда", `${city.food}`],
@@ -681,6 +690,7 @@ function renderCity() {
     ["Мусор", `${Math.round(city.waste)}`],
     ["Преступность", `${city.last ? city.last.crime : 0}`],
     ["Загрязнение", `${city.pollution}`],
+    ["Без дорог", `${last ? last.roadless : 0} <span class="cdim">работают вполсилы</span>`],
     ["Жители на карте", `${residents.length} <button data-residents="">${showResidents ? "скрыть" : "показать"}</button>`],
   ];
   cityStatsEl.innerHTML = rows.map(([k, v]) =>
@@ -711,23 +721,26 @@ function renderLoans() {
     const t = TYPES[inst.typeId];
     const cost = repairPrice(inst);
     const can = inst.health < 100 && city.money >= cost;
+    const refund = Math.floor(inst.stats.buildCost * 0.5);
     const row = document.createElement("div");
     row.className = "cbld";
     const hp = Math.round(inst.health);
     const parts = [`состояние ${hp}%`];
     if (inst.active === false) parts.push("черновик");
+    if (inst.roadAccess === false && inst.active !== false) parts.push("без дороги!");
     if (inst.stats.housing > 0) parts.push(`жители ${inst.residents || 0}/${inst.stats.housing}`);
     if (inst.stats.jobs > 0) parts.push(`работники ${inst.workers}/${inst.stats.jobs}`);
     row.innerHTML =
       `<div class="cbhead"><b>${inst.name}</b><span class="cdim">${t ? t.name : inst.typeId}</span></div>` +
       `<div class="cbar"><div class="cfill" style="width:${hp}%;${hp < 35 ? "background:#ff5952;" : hp < 70 ? "background:#ffd54d;" : ""}"></div></div>` +
       `<div class="cbsub"><span>${parts.join(" · ")}</span>` +
-      `<button data-repair="${inst.id}"${can ? "" : " disabled"}>Ремонт ${inst.health >= 100 ? "" : fmtMoney(cost)}</button></div>`;
+      `<button data-repair="${inst.id}"${can ? "" : " disabled"}>Ремонт ${inst.health >= 100 ? "" : fmtMoney(cost)}</button>` +
+      `<button data-demolish="${inst.id}" title="Снести, вернуть ${fmtMoney(refund)}">Снос +${fmtMoney(refund)}</button></div>`;
     cityBuildingsEl.appendChild(row);
   }
 }
 
-cityPanelEl.addEventListener("click", (e) => {
+cityPanelEl.addEventListener("click", async (e) => {
   const tog = e.target.closest("[data-residents]");
   if (tog) {
     showResidents = !showResidents;
@@ -754,17 +767,118 @@ cityPanelEl.addEventListener("click", (e) => {
     return;
   }
   const btn = e.target.closest("[data-repair]");
-  if (!btn || btn.disabled) return;
-  const res = repair(city, btn.dataset.repair);
-  if (res.ok) {
-    showMsg(`Отремонтировано за ${fmtMoney(res.cost)}`);
-    const rec = buildings.find((b) => b.cityId === btn.dataset.repair);
-    if (rec) refreshRecordLabel(rec);
-  } else {
-    showMsg("Не хватает денег на ремонт");
+  if (btn && !btn.disabled) {
+    const res = repair(city, btn.dataset.repair);
+    if (res.ok) {
+      const rec = buildings.find((b) => b.cityId === btn.dataset.repair);
+      let restored = 0;
+      if (rec) {
+        restored = await restoreBuildingBlocks(rec);
+        refreshRecordLabel(rec);
+      }
+      showMsg(`Отремонтировано за ${fmtMoney(res.cost)}` +
+        (restored > 0 ? ` · блоков восстановлено: ${restored}` : ""));
+    } else {
+      showMsg("Не хватает денег на ремонт");
+    }
+    renderCity();
+    return;
   }
-  renderCity();
+  const dml = e.target.closest("[data-demolish]");
+  if (dml) {
+    await demolishBuilding(dml.dataset.demolish);
+    return;
+  }
 });
+
+// Слайдер налогов (событие change — срабатывает при отпускании, перерисовка не мешает).
+cityPanelEl.addEventListener("change", (e) => {
+  if (e.target && e.target.id === "taxRange") {
+    const v = Math.min(1, Math.max(0, Number(e.target.value)));
+    city.taxRate = Math.round(v * 100) / 100;
+    showMsg(`Налоги: $${city.taxRate.toFixed(2)} с жителя в день`);
+    renderCity();
+  }
+});
+
+// План схемы из библиотеки (кеш или fetch), повёрнутый как при постройке.
+// Для своих файлов (file === "") возвращает null — там плана нет.
+async function getRotatedPlan(file, rot) {
+  if (!file || !schemeUrlByFile[file]) return null;
+  try {
+    const url = schemeUrlByFile[file];
+    let plan = planCache.get(url);
+    if (!plan) {
+      const response = await fetch(url);
+      if (!response.ok) return null;
+      plan = parseSchematicFile(new Uint8Array(await response.arrayBuffer()));
+      if (!plan.blocks.length) return null;
+      planCache.set(url, plan);
+    }
+    return rotatePlan(plan, rot || 0);
+  } catch (err) {
+    console.error("План для операции", err);
+    return null;
+  }
+}
+
+// Ремонт чинит и воксели: добираем из плана клетки, где сейчас воздух.
+// Правки игрока не трогаем (перезаписываем только AIR).
+async function restoreBuildingBlocks(rec) {
+  const r = await getRotatedPlan(rec.file, rec.rot);
+  if (!r) return 0;
+  let n = 0;
+  for (const [x, y, z, id] of r.blocks) {
+    const wx = rec.x0 + x, wy = rec.y0 + y, wz = rec.z0 + z;
+    if (world.getBlock(wx, wy, wz) === AIR && world.setBlock(wx, wy, wz, id)) n++;
+  }
+  if (n > 0) world.flushMeshes(scene, blockMat, cutoutMat, alphaMat, torchMat);
+  return n;
+}
+
+// Снос здания: клетки плана убираем (совпавшие с планом — правки игрока целы),
+// запись и рамку удаляем. Активное — возврат 50%, черновик — 100%.
+async function demolishBuilding(id) {
+  const inst = city.buildings.find((b) => b.id === id);
+  if (!inst) return;
+  const isDraft = inst.active === false;
+  const refund = isDraft ? inst.stats.buildCost : Math.floor(inst.stats.buildCost * 0.5);
+  if (!window.confirm(`Снести «${inst.name}»? Возврат ${fmtMoney(refund)}.`)) return;
+  const rec = buildings.find((b) => b.cityId === id);
+  let cleared = 0;
+  if (rec) {
+    const r = await getRotatedPlan(rec.file, rec.rot);
+    if (r) {
+      for (const [x, y, z, bId] of r.blocks) {
+        const wx = rec.x0 + x, wy = rec.y0 + y, wz = rec.z0 + z;
+        if (world.getBlock(wx, wy, wz) === bId && world.setBlock(wx, wy, wz, AIR)) cleared++;
+      }
+    }
+  }
+  const ci = city.buildings.findIndex((b) => b.id === id);
+  if (ci < 0) return;
+  const name = inst.name;
+  if (isDraft) {
+    city.buildings.splice(ci, 1);
+    city.money = Math.round((city.money + refund) * 100) / 100;
+  } else {
+    const res = demolish(city, id);
+    if (!res.ok) return;
+  }
+  if (rec) {
+    const ri = buildings.indexOf(rec);
+    if (ri >= 0) buildings.splice(ri, 1);
+    rec.lines.dispose();
+    rec.fill.dispose();
+    rec.label.remove();
+  }
+  applyBuildingVisibility();
+  world.flushMeshes(scene, blockMat, cutoutMat, alphaMat, torchMat);
+  refreshTileFunds();
+  syncResidents();
+  if (cityPanelEl.classList.contains("show")) renderCity();
+  showMsg(`Снесено: «${name}» · убрано ${cleared} блоков · возврат ${fmtMoney(refund)}`);
+}
 
 cityBtn.addEventListener("click", toggleCity);
 
@@ -863,6 +977,8 @@ function loadGame() {
       happiness: parsed.city.happiness, pollution: parsed.city.pollution,
       day: parsed.city.day, nextId: 1, last: parsed.city.last,
       loans: Array.isArray(parsed.city.loans) ? parsed.city.loans : [],
+      taxRate: Number.isFinite(parsed.city.taxRate) ? parsed.city.taxRate : TAX_PER_CAPITA,
+      milestones: Array.isArray(parsed.city.milestones) ? parsed.city.milestones : [],
     });
     for (const { key, cells } of parsed.chunks) {
       const [cx, cy, cz] = key.split(",").map(Number);
@@ -886,9 +1002,9 @@ function loadGame() {
     world.flushMeshes(scene, blockMat, cutoutMat, alphaMat, torchMat);
     for (const sb of parsed.city._buildings) {
       const rec = recordBuilding({
-        name: sb.name, file: "",
+        name: sb.name, file: sb.file || "",
         x0: sb.x0, y0: sb.y0, z0: sb.z0, W: sb.W, H: sb.H, L: sb.L,
-        rot: 0, placed: sb.placedBlocks,
+        rot: sb.rot || 0, placed: sb.placedBlocks,
       });
       const inst = registerRecord(rec, sb.typeId);
       inst.id = sb.id;
@@ -925,12 +1041,28 @@ function tickCity() {
   for (const rec of buildings) refreshRecordLabel(rec);
   syncResidents();
   refreshTileFunds();
-  if (city.last && city.last.fires) {
-    for (const f of city.last.fires) {
-      showMsg(`Пожар: «${f.name}» горит! Состояние ${Math.round(f.health)}% — чините (C)`);
-      const rec = buildings.find((b) => b.cityId === f.id);
-      if (rec) refreshRecordLabel(rec);
+  if (city.last) {
+    if (city.last.milestonesHit) {
+      for (const m of city.last.milestonesHit) {
+        const def = MILESTONES.find((x) => x.name === m);
+        showMsg(`Веха: ${m}! Бонус ${fmtMoney(def ? def.bonus : 0)} в казну`);
+      }
     }
+    if (city.last.fires) {
+      for (const f of city.last.fires) {
+        showMsg(`Пожар: «${f.name}» горит! Состояние ${Math.round(f.health)}% — чините (C)`);
+        const rec = buildings.find((b) => b.cityId === f.id);
+        if (rec) refreshRecordLabel(rec);
+      }
+    }
+  }
+  // Банкротство: казна ниже лимита — пауза с шансом спастись кредитом.
+  if (city.money < BANKRUPT_AT && !city.bankrupt) {
+    city.bankrupt = true;
+    setPaused(true);
+    showMsg(`Банкротство! Казна ${fmtMoney(city.money)}. Возьмите кредит (C) или начните заново (P → Начать заново)`);
+  } else if (city.money >= BANKRUPT_AT) {
+    city.bankrupt = false;
   }
   if (cityPanelEl.classList.contains("show")) renderCity();
 }

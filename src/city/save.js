@@ -40,6 +40,8 @@ export function serializeCity(city) {
     pollution: city.pollution,
     day: city.day,
     nextId: city.nextId,
+    taxRate: Number.isFinite(city.taxRate) ? city.taxRate : 0.3,
+    milestones: Array.isArray(city.milestones) ? city.milestones.filter((m) => typeof m === "string") : [],
     last: city.last,
     loans: (city.loans || []).map((l) => ({
       owed: Math.max(0, l.owed || 0),
@@ -51,6 +53,8 @@ export function serializeCity(city) {
       id: b.id,
       typeId: TYPES[b.typeId] ? b.typeId : "generic",
       name: String(b.name || ""),
+      file: typeof b.file === "string" ? b.file.slice(0, 200) : "",
+      rot: Number.isFinite(b.rot) ? b.rot : 0,
       x0: b.x0, y0: b.y0, z0: b.z0,
       W: b.W, H: b.H, L: b.L,
       health: Math.min(100, Math.max(0, b.health)),
@@ -74,6 +78,8 @@ export function deserializeCity(data) {
     pollution: Math.min(100, Math.max(0, data.pollution)),
     day: Math.max(0, Math.floor(data.day)),
     nextId: Math.max(1, Math.floor(data.nextId)),
+    taxRate: isNum(data.taxRate) ? Math.min(1, Math.max(0, data.taxRate)) : 0.3,
+    milestones: Array.isArray(data.milestones) ? data.milestones.filter((m) => typeof m === "string") : [],
     last: data.last && typeof data.last === "object" ? data.last : null,
     loans: Array.isArray(data.loans) ? data.loans
       .filter((l) => l && isNum(l.owed) && l.owed > 0)
@@ -94,6 +100,8 @@ export function deserializeCity(data) {
       id: typeof b.id === "string" ? b.id : "b_" + String(i + 1).padStart(3, "0"),
       typeId: TYPES[b.typeId] ? b.typeId : "generic",
       name: String(b.name || "Постройка").slice(0, 80),
+      file: typeof b.file === "string" ? b.file.slice(0, 200) : "",
+      rot: Number.isFinite(b.rot) ? b.rot : 0,
       x0: Math.floor(b.x0), y0: Math.floor(b.y0), z0: Math.floor(b.z0),
       W: Math.max(1, Math.floor(b.W)), H: Math.max(1, Math.floor(b.H)), L: Math.max(1, Math.floor(b.L)),
       health: Math.min(100, Math.max(0, b.health)),

@@ -4,7 +4,18 @@
 import { TYPES, instStats } from "./buildingTypes.js";
 
 export const FOOD_PER_CAPITA = 0.5; // еды на жителя в день
-export const TAX_PER_CAPITA = 0.3; // базовый налог с жителя в день
+export const TAX_PER_CAPITA = 0.3; // стартовый налог с жителя в день (дальше — слайдер)
+export const ROAD_RADIUS = 10; // дорога рядом: AABB здания + столько по XZ
+export const ROAD_PENALTY = 0.5; // множитель эффективности без дороги
+export const ROAD_FREE = new Set(["road", "decor"]); // этим типам дорога не нужна
+export const BANKRUPT_AT = -5000; // казна ниже — банкротство (поражение)
+// Цели-вехи: население → разовый бонус в казну.
+export const MILESTONES = [
+  { id: "m50", pop: 50, bonus: 500, name: "Посёлок (50 жителей)" },
+  { id: "m200", pop: 200, bonus: 2000, name: "Городок (200 жителей)" },
+  { id: "m500", pop: 500, bonus: 5000, name: "Город (500 жителей)" },
+  { id: "m1000", pop: 1000, bonus: 15000, name: "Мегаполис (1000 жителей)" },
+];
 const REPAIR_PRICE = 0.01; // доля buildCost за 1% здоровья (полный ремонт = цена постройки)
 const START_MONEY = 10000;
 const START_FOOD = 800;
@@ -26,6 +37,9 @@ export function newCityState() {
     buildings: [],
     loans: [],
     nextId: 1,
+    taxRate: TAX_PER_CAPITA,
+    milestones: [],
+    bankrupt: false,
     last: null,
   };
 }
@@ -35,12 +49,14 @@ export function buildCostFor(typeId, dims) {
 }
 
 // Мост «схема → симуляция». Возвращает инстанс (деньги списывает вызывающий).
-export function addBuilding(state, { typeId, name, dims, pos, placedBlocks }) {
+export function addBuilding(state, { typeId, name, dims, pos, placedBlocks, file, rot }) {
   const stats = instStats(typeId, dims);
   const inst = {
     id: "b_" + String(state.nextId++).padStart(3, "0"),
     typeId,
     name: name || TYPES[typeId].name,
+    file: typeof file === "string" ? file : "",
+    rot: Number.isFinite(rot) ? rot : 0,
     x0: pos.x0, y0: pos.y0, z0: pos.z0,
     W: dims.W, H: dims.H, L: dims.L,
     health: 100,
@@ -148,12 +164,41 @@ export function repair(state, id) {
   return { ok: true, cost };
 }
 
+// Снос здания: убирает из симуляции, возвращает половину цены постройки.
+// Блоки в мире убирает вызывающий (у него есть доступ к плану/миру).
+export function demolish(state, id) {
+  const i = state.buildings.findIndex((v) => v.id === id);
+  if (i < 0) return { ok: false, refund: 0 };
+  const b = state.buildings[i];
+  const refund = Math.floor(b.stats.buildCost * 0.5);
+  state.buildings.splice(i, 1);
+  state.money = Math.round((state.money + refund) * 100) / 100;
+  return { ok: true, refund, name: b.name };
+}
+
 const clamp = (v, a, b2) => Math.min(b2, Math.max(a, v));
 // Черновые постройки (active === false, режим построек) в симуляции не участвуют.
+// Без дороги рядом эффективность падает (ROAD_PENALTY), кроме дорог и декора.
 const isActive = (b) => b.active !== false;
-const effOf = (b) => (!isActive(b) || !(b.health > 0) ? 0 : b.health / 100);
+const effOf = (b) => (!isActive(b) || !(b.health > 0)
+  ? 0 : (b.health / 100) * (b.roadAccess === false ? ROAD_PENALTY : 1));
 
 export function tick(state) {
+  // 0. Доступ к дорогам: AABB здания (+ROAD_RADIUS по XZ) пересекает
+  // AABB любой целой активной дороги. Считается каждый тик — дёшево.
+  const roads = state.buildings.filter((b) => b.typeId === "road" && isActive(b) && b.health > 0);
+  let roadless = 0;
+  for (const b of state.buildings) {
+    if (ROAD_FREE.has(b.typeId)) {
+      b.roadAccess = true;
+      continue;
+    }
+    const x0 = b.x0 - ROAD_RADIUS, x1 = b.x0 + b.W + ROAD_RADIUS;
+    const z0 = b.z0 - ROAD_RADIUS, z1 = b.z0 + b.L + ROAD_RADIUS;
+    b.roadAccess = roads.some((r) => r !== b && r.x0 < x1 && r.x0 + r.W > x0 && r.z0 < z1 && r.z0 + r.L > z0);
+    if (!b.roadAccess && isActive(b) && b.health > 0) roadless++;
+  }
+
   // 1. Жильё и рабочие места (с учётом здоровья).
   let housingCap = 0;
   let jobsTotal = 0;
@@ -221,8 +266,9 @@ export function tick(state) {
     // Черновые не стоят ничего и не приносят ничего.
     if (isActive(b)) upkeep += b.stats.maintenance * (0.4 + 0.6 * effOf(b) * staffing);
   }
-  // Базовый налог с жителей (без мэрии — плоская ставка; слайдер позже).
-  income += pop * TAX_PER_CAPITA;
+  // Базовый налог с жителей по ставке-слайдеру (по умолчанию TAX_PER_CAPITA).
+  const taxRate = Number.isFinite(state.taxRate) ? state.taxRate : TAX_PER_CAPITA;
+  income += pop * taxRate;
   income = Math.round(income * 100) / 100;
   upkeep = Math.round(upkeep * 100) / 100;
   state.money = Math.round((state.money + income - upkeep) * 100) / 100;
@@ -295,10 +341,12 @@ export function tick(state) {
   const unprotected = protTotal > 0 ? 1 - protSum / protTotal : 1;
   const entertainmentScore = pop === 0 ? 100 : clamp((entCap * 15 / Math.max(1, pop)) * 100, 0, 100);
   const safetyScore = clamp(70 + safeBonus - state.pollution * 0.5 - crimeIdx * unprotected * 0.5, 0, 100);
+  // Налоги выше базовых давят на счастье, нулевые — радуют.
+  const taxPenalty = (taxRate - TAX_PER_CAPITA) * 40;
   state.happiness = clamp(Math.round(
     (housingScore + foodScore + employmentScore + entertainmentScore + safetyScore) / 5 +
     clamp(happyGlobal * 0.5, -10, 10) + clamp(localAvg, 0, 10) -
-    (waterShortage ? 15 : 0) - wastePenalty - (overdue ? 5 : 0)
+    (waterShortage ? 15 : 0) - wastePenalty - (overdue ? 5 : 0) - taxPenalty
   ), 0, 100);
 
   // Пожары: 0.2% на здание в день без покрытия пожарной в радиусе (макс 2).
@@ -361,6 +409,17 @@ export function tick(state) {
   for (const b of state.buildings) emission += b.stats.pollution * effOf(b);
   state.pollution = clamp(Math.round((state.pollution * 0.97 + emission * 0.02) * 10) / 10, 0, 100);
 
+  // Вехи: население достигло круглой цифры — разовый бонус в казну.
+  const milestonesHit = [];
+  if (!Array.isArray(state.milestones)) state.milestones = [];
+  for (const m of MILESTONES) {
+    if (!state.milestones.includes(m.id) && state.population >= m.pop) {
+      state.milestones.push(m.id);
+      state.money = Math.round((state.money + m.bonus) * 100) / 100;
+      milestonesHit.push(m.name);
+    }
+  }
+
   // 12. Новый день.
   state.day += 1;
   state.last = {
@@ -371,6 +430,7 @@ export function tick(state) {
     housingCap, jobsTotal, energyEff: Math.round(energyEff * 100) / 100, hunger,
     waterShortage, waste: state.waste, crime: Math.round(crimeIdx * 10) / 10, fires,
     loanPaid, overdue, debt: Math.round(state.loans.reduce((a, l) => a + l.owed, 0) * 100) / 100,
+    roadless, milestonesHit, taxRate,
   };
   return state.last;
 }
