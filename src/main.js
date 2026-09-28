@@ -37,7 +37,7 @@ import {
 import { World, WORLD_H } from "./world.js";
 import { HALF, HEIGHT, moveAxis, updateGrounded, clampPlayerToWorld } from "./physics.js";
 import { parseSchematicFile, pasteSchematic, rotatePlan } from "./schematic.js";
-import { TYPES, resolveType, instStats } from "./city/buildingTypes.js";
+import { TYPES, TIERS, resolveType, resolveTier, instStats } from "./city/buildingTypes.js";
 import {
   newCityState, buildCostFor, addBuilding, charge,
   damageAt, repair, repairPrice, demolish, tick,
@@ -595,11 +595,12 @@ function schemeBuildCost(item, dims) {
   const typeId = resolveType(item || {});
   const W = Number(dims.W), H = Number(dims.H), L = Number(dims.L);
   if (!Number.isFinite(W) || !Number.isFinite(H) || !Number.isFinite(L)) return null;
-  return { typeId, cost: buildCostFor(typeId, { W, H, L }) };
+  const tier = resolveTier(item || {}, { W, H, L });
+  return { typeId, tier, cost: buildCostFor(typeId, { W, H, L }, tier) };
 }
 
 // Привязка рамки к симуляции + строка города в метку рамки.
-function registerRecord(rec, typeId) {
+function registerRecord(rec, typeId, tier) {
   const inst = addBuilding(city, {
     typeId,
     name: rec.name,
@@ -608,6 +609,7 @@ function registerRecord(rec, typeId) {
     placedBlocks: rec.placed,
     file: rec.file,
     rot: rec.rot,
+    tier,
   });
   rec.cityId = inst.id;
   rec.labelBase = rec.label.innerHTML;
@@ -631,6 +633,7 @@ function refreshRecordLabel(rec) {
   const hp = Math.round(inst.health);
   const parts = [`состояние ${hp}%`];
   if (inst.active === false) parts.push("черновик");
+  if (inst.tier > 1) parts.push(`${TIERS[inst.tier].icon} ${TIERS[inst.tier].name}`);
   if (inst.roadAccess === false && inst.active !== false) parts.push("без дороги!");
   if (inst.stats.housing > 0) parts.push(`жители ${inst.residents || 0}/${inst.stats.housing}`);
   if (inst.stats.jobs > 0) parts.push(`работники ${inst.workers}/${inst.stats.jobs}`);
@@ -727,6 +730,7 @@ function renderLoans() {
     const hp = Math.round(inst.health);
     const parts = [`состояние ${hp}%`];
     if (inst.active === false) parts.push("черновик");
+    if (inst.tier > 1) parts.push(`${TIERS[inst.tier].icon} ${TIERS[inst.tier].name}`);
     if (inst.roadAccess === false && inst.active !== false) parts.push("без дороги!");
     if (inst.stats.housing > 0) parts.push(`жители ${inst.residents || 0}/${inst.stats.housing}`);
     if (inst.stats.jobs > 0) parts.push(`работники ${inst.workers}/${inst.stats.jobs}`);
@@ -1006,7 +1010,7 @@ function loadGame() {
         x0: sb.x0, y0: sb.y0, z0: sb.z0, W: sb.W, H: sb.H, L: sb.L,
         rot: sb.rot || 0, placed: sb.placedBlocks,
       });
-      const inst = registerRecord(rec, sb.typeId);
+      const inst = registerRecord(rec, sb.typeId, sb.tier);
       inst.id = sb.id;
       inst.health = sb.health;
       inst.active = sb.active !== false;
@@ -1471,10 +1475,12 @@ function renderSchemeTiles() {
     const info = document.createElement("div");
     info.className = "tt";
     if (t && q) {
+      const tierMark = q.tier > 1 ? `${TIERS[q.tier].icon} ${TIERS[q.tier].name}` : null;
       const parts = [`$${q.cost}`, t.name];
+      if (tierMark) parts.push(tierMark);
       const W = Number(item.w), H = Number(item.h), L = Number(item.l);
       if (Number.isFinite(W) && Number.isFinite(H) && Number.isFinite(L)) {
-        const s = instStats(q.typeId, { W, H, L });
+        const s = instStats(q.typeId, { W, H, L }, q.tier);
         if (s.housing > 0) parts.push(`жильё ${s.housing}`);
         if (s.jobs > 0) parts.push(`работы ${s.jobs}`);
         if (s.foodProd > 0) parts.push(`еда +${s.foodProd}`);
@@ -1674,7 +1680,7 @@ function placePreview() {
       rot: previewPlan.rot,
       placed: res.placed,
     });
-    const inst = registerRecord(rec, typeId);
+    const inst = registerRecord(rec, typeId, quote ? quote.tier : 1);
     // Черновая постройка: деньги списаны, но в статистику войдёт при выходе
     // из режима (Q). До тех пор её можно отменить ПКМ целиком.
     inst.active = false;

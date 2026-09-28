@@ -44,19 +44,21 @@ export function newCityState() {
   };
 }
 
-export function buildCostFor(typeId, dims) {
-  return instStats(typeId, dims).buildCost;
+export function buildCostFor(typeId, dims, tier = 1) {
+  return instStats(typeId, dims, tier).buildCost;
 }
 
 // Мост «схема → симуляция». Возвращает инстанс (деньги списывает вызывающий).
-export function addBuilding(state, { typeId, name, dims, pos, placedBlocks, file, rot }) {
-  const stats = instStats(typeId, dims);
+export function addBuilding(state, { typeId, name, dims, pos, placedBlocks, file, rot, tier }) {
+  const t3 = tier === 3 ? 3 : tier === 2 ? 2 : 1;
+  const stats = instStats(typeId, dims, t3);
   const inst = {
     id: "b_" + String(state.nextId++).padStart(3, "0"),
     typeId,
     name: name || TYPES[typeId].name,
     file: typeof file === "string" ? file : "",
     rot: Number.isFinite(rot) ? rot : 0,
+    tier: t3,
     x0: pos.x0, y0: pos.y0, z0: pos.z0,
     W: dims.W, H: dims.H, L: dims.L,
     health: 100,

@@ -51,7 +51,7 @@ export const TYPES = {
   },
   fishery: {
     name: "Рыбное хозяйство", desc: "Еда для города",
-    buildCost: 700, maintenance: 3,
+    buildCost: 600, maintenance: 3,
     housing: 0, jobs: 4,
     foodProd: 20, energyProd: 0, energyCons: 2,
     waterProd: 0, waterCons: 4,
@@ -86,7 +86,7 @@ export const TYPES = {
   },
   school: {
     name: "Школа", desc: "Счастье и рабочие места",
-    buildCost: 1000, maintenance: 5,
+    buildCost: 800, maintenance: 4,
     housing: 0, jobs: 8,
     foodProd: 0, energyProd: 0, energyCons: 3,
     waterProd: 0, waterCons: 2,
@@ -96,7 +96,7 @@ export const TYPES = {
   },
   hospital: {
     name: "Больница", desc: "Здоровье и безопасность города",
-    buildCost: 1400, maintenance: 7,
+    buildCost: 1100, maintenance: 6,
     housing: 0, jobs: 10,
     foodProd: 0, energyProd: 0, energyCons: 4,
     waterProd: 0, waterCons: 4,
@@ -144,7 +144,7 @@ export const TYPES = {
   },
   police: {
     name: "Полиция", desc: "Снижает преступность в радиусе 25",
-    buildCost: 1200, maintenance: 6,
+    buildCost: 1000, maintenance: 5,
     housing: 0, jobs: 8,
     foodProd: 0, energyProd: 0, energyCons: 3,
     waterProd: 0, waterCons: 1,
@@ -154,7 +154,7 @@ export const TYPES = {
   },
   fire: {
     name: "Пожарная", desc: "Не даёт зданиям гореть в радиусе 25",
-    buildCost: 1200, maintenance: 6,
+    buildCost: 900, maintenance: 5,
     housing: 0, jobs: 8,
     foodProd: 0, energyProd: 0, energyCons: 3,
     waterProd: 0, waterCons: 2,
@@ -195,29 +195,33 @@ export function scaleFor(dims) {
 
 // Конкретные числа инстанса: ёмкости — линейно от объёма, деньги —
 // сублинейно (корень), иначе гигантская фабрика ломает баланс.
-export function instStats(typeId, dims) {
+// Тир умножает цену/содержание (cost) и отдачу (stats): элита дороже,
+// но и даёт больше. Без тира — обычная постройка.
+export function instStats(typeId, dims, tier = 1) {
   const t = TYPES[typeId] || TYPES.generic;
+  const tm = TIERS[tier] || TIERS[1];
   const s = scaleFor(dims);
   const ms = Math.sqrt(s);
-  const vi = (x) => Math.max(0, Math.floor(x * s));
-  const money = (x) => Math.round(x * ms * 10) / 10;
+  const vi = (x) => Math.max(0, Math.floor(x * s * tm.stats));
+  const upk = (x) => Math.round(x * ms * tm.cost * 10) / 10;
+  const earn = (x) => Math.round(x * ms * tm.stats * 10) / 10;
   return {
-    buildCost: Math.max(10, Math.round(t.buildCost * ms)),
-    maintenance: Math.max(0, money(t.maintenance)),
+    buildCost: Math.max(10, Math.round(t.buildCost * ms * tm.cost)),
+    maintenance: Math.max(0, upk(t.maintenance)),
     housing: vi(t.housing),
     jobs: vi(t.jobs),
-    foodProd: Math.round(t.foodProd * s * 10) / 10,
-    energyProd: Math.round(t.energyProd * s * 10) / 10,
-    energyCons: Math.round(t.energyCons * s * 10) / 10,
-    waterProd: Math.round((t.waterProd || 0) * s * 10) / 10,
-    waterCons: Math.round((t.waterCons || 0) * s * 10) / 10,
-    wasteProd: Math.round((t.wasteProd || 0) * s * 10) / 10,
-    wasteCap: Math.round((t.wasteCap || 0) * s * 10) / 10,
-    income: money(t.income),
-    happiness: t.happiness,
-    entertainment: Math.round(t.entertainment * s * 10) / 10,
-    safety: t.safety,
-    pollution: Math.round(t.pollution * s * 10) / 10,
+    foodProd: Math.round(t.foodProd * s * tm.stats * 10) / 10,
+    energyProd: Math.round(t.energyProd * s * tm.stats * 10) / 10,
+    energyCons: Math.round(t.energyCons * s * tm.stats * 10) / 10,
+    waterProd: Math.round((t.waterProd || 0) * s * tm.stats * 10) / 10,
+    waterCons: Math.round((t.waterCons || 0) * s * tm.stats * 10) / 10,
+    wasteProd: Math.round((t.wasteProd || 0) * s * tm.stats * 10) / 10,
+    wasteCap: Math.round((t.wasteCap || 0) * s * tm.stats * 10) / 10,
+    income: earn(t.income),
+    happiness: Math.round(t.happiness * tm.stats),
+    entertainment: Math.round(t.entertainment * s * tm.stats * 10) / 10,
+    safety: Math.round(t.safety * tm.stats * 10) / 10,
+    pollution: Math.round(t.pollution * s * tm.stats * 10) / 10,
   };
 }
 
@@ -268,6 +272,28 @@ const CATEGORY_FALLBACK = {
   decor: "decor",
   vehicles: "decor",
 };
+
+// Тиры построек: обычные доступны сразу, элита и легенды — дороже,
+// но и отдача выше. Без элиты игра проходится: это ускорение, не ворота.
+export const TIERS = {
+  1: { name: "Обычная", icon: "", cost: 1, stats: 1 },
+  2: { name: "Элита", icon: "💎", cost: 2.2, stats: 1.7 },
+  3: { name: "Легенда", icon: "👑", cost: 4.5, stats: 2.6 },
+};
+const ELITE_RE = /(luxury|deluxe|grand|premium|royal|mansion|villa|hotel|manor|estate|penthouse|plaza|resort|majestic|superior|prestige|chateau)/i;
+const LANDMARK_RE = /(mega|ultimate|skyscraper|palace|monument|empire|casino|cathedral|coloss)/i;
+
+// Тир по престижу имени; без престижных слов — по объёму:
+// large (120k+) — элита, huge (500k+) — легенда.
+export function resolveTier(meta = {}, dims = {}) {
+  const name = `${meta.file || ""} ${meta.name || ""}`;
+  if (LANDMARK_RE.test(name)) return 3;
+  if (ELITE_RE.test(name)) return 2;
+  const v = Math.max(1, (Number(dims.W) || 1) * (Number(dims.H) || 1) * (Number(dims.L) || 1));
+  if (v >= 500000) return 3;
+  if (v >= 120000) return 2;
+  return 1;
+}
 
 // meta: { file, name, category, tags[] } (теги/категория могут отсутствовать).
 export function resolveType(meta = {}) {
