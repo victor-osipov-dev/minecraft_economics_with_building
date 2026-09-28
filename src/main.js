@@ -470,18 +470,14 @@ let lastSpaceTap = 0;
 const planCache = new Map();
 const FLY_SPEED = 11;
 // Все постройки из папки schemes (видны и ставятся в креативе).
-const schemeFiles = import.meta.glob(
-  ["../schemes/*.schem", "../schemes/*.schematic", "../schemes/*.nbt"],
-  { query: "?url", import: "default", eager: true }
-);
-const schemeThumbUrls = import.meta.glob("../schemes/thumbs/*.png", { query: "?url", import: "default", eager: true });
+// URL-карта строится из index.json, а не из import.meta.glob(...eager):
+// glob давал отдельный модуль-запрос на каждый файл и каждое превью
+// (~2400 запросов при старте) и ронял прокси/дев-сервер при росте библиотеки.
 const schemeUrlByFile = {};
-for (const [p, url] of Object.entries(schemeFiles)) {
-  schemeUrlByFile[p.split("/").pop()] = url;
-}
 const schemeThumbByFile = {};
-for (const [p, url] of Object.entries(schemeThumbUrls)) {
-  schemeThumbByFile[p.split("/").pop().replace(/\.png$/i, "")] = url;
+for (const it of schemesIndex.items) {
+  schemeUrlByFile[it.file] = `/schemes/${it.file}`;
+  if (it.thumb) schemeThumbByFile[it.file.replace(/\.(schem|schematic|nbt)$/i, "")] = `/schemes/${it.thumb}`;
 }
 
 const viewBtn = document.getElementById("viewBtn");
@@ -1259,8 +1255,64 @@ function buildSchemeChips() {
   }
 }
 
+// Превью подгружаем только для плиток, близких к видимой области: их тысячи, и
+// одновременная отдача всех запросов роняет узкие каналы/прокси (502, «пустые»
+// карточки). IntersectionObserver выбирает ближайшие плитки, очередь держит
+// ограниченное число одновременных загрузок.
+const THUMB_CONCURRENCY = 3;
+const thumbQueue = [];
+let thumbActive = 0;
+let thumbObserver = null;
+
+function pumpThumbs() {
+  while (thumbActive < THUMB_CONCURRENCY && thumbQueue.length) {
+    const img = thumbQueue.shift();
+    // плитка могла быть выброшена перерисовкой списка
+    if (!img.isConnected || !img.dataset.src || img.src) continue;
+    thumbActive++;
+    let settled = false;
+    const done = () => {
+      if (settled) return;
+      settled = true;
+      clearTimeout(watchdog);
+      thumbActive--;
+      pumpThumbs();
+    };
+    // страховка: если load/error не пришёл — не держим слот
+    const watchdog = setTimeout(done, 10000);
+    img.addEventListener("load", done, { once: true });
+    img.addEventListener("error", done, { once: true });
+    img.src = img.dataset.src;
+  }
+}
+
+function observeThumbs(imgs) {
+  if (thumbObserver) thumbObserver.disconnect();
+  if (typeof IntersectionObserver === "undefined") {
+    // без наблюдателя грузим всё, как раньше
+    thumbQueue.push(...imgs);
+    pumpThumbs();
+    return;
+  }
+  thumbObserver = new IntersectionObserver(
+    (entries) => {
+      for (const e of entries) {
+        if (!e.isIntersecting) continue;
+        thumbObserver.unobserve(e.target);
+        if (!e.target.dataset.src || e.target.src) continue;
+        thumbQueue.push(e.target);
+      }
+      pumpThumbs();
+    },
+    { root: schemeListEl, rootMargin: "400px" }
+  );
+  for (const img of imgs) thumbObserver.observe(img);
+}
+
 function renderSchemeTiles() {
   schemeListEl.innerHTML = "";
+  thumbQueue.length = 0; // прошлые плитки уже не нужны — наблюдатель создастся заново
+  const thumbImgs = [];
   const shown = allSchemeItems.filter(schemeMatches);
   schemeCountEl.textContent = `· ${shown.length} из ${allSchemeItems.length}`;
   for (const item of shown) {
@@ -1269,9 +1321,9 @@ function renderSchemeTiles() {
     const base = item.file.replace(/\.(schem|schematic|nbt)$/i, "");
     if (schemeThumbByFile[base]) {
       const img = document.createElement("img");
-      img.loading = "lazy";
       img.alt = item.name;
-      img.src = schemeThumbByFile[base];
+      img.dataset.src = schemeThumbByFile[base];
+      thumbImgs.push(img);
       tile.appendChild(img);
     }
     const nm = document.createElement("div");
@@ -1326,6 +1378,7 @@ function renderSchemeTiles() {
     });
     schemeListEl.appendChild(tile);
   }
+  observeThumbs(thumbImgs);
 }
 
 function buildSchemeList() {

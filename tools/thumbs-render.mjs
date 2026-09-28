@@ -4,8 +4,8 @@
 import fs from "node:fs";
 import path from "node:path";
 import zlib from "node:zlib";
-import { parseSchematicFile } from "file:///C:/Users/victor/Desktop/Projects/babylon/game/src/schematic.js";
-import * as B from "file:///C:/Users/victor/Desktop/Projects/babylon/game/src/blocks.js";
+import { parseSchematicFile } from "../src/schematic.js";
+import * as B from "../src/blocks.js";
 
 const TILE_W = 232;
 const TILE_H = 176;
