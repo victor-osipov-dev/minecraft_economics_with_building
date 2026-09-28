@@ -1,0 +1,273 @@
+{
+ "batch": 30,
+ "items": [
+  {
+   "file": "transport_st-thomas-underground-train-station_mcbuild_x.schem",
+   "name": "St Thomas Underground Train station",
+   "category": "transport",
+   "tags": [
+    "large",
+    "station",
+    "tall"
+   ],
+   "dims": "88x43x43",
+   "blocks": 73559,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\transport_st-thomas-underground-train-station_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "roads_compact-3x3-tunnel-drill_buildschematics_x.nbt",
+   "name": "Compact 3x3 Tunnel Drill",
+   "category": "roads",
+   "tags": [
+    "tiny"
+   ],
+   "dims": "4x4x8",
+   "blocks": 8,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\roads_compact-3x3-tunnel-drill_buildschematics_x.png",
+   "metaFlags": [
+    "almost-empty"
+   ]
+  },
+  {
+   "file": "roads_railway-tunnel_mcbuild_x.schem",
+   "name": "Railway Tunnel",
+   "category": "roads",
+   "tags": [
+    "tiny"
+   ],
+   "dims": "15x7x11",
+   "blocks": 651,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\roads_railway-tunnel_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "roads_tunnel-lighting_mcbuild_x.schem",
+   "name": "Tunnel lighting",
+   "category": "roads",
+   "tags": [
+    "small"
+   ],
+   "dims": "15x7x36",
+   "blocks": 761,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\roads_tunnel-lighting_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "parks_chafariz-fonte-fountain-02_mcbuild_x.schem",
+   "name": "Chafariz/Fonte - Fountain 02",
+   "category": "parks",
+   "tags": [
+    "fountain",
+    "small",
+    "water"
+   ],
+   "dims": "17x7x17",
+   "blocks": 692,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\parks_chafariz-fonte-fountain-02_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "parks_4-sword-fountain_mcbuild_x.schem",
+   "name": "4 Sword Fountain",
+   "category": "parks",
+   "tags": [
+    "fountain",
+    "small",
+    "water"
+   ],
+   "dims": "19x27x19",
+   "blocks": 1178,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\parks_4-sword-fountain_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "waterfront_alexandria-s-lighthouse_mcbuild_x.schem",
+   "name": "Alexandria's Lighthouse",
+   "category": "waterfront",
+   "tags": [
+    "house",
+    "large",
+    "tall",
+    "water"
+   ],
+   "dims": "51x151x51",
+   "blocks": 34863,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\waterfront_alexandria-s-lighthouse_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "waterfront_stone-lighthouse-with-working-fireplace_mcbuild_x.schem",
+   "name": "Stone lighthouse - (with working fireplace)",
+   "category": "waterfront",
+   "tags": [
+    "house",
+    "medium",
+    "water"
+   ],
+   "dims": "27x38x19",
+   "blocks": 7357,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\waterfront_stone-lighthouse-with-working-fireplace_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_modern-lakeside-townhouse_buildschematics_x.schematic",
+   "name": "Modern Lakeside Townhouse",
+   "category": "residential",
+   "tags": [
+    "house",
+    "medium",
+    "modern"
+   ],
+   "dims": "42x21x45",
+   "blocks": 9066,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_modern-lakeside-townhouse_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_townhouse-7_mcbuild_x.schem",
+   "name": "Townhouse 7",
+   "category": "residential",
+   "tags": [
+    "house",
+    "small"
+   ],
+   "dims": "14x19x17",
+   "blocks": 1600,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_townhouse-7_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_office-building_mcbuild_x.schem",
+   "name": "Office Building",
+   "category": "towers",
+   "tags": [
+    "large",
+    "office",
+    "tall"
+   ],
+   "dims": "55x78x46",
+   "blocks": 55013,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_office-building_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_ten-story-office-building_mcbuild_x.schem",
+   "name": "ten story office building",
+   "category": "towers",
+   "tags": [
+    "huge",
+    "office",
+    "tall"
+   ],
+   "dims": "60x117x126",
+   "blocks": 92399,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_ten-story-office-building_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "intersections_drive-on-the-left-dual-simplex-minecart-track-intersection_mcbuild_x.schem",
+   "name": "Drive on the Left Dual Simplex Minecart Track Intersection",
+   "category": "intersections",
+   "tags": [
+    "car",
+    "medium"
+   ],
+   "dims": "33x34x67",
+   "blocks": 26943,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\intersections_drive-on-the-left-dual-simplex-minecart-track-intersection_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "intersections_4-way-intersection-redstone_mcbuild_x.schem",
+   "name": "4 Way Intersection (Redstone)",
+   "category": "intersections",
+   "tags": [
+    "tiny"
+   ],
+   "dims": "11x14x11",
+   "blocks": 905,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\intersections_4-way-intersection-redstone_mcbuild_x.png",
+   "metaFlags": [
+    "non-building-in-name"
+   ]
+  },
+  {
+   "file": "intersections_ancient-skyway-modified-t-junction_mcbuild_x.schem",
+   "name": "Ancient Skyway Modified(T-Junction)",
+   "category": "intersections",
+   "tags": [
+    "small"
+   ],
+   "dims": "35x6x19",
+   "blocks": 1006,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\intersections_ancient-skyway-modified-t-junction_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "roads_highway-part-1_mcbuild_x.schem",
+   "name": "Highway Part 1",
+   "category": "roads",
+   "tags": [
+    "road",
+    "small"
+   ],
+   "dims": "43x10x21",
+   "blocks": 1191,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\roads_highway-part-1_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "roads_highway-part-2_mcbuild_x.schem",
+   "name": "Highway Part 2",
+   "category": "roads",
+   "tags": [
+    "medium",
+    "road"
+   ],
+   "dims": "50x10x33",
+   "blocks": 3214,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\roads_highway-part-2_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "roads_highway-part-3_mcbuild_x.schem",
+   "name": "Highway Part 3",
+   "category": "roads",
+   "tags": [
+    "medium",
+    "road"
+   ],
+   "dims": "48x9x59",
+   "blocks": 4036,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\roads_highway-part-3_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "roads_highway_mcbuild_x.schem",
+   "name": "highway",
+   "category": "roads",
+   "tags": [
+    "road",
+    "small"
+   ],
+   "dims": "27x3x30",
+   "blocks": 1680,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\roads_highway_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "intersections_railway-junction-train-station-base_buildschematics_x.nbt",
+   "name": "Railway Junction Train Station Base",
+   "category": "intersections",
+   "tags": [
+    "medium",
+    "station"
+   ],
+   "dims": "58x27x53",
+   "blocks": 7301,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\intersections_railway-junction-train-station-base_buildschematics_x.png",
+   "metaFlags": []
+  }
+ ]
+}

@@ -1,0 +1,539 @@
+{
+ "batch": 23,
+ "items": [
+  {
+   "file": "waterfront_sloop-boat_mc-mod_x.schematic",
+   "name": "Sloop Boat",
+   "category": "waterfront",
+   "tags": [
+    "boat",
+    "medium",
+    "tall"
+   ],
+   "dims": "48x54x15",
+   "blocks": 3547,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\waterfront_sloop-boat_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "waterfront_ancient-roman-galley-ship_mc-mod_x.schematic",
+   "name": "Ancient Roman Galley Ship",
+   "category": "waterfront",
+   "tags": [
+    "boat",
+    "medium"
+   ],
+   "dims": "42x24x31",
+   "blocks": 4689,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\waterfront_ancient-roman-galley-ship_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "waterfront_small-fishing-trawler-boat_mc-mod_x.schematic",
+   "name": "Small Fishing Trawler Boat",
+   "category": "waterfront",
+   "tags": [
+    "boat",
+    "shop",
+    "small"
+   ],
+   "dims": "22x28x12",
+   "blocks": 373,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\waterfront_small-fishing-trawler-boat_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "waterfront_chinese-junk-ship_mc-mod_x.schematic",
+   "name": "Chinese Junk Ship",
+   "category": "waterfront",
+   "tags": [
+    "boat",
+    "medium"
+   ],
+   "dims": "17x31x49",
+   "blocks": 4851,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\waterfront_chinese-junk-ship_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_minecraft-vet-clinic-building_mc-mod_x.schematic",
+   "name": "Minecraft Vet Clinic Building",
+   "category": "public",
+   "tags": [
+    "hospital",
+    "medium"
+   ],
+   "dims": "38x25x46",
+   "blocks": 5541,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_minecraft-vet-clinic-building_mc-mod_x.png",
+   "metaFlags": [
+    "franchise"
+   ]
+  },
+  {
+   "file": "vehicles_futuristic-police-space-vehicle_mc-mod_x.schematic",
+   "name": "Futuristic Police Space Vehicle",
+   "category": "vehicles",
+   "tags": [
+    "modern",
+    "small"
+   ],
+   "dims": "11x9x24",
+   "blocks": 589,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\vehicles_futuristic-police-space-vehicle_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_small-town-hall_mc-mod_x.schematic",
+   "name": "Small Town Hall",
+   "category": "public",
+   "tags": [
+    "medium",
+    "shop"
+   ],
+   "dims": "56x40x24",
+   "blocks": 22284,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_small-town-hall_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_stone-library-outpost_mc-mod_x.schematic",
+   "name": "Stone Library Outpost",
+   "category": "public",
+   "tags": [
+    "library",
+    "small"
+   ],
+   "dims": "13x14x13",
+   "blocks": 500,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_stone-library-outpost_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_yandere-high-school-insane-rooms_mc-mod_x.schematic",
+   "name": "Yandere High School: Insane Rooms",
+   "category": "public",
+   "tags": [
+    "school",
+    "tiny"
+   ],
+   "dims": "5x5x11",
+   "blocks": 212,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_yandere-high-school-insane-rooms_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_fallout-drive-in-movie-theater_mc-mod_x.schematic",
+   "name": "Fallout Drive-In Movie Theater",
+   "category": "public",
+   "tags": [
+    "tiny"
+   ],
+   "dims": "3x10x16",
+   "blocks": 172,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_fallout-drive-in-movie-theater_mc-mod_x.png",
+   "metaFlags": [
+    "franchise"
+   ]
+  },
+  {
+   "file": "public_small-prison-structure_mc-mod_x.schematic",
+   "name": "Small Prison Structure",
+   "category": "public",
+   "tags": [
+    "medium",
+    "shop"
+   ],
+   "dims": "89x11x30",
+   "blocks": 12939,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_small-prison-structure_mc-mod_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "vehicles_prison-transport-bus-for-police_mc-mod_x.schematic",
+   "name": "Prison Transport Bus For Police",
+   "category": "vehicles",
+   "tags": [
+    "tiny"
+   ],
+   "dims": "13x6x5",
+   "blocks": 123,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\vehicles_prison-transport-bus-for-police_mc-mod_x.png",
+   "metaFlags": [
+    "non-building-in-name"
+   ]
+  },
+  {
+   "file": "public_old-town-hall_mc-mod_x.schematic",
+   "name": "Old Town Hall",
+   "category": "public",
+   "tags": [
+    "large",
+    "tall"
+   ],
+   "dims": "104x63x60",
+   "blocks": 19059,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_old-town-hall_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_enchanted-library-building_mc-mod_1.14.4.schematic",
+   "name": "Enchanted Library Building",
+   "category": "public",
+   "tags": [
+    "library",
+    "medium"
+   ],
+   "dims": "39x36x39",
+   "blocks": 12468,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_enchanted-library-building_mc-mod_1.14.4.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_minecraft-theatre-stage-design_mc-mod_x.schematic",
+   "name": "Minecraft Theatre Stage Design",
+   "category": "public",
+   "tags": [
+    "medium"
+   ],
+   "dims": "41x19x78",
+   "blocks": 27769,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_minecraft-theatre-stage-design_mc-mod_x.png",
+   "metaFlags": [
+    "franchise"
+   ]
+  },
+  {
+   "file": "public_prison-mining-outpost_mc-mod_x.schematic",
+   "name": "Prison Mining Outpost",
+   "category": "public",
+   "tags": [
+    "large",
+    "tall"
+   ],
+   "dims": "76x79x83",
+   "blocks": 69011,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_prison-mining-outpost_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_courthouse-design_mc-mod_x.schematic",
+   "name": "Courthouse Design",
+   "category": "public",
+   "tags": [
+    "house",
+    "medium"
+   ],
+   "dims": "49x28x42",
+   "blocks": 9618,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_courthouse-design_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_cozy-village-library_mc-mod_1.16.5.schem",
+   "name": "Cozy Village Library",
+   "category": "public",
+   "tags": [
+    "house",
+    "library",
+    "small"
+   ],
+   "dims": "20x12x17",
+   "blocks": 1412,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_cozy-village-library_mc-mod_1.16.5.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_ancient-greek-theatre_mc-mod_x.schematic",
+   "name": "Ancient Greek Theatre",
+   "category": "public",
+   "tags": [
+    "large",
+    "tall"
+   ],
+   "dims": "94x45x59",
+   "blocks": 8761,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_ancient-greek-theatre_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_mastermind-prison-mine_mc-mod_x.schematic",
+   "name": "Mastermind Prison Mine",
+   "category": "public",
+   "tags": [
+    "huge",
+    "tall"
+   ],
+   "dims": "78x67x119",
+   "blocks": 36117,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_mastermind-prison-mine_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_server-town-hall-building_mc-mod_x.schematic",
+   "name": "Server Town Hall Building",
+   "category": "public",
+   "tags": [
+    "medium"
+   ],
+   "dims": "32x32x32",
+   "blocks": 7621,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_server-town-hall-building_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_repaired-stronghold-with-libraries_mc-mod_1.20.1.schem",
+   "name": "Repaired Stronghold With Libraries",
+   "category": "public",
+   "tags": [
+    "large"
+   ],
+   "dims": "118x26x139",
+   "blocks": 29715,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_repaired-stronghold-with-libraries_mc-mod_1.20.1.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_wooden-amphitheatre-structure_mc-mod_1.16.3.schem",
+   "name": "Wooden Amphitheatre Structure",
+   "category": "public",
+   "tags": [
+    "medium"
+   ],
+   "dims": "63x25x70",
+   "blocks": 8274,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_wooden-amphitheatre-structure_mc-mod_1.16.3.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "vehicles_prisoner-transport-truck-vehicle_mc-mod_x.schematic",
+   "name": "Prisoner Transport Truck Vehicle",
+   "category": "vehicles",
+   "tags": [
+    "car",
+    "tiny"
+   ],
+   "dims": "5x4x9",
+   "blocks": 74,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\vehicles_prisoner-transport-truck-vehicle_mc-mod_x.png",
+   "metaFlags": [
+    "non-building-in-name"
+   ]
+  },
+  {
+   "file": "public_britain-s-got-talent-theatre-with-interior_mc-mod_1.16.5.schem",
+   "name": "Britain’s Got Talent Theatre with Interior",
+   "category": "public",
+   "tags": [
+    "large",
+    "tall"
+   ],
+   "dims": "82x50x76",
+   "blocks": 91212,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_britain-s-got-talent-theatre-with-interior_mc-mod_1.16.5.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_simple-jail-structure_mc-mod_x.schematic",
+   "name": "Simple Jail Structure",
+   "category": "public",
+   "tags": [
+    "tiny"
+   ],
+   "dims": "6x6x6",
+   "blocks": 83,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_simple-jail-structure_mc-mod_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "public_quartz-town-hall-versatile-design_mc-mod_x.schematic",
+   "name": "Quartz Town Hall – Versatile Design",
+   "category": "public",
+   "tags": [
+    "medium"
+   ],
+   "dims": "46x17x30",
+   "blocks": 4384,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_quartz-town-hall-versatile-design_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_ancient-mayan-amphitheater-structure_mc-mod_1.20.1.schem",
+   "name": "Ancient Mayan Amphitheater Structure",
+   "category": "public",
+   "tags": [
+    "medium"
+   ],
+   "dims": "33x22x25",
+   "blocks": 3063,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_ancient-mayan-amphitheater-structure_mc-mod_1.20.1.png",
+   "metaFlags": [
+    "non-real/fantasy",
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "public_bedrock-prison-structure_mc-mod_1.16.4.schem",
+   "name": "Bedrock Prison Structure",
+   "category": "public",
+   "tags": [
+    "tiny"
+   ],
+   "dims": "7x4x8",
+   "blocks": 162,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_bedrock-prison-structure_mc-mod_1.16.4.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "public_simple-town-hall-design_mc-mod_x.schematic",
+   "name": "Simple Town Hall Design",
+   "category": "public",
+   "tags": [
+    "medium"
+   ],
+   "dims": "23x27x29",
+   "blocks": 2787,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_simple-town-hall-design_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_covid-19-testing-town-hall-center_mc-mod_x.schematic",
+   "name": "Covid 19 Testing Town Hall Center",
+   "category": "public",
+   "tags": [
+    "small"
+   ],
+   "dims": "14x15x16",
+   "blocks": 679,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_covid-19-testing-town-hall-center_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_corner-cinema-and-houses_mc-mod_1.14.4.schem",
+   "name": "Corner Cinema and Houses",
+   "category": "public",
+   "tags": [
+    "house",
+    "medium"
+   ],
+   "dims": "38x32x51",
+   "blocks": 17310,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_corner-cinema-and-houses_mc-mod_1.14.4.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_basic-city-hall-for-small-towns_mc-mod_1.15.2.schem",
+   "name": "Basic City Hall for Small Towns",
+   "category": "public",
+   "tags": [
+    "medium",
+    "shop"
+   ],
+   "dims": "32x28x30",
+   "blocks": 6848,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_basic-city-hall-for-small-towns_mc-mod_1.15.2.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_grand-performance-theatre_mc-mod_1.14.4.schem",
+   "name": "Grand Performance Theatre",
+   "category": "public",
+   "tags": [
+    "large",
+    "tall"
+   ],
+   "dims": "80x66x67",
+   "blocks": 40683,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_grand-performance-theatre_mc-mod_1.14.4.png",
+   "metaFlags": []
+  },
+  {
+   "file": "vehicles_european-style-prison-bus_mc-mod_1.18.1.schem",
+   "name": "European Style Prison Bus",
+   "category": "vehicles",
+   "tags": [
+    "large"
+   ],
+   "dims": "84x38x40",
+   "blocks": 9177,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\vehicles_european-style-prison-bus_mc-mod_1.18.1.png",
+   "metaFlags": [
+    "non-building-in-name"
+   ]
+  },
+  {
+   "file": "public_hermitcraft-season-7-town-hall-replica_mc-mod_1.16.5.schem",
+   "name": "Hermitcraft Season 7 Town Hall Replica",
+   "category": "public",
+   "tags": [
+    "medium",
+    "tall"
+   ],
+   "dims": "50x45x41",
+   "blocks": 13652,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_hermitcraft-season-7-town-hall-replica_mc-mod_1.16.5.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_french-town-hall-building_mc-mod_1.16.5.schem",
+   "name": "French Town Hall Building",
+   "category": "public",
+   "tags": [
+    "medium"
+   ],
+   "dims": "77x16x53",
+   "blocks": 10101,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_french-town-hall-building_mc-mod_1.16.5.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_simple-courthouse-design-v2_mc-mod_1.16.5.schem",
+   "name": "Simple Courthouse Design V2",
+   "category": "public",
+   "tags": [
+    "house",
+    "medium"
+   ],
+   "dims": "36x12x38",
+   "blocks": 1566,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_simple-courthouse-design-v2_mc-mod_1.16.5.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "public_town-hall-building-2_mc-mod_1.17.1.schem",
+   "name": "Grand Town Hall",
+   "category": "public",
+   "tags": [
+    "large",
+    "tall"
+   ],
+   "dims": "76x51x38",
+   "blocks": 16521,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_town-hall-building-2_mc-mod_1.17.1.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_village-town-hall-building_mc-mod_x.schematic",
+   "name": "Village Town Hall Building",
+   "category": "public",
+   "tags": [
+    "house",
+    "small"
+   ],
+   "dims": "18x10x16",
+   "blocks": 949,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_village-town-hall-building_mc-mod_x.png",
+   "metaFlags": []
+  }
+ ]
+}

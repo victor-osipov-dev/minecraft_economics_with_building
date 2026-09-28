@@ -1,0 +1,542 @@
+{
+ "batch": 28,
+ "items": [
+  {
+   "file": "roads_road-b-normal-two-way-street_mcbuild_x.schem",
+   "name": "Road B (Normal two-way street)",
+   "category": "roads",
+   "tags": [
+    "road",
+    "tiny",
+    "tree"
+   ],
+   "dims": "10x8x15",
+   "blocks": 210,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\roads_road-b-normal-two-way-street_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "roads_cobble-towny-road-system_mcbuild_x.schem",
+   "name": "Cobble Towny Road System",
+   "category": "roads",
+   "tags": [
+    "medium",
+    "road"
+   ],
+   "dims": "80x12x80",
+   "blocks": 7006,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\roads_cobble-towny-road-system_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "roads_decorative-street-lamp_mcbuild_x.schem",
+   "name": "Decorative Street Lamp.",
+   "category": "roads",
+   "tags": [
+    "road",
+    "small",
+    "tree"
+   ],
+   "dims": "17x7x34",
+   "blocks": 266,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\roads_decorative-street-lamp_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "roads_terraced-shop-with-sidewalk_buildschematics_x.schematic",
+   "name": "Terraced Shop with Sidewalk",
+   "category": "roads",
+   "tags": [
+    "car",
+    "medium",
+    "shop"
+   ],
+   "dims": "29x23x33",
+   "blocks": 4054,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\roads_terraced-shop-with-sidewalk_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "vehicles_bus-stop_mcbuild_x.schem",
+   "name": "Bus Stop",
+   "category": "vehicles",
+   "tags": [
+    "tiny"
+   ],
+   "dims": "5x7x8",
+   "blocks": 99,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\vehicles_bus-stop_mcbuild_x.png",
+   "metaFlags": [
+    "non-building-in-name",
+    "duplicate-name"
+   ]
+  },
+  {
+   "file": "vehicles_bus-stop_mcbuild_x-2.schem",
+   "name": "bus stop",
+   "category": "vehicles",
+   "tags": [
+    "tiny"
+   ],
+   "dims": "16x7x10",
+   "blocks": 305,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\vehicles_bus-stop_mcbuild_x-2.png",
+   "metaFlags": [
+    "non-building-in-name",
+    "duplicate-name"
+   ]
+  },
+  {
+   "file": "vehicles_bus-stop_mcbuild_x-3.schem",
+   "name": "bus stop",
+   "category": "vehicles",
+   "tags": [
+    "small"
+   ],
+   "dims": "15x6x25",
+   "blocks": 235,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\vehicles_bus-stop_mcbuild_x-3.png",
+   "metaFlags": [
+    "non-building-in-name",
+    "duplicate-name"
+   ]
+  },
+  {
+   "file": "transport_minecraft-airport-runway_buildschematics_x.nbt",
+   "name": "Minecraft Airport Runway",
+   "category": "transport",
+   "tags": [
+    "small"
+   ],
+   "dims": "283x2x13",
+   "blocks": 7127,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\transport_minecraft-airport-runway_buildschematics_x.png",
+   "metaFlags": [
+    "franchise"
+   ]
+  },
+  {
+   "file": "transport_airport_mcbuild_x.schem",
+   "name": "Airport",
+   "category": "transport",
+   "tags": [
+    "huge"
+   ],
+   "dims": "81x35x229",
+   "blocks": 160078,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\transport_airport_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_modern-hospital-building_buildschematics_x.schematic",
+   "name": "Modern Hospital Building",
+   "category": "public",
+   "tags": [
+    "hospital",
+    "modern",
+    "small"
+   ],
+   "dims": "20x16x32",
+   "blocks": 3452,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_modern-hospital-building_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_two-story-hospital-building_buildschematics_x.schematic",
+   "name": "Two-Story Hospital Building",
+   "category": "public",
+   "tags": [
+    "hospital",
+    "medium"
+   ],
+   "dims": "63x17x35",
+   "blocks": 11923,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_two-story-hospital-building_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_huge-modern-hospital_mcbuild_x.schem",
+   "name": "Huge Modern Hospital!",
+   "category": "public",
+   "tags": [
+    "hospital",
+    "huge",
+    "modern",
+    "tall"
+   ],
+   "dims": "65x103x78",
+   "blocks": 58176,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_huge-modern-hospital_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_hospital_mcbuild_x.schem",
+   "name": "Hospital",
+   "category": "public",
+   "tags": [
+    "hospital",
+    "medium"
+   ],
+   "dims": "34x20x31",
+   "blocks": 6163,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_hospital_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "transport_police-station-with-jail_buildschematics_x.schematic",
+   "name": "Police Station With Jail",
+   "category": "transport",
+   "tags": [
+    "large",
+    "station",
+    "tall"
+   ],
+   "dims": "49x69x39",
+   "blocks": 49777,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\transport_police-station-with-jail_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "transport_city-police-station-building_buildschematics_x.schematic",
+   "name": "City Police Station Building",
+   "category": "transport",
+   "tags": [
+    "small",
+    "station"
+   ],
+   "dims": "25x17x32",
+   "blocks": 4132,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\transport_city-police-station-building_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "transport_police-station-modern-police-station_mcbuild_x.schem",
+   "name": "Police Station | Modern Police Station",
+   "category": "transport",
+   "tags": [
+    "medium",
+    "modern",
+    "station"
+   ],
+   "dims": "26x38x41",
+   "blocks": 5680,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\transport_police-station-modern-police-station_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "transport_police-station-complete-version_mcbuild_x.schem",
+   "name": "Police Station - complete version",
+   "category": "transport",
+   "tags": [
+    "medium",
+    "station"
+   ],
+   "dims": "42x19x29",
+   "blocks": 8207,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\transport_police-station-complete-version_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "transport_police-station_mcbuild_x.schem",
+   "name": "Police Station",
+   "category": "transport",
+   "tags": [
+    "medium",
+    "station"
+   ],
+   "dims": "45x14x45",
+   "blocks": 6661,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\transport_police-station_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "transport_fire-station-building_buildschematics_x.schematic",
+   "name": "Fire Station Building",
+   "category": "transport",
+   "tags": [
+    "medium",
+    "station"
+   ],
+   "dims": "45x40x45",
+   "blocks": 5977,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\transport_fire-station-building_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "transport_fire-station-house_buildschematics_x.schematic",
+   "name": "Fire Station House",
+   "category": "transport",
+   "tags": [
+    "house",
+    "large",
+    "station"
+   ],
+   "dims": "99x31x121",
+   "blocks": 46228,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\transport_fire-station-house_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "transport_fire-station_mcbuild_x.schem",
+   "name": "Fire Station",
+   "category": "transport",
+   "tags": [
+    "large",
+    "station"
+   ],
+   "dims": "110x29x55",
+   "blocks": 31610,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\transport_fire-station_mcbuild_x.png",
+   "metaFlags": [
+    "duplicate-name"
+   ]
+  },
+  {
+   "file": "transport_fire-station_mcbuild_x-2.schem",
+   "name": "Fire Station",
+   "category": "transport",
+   "tags": [
+    "medium",
+    "station"
+   ],
+   "dims": "45x40x45",
+   "blocks": 5967,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\transport_fire-station_mcbuild_x-2.png",
+   "metaFlags": [
+    "duplicate-name"
+   ]
+  },
+  {
+   "file": "public_equipped-firestation_mcbuild_x.schem",
+   "name": "equipped-firestation",
+   "category": "public",
+   "tags": [
+    "large",
+    "station"
+   ],
+   "dims": "99x31x121",
+   "blocks": 44475,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_equipped-firestation_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "transport_fire-station_mcbuild_x-3.schem",
+   "name": "Fire station",
+   "category": "transport",
+   "tags": [
+    "medium",
+    "station",
+    "tall"
+   ],
+   "dims": "20x69x27",
+   "blocks": 7189,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\transport_fire-station_mcbuild_x-3.png",
+   "metaFlags": [
+    "duplicate-name"
+   ]
+  },
+  {
+   "file": "public_sims-3-style-city-hall_buildschematics_x.schematic",
+   "name": "Sims 3 Style City Hall",
+   "category": "public",
+   "tags": [
+    "large",
+    "tall"
+   ],
+   "dims": "67x52x40",
+   "blocks": 14228,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_sims-3-style-city-hall_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_city-hall_mcbuild_x.schem",
+   "name": "City Hall",
+   "category": "public",
+   "tags": [
+    "medium"
+   ],
+   "dims": "36x27x29",
+   "blocks": 5783,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_city-hall_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_town-hall_mcbuild_x.schem",
+   "name": "Town hall",
+   "category": "public",
+   "tags": [
+    "medium"
+   ],
+   "dims": "32x32x32",
+   "blocks": 7621,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_town-hall_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_theater_mcbuild_x.schem",
+   "name": "theater",
+   "category": "public",
+   "tags": [
+    "medium"
+   ],
+   "dims": "48x32x50",
+   "blocks": 11175,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_theater_mcbuild_x.png",
+   "metaFlags": [
+    "duplicate-name"
+   ]
+  },
+  {
+   "file": "public_greek-theater_mcbuild_x.schem",
+   "name": "Greek Theater",
+   "category": "public",
+   "tags": [
+    "medium"
+   ],
+   "dims": "31x25x62",
+   "blocks": 7525,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_greek-theater_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_theater_mcbuild_x-2.schem",
+   "name": "Theater",
+   "category": "public",
+   "tags": [
+    "large"
+   ],
+   "dims": "60x37x96",
+   "blocks": 104571,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_theater_mcbuild_x-2.png",
+   "metaFlags": [
+    "duplicate-name"
+   ]
+  },
+  {
+   "file": "public_shakespears-theater_mcbuild_x.schem",
+   "name": "Shakespears theater",
+   "category": "public",
+   "tags": [
+    "small"
+   ],
+   "dims": "26x12x33",
+   "blocks": 3778,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_shakespears-theater_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_modern-twin-cinema-building_buildschematics_x.schematic",
+   "name": "Modern Twin Cinema Building",
+   "category": "public",
+   "tags": [
+    "medium",
+    "modern"
+   ],
+   "dims": "42x12x32",
+   "blocks": 2596,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_modern-twin-cinema-building_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_multi-room-cinema-with-concessions_buildschematics_x.schematic",
+   "name": "Multi-Room Cinema with Concessions",
+   "category": "public",
+   "tags": [
+    "medium"
+   ],
+   "dims": "36x13x107",
+   "blocks": 26813,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_multi-room-cinema-with-concessions_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_6-room-cinema_mcbuild_x.schem",
+   "name": "6 Room Cinema",
+   "category": "public",
+   "tags": [
+    "medium"
+   ],
+   "dims": "36x13x107",
+   "blocks": 24390,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_6-room-cinema_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_twin-cinema-complex_mcbuild_x.schem",
+   "name": "Twin Cinema Complex",
+   "category": "public",
+   "tags": [
+    "medium"
+   ],
+   "dims": "42x12x32",
+   "blocks": 2687,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_twin-cinema-complex_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_cinema_mcbuild_x.schem",
+   "name": "Cinema",
+   "category": "public",
+   "tags": [
+    "medium"
+   ],
+   "dims": "31x15x38",
+   "blocks": 6498,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_cinema_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "industrial_128ksu-power-plant-structure_buildschematics_x.nbt",
+   "name": "128KSU Power Plant Structure",
+   "category": "industrial",
+   "tags": [
+    "small"
+   ],
+   "dims": "17x10x15",
+   "blocks": 327,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\industrial_128ksu-power-plant-structure_buildschematics_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "industrial_massive-steam-power-plant_buildschematics_x.nbt",
+   "name": "Massive Steam Power Plant",
+   "category": "industrial",
+   "tags": [
+    "medium"
+   ],
+   "dims": "45x36x42",
+   "blocks": 20332,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\industrial_massive-steam-power-plant_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "industrial_pixelmon-maze-power-plant_buildschematics_x.schematic",
+   "name": "Pixelmon Maze Power Plant",
+   "category": "industrial",
+   "tags": [
+    "medium",
+    "tall"
+   ],
+   "dims": "38x45x66",
+   "blocks": 25170,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\industrial_pixelmon-maze-power-plant_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "industrial_256-block-power-plant-structure_buildschematics_x.nbt",
+   "name": "256-Block Power Plant Structure",
+   "category": "industrial",
+   "tags": [
+    "small"
+   ],
+   "dims": "17x11x28",
+   "blocks": 1202,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\industrial_256-block-power-plant-structure_buildschematics_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  }
+ ]
+}

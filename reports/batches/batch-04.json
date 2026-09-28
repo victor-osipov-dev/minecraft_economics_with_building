@@ -1,0 +1,558 @@
+{
+ "batch": 4,
+ "items": [
+  {
+   "file": "residential_small-terraced-houses-with-garage_buildschematics_x.schem",
+   "name": "Small Terraced Houses with Garage",
+   "category": "residential",
+   "tags": [
+    "car",
+    "house",
+    "large",
+    "parking",
+    "shop"
+   ],
+   "dims": "263x34x54",
+   "blocks": 72829,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_small-terraced-houses-with-garage_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "commercial_small-town-cafe-building_buildschematics_x.schem",
+   "name": "Small Town Cafe Building",
+   "category": "commercial",
+   "tags": [
+    "shop",
+    "small"
+   ],
+   "dims": "18x11x14",
+   "blocks": 1525,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_small-town-cafe-building_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "transport_small-wooden-boat-dock_buildschematics_x.schem",
+   "name": "Small Wooden Boat Dock",
+   "category": "transport",
+   "tags": [
+    "boat",
+    "shop",
+    "small",
+    "water"
+   ],
+   "dims": "16x9x22",
+   "blocks": 560,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\transport_small-wooden-boat-dock_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "waterfront_small-yacht-for-one-or-two_buildschematics_x.schem",
+   "name": "Small Yacht for One or Two",
+   "category": "waterfront",
+   "tags": [
+    "boat",
+    "medium",
+    "shop"
+   ],
+   "dims": "58x32x23",
+   "blocks": 1097,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\waterfront_small-yacht-for-one-or-two_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_spacious-modern-mansion_buildschematics_x.schem",
+   "name": "Spacious Modern Mansion",
+   "category": "residential",
+   "tags": [
+    "house",
+    "medium",
+    "modern"
+   ],
+   "dims": "34x17x36",
+   "blocks": 5354,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_spacious-modern-mansion_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "vehicles_speedboat-vehicle_buildschematics_x.schem",
+   "name": "Speedboat Vehicle",
+   "category": "vehicles",
+   "tags": [
+    "boat",
+    "tiny"
+   ],
+   "dims": "7x4x24",
+   "blocks": 346,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\vehicles_speedboat-vehicle_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "parks_square-earth-build-2_buildschematics_x.schem",
+   "name": "Square Earth Build",
+   "category": "parks",
+   "tags": [
+    "medium",
+    "park"
+   ],
+   "dims": "31x31x31",
+   "blocks": 16852,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\parks_square-earth-build-2_buildschematics_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "residential_starter-house-and-workshop_buildschematics_x.nbt",
+   "name": "Starter House and Workshop",
+   "category": "residential",
+   "tags": [
+    "house",
+    "shop",
+    "small"
+   ],
+   "dims": "35x14x17",
+   "blocks": 1917,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_starter-house-and-workshop_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "industrial_stone-factory-building-20315-blocks_buildschematics_x.nbt",
+   "name": "Stone Factory Building - 20315 Blocks",
+   "category": "industrial",
+   "tags": [
+    "large"
+   ],
+   "dims": "66x29x108",
+   "blocks": 20315,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\industrial_stone-factory-building-20315-blocks_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_teenager-club-house-design_buildschematics_x.schem",
+   "name": "Teenager Club House Design",
+   "category": "residential",
+   "tags": [
+    "house",
+    "large",
+    "tall"
+   ],
+   "dims": "51x61x39",
+   "blocks": 17315,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_teenager-club-house-design_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_terraced-wooden-house_buildschematics_x.schem",
+   "name": "Terraced Wooden House",
+   "category": "residential",
+   "tags": [
+    "car",
+    "house",
+    "medium"
+   ],
+   "dims": "43x19x41",
+   "blocks": 6065,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_terraced-wooden-house_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "waterfront_to-the-moon-lighthouse-house_buildschematics_x.schem",
+   "name": "To The Moon Lighthouse House",
+   "category": "waterfront",
+   "tags": [
+    "house",
+    "medium",
+    "water"
+   ],
+   "dims": "28x27x37",
+   "blocks": 10609,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\waterfront_to-the-moon-lighthouse-house_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "roads_town-hall-building-with-road_buildschematics_x.schem",
+   "name": "Town Hall Building With Road",
+   "category": "roads",
+   "tags": [
+    "large",
+    "road"
+   ],
+   "dims": "131x28x121",
+   "blocks": 30230,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\roads_town-hall-building-with-road_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "vehicles_transport-van-with-barrel-storage_buildschematics_x.nbt",
+   "name": "Transport Van with Barrel Storage",
+   "category": "vehicles",
+   "tags": [
+    "car",
+    "tiny"
+   ],
+   "dims": "9x5x5",
+   "blocks": 58,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\vehicles_transport-van-with-barrel-storage_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "commercial_tudor-blacksmith-shop_buildschematics_x.schem",
+   "name": "Tudor Blacksmith Shop",
+   "category": "commercial",
+   "tags": [
+    "shop",
+    "small"
+   ],
+   "dims": "22x18x17",
+   "blocks": 1028,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_tudor-blacksmith-shop_buildschematics_x.png",
+   "metaFlags": [
+    "non-real/fantasy"
+   ]
+  },
+  {
+   "file": "residential_tudor-house-with-hayloft-and-stables_buildschematics_x.schem",
+   "name": "Tudor House with Hayloft and Stables",
+   "category": "residential",
+   "tags": [
+    "house",
+    "small"
+   ],
+   "dims": "21x17x26",
+   "blocks": 1936,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_tudor-house-with-hayloft-and-stables_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_twin-towers-gate-with-auto-night-protection_buildschematics_x.schem",
+   "name": "Twin Towers Gate with Auto Night Protection",
+   "category": "towers",
+   "tags": [
+    "tiny",
+    "tower"
+   ],
+   "dims": "20x14x7",
+   "blocks": 868,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_twin-towers-gate-with-auto-night-protection_buildschematics_x.png",
+   "metaFlags": [
+    "non-building-in-name"
+   ]
+  },
+  {
+   "file": "towers_united-we-craft-server-tower_buildschematics_x.schem",
+   "name": "United We Craft Server Tower",
+   "category": "towers",
+   "tags": [
+    "large",
+    "tall",
+    "tower"
+   ],
+   "dims": "41x126x34",
+   "blocks": 33808,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_united-we-craft-server-tower_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "transport_vertical-modular-garage-system_buildschematics_x.nbt",
+   "name": "Vertical Modular Garage System",
+   "category": "transport",
+   "tags": [
+    "medium",
+    "parking"
+   ],
+   "dims": "20x33x45",
+   "blocks": 967,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\transport_vertical-modular-garage-system_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "roads_vienna-street-house-67_buildschematics_x.schem",
+   "name": "Vienna Street House 67",
+   "category": "roads",
+   "tags": [
+    "house",
+    "medium",
+    "road",
+    "tall",
+    "tree"
+   ],
+   "dims": "29x41x20",
+   "blocks": 6565,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\roads_vienna-street-house-67_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_william-andrews-apartment-building_buildschematics_x.schem",
+   "name": "William Andrews Apartment Building",
+   "category": "residential",
+   "tags": [
+    "apartment",
+    "medium"
+   ],
+   "dims": "54x30x61",
+   "blocks": 21644,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_william-andrews-apartment-building_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "decor_wishing-well-village-centerpiece_buildschematics_x.schem",
+   "name": "Wishing Well - Village Centerpiece",
+   "category": "decor",
+   "tags": [
+    "house",
+    "huge",
+    "tall"
+   ],
+   "dims": "100x53x101",
+   "blocks": 46897,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\decor_wishing-well-village-centerpiece_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "commercial_working-waterpark-with-slides_buildschematics_x.schem",
+   "name": "Working Waterpark With Slides",
+   "category": "commercial",
+   "tags": [
+    "medium",
+    "park"
+   ],
+   "dims": "36x23x43",
+   "blocks": 12512,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_working-waterpark-with-slides_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "waterfront_yellow-and-red-lighthouse-structure_buildschematics_x.schem",
+   "name": "Yellow and Red Lighthouse Structure",
+   "category": "waterfront",
+   "tags": [
+    "house",
+    "medium",
+    "tall",
+    "water"
+   ],
+   "dims": "21x53x21",
+   "blocks": 2716,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\waterfront_yellow-and-red-lighthouse-structure_buildschematics_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "residential_wooden-house_mcbuild_x.schem",
+   "name": "Wooden house",
+   "category": "residential",
+   "tags": [
+    "house",
+    "small"
+   ],
+   "dims": "23x22x15",
+   "blocks": 1499,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_wooden-house_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "waterfront_diagonal-shore-port_mcbuild_x.schem",
+   "name": "diagonal shore port",
+   "category": "waterfront",
+   "tags": [
+    "medium",
+    "tall"
+   ],
+   "dims": "43x45x48",
+   "blocks": 9686,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\waterfront_diagonal-shore-port_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "commercial_small-fountain_mcbuild_x.schem",
+   "name": "Small fountain",
+   "category": "commercial",
+   "tags": [
+    "fountain",
+    "shop",
+    "tiny",
+    "water"
+   ],
+   "dims": "11x10x11",
+   "blocks": 186,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_small-fountain_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_old-wooden-house_mcbuild_x.schem",
+   "name": "Old Wooden House",
+   "category": "residential",
+   "tags": [
+    "house",
+    "medium"
+   ],
+   "dims": "29x15x35",
+   "blocks": 3293,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_old-wooden-house_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "bridges_stonewood-bridge_mcbuild_x.schem",
+   "name": "Stonewood Bridge",
+   "category": "bridges",
+   "tags": [
+    "bridge",
+    "tiny"
+   ],
+   "dims": "7x8x29",
+   "blocks": 317,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\bridges_stonewood-bridge_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_cave-house_mcbuild_x.schem",
+   "name": "Cave House",
+   "category": "residential",
+   "tags": [
+    "house",
+    "medium"
+   ],
+   "dims": "36x32x46",
+   "blocks": 3321,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_cave-house_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_modern-house-10_mcbuild_x.schem",
+   "name": "Modern House 10",
+   "category": "residential",
+   "tags": [
+    "house",
+    "medium",
+    "modern"
+   ],
+   "dims": "54x24x59",
+   "blocks": 32799,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_modern-house-10_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_modern-house--11_mcbuild_x.schem",
+   "name": "Modern House #11",
+   "category": "residential",
+   "tags": [
+    "house",
+    "large",
+    "modern"
+   ],
+   "dims": "62x33x74",
+   "blocks": 45530,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_modern-house--11_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "bridges_stone-bridge_mcbuild_x.schem",
+   "name": "Stone Bridge",
+   "category": "bridges",
+   "tags": [
+    "bridge",
+    "tiny"
+   ],
+   "dims": "5x8x41",
+   "blocks": 652,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\bridges_stone-bridge_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_treehouse_mcbuild_x.schem",
+   "name": "Treehouse",
+   "category": "residential",
+   "tags": [
+    "house",
+    "small",
+    "tree"
+   ],
+   "dims": "20x26x21",
+   "blocks": 1485,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_treehouse_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_teahouse_mcbuild_x.schem",
+   "name": "Teahouse",
+   "category": "residential",
+   "tags": [
+    "house",
+    "small"
+   ],
+   "dims": "18x16x47",
+   "blocks": 2036,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_teahouse_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_lakehouse_mcbuild_x.schem",
+   "name": "Lakehouse",
+   "category": "residential",
+   "tags": [
+    "house",
+    "medium"
+   ],
+   "dims": "37x26x49",
+   "blocks": 9758,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_lakehouse_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "decor_tree--lanterns-_mcbuild_x.schem",
+   "name": "Tree (Lanterns)",
+   "category": "decor",
+   "tags": [
+    "tiny",
+    "tree"
+   ],
+   "dims": "10x11x11",
+   "blocks": 34,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\decor_tree--lanterns-_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_traditional-spruce-house_mcbuild_x.schem",
+   "name": "Traditional Spruce House",
+   "category": "residential",
+   "tags": [
+    "house",
+    "small",
+    "tree"
+   ],
+   "dims": "21x16x17",
+   "blocks": 2781,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_traditional-spruce-house_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "commercial_asian-4-storey-pagoda-nr3_mcbuild_x.schem",
+   "name": "Asian 4 Storey Pagoda Nr3",
+   "category": "commercial",
+   "tags": [
+    "medium",
+    "shop",
+    "tall"
+   ],
+   "dims": "44x54x43",
+   "blocks": 2244,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_asian-4-storey-pagoda-nr3_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_rustic-modern-home_mcbuild_x.schem",
+   "name": "Rustic-Modern Home",
+   "category": "residential",
+   "tags": [
+    "house",
+    "medium",
+    "modern"
+   ],
+   "dims": "33x31x34",
+   "blocks": 7442,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_rustic-modern-home_mcbuild_x.png",
+   "metaFlags": []
+  }
+ ]
+}

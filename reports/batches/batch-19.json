@@ -1,0 +1,575 @@
+{
+ "batch": 19,
+ "items": [
+  {
+   "file": "residential_storage-warehouse-building_mc-mod_x.schem",
+   "name": "Storage Warehouse Building",
+   "category": "residential",
+   "tags": [
+    "house",
+    "huge"
+   ],
+   "dims": "110x25x307",
+   "blocks": 68573,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_storage-warehouse-building_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_storage-warehouse-structure_mc-mod_x.schem",
+   "name": "Storage Warehouse Structure",
+   "category": "residential",
+   "tags": [
+    "house",
+    "medium"
+   ],
+   "dims": "81x22x66",
+   "blocks": 15379,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_storage-warehouse-structure_mc-mod_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "bridges_subway-tunnel-structure_mc-mod_x.schem",
+   "name": "Subway Tunnel Structure",
+   "category": "bridges",
+   "tags": [
+    "tiny"
+   ],
+   "dims": "7x5x18",
+   "blocks": 450,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\bridges_subway-tunnel-structure_mc-mod_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "residential_survival-mansion-2-story-build_mc-mod_x.schem",
+   "name": "Survival Mansion 2-Story Build",
+   "category": "residential",
+   "tags": [
+    "house",
+    "small"
+   ],
+   "dims": "22x10x25",
+   "blocks": 2534,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_survival-mansion-2-story-build_mc-mod_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "bridges_suspended-bridge-minecraft-build_mc-mod_x.schem",
+   "name": "Suspended Bridge Minecraft Build",
+   "category": "bridges",
+   "tags": [
+    "bridge",
+    "tiny"
+   ],
+   "dims": "10x8x20",
+   "blocks": 409,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\bridges_suspended-bridge-minecraft-build_mc-mod_x.png",
+   "metaFlags": [
+    "franchise",
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "bridges_suspension-cable-bridge_mc-mod_x.schem",
+   "name": "Suspension Cable Bridge",
+   "category": "bridges",
+   "tags": [
+    "bridge",
+    "small"
+   ],
+   "dims": "53x18x13",
+   "blocks": 1134,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\bridges_suspension-cable-bridge_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "commercial_tails-workshop-recreation_mc-mod_x.schem",
+   "name": "Tails&#8217; Workshop Recreation",
+   "category": "commercial",
+   "tags": [
+    "shop",
+    "small"
+   ],
+   "dims": "15x13x18",
+   "blocks": 928,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_tails-workshop-recreation_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_tall-orange-quartz-apartment-building_mc-mod_x.schem",
+   "name": "Tall Orange Quartz Apartment Building",
+   "category": "residential",
+   "tags": [
+    "apartment",
+    "medium",
+    "tall"
+   ],
+   "dims": "51x61x38",
+   "blocks": 40424,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_tall-orange-quartz-apartment-building_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "parks_technoblade-tribute-parkour-build_mc-mod_x.schem",
+   "name": "Technoblade Tribute Parkour Build",
+   "category": "parks",
+   "tags": [
+    "huge",
+    "park",
+    "tall"
+   ],
+   "dims": "94x83x66",
+   "blocks": 9367,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\parks_technoblade-tribute-parkour-build_mc-mod_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "residential_ten-story-apartment-building_mc-mod_x.schem",
+   "name": "Ten Story Apartment Building",
+   "category": "residential",
+   "tags": [
+    "apartment",
+    "large",
+    "tall"
+   ],
+   "dims": "59x56x47",
+   "blocks": 75671,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_ten-story-apartment-building_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_the-hidden-library-from-the-book_mc-mod_x.schem",
+   "name": "The Hidden Library From The Book",
+   "category": "public",
+   "tags": [
+    "library",
+    "tiny"
+   ],
+   "dims": "11x7x10",
+   "blocks": 439,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_the-hidden-library-from-the-book_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_tilted-office-building_mc-mod_x.schem",
+   "name": "Tilted Office Building",
+   "category": "towers",
+   "tags": [
+    "huge",
+    "office",
+    "tall"
+   ],
+   "dims": "180x85x67",
+   "blocks": 172199,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_tilted-office-building_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_tnt-museum_mc-mod_x.schem",
+   "name": "TNT Museum",
+   "category": "public",
+   "tags": [
+    "medium",
+    "museum"
+   ],
+   "dims": "30x33x31",
+   "blocks": 14260,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_tnt-museum_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "transport_town-parking-lot_mc-mod_x.schem",
+   "name": "Town Parking Lot",
+   "category": "transport",
+   "tags": [
+    "park",
+    "parking",
+    "small"
+   ],
+   "dims": "29x5x29",
+   "blocks": 592,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\transport_town-parking-lot_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "roads_towny-road-system-cobblestone-construction_mc-mod_x.schem",
+   "name": "Towny Road System &#8211; Cobblestone Construction",
+   "category": "roads",
+   "tags": [
+    "medium",
+    "road"
+   ],
+   "dims": "80x12x80",
+   "blocks": 7006,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\roads_towny-road-system-cobblestone-construction_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "commercial_traditional-brick-home-with-garage_mc-mod_x.schem",
+   "name": "Traditional Brick Home With Garage",
+   "category": "commercial",
+   "tags": [
+    "house",
+    "medium",
+    "parking"
+   ],
+   "dims": "61x35x52",
+   "blocks": 14732,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_traditional-brick-home-with-garage_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "commercial_traditional-british-pub-building_mc-mod_x.schem",
+   "name": "Traditional British Pub Building",
+   "category": "commercial",
+   "tags": [
+    "small"
+   ],
+   "dims": "10x19x18",
+   "blocks": 873,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_traditional-british-pub-building_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "transport_trainyard-automatic-refill-station_mc-mod_x.schem",
+   "name": "Trainyard Automatic Refill Station",
+   "category": "transport",
+   "tags": [
+    "medium",
+    "station"
+   ],
+   "dims": "23x34x40",
+   "blocks": 10977,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\transport_trainyard-automatic-refill-station_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "commercial_tropical-mine-and-shop_mc-mod_x.schem",
+   "name": "Tropical Mine and Shop",
+   "category": "commercial",
+   "tags": [
+    "large",
+    "shop"
+   ],
+   "dims": "65x33x103",
+   "blocks": 69706,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_tropical-mine-and-shop_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "commercial_truck-stop-gas-station_mc-mod_x.schem",
+   "name": "Truck Stop Gas Station",
+   "category": "commercial",
+   "tags": [
+    "car",
+    "huge",
+    "station"
+   ],
+   "dims": "132x13x314",
+   "blocks": 15472,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_truck-stop-gas-station_mc-mod_x.png",
+   "metaFlags": [
+    "non-building-in-name"
+   ]
+  },
+  {
+   "file": "residential_two-story-house-with-attic-and-balcony_mc-mod_x.schem",
+   "name": "Two Story House With Attic And Balcony",
+   "category": "residential",
+   "tags": [
+    "house",
+    "small"
+   ],
+   "dims": "13x20x17",
+   "blocks": 995,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_two-story-house-with-attic-and-balcony_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "transport_two-story-warehouse-with-parking_mc-mod_x.schem",
+   "name": "Two Story Warehouse With Parking",
+   "category": "transport",
+   "tags": [
+    "house",
+    "medium",
+    "park",
+    "parking"
+   ],
+   "dims": "65x18x102",
+   "blocks": 25747,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\transport_two-story-warehouse-with-parking_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "transport_underground-metro-station-design_mc-mod_x.schem",
+   "name": "Underground Metro Station Design",
+   "category": "transport",
+   "tags": [
+    "small",
+    "station"
+   ],
+   "dims": "25x15x32",
+   "blocks": 5165,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\transport_underground-metro-station-design_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "transport_underground-metro-station-with-blue-train_mc-mod_x.schem",
+   "name": "Underground Metro Station With Blue Train",
+   "category": "transport",
+   "tags": [
+    "medium",
+    "station"
+   ],
+   "dims": "31x26x41",
+   "blocks": 16483,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\transport_underground-metro-station-with-blue-train_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_unfurnished-office-building-structure_mc-mod_x.schem",
+   "name": "Unfurnished Office Building Structure",
+   "category": "towers",
+   "tags": [
+    "medium",
+    "office",
+    "tall"
+   ],
+   "dims": "40x67x43",
+   "blocks": 18504,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_unfurnished-office-building-structure_mc-mod_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "industrial_urban-compressed-air-factory_mc-mod_x.schem",
+   "name": "Urban Compressed Air Factory",
+   "category": "industrial",
+   "tags": [
+    "medium"
+   ],
+   "dims": "38x29x87",
+   "blocks": 12697,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\industrial_urban-compressed-air-factory_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_urban-warehouse-storage-building-2_mc-mod_x.schem",
+   "name": "Large Urban Warehouse Storage Building",
+   "category": "residential",
+   "tags": [
+    "house",
+    "large"
+   ],
+   "dims": "145x24x69",
+   "blocks": 25530,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_urban-warehouse-storage-building-2_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_vehicle-warehouse-storage_mc-mod_x.schem",
+   "name": "Vehicle Warehouse Storage",
+   "category": "residential",
+   "tags": [
+    "house",
+    "large"
+   ],
+   "dims": "135x19x83",
+   "blocks": 34041,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_vehicle-warehouse-storage_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_vibrant-yellow-modern-apartment-building_mc-mod_x.schem",
+   "name": "Vibrant Yellow Modern Apartment Building",
+   "category": "residential",
+   "tags": [
+    "apartment",
+    "modern",
+    "small"
+   ],
+   "dims": "22x21x17",
+   "blocks": 2314,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_vibrant-yellow-modern-apartment-building_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "roads_vienna-street-house-65-build_mc-mod_x.schem",
+   "name": "Vienna Street House 65 Build",
+   "category": "roads",
+   "tags": [
+    "house",
+    "medium",
+    "road",
+    "tall",
+    "tree"
+   ],
+   "dims": "22x42x22",
+   "blocks": 4908,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\roads_vienna-street-house-65-build_mc-mod_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "roads_vienna-street-house-66_mc-mod_x.schem",
+   "name": "Vienna Street House 66",
+   "category": "roads",
+   "tags": [
+    "house",
+    "medium",
+    "road",
+    "tall",
+    "tree"
+   ],
+   "dims": "27x41x20",
+   "blocks": 5867,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\roads_vienna-street-house-66_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "roads_vienna-street-house-68_mc-mod_x.schem",
+   "name": "Vienna Street House 68",
+   "category": "roads",
+   "tags": [
+    "house",
+    "medium",
+    "road",
+    "tall",
+    "tree"
+   ],
+   "dims": "24x41x17",
+   "blocks": 5140,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\roads_vienna-street-house-68_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "roads_vienna-street-house-70-build_mc-mod_x.schem",
+   "name": "Vienna Street House 70 Build",
+   "category": "roads",
+   "tags": [
+    "house",
+    "medium",
+    "road",
+    "tall",
+    "tree"
+   ],
+   "dims": "27x42x19",
+   "blocks": 6991,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\roads_vienna-street-house-70-build_mc-mod_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "roads_vienna-street-house-71_mc-mod_x.schem",
+   "name": "Vienna Street House 71",
+   "category": "roads",
+   "tags": [
+    "house",
+    "medium",
+    "road",
+    "tall",
+    "tree"
+   ],
+   "dims": "14x49x54",
+   "blocks": 8406,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\roads_vienna-street-house-71_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "roads_vienna-street-house-73_mc-mod_x.schem",
+   "name": "Vienna Street House 73",
+   "category": "roads",
+   "tags": [
+    "house",
+    "medium",
+    "road",
+    "tall",
+    "tree"
+   ],
+   "dims": "34x41x18",
+   "blocks": 8301,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\roads_vienna-street-house-73_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "roads_vienna-street-house-74_mc-mod_x.schem",
+   "name": "Vienna Street House 74",
+   "category": "roads",
+   "tags": [
+    "house",
+    "medium",
+    "road",
+    "tall",
+    "tree"
+   ],
+   "dims": "36x42x20",
+   "blocks": 8908,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\roads_vienna-street-house-74_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "roads_vienna-street-houses-2_mc-mod_x.schem",
+   "name": "Vienna Street House With Jungle Planks",
+   "category": "roads",
+   "tags": [
+    "house",
+    "medium",
+    "road",
+    "tree"
+   ],
+   "dims": "29x40x19",
+   "blocks": 6086,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\roads_vienna-street-houses-2_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "transport_vintage-train-station-building_mc-mod_x.schem",
+   "name": "Vintage Train Station Building",
+   "category": "transport",
+   "tags": [
+    "small",
+    "station"
+   ],
+   "dims": "21x11x18",
+   "blocks": 1218,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\transport_vintage-train-station-building_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_warehouse-13-storage-building_mc-mod_x.schem",
+   "name": "Warehouse 13 Storage Building",
+   "category": "residential",
+   "tags": [
+    "house",
+    "huge"
+   ],
+   "dims": "181x19x181",
+   "blocks": 78026,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_warehouse-13-storage-building_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_warehouse-with-movie-sets_mc-mod_x.schem",
+   "name": "Warehouse With Movie Sets",
+   "category": "residential",
+   "tags": [
+    "house",
+    "huge"
+   ],
+   "dims": "147x40x139",
+   "blocks": 69931,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_warehouse-with-movie-sets_mc-mod_x.png",
+   "metaFlags": []
+  }
+ ]
+}

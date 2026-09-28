@@ -1,0 +1,552 @@
+{
+ "batch": 29,
+ "items": [
+  {
+   "file": "industrial_power-plant_mcbuild_x.schem",
+   "name": "Power Plant",
+   "category": "industrial",
+   "tags": [
+    "large",
+    "tall"
+   ],
+   "dims": "81x58x81",
+   "blocks": 45850,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\industrial_power-plant_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "industrial_pixelmon-power-plant_mcbuild_x.schem",
+   "name": "Pixelmon Power Plant",
+   "category": "industrial",
+   "tags": [
+    "medium",
+    "tall"
+   ],
+   "dims": "38x45x66",
+   "blocks": 24432,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\industrial_pixelmon-power-plant_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "industrial_fallout-3-substation-v1-zth_mcbuild_x.schem",
+   "name": "fallout 3 substation v1- zth",
+   "category": "industrial",
+   "tags": [
+    "small",
+    "station"
+   ],
+   "dims": "26x9x19",
+   "blocks": 1393,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\industrial_fallout-3-substation-v1-zth_mcbuild_x.png",
+   "metaFlags": [
+    "franchise",
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "industrial_fallout-3-substation-v2-zth_mcbuild_x.schem",
+   "name": "fallout 3 substation v2- zth",
+   "category": "industrial",
+   "tags": [
+    "small",
+    "station"
+   ],
+   "dims": "25x10x20",
+   "blocks": 1523,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\industrial_fallout-3-substation-v2-zth_mcbuild_x.png",
+   "metaFlags": [
+    "franchise",
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "towers_barn-with-water-tower_mcbuild_x.schem",
+   "name": "Barn with Water Tower",
+   "category": "towers",
+   "tags": [
+    "small",
+    "tower"
+   ],
+   "dims": "17x16x24",
+   "blocks": 1302,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_barn-with-water-tower_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_modern-water-tower_mcbuild_x.schem",
+   "name": "Modern water tower",
+   "category": "towers",
+   "tags": [
+    "medium",
+    "modern",
+    "tall",
+    "tower"
+   ],
+   "dims": "25x52x25",
+   "blocks": 3287,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_modern-water-tower_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_water-tower-by-iedgy_mcbuild_x.schem",
+   "name": "Water Tower by iEdgy",
+   "category": "towers",
+   "tags": [
+    "medium",
+    "tall",
+    "tower"
+   ],
+   "dims": "36x57x36",
+   "blocks": 5719,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_water-tower-by-iedgy_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_double-sided-sony-logo-billboard_buildschematics_x.schematic",
+   "name": "Double-Sided Sony Logo Billboard",
+   "category": "public",
+   "tags": [
+    "small"
+   ],
+   "dims": "64x19x11",
+   "blocks": 3029,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_double-sided-sony-logo-billboard_buildschematics_x.png",
+   "metaFlags": [
+    "non-building-in-name"
+   ]
+  },
+  {
+   "file": "public_quot-do-you-even-shift-bro-quot-billboard_mcbuild_x.schem",
+   "name": "\"Do you even shift bro\" billboard",
+   "category": "public",
+   "tags": [
+    "medium",
+    "tall"
+   ],
+   "dims": "49x41x13",
+   "blocks": 5167,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_quot-do-you-even-shift-bro-quot-billboard_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_large-billboard_mcbuild_x.schem",
+   "name": "Large Billboard",
+   "category": "public",
+   "tags": [
+    "medium",
+    "tall"
+   ],
+   "dims": "49x41x13",
+   "blocks": 2717,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_large-billboard_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "decor_fallout-3-billboard-zth_mcbuild_x.schem",
+   "name": "fallout 3 billboard- zth",
+   "category": "decor",
+   "tags": [
+    "tiny"
+   ],
+   "dims": "10x6x4",
+   "blocks": 80,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\decor_fallout-3-billboard-zth_mcbuild_x.png",
+   "metaFlags": [
+    "franchise"
+   ]
+  },
+  {
+   "file": "public_workbench_mcbuild_x.schem",
+   "name": "WorkBench",
+   "category": "public",
+   "tags": [
+    "small"
+   ],
+   "dims": "16x17x16",
+   "blocks": 2042,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_workbench_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_toyland-fisherprice-workbench_mcbuild_x.schem",
+   "name": "Toyland-FisherPrice Workbench",
+   "category": "public",
+   "tags": [
+    "medium"
+   ],
+   "dims": "31x31x23",
+   "blocks": 2887,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_toyland-fisherprice-workbench_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "transport_small-gas-station-and-store_buildschematics_x.schematic",
+   "name": "Small Gas Station and Store",
+   "category": "transport",
+   "tags": [
+    "shop",
+    "small",
+    "station"
+   ],
+   "dims": "59x7x31",
+   "blocks": 3415,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\transport_small-gas-station-and-store_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "transport_gas-station_mcbuild_x.schem",
+   "name": "Gas station",
+   "category": "transport",
+   "tags": [
+    "medium",
+    "station"
+   ],
+   "dims": "48x11x39",
+   "blocks": 4266,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\transport_gas-station_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "transport_gas-station-3_mcbuild_x.schem",
+   "name": "Gas Station 3",
+   "category": "transport",
+   "tags": [
+    "large",
+    "station"
+   ],
+   "dims": "76x17x119",
+   "blocks": 21101,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\transport_gas-station-3_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "transport_petrol-gas-station_mcbuild_x.schem",
+   "name": "Petrol/ Gas station",
+   "category": "transport",
+   "tags": [
+    "medium",
+    "station"
+   ],
+   "dims": "43x15x66",
+   "blocks": 6551,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\transport_petrol-gas-station_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "transport_sheetz-gas-station_mcbuild_x.schem",
+   "name": "Sheetz Gas Station",
+   "category": "transport",
+   "tags": [
+    "large",
+    "station"
+   ],
+   "dims": "107x23x136",
+   "blocks": 25050,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\transport_sheetz-gas-station_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_art-school-building_buildschematics_x.schematic",
+   "name": "Art School Building",
+   "category": "public",
+   "tags": [
+    "medium",
+    "school"
+   ],
+   "dims": "38x38x40",
+   "blocks": 13429,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_art-school-building_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_german-school-building_buildschematics_x.schematic",
+   "name": "German School Building",
+   "category": "public",
+   "tags": [
+    "medium",
+    "school"
+   ],
+   "dims": "50x34x70",
+   "blocks": 29526,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_german-school-building_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_pixelmon-school-building_buildschematics_x.schematic",
+   "name": "Pixelmon School Building",
+   "category": "public",
+   "tags": [
+    "huge",
+    "school",
+    "tall"
+   ],
+   "dims": "118x62x105",
+   "blocks": 50968,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_pixelmon-school-building_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_school_mcbuild_x.schem",
+   "name": "School",
+   "category": "public",
+   "tags": [
+    "medium",
+    "school"
+   ],
+   "dims": "74x23x70",
+   "blocks": 19049,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_school_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_secondary-school-le_mcbuild_x.schem",
+   "name": "Secondary School  - LE",
+   "category": "public",
+   "tags": [
+    "medium",
+    "school"
+   ],
+   "dims": "26x33x29",
+   "blocks": 3757,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_secondary-school-le_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_small-soccer-stadium-build_buildschematics_x.schem",
+   "name": "Small Soccer Stadium Build",
+   "category": "public",
+   "tags": [
+    "large",
+    "shop",
+    "stadium"
+   ],
+   "dims": "97x27x65",
+   "blocks": 10258,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_small-soccer-stadium-build_buildschematics_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "public_apocalyptic-prison-mine_buildschematics_x.schematic",
+   "name": "Apocalyptic Prison Mine",
+   "category": "public",
+   "tags": [
+    "huge",
+    "tall"
+   ],
+   "dims": "138x66x104",
+   "blocks": 75301,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_apocalyptic-prison-mine_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_small-prison-building_buildschematics_x.schematic",
+   "name": "Small Prison Building",
+   "category": "public",
+   "tags": [
+    "medium",
+    "shop"
+   ],
+   "dims": "63x9x43",
+   "blocks": 9440,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_small-prison-building_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_desert-prison-structure_buildschematics_x.schematic",
+   "name": "Desert Prison Structure",
+   "category": "public",
+   "tags": [
+    "large",
+    "tall"
+   ],
+   "dims": "42x74x42",
+   "blocks": 93856,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_desert-prison-structure_buildschematics_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "public_sand-prison_mcbuild_x.schem",
+   "name": "Sand Prison",
+   "category": "public",
+   "tags": [
+    "large",
+    "tall"
+   ],
+   "dims": "42x74x42",
+   "blocks": 93843,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_sand-prison_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_jail-prison_mcbuild_x.schem",
+   "name": "Jail/Prison",
+   "category": "public",
+   "tags": [
+    "small",
+    "tall"
+   ],
+   "dims": "8x256x6",
+   "blocks": 318,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_jail-prison_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "industrial_storage-warehouse_buildschematics_x.nbt",
+   "name": "Storage Warehouse",
+   "category": "industrial",
+   "tags": [
+    "house",
+    "medium"
+   ],
+   "dims": "35x19x40",
+   "blocks": 3405,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\industrial_storage-warehouse_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "industrial_storage-warehouse-v1_buildschematics_x.nbt",
+   "name": "Storage Warehouse V1",
+   "category": "industrial",
+   "tags": [
+    "house",
+    "medium"
+   ],
+   "dims": "69x17x68",
+   "blocks": 6860,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\industrial_storage-warehouse-v1_buildschematics_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "industrial_large-warehouse_mcbuild_x.schem",
+   "name": "Large Warehouse",
+   "category": "industrial",
+   "tags": [
+    "house",
+    "huge"
+   ],
+   "dims": "98x29x237",
+   "blocks": 53370,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\industrial_large-warehouse_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "industrial_warehouse_mcbuild_x.schem",
+   "name": "Warehouse",
+   "category": "industrial",
+   "tags": [
+    "house",
+    "medium"
+   ],
+   "dims": "33x18x61",
+   "blocks": 8329,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\industrial_warehouse_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "industrial_warehouse-11_mcbuild_x.schem",
+   "name": "Warehouse 11",
+   "category": "industrial",
+   "tags": [
+    "house",
+    "huge"
+   ],
+   "dims": "129x35x177",
+   "blocks": 48318,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\industrial_warehouse-11_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "transport_9-story-parking-garage_mcbuild_x.schem",
+   "name": "9-story Parking Garage",
+   "category": "transport",
+   "tags": [
+    "huge",
+    "park",
+    "parking",
+    "tall"
+   ],
+   "dims": "169x64x93",
+   "blocks": 215848,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\transport_9-story-parking-garage_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "transport_six-story-parking-lot_mcbuild_x.schem",
+   "name": "Six-story parking lot",
+   "category": "transport",
+   "tags": [
+    "large",
+    "park",
+    "parking"
+   ],
+   "dims": "59x27x91",
+   "blocks": 31629,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\transport_six-story-parking-lot_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "vehicles_ambulance_mcbuild_x.schem",
+   "name": "Ambulance",
+   "category": "vehicles",
+   "tags": [
+    "tiny"
+   ],
+   "dims": "5x5x10",
+   "blocks": 106,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\vehicles_ambulance_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "transport_train-station_mcbuild_x-2.schem",
+   "name": "Train station",
+   "category": "transport",
+   "tags": [
+    "large",
+    "station",
+    "tall"
+   ],
+   "dims": "60x42x151",
+   "blocks": 54443,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\transport_train-station_mcbuild_x-2.png",
+   "metaFlags": [
+    "duplicate-name"
+   ]
+  },
+  {
+   "file": "transport_train-station-like-structure_mcbuild_x.schem",
+   "name": "Train Station Like Structure",
+   "category": "transport",
+   "tags": [
+    "medium",
+    "station",
+    "tall"
+   ],
+   "dims": "17x41x37",
+   "blocks": 2754,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\transport_train-station-like-structure_mcbuild_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "transport_nice-village-train-station_mcbuild_x.schem",
+   "name": "Nice village train station",
+   "category": "transport",
+   "tags": [
+    "house",
+    "medium",
+    "station"
+   ],
+   "dims": "20x27x29",
+   "blocks": 8086,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\transport_nice-village-train-station_mcbuild_x.png",
+   "metaFlags": []
+  }
+ ]
+}

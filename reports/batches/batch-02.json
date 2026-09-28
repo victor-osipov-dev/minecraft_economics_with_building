@@ -1,0 +1,596 @@
+{
+ "batch": 2,
+ "items": [
+  {
+   "file": "industrial_industrial-factory-building_buildschematics_x.nbt",
+   "name": "Industrial Factory Building",
+   "category": "industrial",
+   "tags": [
+    "medium"
+   ],
+   "dims": "61x23x42",
+   "blocks": 12060,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\industrial_industrial-factory-building_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "industrial_industrial-iron-factory-structure_buildschematics_x.schem",
+   "name": "Industrial Iron Factory Structure",
+   "category": "industrial",
+   "tags": [
+    "medium"
+   ],
+   "dims": "40x37x33",
+   "blocks": 17177,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\industrial_industrial-iron-factory-structure_buildschematics_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "bridges_iron-stone-arch-bridge_buildschematics_x.nbt",
+   "name": "Iron Stone Arch Bridge",
+   "category": "bridges",
+   "tags": [
+    "bridge",
+    "large",
+    "tall"
+   ],
+   "dims": "125x49x28",
+   "blocks": 7526,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\bridges_iron-stone-arch-bridge_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "industrial_ironworks-industrial-smelter_buildschematics_x.schem",
+   "name": "Ironworks Industrial Smelter",
+   "category": "industrial",
+   "tags": [
+    "medium"
+   ],
+   "dims": "29x26x35",
+   "blocks": 4815,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\industrial_ironworks-industrial-smelter_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "bridges_island-bridge_buildschematics_x.schem",
+   "name": "Island Bridge",
+   "category": "bridges",
+   "tags": [
+    "bridge",
+    "huge",
+    "tall"
+   ],
+   "dims": "43x61x293",
+   "blocks": 84041,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\bridges_island-bridge_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_island-lighthouse-structure_buildschematics_x.schem",
+   "name": "Island Lighthouse Structure",
+   "category": "residential",
+   "tags": [
+    "house",
+    "medium",
+    "tall",
+    "water"
+   ],
+   "dims": "25x76x27",
+   "blocks": 21876,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_island-lighthouse-structure_buildschematics_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "commercial_italian-gelato-shop-small-build_buildschematics_262.schem",
+   "name": "Italian Gelato Shop Small Build",
+   "category": "commercial",
+   "tags": [
+    "medium",
+    "shop"
+   ],
+   "dims": "36x30x29",
+   "blocks": 1475,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_italian-gelato-shop-small-build_buildschematics_262.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "transport_japanese-electric-train-coach-schematic_buildschematics_x.nbt",
+   "name": "Japanese Electric Train Coach Schematic",
+   "category": "transport",
+   "tags": [
+    "tiny"
+   ],
+   "dims": "7x7x26",
+   "blocks": 278,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\transport_japanese-electric-train-coach-schematic_buildschematics_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "residential_jungle-wood-house-with-furniture_buildschematics_x.schem",
+   "name": "Jungle Wood House with Furniture",
+   "category": "residential",
+   "tags": [
+    "house",
+    "large"
+   ],
+   "dims": "90x39x90",
+   "blocks": 86647,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_jungle-wood-house-with-furniture_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_kami-house-minecraft-build_buildschematics_x.schem",
+   "name": "Kami House Minecraft Build",
+   "category": "residential",
+   "tags": [
+    "house",
+    "medium"
+   ],
+   "dims": "37x36x35",
+   "blocks": 4692,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_kami-house-minecraft-build_buildschematics_x.png",
+   "metaFlags": [
+    "franchise",
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "residential_large-modern-house_buildschematics_x.schem",
+   "name": "Large Modern House",
+   "category": "residential",
+   "tags": [
+    "house",
+    "large",
+    "modern"
+   ],
+   "dims": "53x32x73",
+   "blocks": 41584,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_large-modern-house_buildschematics_x.png",
+   "metaFlags": [
+    "duplicate-name"
+   ]
+  },
+  {
+   "file": "residential_large-woodland-manor-house_buildschematics_x.schem",
+   "name": "Large Woodland Manor House",
+   "category": "residential",
+   "tags": [
+    "house",
+    "medium"
+   ],
+   "dims": "53x21x48",
+   "blocks": 18838,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_large-woodland-manor-house_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "waterfront_luxury-yacht-small-boat-design_buildschematics_x.schem",
+   "name": "Luxury Yacht - Small Boat Design",
+   "category": "waterfront",
+   "tags": [
+    "boat",
+    "shop",
+    "small"
+   ],
+   "dims": "46x14x11",
+   "blocks": 1696,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\waterfront_luxury-yacht-small-boat-design_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "vehicles_luxury-yacht_buildschematics_x.schem",
+   "name": "Luxury Yacht",
+   "category": "vehicles",
+   "tags": [
+    "boat",
+    "medium"
+   ],
+   "dims": "54x16x18",
+   "blocks": 2634,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\vehicles_luxury-yacht_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "decor_magical-tree-structure_buildschematics_x.schem",
+   "name": "Magical Tree Structure",
+   "category": "decor",
+   "tags": [
+    "tiny",
+    "tree"
+   ],
+   "dims": "7x11x7",
+   "blocks": 84,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\decor_magical-tree-structure_buildschematics_x.png",
+   "metaFlags": [
+    "non-real/fantasy",
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "residential_medium-apartment-building_buildschematics_x.schem",
+   "name": "Medium Apartment Building",
+   "category": "residential",
+   "tags": [
+    "apartment",
+    "medium",
+    "tall"
+   ],
+   "dims": "19x64x35",
+   "blocks": 15114,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_medium-apartment-building_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "waterfront_medium-lighthouse-tower_buildschematics_x.schem",
+   "name": "Medium Lighthouse Tower",
+   "category": "waterfront",
+   "tags": [
+    "house",
+    "medium",
+    "tall",
+    "tower",
+    "water"
+   ],
+   "dims": "32x93x26",
+   "blocks": 6377,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\waterfront_medium-lighthouse-tower_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_medium-townhouse-structure_buildschematics_x.schem",
+   "name": "Medium Townhouse Structure",
+   "category": "residential",
+   "tags": [
+    "house",
+    "medium"
+   ],
+   "dims": "21x37x39",
+   "blocks": 11326,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_medium-townhouse-structure_buildschematics_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "waterfront_medium-yacht-boat_buildschematics_x.schem",
+   "name": "Medium Yacht Boat",
+   "category": "waterfront",
+   "tags": [
+    "boat",
+    "medium"
+   ],
+   "dims": "20x20x61",
+   "blocks": 4725,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\waterfront_medium-yacht-boat_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "industrial_mega-tower-with-working-elevators_buildschematics_x.schem",
+   "name": "Mega Tower With Working Elevators",
+   "category": "industrial",
+   "tags": [
+    "huge",
+    "tall",
+    "tower"
+   ],
+   "dims": "51x254x44",
+   "blocks": 117512,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\industrial_mega-tower-with-working-elevators_buildschematics_x.png",
+   "metaFlags": [
+    "non-building-in-name"
+   ]
+  },
+  {
+   "file": "residential_modern-apartment-building-03_buildschematics_x.schem",
+   "name": "Modern Apartment Building 03",
+   "category": "residential",
+   "tags": [
+    "apartment",
+    "medium",
+    "modern"
+   ],
+   "dims": "24x40x49",
+   "blocks": 15744,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_modern-apartment-building-03_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_modern-apartment-shops-and-housing_buildschematics_x.schem",
+   "name": "Modern Apartment Shops and Housing",
+   "category": "residential",
+   "tags": [
+    "apartment",
+    "medium",
+    "modern",
+    "shop",
+    "tall"
+   ],
+   "dims": "30x44x30",
+   "blocks": 14739,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_modern-apartment-shops-and-housing_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_modern-apartment-tower-10-floors_buildschematics_x.schem",
+   "name": "Modern Apartment Tower &#8211; 10 Floors",
+   "category": "towers",
+   "tags": [
+    "apartment",
+    "large",
+    "modern",
+    "tall",
+    "tower"
+   ],
+   "dims": "58x63x57",
+   "blocks": 29903,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_modern-apartment-tower-10-floors_buildschematics_x.png",
+   "metaFlags": [
+    "duplicate-name"
+   ]
+  },
+  {
+   "file": "commercial_modern-burger-cafe-with-elevator_buildschematics_x.schem",
+   "name": "Modern Burger Cafe With Elevator",
+   "category": "commercial",
+   "tags": [
+    "modern",
+    "small"
+   ],
+   "dims": "21x27x24",
+   "blocks": 6552,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_modern-burger-cafe-with-elevator_buildschematics_x.png",
+   "metaFlags": [
+    "non-building-in-name"
+   ]
+  },
+  {
+   "file": "residential_modern-city-apartment-tower_buildschematics_x.schem",
+   "name": "Modern City Apartment Tower",
+   "category": "residential",
+   "tags": [
+    "apartment",
+    "large",
+    "modern",
+    "tall",
+    "tower"
+   ],
+   "dims": "49x44x71",
+   "blocks": 30878,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_modern-city-apartment-tower_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_modern-dark-oak-residence_buildschematics_x.schem",
+   "name": "Modern Dark Oak Residence",
+   "category": "residential",
+   "tags": [
+    "apartment",
+    "medium",
+    "modern",
+    "tree"
+   ],
+   "dims": "39x29x41",
+   "blocks": 19520,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_modern-dark-oak-residence_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_modern-duplex-house_buildschematics_x.schem",
+   "name": "Modern Duplex House",
+   "category": "residential",
+   "tags": [
+    "house",
+    "modern",
+    "small"
+   ],
+   "dims": "32x19x16",
+   "blocks": 2723,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_modern-duplex-house_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_modern-home-exterior_buildschematics_x.schem",
+   "name": "Modern Home Exterior",
+   "category": "residential",
+   "tags": [
+    "house",
+    "medium",
+    "modern"
+   ],
+   "dims": "52x22x30",
+   "blocks": 10218,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_modern-home-exterior_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_modern-hotel-building-with-fountain_buildschematics_x.schem",
+   "name": "Modern Hotel Building With Fountain",
+   "category": "towers",
+   "tags": [
+    "fountain",
+    "hotel",
+    "medium",
+    "modern",
+    "water"
+   ],
+   "dims": "66x31x48",
+   "blocks": 17840,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_modern-hotel-building-with-fountain_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_modern-office-tower-design_buildschematics_x.schem",
+   "name": "Modern Office Tower Design",
+   "category": "towers",
+   "tags": [
+    "medium",
+    "modern",
+    "office",
+    "tall",
+    "tower"
+   ],
+   "dims": "32x65x31",
+   "blocks": 16692,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_modern-office-tower-design_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "commercial_modern-retail-store_buildschematics_x.schem",
+   "name": "Modern Retail Store",
+   "category": "commercial",
+   "tags": [
+    "modern",
+    "shop",
+    "small"
+   ],
+   "dims": "21x15x16",
+   "blocks": 1207,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_modern-retail-store_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "commercial_modern-server-shop_buildschematics_x.schem",
+   "name": "Modern Server Shop",
+   "category": "commercial",
+   "tags": [
+    "medium",
+    "modern",
+    "shop"
+   ],
+   "dims": "36x18x36",
+   "blocks": 5602,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_modern-server-shop_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "commercial_modern-shop-house_buildschematics_x.schem",
+   "name": "Modern Shop House",
+   "category": "commercial",
+   "tags": [
+    "house",
+    "medium",
+    "modern",
+    "shop",
+    "tall"
+   ],
+   "dims": "27x51x27",
+   "blocks": 3282,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_modern-shop-house_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_modern-sphere-house-design_buildschematics_x.schem",
+   "name": "Modern Sphere House Design",
+   "category": "residential",
+   "tags": [
+    "house",
+    "large",
+    "modern",
+    "tall"
+   ],
+   "dims": "66x43x61",
+   "blocks": 19166,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_modern-sphere-house-design_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "decor_modern-street-with-five-houses_buildschematics_x.schem",
+   "name": "Modern Street With Five Houses",
+   "category": "decor",
+   "tags": [
+    "house",
+    "huge",
+    "modern",
+    "road",
+    "tree"
+   ],
+   "dims": "139x25x200",
+   "blocks": 83871,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\decor_modern-street-with-five-houses_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_modern-three-story-house-2_buildschematics_x.schem",
+   "name": "Modern Three-Story House",
+   "category": "residential",
+   "tags": [
+    "house",
+    "modern",
+    "small"
+   ],
+   "dims": "23x22x17",
+   "blocks": 1969,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_modern-three-story-house-2_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_modern-townhouse-with-furniture_buildschematics_x.schem",
+   "name": "Modern Townhouse with Furniture",
+   "category": "residential",
+   "tags": [
+    "house",
+    "medium",
+    "modern"
+   ],
+   "dims": "43x25x46",
+   "blocks": 12213,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_modern-townhouse-with-furniture_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_modern-two-story-house-with-garage_buildschematics_x.schem",
+   "name": "Modern Two-Story House With Garage",
+   "category": "residential",
+   "tags": [
+    "house",
+    "medium",
+    "modern",
+    "parking"
+   ],
+   "dims": "36x29x52",
+   "blocks": 5820,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_modern-two-story-house-with-garage_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_modern-two-story-house-with-pond_buildschematics_x.schem",
+   "name": "Modern Two-Story House With Pond",
+   "category": "residential",
+   "tags": [
+    "house",
+    "modern",
+    "pool",
+    "small",
+    "water"
+   ],
+   "dims": "19x11x19",
+   "blocks": 1933,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_modern-two-story-house-with-pond_buildschematics_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_modern-urban-apartment-house_buildschematics_x.schem",
+   "name": "Modern Urban Apartment House",
+   "category": "residential",
+   "tags": [
+    "apartment",
+    "house",
+    "large",
+    "modern",
+    "tall"
+   ],
+   "dims": "79x70x87",
+   "blocks": 40432,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_modern-urban-apartment-house_buildschematics_x.png",
+   "metaFlags": []
+  }
+ ]
+}

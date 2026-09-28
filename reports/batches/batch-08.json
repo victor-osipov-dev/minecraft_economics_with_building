@@ -1,0 +1,589 @@
+{
+ "batch": 8,
+ "items": [
+  {
+   "file": "residential_traditional-mansion_mcbuild_x.schem",
+   "name": "Traditional Mansion",
+   "category": "residential",
+   "tags": [
+    "house",
+    "huge"
+   ],
+   "dims": "177x34x141",
+   "blocks": 131065,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_traditional-mansion_mcbuild_x.png",
+   "metaFlags": [
+    "duplicate-name"
+   ]
+  },
+  {
+   "file": "decor_modern-city-building_mcbuild_x.schem",
+   "name": "Modern city building",
+   "category": "decor",
+   "tags": [
+    "large",
+    "modern",
+    "tall"
+   ],
+   "dims": "45x98x56",
+   "blocks": 42995,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\decor_modern-city-building_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_exampleton-basic-village_mcbuild_x.schem",
+   "name": "Exampleton Basic Village",
+   "category": "residential",
+   "tags": [
+    "house",
+    "huge"
+   ],
+   "dims": "145x29x143",
+   "blocks": 259590,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_exampleton-basic-village_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_modern-townhouse-2_mcbuild_x.schem",
+   "name": "Modern Townhouse 2",
+   "category": "residential",
+   "tags": [
+    "house",
+    "medium",
+    "modern"
+   ],
+   "dims": "32x20x40",
+   "blocks": 6907,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_modern-townhouse-2_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_modern-box-house_mcbuild_x.schem",
+   "name": "Modern Box house",
+   "category": "residential",
+   "tags": [
+    "house",
+    "medium",
+    "modern"
+   ],
+   "dims": "55x33x45",
+   "blocks": 18009,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_modern-box-house_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_contemporary-survival-starter-house_mcbuild_x.schem",
+   "name": "Contemporary Survival Starter House",
+   "category": "residential",
+   "tags": [
+    "house",
+    "modern",
+    "small"
+   ],
+   "dims": "10x28x10",
+   "blocks": 1625,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_contemporary-survival-starter-house_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_modern-house_mcbuild_x-3.schem",
+   "name": "Modern house",
+   "category": "residential",
+   "tags": [
+    "house",
+    "medium",
+    "modern"
+   ],
+   "dims": "60x18x77",
+   "blocks": 23115,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_modern-house_mcbuild_x-3.png",
+   "metaFlags": [
+    "duplicate-name"
+   ]
+  },
+  {
+   "file": "residential_japanese-style-house_mcbuild_x-2.schem",
+   "name": "Japanese style house",
+   "category": "residential",
+   "tags": [
+    "house",
+    "small"
+   ],
+   "dims": "21x17x24",
+   "blocks": 2060,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_japanese-style-house_mcbuild_x-2.png",
+   "metaFlags": [
+    "duplicate-name"
+   ]
+  },
+  {
+   "file": "residential_japanese-style-house--standard-_mcbuild_x.schem",
+   "name": "Japanese style house (Standard)",
+   "category": "residential",
+   "tags": [
+    "house",
+    "small"
+   ],
+   "dims": "21x17x24",
+   "blocks": 2106,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_japanese-style-house--standard-_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_16x16-modern-house-1_mcbuild_x.schem",
+   "name": "16x16 Modern House 1",
+   "category": "residential",
+   "tags": [
+    "house",
+    "modern",
+    "small"
+   ],
+   "dims": "16x17x16",
+   "blocks": 1715,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_16x16-modern-house-1_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_16x16-modern-house-2_mcbuild_x.schem",
+   "name": "16x16 Modern House 2",
+   "category": "residential",
+   "tags": [
+    "house",
+    "modern",
+    "small"
+   ],
+   "dims": "16x13x16",
+   "blocks": 1256,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_16x16-modern-house-2_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_16x16-modern-house-3_mcbuild_x.schem",
+   "name": "16x16 Modern House 3",
+   "category": "residential",
+   "tags": [
+    "house",
+    "modern",
+    "small"
+   ],
+   "dims": "17x18x16",
+   "blocks": 1797,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_16x16-modern-house-3_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "decor_desert-city_mcbuild_x-2.schem",
+   "name": "Desert city",
+   "category": "decor",
+   "tags": [
+    "large"
+   ],
+   "dims": "79x25x84",
+   "blocks": 30147,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\decor_desert-city_mcbuild_x-2.png",
+   "metaFlags": [
+    "duplicate-name"
+   ]
+  },
+  {
+   "file": "residential_modern-mansion_mcbuild_x-2.schem",
+   "name": "Modern Mansion",
+   "category": "residential",
+   "tags": [
+    "house",
+    "large",
+    "modern"
+   ],
+   "dims": "89x38x119",
+   "blocks": 65897,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_modern-mansion_mcbuild_x-2.png",
+   "metaFlags": [
+    "duplicate-name"
+   ]
+  },
+  {
+   "file": "residential_traditional-mansion-2_mcbuild_x.schem",
+   "name": "traditional mansion 2",
+   "category": "residential",
+   "tags": [
+    "house",
+    "large"
+   ],
+   "dims": "66x33x56",
+   "blocks": 27592,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_traditional-mansion-2_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_rustic-mansion-large-house_mcbuild_x.schem",
+   "name": "Rustic Mansion/Large House",
+   "category": "residential",
+   "tags": [
+    "house",
+    "medium"
+   ],
+   "dims": "47x35x53",
+   "blocks": 11230,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_rustic-mansion-large-house_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_mansion_mcbuild_x-2.schem",
+   "name": "Mansion",
+   "category": "residential",
+   "tags": [
+    "house",
+    "huge",
+    "tall"
+   ],
+   "dims": "147x42x185",
+   "blocks": 226072,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_mansion_mcbuild_x-2.png",
+   "metaFlags": [
+    "duplicate-name"
+   ]
+  },
+  {
+   "file": "residential_traditional-mansion_mcbuild_x-2.schem",
+   "name": "Traditional mansion",
+   "category": "residential",
+   "tags": [
+    "house",
+    "large"
+   ],
+   "dims": "80x28x83",
+   "blocks": 36074,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_traditional-mansion_mcbuild_x-2.png",
+   "metaFlags": [
+    "duplicate-name"
+   ]
+  },
+  {
+   "file": "residential_large-modern-house_mcbuild_x.schem",
+   "name": "Large modern house",
+   "category": "residential",
+   "tags": [
+    "house",
+    "large",
+    "modern"
+   ],
+   "dims": "104x34x53",
+   "blocks": 55908,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_large-modern-house_mcbuild_x.png",
+   "metaFlags": [
+    "duplicate-name"
+   ]
+  },
+  {
+   "file": "decor_cascade-city_mcbuild_x.schem",
+   "name": "Cascade City",
+   "category": "decor",
+   "tags": [
+    "huge",
+    "tall"
+   ],
+   "dims": "101x109x102",
+   "blocks": 84485,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\decor_cascade-city_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_modern-house_mcbuild_x-4.schem",
+   "name": "Modern house",
+   "category": "residential",
+   "tags": [
+    "house",
+    "medium",
+    "modern"
+   ],
+   "dims": "56x22x51",
+   "blocks": 26792,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_modern-house_mcbuild_x-4.png",
+   "metaFlags": [
+    "duplicate-name"
+   ]
+  },
+  {
+   "file": "residential_modern-house_mcbuild_x-5.schem",
+   "name": "Modern house",
+   "category": "residential",
+   "tags": [
+    "house",
+    "medium",
+    "modern"
+   ],
+   "dims": "61x31x52",
+   "blocks": 13879,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_modern-house_mcbuild_x-5.png",
+   "metaFlags": [
+    "duplicate-name"
+   ]
+  },
+  {
+   "file": "residential_modern-house-3_mcbuild_x.schem",
+   "name": "Modern house 3",
+   "category": "residential",
+   "tags": [
+    "house",
+    "medium",
+    "modern"
+   ],
+   "dims": "35x25x35",
+   "blocks": 6490,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_modern-house-3_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_futuristic-house_mcbuild_x.schem",
+   "name": "Futuristic house",
+   "category": "residential",
+   "tags": [
+    "house",
+    "large",
+    "modern"
+   ],
+   "dims": "72x24x78",
+   "blocks": 35345,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_futuristic-house_mcbuild_x.png",
+   "metaFlags": [
+    "duplicate-name"
+   ]
+  },
+  {
+   "file": "residential_iron-man-s-mansion_mcbuild_x-2.schem",
+   "name": "Iron Man's Mansion",
+   "category": "residential",
+   "tags": [
+    "house",
+    "huge"
+   ],
+   "dims": "142x35x147",
+   "blocks": 35276,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_iron-man-s-mansion_mcbuild_x-2.png",
+   "metaFlags": [
+    "franchise",
+    "duplicate-name"
+   ]
+  },
+  {
+   "file": "residential_modern-mansion_mcbuild_x-3.schem",
+   "name": "Modern mansion",
+   "category": "residential",
+   "tags": [
+    "house",
+    "large",
+    "modern"
+   ],
+   "dims": "140x27x112",
+   "blocks": 125163,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_modern-mansion_mcbuild_x-3.png",
+   "metaFlags": [
+    "duplicate-name"
+   ]
+  },
+  {
+   "file": "waterfront_epich-yacht--fully-furnished-_mcbuild_x.schem",
+   "name": "Epich Yacht [Fully Furnished]",
+   "category": "waterfront",
+   "tags": [
+    "boat",
+    "large",
+    "tall"
+   ],
+   "dims": "154x47x37",
+   "blocks": 78696,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\waterfront_epich-yacht--fully-furnished-_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_modern-house_mcbuild_x-6.schem",
+   "name": "Modern house",
+   "category": "residential",
+   "tags": [
+    "house",
+    "medium",
+    "modern"
+   ],
+   "dims": "38x21x31",
+   "blocks": 7334,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_modern-house_mcbuild_x-6.png",
+   "metaFlags": [
+    "duplicate-name"
+   ]
+  },
+  {
+   "file": "residential_futuristic-house_mcbuild_x-2.schem",
+   "name": "Futuristic house",
+   "category": "residential",
+   "tags": [
+    "house",
+    "medium",
+    "modern"
+   ],
+   "dims": "65x21x53",
+   "blocks": 15452,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_futuristic-house_mcbuild_x-2.png",
+   "metaFlags": [
+    "duplicate-name"
+   ]
+  },
+  {
+   "file": "residential_modern-house_mcbuild_x-7.schem",
+   "name": "Modern house",
+   "category": "residential",
+   "tags": [
+    "house",
+    "medium",
+    "modern"
+   ],
+   "dims": "36x25x44",
+   "blocks": 9337,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_modern-house_mcbuild_x-7.png",
+   "metaFlags": [
+    "duplicate-name"
+   ]
+  },
+  {
+   "file": "residential_oakheart-house-ii_mcbuild_x.schem",
+   "name": "Oakheart House II",
+   "category": "residential",
+   "tags": [
+    "house",
+    "small",
+    "tree"
+   ],
+   "dims": "21x19x19",
+   "blocks": 1897,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_oakheart-house-ii_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "commercial_panda-express-restaurant_mcbuild_x.schem",
+   "name": "Panda express restaurant",
+   "category": "commercial",
+   "tags": [
+    "medium"
+   ],
+   "dims": "61x17x51",
+   "blocks": 10960,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_panda-express-restaurant_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_large-traditional-modern-house_mcbuild_x.schem",
+   "name": "Large traditional modern house",
+   "category": "residential",
+   "tags": [
+    "house",
+    "medium",
+    "modern"
+   ],
+   "dims": "48x21x52",
+   "blocks": 11365,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_large-traditional-modern-house_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "waterfront_town_mcbuild_x.schem",
+   "name": "Town: &quot;Portland&quot;",
+   "category": "waterfront",
+   "tags": [
+    "huge",
+    "tall"
+   ],
+   "dims": "114x56x118",
+   "blocks": 257044,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\waterfront_town_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_large-modern-house_mcbuild_x-2.schem",
+   "name": "Large modern house",
+   "category": "residential",
+   "tags": [
+    "house",
+    "medium",
+    "modern"
+   ],
+   "dims": "60x22x59",
+   "blocks": 18555,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_large-modern-house_mcbuild_x-2.png",
+   "metaFlags": [
+    "duplicate-name"
+   ]
+  },
+  {
+   "file": "residential_modern-house_mcbuild_x-8.schem",
+   "name": "Modern house",
+   "category": "residential",
+   "tags": [
+    "house",
+    "medium",
+    "modern"
+   ],
+   "dims": "46x23x46",
+   "blocks": 10697,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_modern-house_mcbuild_x-8.png",
+   "metaFlags": [
+    "duplicate-name"
+   ]
+  },
+  {
+   "file": "residential_futuristic-mansion_mcbuild_x.schem",
+   "name": "Futuristic mansion",
+   "category": "residential",
+   "tags": [
+    "house",
+    "large",
+    "modern"
+   ],
+   "dims": "91x28x93",
+   "blocks": 78837,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_futuristic-mansion_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_light-house--with-working-lights-_mcbuild_x.schem",
+   "name": "Light House (with working lights)",
+   "category": "residential",
+   "tags": [
+    "house",
+    "medium",
+    "tall"
+   ],
+   "dims": "31x54x32",
+   "blocks": 6248,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_light-house--with-working-lights-_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "waterfront_alexandar-v-luxury-yacht_mcbuild_x.schem",
+   "name": "Alexandar V Luxury Yacht",
+   "category": "waterfront",
+   "tags": [
+    "boat",
+    "small"
+   ],
+   "dims": "46x25x9",
+   "blocks": 2441,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\waterfront_alexandar-v-luxury-yacht_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_modern-house_mcbuild_x-9.schem",
+   "name": "Modern house",
+   "category": "residential",
+   "tags": [
+    "house",
+    "medium",
+    "modern"
+   ],
+   "dims": "43x28x67",
+   "blocks": 14362,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_modern-house_mcbuild_x-9.png",
+   "metaFlags": [
+    "duplicate-name"
+   ]
+  }
+ ]
+}

@@ -1,0 +1,587 @@
+{
+ "batch": 21,
+ "items": [
+  {
+   "file": "vehicles_industrial-iron-car-vehicle_mc-mod_1.21.1.nbt",
+   "name": "Industrial Iron Car Vehicle",
+   "category": "vehicles",
+   "tags": [
+    "car",
+    "tiny"
+   ],
+   "dims": "15x7x11",
+   "blocks": 190,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\vehicles_industrial-iron-car-vehicle_mc-mod_1.21.1.png",
+   "metaFlags": [
+    "non-building-in-name"
+   ]
+  },
+  {
+   "file": "vehicles_1995-isuzu-forward-crane-truck_mc-mod_x.schematic",
+   "name": "1995 Isuzu Forward Crane Truck",
+   "category": "vehicles",
+   "tags": [
+    "car",
+    "tiny"
+   ],
+   "dims": "11x4x5",
+   "blocks": 52,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\vehicles_1995-isuzu-forward-crane-truck_mc-mod_x.png",
+   "metaFlags": [
+    "non-building-in-name"
+   ]
+  },
+  {
+   "file": "vehicles_ten-wheeler-crane-tow-truck_mc-mod_x.schematic",
+   "name": "Ten-Wheeler Crane Tow Truck",
+   "category": "vehicles",
+   "tags": [
+    "car",
+    "tiny"
+   ],
+   "dims": "10x4x5",
+   "blocks": 42,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\vehicles_ten-wheeler-crane-tow-truck_mc-mod_x.png",
+   "metaFlags": [
+    "non-building-in-name"
+   ]
+  },
+  {
+   "file": "vehicles_fuso-fighter-wing-van-truck_mc-mod_x.schematic",
+   "name": "Fuso Fighter Wing Van Truck",
+   "category": "vehicles",
+   "tags": [
+    "car",
+    "tiny"
+   ],
+   "dims": "5x5x13",
+   "blocks": 47,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\vehicles_fuso-fighter-wing-van-truck_mc-mod_x.png",
+   "metaFlags": [
+    "non-building-in-name"
+   ]
+  },
+  {
+   "file": "vehicles_car-carrier-truck-and-trailer_mc-mod_x.schematic",
+   "name": "Car Carrier Truck and Trailer",
+   "category": "vehicles",
+   "tags": [
+    "car",
+    "tiny"
+   ],
+   "dims": "24x8x5",
+   "blocks": 218,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\vehicles_car-carrier-truck-and-trailer_mc-mod_x.png",
+   "metaFlags": [
+    "non-building-in-name"
+   ]
+  },
+  {
+   "file": "vehicles_1998-isuzu-freezer-truck_mc-mod_x.schematic",
+   "name": "1998 Isuzu Freezer Truck",
+   "category": "vehicles",
+   "tags": [
+    "car",
+    "tiny"
+   ],
+   "dims": "5x5x13",
+   "blocks": 43,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\vehicles_1998-isuzu-freezer-truck_mc-mod_x.png",
+   "metaFlags": [
+    "non-building-in-name"
+   ]
+  },
+  {
+   "file": "vehicles_heavy-duty-ambulance-vehicle_mc-mod_x.schematic",
+   "name": "Heavy Duty Ambulance Vehicle",
+   "category": "vehicles",
+   "tags": [
+    "tiny"
+   ],
+   "dims": "5x5x10",
+   "blocks": 97,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\vehicles_heavy-duty-ambulance-vehicle_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "vehicles_japanese-van-with-8-wheels_mc-mod_x.schematic",
+   "name": "Japanese Van with 8 Wheels",
+   "category": "vehicles",
+   "tags": [
+    "car",
+    "tiny"
+   ],
+   "dims": "5x5x15",
+   "blocks": 50,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\vehicles_japanese-van-with-8-wheels_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "vehicles_fuso-fighter-dump-truck-vehicle_mc-mod_x.schematic",
+   "name": "Fuso Fighter Dump Truck Vehicle",
+   "category": "vehicles",
+   "tags": [
+    "car",
+    "tiny"
+   ],
+   "dims": "5x5x8",
+   "blocks": 54,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\vehicles_fuso-fighter-dump-truck-vehicle_mc-mod_x.png",
+   "metaFlags": [
+    "non-building-in-name"
+   ]
+  },
+  {
+   "file": "vehicles_fire-truck-with-manlift_mc-mod_x.schematic",
+   "name": "Fire Truck with Manlift",
+   "category": "vehicles",
+   "tags": [
+    "car",
+    "tiny"
+   ],
+   "dims": "5x7x13",
+   "blocks": 156,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\vehicles_fire-truck-with-manlift_mc-mod_x.png",
+   "metaFlags": [
+    "non-building-in-name"
+   ]
+  },
+  {
+   "file": "vehicles_decorated-10w-truck-van_mc-mod_x.schematic",
+   "name": "Decorated 10W Truck Van",
+   "category": "vehicles",
+   "tags": [
+    "car",
+    "tiny"
+   ],
+   "dims": "17x5x5",
+   "blocks": 70,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\vehicles_decorated-10w-truck-van_mc-mod_x.png",
+   "metaFlags": [
+    "non-building-in-name"
+   ]
+  },
+  {
+   "file": "vehicles_crane-truck-with-car-carrier_mc-mod_x.schematic",
+   "name": "Crane Truck with Car Carrier",
+   "category": "vehicles",
+   "tags": [
+    "car",
+    "tiny"
+   ],
+   "dims": "5x4x14",
+   "blocks": 91,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\vehicles_crane-truck-with-car-carrier_mc-mod_x.png",
+   "metaFlags": [
+    "non-building-in-name"
+   ]
+  },
+  {
+   "file": "vehicles_fuso-fv411j-dump-truck-model_mc-mod_x.schematic",
+   "name": "Fuso FV411J Dump Truck Model",
+   "category": "vehicles",
+   "tags": [
+    "car",
+    "tiny"
+   ],
+   "dims": "9x5x5",
+   "blocks": 61,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\vehicles_fuso-fv411j-dump-truck-model_mc-mod_x.png",
+   "metaFlags": [
+    "non-building-in-name"
+   ]
+  },
+  {
+   "file": "vehicles_decorated-12-wheel-refrigerated-van_mc-mod_x.schematic",
+   "name": "Decorated 12-Wheel Refrigerated Van",
+   "category": "vehicles",
+   "tags": [
+    "car",
+    "tiny"
+   ],
+   "dims": "16x6x5",
+   "blocks": 127,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\vehicles_decorated-12-wheel-refrigerated-van_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "vehicles_frog-driving-a-car_mc-mod_x.schematic",
+   "name": "Frog Driving a Car",
+   "category": "vehicles",
+   "tags": [
+    "car",
+    "tiny"
+   ],
+   "dims": "16x15x1",
+   "blocks": 152,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\vehicles_frog-driving-a-car_mc-mod_x.png",
+   "metaFlags": [
+    "non-building-in-name"
+   ]
+  },
+  {
+   "file": "vehicles_fuso-fighter-cargo-truck-detailed-build_mc-mod_x.schematic",
+   "name": "Fuso Fighter Cargo Truck Detailed Build",
+   "category": "vehicles",
+   "tags": [
+    "car",
+    "tiny"
+   ],
+   "dims": "11x5x5",
+   "blocks": 57,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\vehicles_fuso-fighter-cargo-truck-detailed-build_mc-mod_x.png",
+   "metaFlags": [
+    "non-building-in-name",
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "vehicles_decorated-japanese-refrigerated-van_mc-mod_x.schematic",
+   "name": "Decorated Japanese Refrigerated Van",
+   "category": "vehicles",
+   "tags": [
+    "car",
+    "tiny"
+   ],
+   "dims": "16x6x5",
+   "blocks": 99,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\vehicles_decorated-japanese-refrigerated-van_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "vehicles_fallout-3-inspired-car-schematic_mc-mod_x.schematic",
+   "name": "Fallout 3 Inspired Car Schematic",
+   "category": "vehicles",
+   "tags": [
+    "car",
+    "tiny"
+   ],
+   "dims": "5x3x13",
+   "blocks": 75,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\vehicles_fallout-3-inspired-car-schematic_mc-mod_x.png",
+   "metaFlags": [
+    "franchise",
+    "non-building-in-name",
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "vehicles_tractor-with-cometto-trailer_mc-mod_x.schematic",
+   "name": "Tractor With Cometto Trailer",
+   "category": "vehicles",
+   "tags": [
+    "tiny"
+   ],
+   "dims": "35x4x5",
+   "blocks": 126,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\vehicles_tractor-with-cometto-trailer_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "vehicles_decorated-refrigerated-van_mc-mod_x.schematic",
+   "name": "Decorated Refrigerated Van",
+   "category": "vehicles",
+   "tags": [
+    "car",
+    "tiny"
+   ],
+   "dims": "13x6x5",
+   "blocks": 104,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\vehicles_decorated-refrigerated-van_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "vehicles_fallout-3-style-car-no-engine_mc-mod_x.schematic",
+   "name": "Fallout 3 Style Car (No Engine)",
+   "category": "vehicles",
+   "tags": [
+    "car",
+    "tiny"
+   ],
+   "dims": "12x3x5",
+   "blocks": 68,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\vehicles_fallout-3-style-car-no-engine_mc-mod_x.png",
+   "metaFlags": [
+    "franchise",
+    "non-building-in-name"
+   ]
+  },
+  {
+   "file": "vehicles_aluminum-wing-van-truck-with-solar-radiator_mc-mod_x.schematic",
+   "name": "Aluminum Wing Van Truck with Solar Radiator",
+   "category": "vehicles",
+   "tags": [
+    "car",
+    "tiny"
+   ],
+   "dims": "14x6x5",
+   "blocks": 94,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\vehicles_aluminum-wing-van-truck-with-solar-radiator_mc-mod_x.png",
+   "metaFlags": [
+    "non-building-in-name"
+   ]
+  },
+  {
+   "file": "vehicles_fallout-3-car-replica_mc-mod_x.schematic",
+   "name": "Fallout 3 Car Replica",
+   "category": "vehicles",
+   "tags": [
+    "car",
+    "tiny"
+   ],
+   "dims": "5x3x13",
+   "blocks": 64,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\vehicles_fallout-3-car-replica_mc-mod_x.png",
+   "metaFlags": [
+    "franchise",
+    "non-building-in-name"
+   ]
+  },
+  {
+   "file": "vehicles_cometto-self-propelled-trailer_mc-mod_x.schematic",
+   "name": "Cometto Self-Propelled Trailer",
+   "category": "vehicles",
+   "tags": [
+    "tiny"
+   ],
+   "dims": "29x4x17",
+   "blocks": 123,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\vehicles_cometto-self-propelled-trailer_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "vehicles_secure-transport-van_mc-mod_x.schematic",
+   "name": "Secure Transport Van",
+   "category": "vehicles",
+   "tags": [
+    "car",
+    "tiny"
+   ],
+   "dims": "13x4x5",
+   "blocks": 58,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\vehicles_secure-transport-van_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "vehicles_thomas-and-friends-candy-car_mc-mod_x.schematic",
+   "name": "Thomas and Friends Candy Car",
+   "category": "vehicles",
+   "tags": [
+    "car",
+    "small"
+   ],
+   "dims": "7x14x33",
+   "blocks": 815,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\vehicles_thomas-and-friends-candy-car_mc-mod_x.png",
+   "metaFlags": [
+    "non-building-in-name"
+   ]
+  },
+  {
+   "file": "vehicles_heavy-duty-14-wheeler-dump-truck_mc-mod_x.schematic",
+   "name": "Heavy Duty 14-Wheeler Dump Truck",
+   "category": "vehicles",
+   "tags": [
+    "car",
+    "tiny"
+   ],
+   "dims": "13x5x5",
+   "blocks": 103,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\vehicles_heavy-duty-14-wheeler-dump-truck_mc-mod_x.png",
+   "metaFlags": [
+    "non-building-in-name"
+   ]
+  },
+  {
+   "file": "vehicles_refrigerated-double-cab-van_mc-mod_x.schematic",
+   "name": "Refrigerated Double-Cab Van",
+   "category": "vehicles",
+   "tags": [
+    "car",
+    "tiny"
+   ],
+   "dims": "10x5x5",
+   "blocks": 43,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\vehicles_refrigerated-double-cab-van_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "vehicles_concrete-pump-truck-with-derricks_mc-mod_x.schematic",
+   "name": "Concrete Pump Truck with Derricks",
+   "category": "vehicles",
+   "tags": [
+    "car",
+    "tiny"
+   ],
+   "dims": "18x6x5",
+   "blocks": 185,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\vehicles_concrete-pump-truck-with-derricks_mc-mod_x.png",
+   "metaFlags": [
+    "non-building-in-name"
+   ]
+  },
+  {
+   "file": "vehicles_10-wheeler-wing-van-truck-and-trailer_mc-mod_x.schematic",
+   "name": "10-Wheeler Wing Van Truck and Trailer",
+   "category": "vehicles",
+   "tags": [
+    "car",
+    "tiny"
+   ],
+   "dims": "24x5x5",
+   "blocks": 224,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\vehicles_10-wheeler-wing-van-truck-and-trailer_mc-mod_x.png",
+   "metaFlags": [
+    "non-building-in-name"
+   ]
+  },
+  {
+   "file": "vehicles_sdkfz-222-armored-car_mc-mod_x.schematic",
+   "name": "Sdkfz 222 Armored Car",
+   "category": "vehicles",
+   "tags": [
+    "car",
+    "tiny"
+   ],
+   "dims": "8x8x16",
+   "blocks": 226,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\vehicles_sdkfz-222-armored-car_mc-mod_x.png",
+   "metaFlags": [
+    "non-building-in-name"
+   ]
+  },
+  {
+   "file": "vehicles_heavy-crane-truck_mc-mod_x.schematic",
+   "name": "Heavy Crane Truck",
+   "category": "vehicles",
+   "tags": [
+    "car",
+    "small"
+   ],
+   "dims": "51x10x9",
+   "blocks": 788,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\vehicles_heavy-crane-truck_mc-mod_x.png",
+   "metaFlags": [
+    "non-building-in-name"
+   ]
+  },
+  {
+   "file": "vehicles_fruehauf-empty-can-van-trailer_mc-mod_x.schematic",
+   "name": "Fruehauf Empty Can Van Trailer",
+   "category": "vehicles",
+   "tags": [
+    "car",
+    "tiny"
+   ],
+   "dims": "17x6x5",
+   "blocks": 236,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\vehicles_fruehauf-empty-can-van-trailer_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "vehicles_armored-snow-patrol-truck_mc-mod_x.schematic",
+   "name": "Armored Snow Patrol Truck",
+   "category": "vehicles",
+   "tags": [
+    "car",
+    "huge",
+    "tall"
+   ],
+   "dims": "162x63x89",
+   "blocks": 65318,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\vehicles_armored-snow-patrol-truck_mc-mod_x.png",
+   "metaFlags": [
+    "non-building-in-name"
+   ]
+  },
+  {
+   "file": "vehicles_9-block-long-van-box-truck-compartment_mc-mod_x.schematic",
+   "name": "9 Block Long Van Box Truck Compartment",
+   "category": "vehicles",
+   "tags": [
+    "car",
+    "tiny"
+   ],
+   "dims": "5x5x10",
+   "blocks": 39,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\vehicles_9-block-long-van-box-truck-compartment_mc-mod_x.png",
+   "metaFlags": [
+    "non-building-in-name"
+   ]
+  },
+  {
+   "file": "vehicles_small-car-dealership-building_mc-mod_x.schematic",
+   "name": "Small Car Dealership Building",
+   "category": "vehicles",
+   "tags": [
+    "boat",
+    "car",
+    "shop",
+    "small"
+   ],
+   "dims": "31x8x31",
+   "blocks": 2861,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\vehicles_small-car-dealership-building_mc-mod_x.png",
+   "metaFlags": [
+    "non-building-in-name"
+   ]
+  },
+  {
+   "file": "vehicles_heavy-tractor-head-and-van-trailer_mc-mod_x.schematic",
+   "name": "Heavy Tractor Head and Van Trailer",
+   "category": "vehicles",
+   "tags": [
+    "car",
+    "tiny"
+   ],
+   "dims": "5x6x23",
+   "blocks": 303,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\vehicles_heavy-tractor-head-and-van-trailer_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "vehicles_double-cab-pickup-truck_mc-mod_x.schematic",
+   "name": "Double Cab Pickup Truck",
+   "category": "vehicles",
+   "tags": [
+    "car",
+    "tiny"
+   ],
+   "dims": "9x4x5",
+   "blocks": 50,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\vehicles_double-cab-pickup-truck_mc-mod_x.png",
+   "metaFlags": [
+    "non-building-in-name"
+   ]
+  },
+  {
+   "file": "vehicles_massive-haul-truck_mc-mod_x.schematic",
+   "name": "Massive Haul Truck",
+   "category": "vehicles",
+   "tags": [
+    "car",
+    "medium"
+   ],
+   "dims": "25x26x45",
+   "blocks": 9197,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\vehicles_massive-haul-truck_mc-mod_x.png",
+   "metaFlags": [
+    "non-building-in-name"
+   ]
+  },
+  {
+   "file": "transport_acacia-spruce-small-aircraft-hangar_mc-mod_1.20.1.nbt",
+   "name": "Acacia & Spruce Small Aircraft Hangar",
+   "category": "transport",
+   "tags": [
+    "medium",
+    "shop",
+    "tree"
+   ],
+   "dims": "70x11x26",
+   "blocks": 2050,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\transport_acacia-spruce-small-aircraft-hangar_mc-mod_1.20.1.png",
+   "metaFlags": []
+  }
+ ]
+}

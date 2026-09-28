@@ -1,0 +1,571 @@
+{
+ "batch": 9,
+ "items": [
+  {
+   "file": "residential_small-modern-house_mcbuild_x.schem",
+   "name": "Small modern house",
+   "category": "residential",
+   "tags": [
+    "house",
+    "medium",
+    "modern",
+    "shop"
+   ],
+   "dims": "28x24x41",
+   "blocks": 9976,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_small-modern-house_mcbuild_x.png",
+   "metaFlags": [
+    "duplicate-name"
+   ]
+  },
+  {
+   "file": "bridges_steampunk-bridge_mcbuild_x.schem",
+   "name": "Steampunk Bridge",
+   "category": "bridges",
+   "tags": [
+    "bridge",
+    "large",
+    "tall"
+   ],
+   "dims": "49x66x93",
+   "blocks": 19638,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\bridges_steampunk-bridge_mcbuild_x.png",
+   "metaFlags": [
+    "non-real/fantasy"
+   ]
+  },
+  {
+   "file": "residential_large-modern-house_mcbuild_x-3.schem",
+   "name": "Large modern house",
+   "category": "residential",
+   "tags": [
+    "house",
+    "huge",
+    "modern"
+   ],
+   "dims": "141x37x210",
+   "blocks": 111147,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_large-modern-house_mcbuild_x-3.png",
+   "metaFlags": [
+    "duplicate-name"
+   ]
+  },
+  {
+   "file": "residential_modern-house_mcbuild_x-10.schem",
+   "name": "Modern House",
+   "category": "residential",
+   "tags": [
+    "house",
+    "modern",
+    "small"
+   ],
+   "dims": "22x12x29",
+   "blocks": 2768,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_modern-house_mcbuild_x-10.png",
+   "metaFlags": [
+    "duplicate-name"
+   ]
+  },
+  {
+   "file": "parks_great-garden-detailed_mcbuild_x.schem",
+   "name": "Great garden detailed",
+   "category": "parks",
+   "tags": [
+    "medium",
+    "park"
+   ],
+   "dims": "73x20x51",
+   "blocks": 5421,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\parks_great-garden-detailed_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_ancient-lightower_mcbuild_x.schem",
+   "name": "Ancient lightower",
+   "category": "towers",
+   "tags": [
+    "medium",
+    "tall",
+    "tower"
+   ],
+   "dims": "35x55x33",
+   "blocks": 11174,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_ancient-lightower_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_petronas-twin-towers--kuala-lumpur--malaysia_mcbuild_x.schem",
+   "name": "Petronas Twin Towers, Kuala Lumpur, Malaysia",
+   "category": "towers",
+   "tags": [
+    "large",
+    "tall",
+    "tower"
+   ],
+   "dims": "75x205x32",
+   "blocks": 52875,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_petronas-twin-towers--kuala-lumpur--malaysia_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "commercial_mall-shop_mcbuild_x.schem",
+   "name": "Mall Shop",
+   "category": "commercial",
+   "tags": [
+    "medium",
+    "shop",
+    "tall"
+   ],
+   "dims": "36x55x59",
+   "blocks": 15877,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_mall-shop_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "industrial_sugar-can-factory_mcbuild_x.schem",
+   "name": "Sugar can factory",
+   "category": "industrial",
+   "tags": [
+    "medium"
+   ],
+   "dims": "26x37x18",
+   "blocks": 3209,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\industrial_sugar-can-factory_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_beach-house_mcbuild_x-2.schem",
+   "name": "Beach House",
+   "category": "residential",
+   "tags": [
+    "house",
+    "medium"
+   ],
+   "dims": "35x32x33",
+   "blocks": 5323,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_beach-house_mcbuild_x-2.png",
+   "metaFlags": [
+    "duplicate-name"
+   ]
+  },
+  {
+   "file": "residential_big-treehouse_mcbuild_x.schem",
+   "name": "Big treehouse",
+   "category": "residential",
+   "tags": [
+    "house",
+    "medium",
+    "tall",
+    "tree"
+   ],
+   "dims": "30x41x31",
+   "blocks": 2785,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_big-treehouse_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_mansion_mcbuild_x-3.schem",
+   "name": "Mansion",
+   "category": "residential",
+   "tags": [
+    "house",
+    "huge",
+    "tall"
+   ],
+   "dims": "103x97x66",
+   "blocks": 42595,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_mansion_mcbuild_x-3.png",
+   "metaFlags": [
+    "duplicate-name"
+   ]
+  },
+  {
+   "file": "decor_great-oak-tree-with-spanish-moss_mcbuild_x.schem",
+   "name": "Great Oak Tree with Spanish Moss",
+   "category": "decor",
+   "tags": [
+    "small",
+    "tree"
+   ],
+   "dims": "20x19x21",
+   "blocks": 232,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\decor_great-oak-tree-with-spanish-moss_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_1950s-moses-lake-high-school-building_mc-mod_x.schem",
+   "name": "1950s Moses Lake High School Building",
+   "category": "public",
+   "tags": [
+    "huge",
+    "school"
+   ],
+   "dims": "194x28x175",
+   "blocks": 116186,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_1950s-moses-lake-high-school-building_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "transport_story-modern-parking-garage-structure_mc-mod_x.schem",
+   "name": "29-Story Modern Parking Garage Structure",
+   "category": "transport",
+   "tags": [
+    "huge",
+    "modern",
+    "park",
+    "parking",
+    "tall"
+   ],
+   "dims": "81x177x71",
+   "blocks": 426226,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\transport_story-modern-parking-garage-structure_mc-mod_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "roads_park-avenue-skyscraper-replica_mc-mod_x.schem",
+   "name": "432 Park Avenue Skyscraper Replica",
+   "category": "roads",
+   "tags": [
+    "large",
+    "park",
+    "road",
+    "tall",
+    "tower"
+   ],
+   "dims": "25x202x25",
+   "blocks": 49086,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\roads_park-avenue-skyscraper-replica_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "bridges_a-walkable-bridge_mc-mod_x.schem",
+   "name": "A Walkable Bridge",
+   "category": "bridges",
+   "tags": [
+    "bridge",
+    "large",
+    "tall"
+   ],
+   "dims": "31x94x111",
+   "blocks": 7568,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\bridges_a-walkable-bridge_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "commercial_addexios-sausage-kiosk_mc-mod_x.schem",
+   "name": "Addexio&#8217;s Sausage Kiosk",
+   "category": "commercial",
+   "tags": [
+    "shop",
+    "tiny"
+   ],
+   "dims": "14x9x6",
+   "blocks": 176,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_addexios-sausage-kiosk_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_age-of-empires-sentry-tower_mc-mod_x.schem",
+   "name": "Age of Empires Sentry Tower",
+   "category": "towers",
+   "tags": [
+    "small",
+    "tower"
+   ],
+   "dims": "22x14x17",
+   "blocks": 865,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_age-of-empires-sentry-tower_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "commercial_aik-bank-building_mc-mod_x.schem",
+   "name": "AIK Bank Building",
+   "category": "commercial",
+   "tags": [
+    "bank",
+    "medium"
+   ],
+   "dims": "18x40x22",
+   "blocks": 15279,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_aik-bank-building_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_aik-house-03-modern-residence_mc-mod_x.schem",
+   "name": "Aik House 03 Modern Residence",
+   "category": "residential",
+   "tags": [
+    "apartment",
+    "house",
+    "medium",
+    "modern"
+   ],
+   "dims": "33x24x24",
+   "blocks": 5431,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_aik-house-03-modern-residence_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_aik-house-16-large-quartz-city-residence_mc-mod_x.schem",
+   "name": "AIK House 16: Large Quartz City Residence",
+   "category": "residential",
+   "tags": [
+    "apartment",
+    "house",
+    "medium"
+   ],
+   "dims": "28x38x35",
+   "blocks": 11009,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_aik-house-16-large-quartz-city-residence_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "industrial_aik-weaving-factory_mc-mod_x.schem",
+   "name": "AIK Weaving Factory",
+   "category": "industrial",
+   "tags": [
+    "medium"
+   ],
+   "dims": "27x30x25",
+   "blocks": 6301,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\industrial_aik-weaving-factory_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "waterfront_airport-service-truck_mc-mod_x.schem",
+   "name": "Airport Service Truck",
+   "category": "waterfront",
+   "tags": [
+    "car",
+    "tiny"
+   ],
+   "dims": "6x5x17",
+   "blocks": 156,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\waterfront_airport-service-truck_mc-mod_x.png",
+   "metaFlags": [
+    "non-building-in-name"
+   ]
+  },
+  {
+   "file": "parks_ancient-fountain_mc-mod_x.schem",
+   "name": "Ancient Fountain",
+   "category": "parks",
+   "tags": [
+    "fountain",
+    "tiny",
+    "water"
+   ],
+   "dims": "9x12x9",
+   "blocks": 308,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\parks_ancient-fountain_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_ancient-greek-library-structure_mc-mod_x.schem",
+   "name": "Ancient Greek Library Structure",
+   "category": "public",
+   "tags": [
+    "library",
+    "medium"
+   ],
+   "dims": "48x37x44",
+   "blocks": 19587,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_ancient-greek-library-structure_mc-mod_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "bridges_ancient-stone-archway-bridge_mc-mod_x.schem",
+   "name": "Ancient Stone Archway Bridge",
+   "category": "bridges",
+   "tags": [
+    "bridge",
+    "medium"
+   ],
+   "dims": "15x29x47",
+   "blocks": 4227,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\bridges_ancient-stone-archway-bridge_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_apartment-building-replica_mc-mod_x.schem",
+   "name": "Apartment Building Replica",
+   "category": "residential",
+   "tags": [
+    "apartment",
+    "small"
+   ],
+   "dims": "16x19x46",
+   "blocks": 6035,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_apartment-building-replica_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_apartment-building-under-construction_mc-mod_x.schem",
+   "name": "Apartment Building Under Construction",
+   "category": "residential",
+   "tags": [
+    "apartment",
+    "large"
+   ],
+   "dims": "95x35x141",
+   "blocks": 48513,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_apartment-building-under-construction_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_apartment-building-with-colorful-block-desig_mc-mod_x.schem",
+   "name": "Apartment Building With Colorful Block Design",
+   "category": "residential",
+   "tags": [
+    "apartment",
+    "medium"
+   ],
+   "dims": "19x29x30",
+   "blocks": 3316,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_apartment-building-with-colorful-block-desig_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_apartment-building-with-shop_mc-mod_x.schem",
+   "name": "Apartment Building With Shop",
+   "category": "residential",
+   "tags": [
+    "apartment",
+    "shop",
+    "small"
+   ],
+   "dims": "15x29x16",
+   "blocks": 1736,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_apartment-building-with-shop_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "bridges_asian-bridge_mc-mod_x.schem",
+   "name": "Simple Asian Bridge",
+   "category": "bridges",
+   "tags": [
+    "bridge",
+    "medium"
+   ],
+   "dims": "29x31x59",
+   "blocks": 5985,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\bridges_asian-bridge_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "commercial_asian-hotel-building_mc-mod_x.schem",
+   "name": "Asian Hotel Building",
+   "category": "commercial",
+   "tags": [
+    "hotel",
+    "medium"
+   ],
+   "dims": "37x22x54",
+   "blocks": 9510,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_asian-hotel-building_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_asian-pagoda-tower-3_mc-mod_x.schem",
+   "name": "Asian Pagoda Tower",
+   "category": "towers",
+   "tags": [
+    "large",
+    "tall",
+    "tower"
+   ],
+   "dims": "57x50x45",
+   "blocks": 10395,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_asian-pagoda-tower-3_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "roads_automatic-nighttime-streetlight_mc-mod_x.schem",
+   "name": "Automatic Nighttime Streetlight",
+   "category": "roads",
+   "tags": [
+    "road",
+    "tiny",
+    "tree"
+   ],
+   "dims": "1x13x9",
+   "blocks": 20,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\roads_automatic-nighttime-streetlight_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "commercial_automotive-tuning-workshop_mc-mod_x.schem",
+   "name": "Automotive Tuning Workshop",
+   "category": "commercial",
+   "tags": [
+    "medium",
+    "shop"
+   ],
+   "dims": "33x11x59",
+   "blocks": 10264,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_automotive-tuning-workshop_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_avalon-manor-house_mc-mod_x.schem",
+   "name": "Avalon Manor House",
+   "category": "residential",
+   "tags": [
+    "house",
+    "small"
+   ],
+   "dims": "15x19x26",
+   "blocks": 1861,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_avalon-manor-house_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_avengers-tower-build_mc-mod_x.schem",
+   "name": "Avengers Tower Build",
+   "category": "towers",
+   "tags": [
+    "medium",
+    "tall",
+    "tower"
+   ],
+   "dims": "14x48x31",
+   "blocks": 1825,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_avengers-tower-build_mc-mod_x.png",
+   "metaFlags": [
+    "franchise",
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "residential_average-decor-house_mc-mod_x.schem",
+   "name": "Average Decor House",
+   "category": "residential",
+   "tags": [
+    "house",
+    "medium"
+   ],
+   "dims": "27x36x27",
+   "blocks": 3620,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_average-decor-house_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "commercial_bank-and-financial-building_mc-mod_x.schem",
+   "name": "Bank and Financial Building",
+   "category": "commercial",
+   "tags": [
+    "bank",
+    "medium",
+    "tall"
+   ],
+   "dims": "40x42x36",
+   "blocks": 9106,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_bank-and-financial-building_mc-mod_x.png",
+   "metaFlags": []
+  }
+ ]
+}

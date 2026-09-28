@@ -1,0 +1,590 @@
+{
+ "batch": 12,
+ "items": [
+  {
+   "file": "transport_fallout-3-inspired-substation_mc-mod_x.schem",
+   "name": "Fallout 3 Inspired Substation",
+   "category": "transport",
+   "tags": [
+    "small",
+    "station"
+   ],
+   "dims": "26x9x19",
+   "blocks": 1188,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\transport_fallout-3-inspired-substation_mc-mod_x.png",
+   "metaFlags": [
+    "franchise"
+   ]
+  },
+  {
+   "file": "residential_fallout-3-player-shack-house_mc-mod_x.schem",
+   "name": "Fallout 3 Player Shack House",
+   "category": "residential",
+   "tags": [
+    "house",
+    "small"
+   ],
+   "dims": "20x12x25",
+   "blocks": 2615,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_fallout-3-player-shack-house_mc-mod_x.png",
+   "metaFlags": [
+    "franchise"
+   ]
+  },
+  {
+   "file": "towers_fallout-3-power-transmission-tower_mc-mod_x.schem",
+   "name": "Fallout 3 Power Transmission Tower",
+   "category": "towers",
+   "tags": [
+    "small",
+    "tall",
+    "tower"
+   ],
+   "dims": "7x44x21",
+   "blocks": 862,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_fallout-3-power-transmission-tower_mc-mod_x.png",
+   "metaFlags": [
+    "franchise"
+   ]
+  },
+  {
+   "file": "residential_fallout-3-rubble-house_mc-mod_x.schem",
+   "name": "Fallout 3 Rubble House",
+   "category": "residential",
+   "tags": [
+    "house",
+    "small"
+   ],
+   "dims": "23x12x19",
+   "blocks": 546,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_fallout-3-rubble-house_mc-mod_x.png",
+   "metaFlags": [
+    "franchise"
+   ]
+  },
+  {
+   "file": "public_fallout-3-springvale-school-building_mc-mod_x.schem",
+   "name": "Fallout 3 Springvale School Building",
+   "category": "public",
+   "tags": [
+    "large",
+    "school",
+    "tall"
+   ],
+   "dims": "80x41x100",
+   "blocks": 85884,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_fallout-3-springvale-school-building_mc-mod_x.png",
+   "metaFlags": [
+    "franchise"
+   ]
+  },
+  {
+   "file": "bridges_fallout-3-style-overpass-structure_mc-mod_x.schem",
+   "name": "Fallout 3 Style Overpass Structure",
+   "category": "bridges",
+   "tags": [
+    "medium",
+    "tall"
+   ],
+   "dims": "39x42x40",
+   "blocks": 4593,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\bridges_fallout-3-style-overpass-structure_mc-mod_x.png",
+   "metaFlags": [
+    "franchise",
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "bridges_fallout-3-style-overpass_mc-mod_x.schem",
+   "name": "Fallout 3 Style Overpass",
+   "category": "bridges",
+   "tags": [
+    "medium",
+    "tall"
+   ],
+   "dims": "48x42x29",
+   "blocks": 4750,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\bridges_fallout-3-style-overpass_mc-mod_x.png",
+   "metaFlags": [
+    "franchise"
+   ]
+  },
+  {
+   "file": "transport_fallout-3-style-power-station_mc-mod_x.schem",
+   "name": "Fallout 3 Style Power Station",
+   "category": "transport",
+   "tags": [
+    "large",
+    "station",
+    "tall"
+   ],
+   "dims": "79x64x58",
+   "blocks": 24145,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\transport_fallout-3-style-power-station_mc-mod_x.png",
+   "metaFlags": [
+    "franchise"
+   ]
+  },
+  {
+   "file": "towers_fallout-3-water-tower-structure_mc-mod_x.schem",
+   "name": "Fallout 3 Water Tower Structure",
+   "category": "towers",
+   "tags": [
+    "small",
+    "tower"
+   ],
+   "dims": "12x27x12",
+   "blocks": 400,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_fallout-3-water-tower-structure_mc-mod_x.png",
+   "metaFlags": [
+    "franchise",
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "public_fire-truck-vehicle_mc-mod_x.schem",
+   "name": "Fire Truck Vehicle",
+   "category": "public",
+   "tags": [
+    "car",
+    "tiny"
+   ],
+   "dims": "13x5x5",
+   "blocks": 75,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_fire-truck-vehicle_mc-mod_x.png",
+   "metaFlags": [
+    "non-building-in-name"
+   ]
+  },
+  {
+   "file": "residential_functional-lighthouse_mc-mod_x.schem",
+   "name": "Functional Lighthouse",
+   "category": "residential",
+   "tags": [
+    "house",
+    "medium",
+    "tall",
+    "water"
+   ],
+   "dims": "20x51x20",
+   "blocks": 5391,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_functional-lighthouse_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "transport_functional-train-station_mc-mod_x.schem",
+   "name": "Functional Train Station",
+   "category": "transport",
+   "tags": [
+    "small",
+    "station"
+   ],
+   "dims": "14x11x25",
+   "blocks": 2217,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\transport_functional-train-station_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "commercial_furnished-bank-building_mc-mod_x.schem",
+   "name": "Furnished Bank Building",
+   "category": "commercial",
+   "tags": [
+    "bank",
+    "medium"
+   ],
+   "dims": "25x27x28",
+   "blocks": 5720,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_furnished-bank-building_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "commercial_furnished-family-home-with-garage_mc-mod_x.schem",
+   "name": "Furnished Family Home with Garage",
+   "category": "commercial",
+   "tags": [
+    "house",
+    "large",
+    "parking"
+   ],
+   "dims": "61x38x101",
+   "blocks": 24524,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_furnished-family-home-with-garage_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "transport_futuristic-city-parking-lot_mc-mod_x.schem",
+   "name": "Futuristic City Parking Lot",
+   "category": "transport",
+   "tags": [
+    "modern",
+    "park",
+    "parking",
+    "tiny"
+   ],
+   "dims": "30x3x15",
+   "blocks": 670,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\transport_futuristic-city-parking-lot_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "bridges_futuristic-marble-bridge_mc-mod_x.schem",
+   "name": "Futuristic Marble Bridge",
+   "category": "bridges",
+   "tags": [
+    "bridge",
+    "modern",
+    "small"
+   ],
+   "dims": "45x22x7",
+   "blocks": 1342,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\bridges_futuristic-marble-bridge_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_futuristic-stadium-angle-section_mc-mod_x.schem",
+   "name": "Futuristic Stadium Angle Section",
+   "category": "public",
+   "tags": [
+    "large",
+    "modern",
+    "stadium",
+    "tall"
+   ],
+   "dims": "54x45x54",
+   "blocks": 28205,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_futuristic-stadium-angle-section_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_futuristic-stadium-panel_mc-mod_x.schem",
+   "name": "Futuristic Stadium Panel",
+   "category": "public",
+   "tags": [
+    "modern",
+    "stadium",
+    "tiny"
+   ],
+   "dims": "57x9x3",
+   "blocks": 867,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_futuristic-stadium-panel_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_futuristic-stadium-wall-section_mc-mod_x.schem",
+   "name": "Futuristic Stadium Wall Section",
+   "category": "public",
+   "tags": [
+    "medium",
+    "modern",
+    "stadium",
+    "tall"
+   ],
+   "dims": "24x44x55",
+   "blocks": 8895,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_futuristic-stadium-wall-section_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "transport_futuristic-station-for-vehicles_mc-mod_x.schem",
+   "name": "Futuristic Station for Vehicles",
+   "category": "transport",
+   "tags": [
+    "medium",
+    "modern",
+    "station"
+   ],
+   "dims": "24x35x74",
+   "blocks": 15264,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\transport_futuristic-station-for-vehicles_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "parks_garden-fountain-design_mc-mod_x.schem",
+   "name": "Garden Fountain Design",
+   "category": "parks",
+   "tags": [
+    "fountain",
+    "park",
+    "small",
+    "water"
+   ],
+   "dims": "22x12x22",
+   "blocks": 1164,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\parks_garden-fountain-design_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "parks_garden-fountain-structure_mc-mod_x.schem",
+   "name": "Garden Fountain Structure",
+   "category": "parks",
+   "tags": [
+    "fountain",
+    "park",
+    "small",
+    "water"
+   ],
+   "dims": "27x9x19",
+   "blocks": 718,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\parks_garden-fountain-structure_mc-mod_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "public_geologic-museum-minecraft-build_mc-mod_x.schem",
+   "name": "Geologic Museum Minecraft Build",
+   "category": "public",
+   "tags": [
+    "museum",
+    "small"
+   ],
+   "dims": "23x11x21",
+   "blocks": 1217,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_geologic-museum-minecraft-build_mc-mod_x.png",
+   "metaFlags": [
+    "franchise",
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "industrial_gingerbread-factory_mc-mod_x.schem",
+   "name": "Gingerbread Factory",
+   "category": "industrial",
+   "tags": [
+    "large",
+    "tall"
+   ],
+   "dims": "81x52x65",
+   "blocks": 12668,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\industrial_gingerbread-factory_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "industrial_glass-factory-build_mc-mod_x.schem",
+   "name": "Glass Factory Build",
+   "category": "industrial",
+   "tags": [
+    "medium"
+   ],
+   "dims": "26x38x28",
+   "blocks": 26789,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\industrial_glass-factory-build_mc-mod_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "industrial_gold-smelting-factory_mc-mod_x.schem",
+   "name": "Gold Smelting Factory",
+   "category": "industrial",
+   "tags": [
+    "large",
+    "tall"
+   ],
+   "dims": "64x79x27",
+   "blocks": 3379,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\industrial_gold-smelting-factory_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_gothic-church-minecraft-structure_mc-mod_x.schem",
+   "name": "Gothic Church Minecraft Structure",
+   "category": "public",
+   "tags": [
+    "church",
+    "huge",
+    "tall"
+   ],
+   "dims": "125x113x75",
+   "blocks": 62900,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_gothic-church-minecraft-structure_mc-mod_x.png",
+   "metaFlags": [
+    "franchise",
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "public_grand-central-park-large-town-square_mc-mod_x.schem",
+   "name": "Grand Central Park &#8211; Large Town Square",
+   "category": "public",
+   "tags": [
+    "huge",
+    "park",
+    "tall"
+   ],
+   "dims": "142x49x126",
+   "blocks": 65580,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_grand-central-park-large-town-square_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_grand-hotel-seventh-heaven_mc-mod_x.schem",
+   "name": "Grand Hotel Seventh Heaven",
+   "category": "towers",
+   "tags": [
+    "hotel",
+    "medium",
+    "tall"
+   ],
+   "dims": "48x61x35",
+   "blocks": 97943,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_grand-hotel-seventh-heaven_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_grandpas-flower-power-tower-with-garden_mc-mod_x.schem",
+   "name": "Grandpa&#8217;s Flower Power Tower with Garden",
+   "category": "towers",
+   "tags": [
+    "medium",
+    "park",
+    "tower"
+   ],
+   "dims": "32x27x23",
+   "blocks": 3702,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_grandpas-flower-power-tower-with-garden_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_gray-tower-structure_mc-mod_x.schem",
+   "name": "Gray Tower Structure",
+   "category": "towers",
+   "tags": [
+    "small",
+    "tower"
+   ],
+   "dims": "9x28x9",
+   "blocks": 464,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_gray-tower-structure_mc-mod_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "bridges_guadalupe-river-bridge_mc-mod_x.schem",
+   "name": "Guadalupe River Bridge",
+   "category": "bridges",
+   "tags": [
+    "bridge",
+    "medium"
+   ],
+   "dims": "24x22x122",
+   "blocks": 13584,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\bridges_guadalupe-river-bridge_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_hamburg-michel-church-structure_mc-mod_x.schem",
+   "name": "Hamburg Michel Church Structure",
+   "category": "public",
+   "tags": [
+    "church",
+    "medium",
+    "tall"
+   ],
+   "dims": "27x55x38",
+   "blocks": 4396,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_hamburg-michel-church-structure_mc-mod_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "parks_hanging-gardens-of-brisbane_mc-mod_x.schem",
+   "name": "Hanging Gardens of Brisbane",
+   "category": "parks",
+   "tags": [
+    "medium",
+    "park",
+    "tall"
+   ],
+   "dims": "48x51x47",
+   "blocks": 7798,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\parks_hanging-gardens-of-brisbane_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "commercial_harbour-shops_mc-mod_x.schem",
+   "name": "Harbour Shops",
+   "category": "commercial",
+   "tags": [
+    "medium",
+    "shop"
+   ],
+   "dims": "38x29x26",
+   "blocks": 12497,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_harbour-shops_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_hidden-wooden-house_mc-mod_x.schem",
+   "name": "Hidden Wooden House",
+   "category": "residential",
+   "tags": [
+    "house",
+    "medium"
+   ],
+   "dims": "38x33x37",
+   "blocks": 8719,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_hidden-wooden-house_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "roads_highway-exit-structure_mc-mod_x.schem",
+   "name": "Highway Exit Structure",
+   "category": "roads",
+   "tags": [
+    "medium",
+    "road"
+   ],
+   "dims": "50x10x33",
+   "blocks": 3225,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\roads_highway-exit-structure_mc-mod_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "roads_highway-section-with-lighting-and-signs_mc-mod_x.schem",
+   "name": "Highway Section with Lighting and Signs",
+   "category": "roads",
+   "tags": [
+    "road",
+    "small"
+   ],
+   "dims": "43x10x21",
+   "blocks": 1197,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\roads_highway-section-with-lighting-and-signs_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "roads_highway-toll-booth-structure_mc-mod_x.schem",
+   "name": "Highway Toll Booth Structure",
+   "category": "roads",
+   "tags": [
+    "medium",
+    "road"
+   ],
+   "dims": "48x9x59",
+   "blocks": 4076,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\roads_highway-toll-booth-structure_mc-mod_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "commercial_home-and-workshop-building_mc-mod_x.schem",
+   "name": "Home and Workshop Building",
+   "category": "commercial",
+   "tags": [
+    "house",
+    "shop",
+    "small"
+   ],
+   "dims": "20x13x14",
+   "blocks": 1062,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_home-and-workshop-building_mc-mod_x.png",
+   "metaFlags": []
+  }
+ ]
+}

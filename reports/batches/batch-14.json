@@ -1,0 +1,588 @@
+{
+ "batch": 14,
+ "items": [
+  {
+   "file": "bridges_massive-minecraft-bridge_mc-mod_x.schem",
+   "name": "Massive Minecraft Bridge",
+   "category": "bridges",
+   "tags": [
+    "bridge",
+    "large",
+    "tall"
+   ],
+   "dims": "25x75x115",
+   "blocks": 43574,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\bridges_massive-minecraft-bridge_mc-mod_x.png",
+   "metaFlags": [
+    "franchise"
+   ]
+  },
+  {
+   "file": "towers_massive-skyscraper-structure_mc-mod_x.schem",
+   "name": "Massive Skyscraper Structure",
+   "category": "towers",
+   "tags": [
+    "medium",
+    "tall",
+    "tower"
+   ],
+   "dims": "20x200x20",
+   "blocks": 14072,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_massive-skyscraper-structure_mc-mod_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "residential_massive-storage-warehouse-structure_mc-mod_x.schem",
+   "name": "Massive Storage Warehouse Structure",
+   "category": "residential",
+   "tags": [
+    "house",
+    "large"
+   ],
+   "dims": "169x22x85",
+   "blocks": 24720,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_massive-storage-warehouse-structure_mc-mod_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "towers_maximum-height-tower_mc-mod_x.schem",
+   "name": "Maximum Height Tower",
+   "category": "towers",
+   "tags": [
+    "medium",
+    "tall",
+    "tower"
+   ],
+   "dims": "34x186x17",
+   "blocks": 46304,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_maximum-height-tower_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "commercial_mccready-grocery-store_mc-mod_x.schem",
+   "name": "McCready Grocery Store",
+   "category": "commercial",
+   "tags": [
+    "huge",
+    "shop"
+   ],
+   "dims": "229x18x199",
+   "blocks": 130257,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_mccready-grocery-store_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "parks_mcfey-astroworld-amusement-park_mc-mod_x.schem",
+   "name": "McFey Astroworld Amusement Park",
+   "category": "parks",
+   "tags": [
+    "park",
+    "small"
+   ],
+   "dims": "14x28x23",
+   "blocks": 777,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\parks_mcfey-astroworld-amusement-park_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_mediterranean-plaza-build_mc-mod_x.schem",
+   "name": "Mediterranean Plaza Build",
+   "category": "public",
+   "tags": [
+    "medium",
+    "park"
+   ],
+   "dims": "36x14x34",
+   "blocks": 1850,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_mediterranean-plaza-build_mc-mod_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "residential_mediterranean-style-apartment-house_mc-mod_x.schem",
+   "name": "Mediterranean Style Apartment House",
+   "category": "residential",
+   "tags": [
+    "apartment",
+    "house",
+    "small"
+   ],
+   "dims": "36x20x19",
+   "blocks": 5037,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_mediterranean-style-apartment-house_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "commercial_mediterranean-style-shopping-center_mc-mod_x.schem",
+   "name": "Mediterranean Style Shopping Center",
+   "category": "commercial",
+   "tags": [
+    "medium",
+    "shop"
+   ],
+   "dims": "47x32x49",
+   "blocks": 30935,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_mediterranean-style-shopping-center_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "bridges_medium-mansion-with-bridge_mc-mod_x.schem",
+   "name": "Medium Mansion With Bridge",
+   "category": "bridges",
+   "tags": [
+    "bridge",
+    "house",
+    "huge",
+    "tall"
+   ],
+   "dims": "105x133x82",
+   "blocks": 443361,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\bridges_medium-mansion-with-bridge_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_medium-merchants-house_mc-mod_x.schem",
+   "name": "Medium Merchant&#8217;s House",
+   "category": "residential",
+   "tags": [
+    "house",
+    "small"
+   ],
+   "dims": "17x18x32",
+   "blocks": 3068,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_medium-merchants-house_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_medium-orange-warehouse_mc-mod_x.schem",
+   "name": "Medium Orange Warehouse",
+   "category": "residential",
+   "tags": [
+    "house",
+    "large"
+   ],
+   "dims": "74x21x117",
+   "blocks": 21686,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_medium-orange-warehouse_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "bridges_medium-wooden-bridge-design_mc-mod_x.schem",
+   "name": "Medium Wooden Bridge Design",
+   "category": "bridges",
+   "tags": [
+    "bridge",
+    "small"
+   ],
+   "dims": "21x11x53",
+   "blocks": 532,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\bridges_medium-wooden-bridge-design_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "transport_metro-city-spawn_mc-mod_x.schem",
+   "name": "Metro City Spawn",
+   "category": "transport",
+   "tags": [
+    "large",
+    "tall"
+   ],
+   "dims": "56x73x56",
+   "blocks": 23416,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\transport_metro-city-spawn_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "transport_metro-train-pass_mc-mod_x.schem",
+   "name": "Metro Train Pass",
+   "category": "transport",
+   "tags": [
+    "tiny"
+   ],
+   "dims": "6x11x6",
+   "blocks": 312,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\transport_metro-train-pass_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "transport_metro-train-station_mc-mod_x.schem",
+   "name": "Metro Train Station",
+   "category": "transport",
+   "tags": [
+    "small",
+    "station"
+   ],
+   "dims": "7x9x47",
+   "blocks": 400,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\transport_metro-train-station_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_mid-century-hotel_mc-mod_x.schem",
+   "name": "Mid-Century Hotel",
+   "category": "towers",
+   "tags": [
+    "hotel",
+    "small"
+   ],
+   "dims": "12x35x12",
+   "blocks": 2168,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_mid-century-hotel_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "commercial_minebank-building_mc-mod_x.schem",
+   "name": "MineBank Building",
+   "category": "commercial",
+   "tags": [
+    "bank",
+    "huge",
+    "tall"
+   ],
+   "dims": "67x150x85",
+   "blocks": 327368,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_minebank-building_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_minecraft-build-book-house_mc-mod_x.schem",
+   "name": "Minecraft Build Book House",
+   "category": "residential",
+   "tags": [
+    "house",
+    "medium"
+   ],
+   "dims": "58x28x47",
+   "blocks": 17404,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_minecraft-build-book-house_mc-mod_x.png",
+   "metaFlags": [
+    "franchise",
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "residential_minecraft-casino-mansion-structure_mc-mod_x.schem",
+   "name": "Minecraft Casino Mansion Structure",
+   "category": "residential",
+   "tags": [
+    "house",
+    "huge",
+    "tall"
+   ],
+   "dims": "79x93x92",
+   "blocks": 49502,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_minecraft-casino-mansion-structure_mc-mod_x.png",
+   "metaFlags": [
+    "franchise",
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "commercial_minecraft-gas-station-build-2_mc-mod_x.schem",
+   "name": "Minecraft Gas Station Build",
+   "category": "commercial",
+   "tags": [
+    "small",
+    "station"
+   ],
+   "dims": "16x6x30",
+   "blocks": 632,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_minecraft-gas-station-build-2_mc-mod_x.png",
+   "metaFlags": [
+    "franchise",
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "public_minecraft-hospital-building_mc-mod_x.schem",
+   "name": "Minecraft Hospital Building",
+   "category": "public",
+   "tags": [
+    "hospital",
+    "medium",
+    "tall"
+   ],
+   "dims": "21x56x36",
+   "blocks": 8043,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_minecraft-hospital-building_mc-mod_x.png",
+   "metaFlags": [
+    "franchise"
+   ]
+  },
+  {
+   "file": "transport_minecraft-railway-station_mc-mod_x.schem",
+   "name": "Minecraft Railway Station",
+   "category": "transport",
+   "tags": [
+    "station",
+    "tiny"
+   ],
+   "dims": "17x5x18",
+   "blocks": 575,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\transport_minecraft-railway-station_mc-mod_x.png",
+   "metaFlags": [
+    "franchise"
+   ]
+  },
+  {
+   "file": "public_minecraft-soccer-stadium-schematic_mc-mod_x.schem",
+   "name": "Minecraft Soccer Stadium Schematic",
+   "category": "public",
+   "tags": [
+    "medium",
+    "stadium"
+   ],
+   "dims": "34x13x54",
+   "blocks": 5747,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_minecraft-soccer-stadium-schematic_mc-mod_x.png",
+   "metaFlags": [
+    "franchise",
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "public_minecraftia-elementary-school-blue-and-white_mc-mod_x.schem",
+   "name": "Minecraftia Elementary School Blue and White Campus",
+   "category": "public",
+   "tags": [
+    "huge",
+    "school",
+    "tall"
+   ],
+   "dims": "149x49x114",
+   "blocks": 126389,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_minecraftia-elementary-school-blue-and-white_mc-mod_x.png",
+   "metaFlags": [
+    "franchise"
+   ]
+  },
+  {
+   "file": "residential_mini-shop-blockhouse_mc-mod_x.schem",
+   "name": "Mini Shop Blockhouse",
+   "category": "residential",
+   "tags": [
+    "house",
+    "shop",
+    "tiny"
+   ],
+   "dims": "3x2x6",
+   "blocks": 29,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_mini-shop-blockhouse_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_modern-3-story-office-building_mc-mod_x.schem",
+   "name": "Modern 3 Story Office Building",
+   "category": "towers",
+   "tags": [
+    "modern",
+    "office",
+    "small"
+   ],
+   "dims": "33x16x25",
+   "blocks": 3126,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_modern-3-story-office-building_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_modern-apartment-block-townhouse_mc-mod_x.schem",
+   "name": "Modern Apartment Block Townhouse",
+   "category": "residential",
+   "tags": [
+    "apartment",
+    "house",
+    "medium",
+    "modern"
+   ],
+   "dims": "59x40x41",
+   "blocks": 28792,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_modern-apartment-block-townhouse_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_modern-apartment-building-2_mc-mod_x.schem",
+   "name": "Modern Apartment Block &#8211; White Concrete",
+   "category": "residential",
+   "tags": [
+    "apartment",
+    "medium",
+    "modern",
+    "tall"
+   ],
+   "dims": "35x44x37",
+   "blocks": 17982,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_modern-apartment-building-2_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_modern-apartment-building-4_mc-mod_x.schem",
+   "name": "Modern Apartment Tower &#8211; White &amp; Blue Concrete",
+   "category": "towers",
+   "tags": [
+    "apartment",
+    "modern",
+    "small",
+    "tower"
+   ],
+   "dims": "22x27x25",
+   "blocks": 4329,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_modern-apartment-building-4_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_modern-apartment-building-with-6-units_mc-mod_x.schem",
+   "name": "Modern Apartment Building With 6 Units",
+   "category": "residential",
+   "tags": [
+    "apartment",
+    "modern",
+    "small"
+   ],
+   "dims": "12x24x19",
+   "blocks": 718,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_modern-apartment-building-with-6-units_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_modern-apartment-complex_mc-mod_x.schem",
+   "name": "Modern Apartment Complex",
+   "category": "residential",
+   "tags": [
+    "apartment",
+    "large",
+    "modern"
+   ],
+   "dims": "101x32x147",
+   "blocks": 102411,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_modern-apartment-complex_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_modern-apartment-tower-10-floors_mc-mod_x.schem",
+   "name": "Modern Apartment Tower &#8211; 10 Floors",
+   "category": "towers",
+   "tags": [
+    "apartment",
+    "large",
+    "modern",
+    "tall",
+    "tower"
+   ],
+   "dims": "37x168x37",
+   "blocks": 40202,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_modern-apartment-tower-10-floors_mc-mod_x.png",
+   "metaFlags": [
+    "duplicate-name"
+   ]
+  },
+  {
+   "file": "residential_modern-blue-apartment-building-schematic_mc-mod_x.schem",
+   "name": "Modern Blue Apartment Building Schematic",
+   "category": "residential",
+   "tags": [
+    "apartment",
+    "modern",
+    "small"
+   ],
+   "dims": "22x17x21",
+   "blocks": 2520,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_modern-blue-apartment-building-schematic_mc-mod_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "towers_modern-blue-glass-tower_mc-mod_x.schem",
+   "name": "Modern Blue Glass Tower",
+   "category": "towers",
+   "tags": [
+    "medium",
+    "modern",
+    "tall",
+    "tower"
+   ],
+   "dims": "27x102x38",
+   "blocks": 12343,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_modern-blue-glass-tower_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "bridges_modern-bridge-design_mc-mod_x.schem",
+   "name": "Modern Bridge Design",
+   "category": "bridges",
+   "tags": [
+    "bridge",
+    "modern",
+    "tiny"
+   ],
+   "dims": "9x7x25",
+   "blocks": 454,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\bridges_modern-bridge-design_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "transport_modern-business-building_mc-mod_x.schem",
+   "name": "Modern Business Building",
+   "category": "transport",
+   "tags": [
+    "medium",
+    "modern"
+   ],
+   "dims": "37x11x45",
+   "blocks": 5916,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\transport_modern-business-building_mc-mod_x.png",
+   "metaFlags": [
+    "non-building-in-name"
+   ]
+  },
+  {
+   "file": "residential_modern-city-apartment-building_mc-mod_x.schem",
+   "name": "Modern City Apartment Building",
+   "category": "residential",
+   "tags": [
+    "apartment",
+    "huge",
+    "modern",
+    "tall"
+   ],
+   "dims": "119x59x80",
+   "blocks": 53088,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_modern-city-apartment-building_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_modern-city-apartments_mc-mod_x.schem",
+   "name": "Modern City Apartments",
+   "category": "residential",
+   "tags": [
+    "apartment",
+    "medium",
+    "modern"
+   ],
+   "dims": "30x27x38",
+   "blocks": 9256,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_modern-city-apartments_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "bridges_modern-city-connecting-bridge_mc-mod_x.schem",
+   "name": "Modern City Connecting Bridge",
+   "category": "bridges",
+   "tags": [
+    "bridge",
+    "large",
+    "modern",
+    "tall"
+   ],
+   "dims": "179x48x27",
+   "blocks": 38869,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\bridges_modern-city-connecting-bridge_mc-mod_x.png",
+   "metaFlags": []
+  }
+ ]
+}

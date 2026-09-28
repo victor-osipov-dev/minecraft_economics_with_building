@@ -1,0 +1,597 @@
+{
+ "batch": 16,
+ "items": [
+  {
+   "file": "towers_modern-skyscraper-design_mc-mod_x.schem",
+   "name": "Modern Skyscraper Design",
+   "category": "towers",
+   "tags": [
+    "large",
+    "modern",
+    "tall",
+    "tower"
+   ],
+   "dims": "60x66x39",
+   "blocks": 22754,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_modern-skyscraper-design_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_modern-skyscraper-tower-11_mc-mod_x.schem",
+   "name": "Modern Skyscraper Tower",
+   "category": "towers",
+   "tags": [
+    "medium",
+    "modern",
+    "tall",
+    "tower"
+   ],
+   "dims": "20x199x20",
+   "blocks": 14039,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_modern-skyscraper-tower-11_mc-mod_x.png",
+   "metaFlags": [
+    "duplicate-name"
+   ]
+  },
+  {
+   "file": "towers_modern-skyscraper-tower_mc-mod_x.schem",
+   "name": "Modern Skyscraper Tower",
+   "category": "towers",
+   "tags": [
+    "large",
+    "modern",
+    "tall",
+    "tower"
+   ],
+   "dims": "62x172x44",
+   "blocks": 82874,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_modern-skyscraper-tower_mc-mod_x.png",
+   "metaFlags": [
+    "duplicate-name"
+   ]
+  },
+  {
+   "file": "towers_modern-skyscraper_mc-mod_x.schem",
+   "name": "Modern Skyscraper",
+   "category": "towers",
+   "tags": [
+    "large",
+    "modern",
+    "tall",
+    "tower"
+   ],
+   "dims": "40x152x70",
+   "blocks": 61845,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_modern-skyscraper_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_modern-small-to-medium-futuristic-house_mc-mod_x.schem",
+   "name": "Modern Small to Medium Futuristic House",
+   "category": "residential",
+   "tags": [
+    "house",
+    "modern",
+    "shop",
+    "small"
+   ],
+   "dims": "24x20x22",
+   "blocks": 1958,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_modern-small-to-medium-futuristic-house_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_modern-spiral-skyscraper_mc-mod_x.schem",
+   "name": "Modern Spiral Skyscraper",
+   "category": "towers",
+   "tags": [
+    "huge",
+    "modern",
+    "tall",
+    "tower"
+   ],
+   "dims": "54x185x54",
+   "blocks": 141511,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_modern-spiral-skyscraper_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "commercial_modern-style-shop_mc-mod_x.schem",
+   "name": "Modern Style Shop",
+   "category": "commercial",
+   "tags": [
+    "modern",
+    "shop",
+    "small"
+   ],
+   "dims": "28x11x23",
+   "blocks": 2932,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_modern-style-shop_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_modern-style-tower-structure_mc-mod_x.schem",
+   "name": "Modern Style Tower Structure",
+   "category": "towers",
+   "tags": [
+    "medium",
+    "modern",
+    "tall",
+    "tower"
+   ],
+   "dims": "38x84x22",
+   "blocks": 16924,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_modern-style-tower-structure_mc-mod_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "towers_modern-torch-towers_mc-mod_x.schem",
+   "name": "Modern Torch Towers",
+   "category": "towers",
+   "tags": [
+    "modern",
+    "small",
+    "tower"
+   ],
+   "dims": "15x20x16",
+   "blocks": 646,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_modern-torch-towers_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "transport_modern-train-station-design_mc-mod_x.schem",
+   "name": "Modern Train Station Design",
+   "category": "transport",
+   "tags": [
+    "medium",
+    "modern",
+    "station"
+   ],
+   "dims": "32x21x38",
+   "blocks": 6136,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\transport_modern-train-station-design_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_modern-villa-with-survival-features_mc-mod_x.schem",
+   "name": "Modern Villa With Survival Features",
+   "category": "residential",
+   "tags": [
+    "house",
+    "huge",
+    "modern",
+    "tall"
+   ],
+   "dims": "112x44x158",
+   "blocks": 152339,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_modern-villa-with-survival-features_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_modern-warehouse-with-iron-gate-details_mc-mod_x.schem",
+   "name": "Modern Warehouse with Iron Gate Details",
+   "category": "residential",
+   "tags": [
+    "house",
+    "large",
+    "modern"
+   ],
+   "dims": "135x18x83",
+   "blocks": 29565,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_modern-warehouse-with-iron-gate-details_mc-mod_x.png",
+   "metaFlags": [
+    "non-building-in-name"
+   ]
+  },
+  {
+   "file": "residential_modern-white-city-apartment-building_mc-mod_x.schem",
+   "name": "Modern White City Apartment Building",
+   "category": "residential",
+   "tags": [
+    "apartment",
+    "modern",
+    "small"
+   ],
+   "dims": "17x21x21",
+   "blocks": 2668,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_modern-white-city-apartment-building_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "commercial_mr-burns-small-structure_mc-mod_x.schem",
+   "name": "Mr. Burns Small Structure",
+   "category": "commercial",
+   "tags": [
+    "shop",
+    "small",
+    "tall"
+   ],
+   "dims": "13x42x17",
+   "blocks": 1134,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_mr-burns-small-structure_mc-mod_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "towers_mud-tower-build_mc-mod_x.schem",
+   "name": "Mud Tower Build",
+   "category": "towers",
+   "tags": [
+    "small",
+    "tower"
+   ],
+   "dims": "10x28x10",
+   "blocks": 556,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_mud-tower-build_mc-mod_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "transport_multi-level-6-story-parking-lot_mc-mod_x.schem",
+   "name": "Multi-Level 6-Story Parking Lot",
+   "category": "transport",
+   "tags": [
+    "large",
+    "park",
+    "parking",
+    "tall"
+   ],
+   "dims": "99x46x91",
+   "blocks": 122647,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\transport_multi-level-6-story-parking-lot_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "transport_multi-level-parking-garage-structure_mc-mod_x.schem",
+   "name": "Multi-Level Parking Garage Structure",
+   "category": "transport",
+   "tags": [
+    "huge",
+    "park",
+    "parking",
+    "tall"
+   ],
+   "dims": "169x64x93",
+   "blocks": 241162,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\transport_multi-level-parking-garage-structure_mc-mod_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "commercial_multiplayer-survival-base-with-shop_mc-mod_x.schem",
+   "name": "Multiplayer Survival Base with Shop",
+   "category": "commercial",
+   "tags": [
+    "medium",
+    "shop"
+   ],
+   "dims": "32x16x40",
+   "blocks": 5540,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_multiplayer-survival-base-with-shop_mc-mod_x.png",
+   "metaFlags": [
+    "non-real/fantasy"
+   ]
+  },
+  {
+   "file": "towers_murchinson-modern-office-building-with-helip_mc-mod_x.schem",
+   "name": "Murchinson Modern Office Building With Helipad",
+   "category": "towers",
+   "tags": [
+    "large",
+    "modern",
+    "office",
+    "tall"
+   ],
+   "dims": "45x160x67",
+   "blocks": 199550,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_murchinson-modern-office-building-with-helip_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_mystcraft-inspired-library-structure_mc-mod_x.schem",
+   "name": "Mystcraft-Inspired Library Structure",
+   "category": "public",
+   "tags": [
+    "library",
+    "small"
+   ],
+   "dims": "17x10x17",
+   "blocks": 655,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_mystcraft-inspired-library-structure_mc-mod_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "public_mystical-church-structure_mc-mod_x.schem",
+   "name": "Mystical Church Structure",
+   "category": "public",
+   "tags": [
+    "church",
+    "large",
+    "tall"
+   ],
+   "dims": "40x115x82",
+   "blocks": 32604,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_mystical-church-structure_mc-mod_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "commercial_mythological-shopping-mall-with-water-featur_mc-mod_x.schem",
+   "name": "Mythological Shopping Mall with Water Features",
+   "category": "commercial",
+   "tags": [
+    "huge",
+    "shop",
+    "tall"
+   ],
+   "dims": "91x94x91",
+   "blocks": 46745,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_mythological-shopping-mall-with-water-featur_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_nierta-central-park-town-square_mc-mod_x.schem",
+   "name": "Nierta Central Park Town Square",
+   "category": "public",
+   "tags": [
+    "park",
+    "small"
+   ],
+   "dims": "39x3x38",
+   "blocks": 3048,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_nierta-central-park-town-square_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_nine-story-apartment-building-series_mc-mod_x.schem",
+   "name": "Nine-Story Apartment Building Series",
+   "category": "residential",
+   "tags": [
+    "apartment",
+    "medium",
+    "tall"
+   ],
+   "dims": "25x53x47",
+   "blocks": 22525,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_nine-story-apartment-building-series_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "bridges_nordic-style-small-bridge_mc-mod_x.schem",
+   "name": "Nordic Style Small Bridge",
+   "category": "bridges",
+   "tags": [
+    "bridge",
+    "shop",
+    "tiny"
+   ],
+   "dims": "18x9x8",
+   "blocks": 418,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\bridges_nordic-style-small-bridge_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_octagonal-hotel-interior-design_mc-mod_x.schem",
+   "name": "Octagonal Hotel Interior Design",
+   "category": "towers",
+   "tags": [
+    "hotel",
+    "medium",
+    "tall"
+   ],
+   "dims": "47x55x46",
+   "blocks": 7833,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_octagonal-hotel-interior-design_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_old-church-structure_mc-mod_x.schem",
+   "name": "Old Church Structure",
+   "category": "public",
+   "tags": [
+    "church",
+    "medium"
+   ],
+   "dims": "49x20x64",
+   "blocks": 4252,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_old-church-structure_mc-mod_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "industrial_old-factory-hall-building_mc-mod_x.schem",
+   "name": "Old Factory Hall Building",
+   "category": "industrial",
+   "tags": [
+    "medium"
+   ],
+   "dims": "28x19x37",
+   "blocks": 3737,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\industrial_old-factory-hall-building_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_olimpushd-tower-large-build_mc-mod_x.schem",
+   "name": "OlimpusHD Tower &#8211; Large Build",
+   "category": "towers",
+   "tags": [
+    "large",
+    "tall",
+    "tower"
+   ],
+   "dims": "68x60x57",
+   "blocks": 27056,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_olimpushd-tower-large-build_mc-mod_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "towers_olympus-tower-large-build_mc-mod_x.schem",
+   "name": "Olympus Tower &#8211; Large Build",
+   "category": "towers",
+   "tags": [
+    "large",
+    "tall",
+    "tower"
+   ],
+   "dims": "43x75x45",
+   "blocks": 8374,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_olympus-tower-large-build_mc-mod_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "towers_one-world-trade-centre-skyscraper_mc-mod_x.schem",
+   "name": "One World Trade Centre Skyscraper",
+   "category": "towers",
+   "tags": [
+    "medium",
+    "tall",
+    "tower"
+   ],
+   "dims": "30x115x33",
+   "blocks": 20615,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_one-world-trade-centre-skyscraper_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_orange-tower-large-scale-block-structure_mc-mod_x.schem",
+   "name": "Orange Tower &#8211; Large Scale Block Structure",
+   "category": "towers",
+   "tags": [
+    "small",
+    "tower"
+   ],
+   "dims": "11x23x11",
+   "blocks": 995,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_orange-tower-large-scale-block-structure_mc-mod_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "transport_orbital-station_mc-mod_x.schem",
+   "name": "Orbital Station",
+   "category": "transport",
+   "tags": [
+    "large",
+    "station"
+   ],
+   "dims": "60x31x115",
+   "blocks": 11566,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\transport_orbital-station_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "parks_ornamental-garden-fountain_mc-mod_x.schem",
+   "name": "Ornamental Garden Fountain",
+   "category": "parks",
+   "tags": [
+    "fountain",
+    "medium",
+    "park",
+    "tall",
+    "water"
+   ],
+   "dims": "37x61x45",
+   "blocks": 5549,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\parks_ornamental-garden-fountain_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "parks_peaceful-fountain_mc-mod_x.schem",
+   "name": "Peaceful Fountain",
+   "category": "parks",
+   "tags": [
+    "fountain",
+    "large",
+    "water"
+   ],
+   "dims": "80x34x76",
+   "blocks": 5374,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\parks_peaceful-fountain_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "parks_peaceful-minecraft-garden-oasis-build_mc-mod_x.schem",
+   "name": "Peaceful Minecraft Garden Oasis Build",
+   "category": "parks",
+   "tags": [
+    "medium",
+    "park"
+   ],
+   "dims": "66x27x30",
+   "blocks": 14270,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\parks_peaceful-minecraft-garden-oasis-build_mc-mod_x.png",
+   "metaFlags": [
+    "franchise",
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "commercial_pet-shop-building_mc-mod_x.schem",
+   "name": "Pet Shop Building",
+   "category": "commercial",
+   "tags": [
+    "medium",
+    "shop"
+   ],
+   "dims": "35x28x29",
+   "blocks": 3946,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_pet-shop-building_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_platinum-residential-tower-with-antenna_mc-mod_x.schem",
+   "name": "Platinum Residential Tower with Antenna",
+   "category": "towers",
+   "tags": [
+    "huge",
+    "tall",
+    "tower"
+   ],
+   "dims": "48x324x47",
+   "blocks": 128026,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_platinum-residential-tower-with-antenna_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_police-car-vehicle_mc-mod_x.schem",
+   "name": "Police Car Vehicle",
+   "category": "public",
+   "tags": [
+    "car",
+    "medium"
+   ],
+   "dims": "36x32x88",
+   "blocks": 9052,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_police-car-vehicle_mc-mod_x.png",
+   "metaFlags": [
+    "non-building-in-name"
+   ]
+  },
+  {
+   "file": "public_police-vehicle_mc-mod_x.schem",
+   "name": "Police Vehicle",
+   "category": "public",
+   "tags": [
+    "tiny"
+   ],
+   "dims": "6x6x10",
+   "blocks": 74,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_police-vehicle_mc-mod_x.png",
+   "metaFlags": []
+  }
+ ]
+}

@@ -1,0 +1,569 @@
+{
+ "batch": 10,
+ "items": [
+  {
+   "file": "residential_baroque-quartz-villa-with-garden_mc-mod_x.schem",
+   "name": "Baroque Quartz Villa With Garden",
+   "category": "residential",
+   "tags": [
+    "house",
+    "medium",
+    "park"
+   ],
+   "dims": "33x33x33",
+   "blocks": 7687,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_baroque-quartz-villa-with-garden_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_basalt-block-house_mc-mod_x.schem",
+   "name": "Basalt Block House",
+   "category": "residential",
+   "tags": [
+    "house",
+    "small"
+   ],
+   "dims": "11x14x17",
+   "blocks": 675,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_basalt-block-house_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_baseball-stadium_mc-mod_x.schem",
+   "name": "Baseball Stadium",
+   "category": "public",
+   "tags": [
+    "medium",
+    "stadium"
+   ],
+   "dims": "91x7x91",
+   "blocks": 9303,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_baseball-stadium_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_basic-lighthouse-structure_mc-mod_x.schem",
+   "name": "Basic Lighthouse Structure",
+   "category": "residential",
+   "tags": [
+    "house",
+    "medium",
+    "tall",
+    "water"
+   ],
+   "dims": "30x64x45",
+   "blocks": 17845,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_basic-lighthouse-structure_mc-mod_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "parks_beautiful-fountain_mc-mod_x.schem",
+   "name": "Beautiful Fountain",
+   "category": "parks",
+   "tags": [
+    "fountain",
+    "medium",
+    "tall",
+    "water"
+   ],
+   "dims": "35x54x36",
+   "blocks": 4693,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\parks_beautiful-fountain_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_big-house-11-modern-complex_mc-mod_x.schem",
+   "name": "Big House 11 Modern Complex",
+   "category": "residential",
+   "tags": [
+    "house",
+    "large",
+    "modern",
+    "tall"
+   ],
+   "dims": "30x51x84",
+   "blocks": 25806,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_big-house-11-modern-complex_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_blocks-ahoy-hotel-towering-presidential-suit_mc-mod_x.schem",
+   "name": "Blocks Ahoy Hotel &#8211; Towering Presidential Suite",
+   "category": "towers",
+   "tags": [
+    "hotel",
+    "large",
+    "tall",
+    "tower"
+   ],
+   "dims": "48x125x73",
+   "blocks": 92313,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_blocks-ahoy-hotel-towering-presidential-suit_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_blue-and-white-lighthouse-structure_mc-mod_x.schem",
+   "name": "Blue And White Lighthouse Structure",
+   "category": "residential",
+   "tags": [
+    "house",
+    "medium",
+    "tall",
+    "water"
+   ],
+   "dims": "16x69x16",
+   "blocks": 4587,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_blue-and-white-lighthouse-structure_mc-mod_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "residential_blue-orange-apartment-building-progress_mc-mod_x.schem",
+   "name": "Blue-Orange Apartment Building Progress",
+   "category": "residential",
+   "tags": [
+    "apartment",
+    "huge"
+   ],
+   "dims": "95x40x141",
+   "blocks": 68896,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_blue-orange-apartment-building-progress_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_blue-orange-apartment-building-under-constru_mc-mod_x.schem",
+   "name": "Blue Orange Apartment Building Under Construction",
+   "category": "residential",
+   "tags": [
+    "apartment",
+    "large"
+   ],
+   "dims": "95x36x141",
+   "blocks": 24065,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_blue-orange-apartment-building-under-constru_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_blue-palace-furnished-residence_mc-mod_x.schem",
+   "name": "Blue Palace Furnished Residence",
+   "category": "residential",
+   "tags": [
+    "apartment",
+    "huge",
+    "tall"
+   ],
+   "dims": "121x46x90",
+   "blocks": 31085,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_blue-palace-furnished-residence_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_building-contractors-office_mc-mod_x.schem",
+   "name": "Building Contractors Office",
+   "category": "towers",
+   "tags": [
+    "medium",
+    "office"
+   ],
+   "dims": "48x25x80",
+   "blocks": 13023,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_building-contractors-office_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "roads_candy-cane-road-light_mc-mod_x.schem",
+   "name": "Candy Cane Road Light",
+   "category": "roads",
+   "tags": [
+    "road",
+    "tiny"
+   ],
+   "dims": "6x7x3",
+   "blocks": 12,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\roads_candy-cane-road-light_mc-mod_x.png",
+   "metaFlags": [
+    "almost-empty"
+   ]
+  },
+  {
+   "file": "parks_central-fountain-maze-schematic_mc-mod_x.schem",
+   "name": "Central Fountain Maze Schematic",
+   "category": "parks",
+   "tags": [
+    "fountain",
+    "medium",
+    "water"
+   ],
+   "dims": "60x7x55",
+   "blocks": 3265,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\parks_central-fountain-maze-schematic_mc-mod_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "industrial_ceramic-production-factory_mc-mod_x.schem",
+   "name": "Ceramic Production Factory",
+   "category": "industrial",
+   "tags": [
+    "medium",
+    "tall"
+   ],
+   "dims": "33x47x34",
+   "blocks": 9322,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\industrial_ceramic-production-factory_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "commercial_charming-cottage-with-living-area-and-garage_mc-mod_x.schem",
+   "name": "Charming Cottage with Living Area and Garage",
+   "category": "commercial",
+   "tags": [
+    "house",
+    "medium",
+    "parking"
+   ],
+   "dims": "37x12x37",
+   "blocks": 4402,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_charming-cottage-with-living-area-and-garage_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_charming-small-house-shop_mc-mod_x.schem",
+   "name": "Charming Small House Shop",
+   "category": "residential",
+   "tags": [
+    "house",
+    "shop",
+    "small"
+   ],
+   "dims": "33x23x17",
+   "blocks": 3716,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_charming-small-house-shop_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_chest-shaped-storage-warehouse_mc-mod_x.schem",
+   "name": "Chest-Shaped Storage Warehouse",
+   "category": "residential",
+   "tags": [
+    "house",
+    "small"
+   ],
+   "dims": "23x13x19",
+   "blocks": 1027,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_chest-shaped-storage-warehouse_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "commercial_chest-shop-galleria_mc-mod_x.schem",
+   "name": "Chest Shop Galleria",
+   "category": "commercial",
+   "tags": [
+    "shop",
+    "small"
+   ],
+   "dims": "21x16x13",
+   "blocks": 841,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_chest-shop-galleria_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "bridges_chiseled-stone-brick-bridge_mc-mod_x.schem",
+   "name": "Chiseled Stone Brick Bridge",
+   "category": "bridges",
+   "tags": [
+    "bridge",
+    "small"
+   ],
+   "dims": "7x8x81",
+   "blocks": 2294,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\bridges_chiseled-stone-brick-bridge_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_chrysler-building-skyscraper_mc-mod_x.schem",
+   "name": "Chrysler Building Skyscraper",
+   "category": "towers",
+   "tags": [
+    "large",
+    "tall",
+    "tower"
+   ],
+   "dims": "27x140x35",
+   "blocks": 15976,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_chrysler-building-skyscraper_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_city-17-style-apartment-block_mc-mod_x.schem",
+   "name": "City 17 Style Apartment Block",
+   "category": "residential",
+   "tags": [
+    "apartment",
+    "medium"
+   ],
+   "dims": "23x24x40",
+   "blocks": 8645,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_city-17-style-apartment-block_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "decor_city-hall-building_mc-mod_x.schem",
+   "name": "City Hall Building",
+   "category": "decor",
+   "tags": [
+    "medium"
+   ],
+   "dims": "30x30x21",
+   "blocks": 3775,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\decor_city-hall-building_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_city-hotel-with-penthouses_mc-mod_x.schem",
+   "name": "City Hotel With Penthouses",
+   "category": "towers",
+   "tags": [
+    "hotel",
+    "house",
+    "medium"
+   ],
+   "dims": "44x34x52",
+   "blocks": 18781,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_city-hotel-with-penthouses_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "intersections_city-intersection-crossroads_mc-mod_x.schem",
+   "name": "City Intersection Crossroads",
+   "category": "intersections",
+   "tags": [
+    "medium",
+    "road"
+   ],
+   "dims": "65x10x65",
+   "blocks": 4389,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\intersections_city-intersection-crossroads_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_city-library-building_mc-mod_x.schem",
+   "name": "City Library Building",
+   "category": "public",
+   "tags": [
+    "library",
+    "medium"
+   ],
+   "dims": "50x31x52",
+   "blocks": 9092,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_city-library-building_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "parks_city-park-garden_mc-mod_x.schem",
+   "name": "City Park Garden",
+   "category": "parks",
+   "tags": [
+    "park",
+    "small"
+   ],
+   "dims": "33x18x17",
+   "blocks": 3265,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\parks_city-park-garden_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "roads_city-road-construction-project_mc-mod_x.schem",
+   "name": "City Road Construction Project",
+   "category": "roads",
+   "tags": [
+    "medium",
+    "road"
+   ],
+   "dims": "61x9x85",
+   "blocks": 4917,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\roads_city-road-construction-project_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_classic-lighthouse-tower_mc-mod_x.schem",
+   "name": "Classic Lighthouse Tower",
+   "category": "towers",
+   "tags": [
+    "house",
+    "small",
+    "tall",
+    "tower",
+    "water"
+   ],
+   "dims": "11x46x11",
+   "blocks": 1224,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_classic-lighthouse-tower_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_classic-minecraft-lighthouse-decoration-2_mc-mod_x.schem",
+   "name": "Classic Minecraft Lighthouse Decoration",
+   "category": "residential",
+   "tags": [
+    "house",
+    "medium",
+    "tall",
+    "water"
+   ],
+   "dims": "20x47x17",
+   "blocks": 1587,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_classic-minecraft-lighthouse-decoration-2_mc-mod_x.png",
+   "metaFlags": [
+    "franchise"
+   ]
+  },
+  {
+   "file": "public_classic-museum-building-berlin_mc-mod_x.schem",
+   "name": "Classic Museum Building Berlin",
+   "category": "public",
+   "tags": [
+    "huge",
+    "museum",
+    "tall"
+   ],
+   "dims": "97x72x141",
+   "blocks": 187553,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_classic-museum-building-berlin_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_classic-school-bus-design_mc-mod_x.schem",
+   "name": "Classic School Bus Design",
+   "category": "public",
+   "tags": [
+    "school",
+    "tiny"
+   ],
+   "dims": "17x5x5",
+   "blocks": 134,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_classic-school-bus-design_mc-mod_x.png",
+   "metaFlags": [
+    "non-building-in-name"
+   ]
+  },
+  {
+   "file": "transport_classic-train-station-design_mc-mod_x.schem",
+   "name": "Classic Train Station Design",
+   "category": "transport",
+   "tags": [
+    "medium",
+    "station"
+   ],
+   "dims": "45x25x35",
+   "blocks": 11074,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\transport_classic-train-station-design_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_coastal-lighthouse-polished-andesite-stone-b_mc-mod_x.schem",
+   "name": "Coastal Lighthouse &#8211; Polished Andesite &amp; Stone Bricks",
+   "category": "residential",
+   "tags": [
+    "house",
+    "small",
+    "water"
+   ],
+   "dims": "11x29x16",
+   "blocks": 1211,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_coastal-lighthouse-polished-andesite-stone-b_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_coastal-lighthouse-structure_mc-mod_x.schem",
+   "name": "Coastal Lighthouse Structure",
+   "category": "residential",
+   "tags": [
+    "house",
+    "medium",
+    "tall",
+    "water"
+   ],
+   "dims": "17x41x29",
+   "blocks": 3044,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_coastal-lighthouse-structure_mc-mod_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "towers_coastal-lighthouse-tower_mc-mod_x.schem",
+   "name": "Coastal Lighthouse Tower",
+   "category": "towers",
+   "tags": [
+    "house",
+    "large",
+    "tall",
+    "tower",
+    "water"
+   ],
+   "dims": "40x97x35",
+   "blocks": 15925,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_coastal-lighthouse-tower_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_cobblestone-house-design_mc-mod_x.schem",
+   "name": "Cobblestone House Design",
+   "category": "residential",
+   "tags": [
+    "house",
+    "small"
+   ],
+   "dims": "23x8x31",
+   "blocks": 515,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_cobblestone-house-design_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_communist-apartment-block_mc-mod_x.schem",
+   "name": "Communist Apartment Block",
+   "category": "residential",
+   "tags": [
+    "apartment",
+    "large",
+    "tall"
+   ],
+   "dims": "27x61x105",
+   "blocks": 31120,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_communist-apartment-block_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_compact-football-stadium_mc-mod_x.schem",
+   "name": "Compact Football Stadium",
+   "category": "public",
+   "tags": [
+    "large",
+    "stadium"
+   ],
+   "dims": "83x30x96",
+   "blocks": 25152,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_compact-football-stadium_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "roads_compact-highway-gas-station_mc-mod_x.schem",
+   "name": "Compact Highway Gas Station",
+   "category": "roads",
+   "tags": [
+    "medium",
+    "road",
+    "station"
+   ],
+   "dims": "41x13x60",
+   "blocks": 7769,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\roads_compact-highway-gas-station_mc-mod_x.png",
+   "metaFlags": []
+  }
+ ]
+}

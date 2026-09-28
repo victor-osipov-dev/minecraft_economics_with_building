@@ -1,0 +1,576 @@
+{
+ "batch": 25,
+ "items": [
+  {
+   "file": "commercial_witchs-potion-shop-house_mc-mod_x.schematic",
+   "name": "Witch’s Potion Shop House",
+   "category": "commercial",
+   "tags": [
+    "house",
+    "shop",
+    "small"
+   ],
+   "dims": "17x21x21",
+   "blocks": 1985,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_witchs-potion-shop-house_mc-mod_x.png",
+   "metaFlags": [
+    "non-real/fantasy"
+   ]
+  },
+  {
+   "file": "commercial_fallout-3-diner-restaurant-build_mc-mod_x.schematic",
+   "name": "Fallout 3 Diner Restaurant Build",
+   "category": "commercial",
+   "tags": [
+    "tiny"
+   ],
+   "dims": "17x6x14",
+   "blocks": 499,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_fallout-3-diner-restaurant-build_mc-mod_x.png",
+   "metaFlags": [
+    "franchise",
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "commercial_gold-bank-vault-tower_mc-mod_x.schematic",
+   "name": "Gold Bank Vault Tower",
+   "category": "commercial",
+   "tags": [
+    "bank",
+    "small",
+    "tower"
+   ],
+   "dims": "16x15x11",
+   "blocks": 1087,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_gold-bank-vault-tower_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "commercial_modern-shopping-mall_mc-mod_1.14.4.schem",
+   "name": "Modern Shopping Mall",
+   "category": "commercial",
+   "tags": [
+    "medium",
+    "modern",
+    "shop",
+    "tall"
+   ],
+   "dims": "43x41x33",
+   "blocks": 13257,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_modern-shopping-mall_mc-mod_1.14.4.png",
+   "metaFlags": []
+  },
+  {
+   "file": "commercial_birch-blacksmith-shop_mc-mod_x.schematic",
+   "name": "Birch Blacksmith Shop",
+   "category": "commercial",
+   "tags": [
+    "shop",
+    "tiny",
+    "tree"
+   ],
+   "dims": "7x6x10",
+   "blocks": 276,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_birch-blacksmith-shop_mc-mod_x.png",
+   "metaFlags": [
+    "non-real/fantasy"
+   ]
+  },
+  {
+   "file": "commercial_seabubbles-cafe-building_mc-mod_x.schematic",
+   "name": "Seabubbles Cafe Building",
+   "category": "commercial",
+   "tags": [
+    "tiny"
+   ],
+   "dims": "14x10x14",
+   "blocks": 417,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_seabubbles-cafe-building_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "commercial_blacksmith-shop-structure_mc-mod_x.schematic",
+   "name": "Blacksmith Shop Structure",
+   "category": "commercial",
+   "tags": [
+    "shop",
+    "tiny"
+   ],
+   "dims": "7x6x10",
+   "blocks": 276,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_blacksmith-shop-structure_mc-mod_x.png",
+   "metaFlags": [
+    "non-real/fantasy",
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "commercial_joes-diner-restaurant_mc-mod_x.schematic",
+   "name": "Joe’s Diner Restaurant",
+   "category": "commercial",
+   "tags": [
+    "tiny"
+   ],
+   "dims": "16x9x13",
+   "blocks": 929,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_joes-diner-restaurant_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "commercial_brick-blacksmith-shop_mc-mod_x.schematic",
+   "name": "Brick Blacksmith Shop",
+   "category": "commercial",
+   "tags": [
+    "shop",
+    "tiny"
+   ],
+   "dims": "7x6x10",
+   "blocks": 276,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_brick-blacksmith-shop_mc-mod_x.png",
+   "metaFlags": [
+    "non-real/fantasy"
+   ]
+  },
+  {
+   "file": "commercial_modern-fast-food-restaurant_mc-mod_x.schematic",
+   "name": "Modern Fast Food Restaurant",
+   "category": "commercial",
+   "tags": [
+    "modern",
+    "small"
+   ],
+   "dims": "18x24x25",
+   "blocks": 960,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_modern-fast-food-restaurant_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "commercial_blacksmith-shop-npc_mc-mod_x.schematic",
+   "name": "Blacksmith Shop NPC",
+   "category": "commercial",
+   "tags": [
+    "shop",
+    "tiny"
+   ],
+   "dims": "7x6x10",
+   "blocks": 276,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_blacksmith-shop-npc_mc-mod_x.png",
+   "metaFlags": [
+    "non-real/fantasy"
+   ]
+  },
+  {
+   "file": "commercial_mcdonalds-restaurant-with-play-area_mc-mod_x.schematic",
+   "name": "McDonald’s Restaurant with Play Area",
+   "category": "commercial",
+   "tags": [
+    "medium"
+   ],
+   "dims": "55x24x67",
+   "blocks": 7239,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_mcdonalds-restaurant-with-play-area_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "commercial_blacksmith-shop-in-jungle-setting_mc-mod_x.schematic",
+   "name": "Blacksmith Shop in Jungle Setting",
+   "category": "commercial",
+   "tags": [
+    "shop",
+    "tiny"
+   ],
+   "dims": "7x6x10",
+   "blocks": 276,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_blacksmith-shop-in-jungle-setting_mc-mod_x.png",
+   "metaFlags": [
+    "non-real/fantasy"
+   ]
+  },
+  {
+   "file": "commercial_spanish-italian-fusion-restaurant_mc-mod_x.schematic",
+   "name": "Spanish Italian Fusion Restaurant",
+   "category": "commercial",
+   "tags": [
+    "medium"
+   ],
+   "dims": "35x30x36",
+   "blocks": 3381,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_spanish-italian-fusion-restaurant_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "commercial_oak-blacksmith-shop_mc-mod_x.schematic",
+   "name": "Oak Blacksmith Shop",
+   "category": "commercial",
+   "tags": [
+    "shop",
+    "tiny",
+    "tree"
+   ],
+   "dims": "7x6x10",
+   "blocks": 276,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_oak-blacksmith-shop_mc-mod_x.png",
+   "metaFlags": [
+    "non-real/fantasy"
+   ]
+  },
+  {
+   "file": "commercial_mcdonalds-restaurant-building_mc-mod_x.schematic",
+   "name": "McDonald’s Restaurant Building",
+   "category": "commercial",
+   "tags": [
+    "medium"
+   ],
+   "dims": "29x15x36",
+   "blocks": 2794,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_mcdonalds-restaurant-building_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "commercial_blacksmith-shop-sandstone-design_mc-mod_x.schematic",
+   "name": "Blacksmith Shop – Sandstone Design",
+   "category": "commercial",
+   "tags": [
+    "shop",
+    "tiny"
+   ],
+   "dims": "7x6x10",
+   "blocks": 276,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_blacksmith-shop-sandstone-design_mc-mod_x.png",
+   "metaFlags": [
+    "non-real/fantasy"
+   ]
+  },
+  {
+   "file": "commercial_restaurant-bar-towers_mc-mod_1.14.2.schematic",
+   "name": "Restaurant Bar Towers",
+   "category": "commercial",
+   "tags": [
+    "medium",
+    "tall",
+    "tower"
+   ],
+   "dims": "20x92x41",
+   "blocks": 13680,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_restaurant-bar-towers_mc-mod_1.14.2.png",
+   "metaFlags": []
+  },
+  {
+   "file": "commercial_spruce-blacksmith-shop_mc-mod_x.schematic",
+   "name": "Spruce Blacksmith Shop",
+   "category": "commercial",
+   "tags": [
+    "shop",
+    "tiny",
+    "tree"
+   ],
+   "dims": "7x6x10",
+   "blocks": 276,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_spruce-blacksmith-shop_mc-mod_x.png",
+   "metaFlags": [
+    "non-real/fantasy"
+   ]
+  },
+  {
+   "file": "commercial_mcdonalds-restaurant_mc-mod_x.schematic",
+   "name": "McDonalds Restaurant",
+   "category": "commercial",
+   "tags": [
+    "small"
+   ],
+   "dims": "18x16x28",
+   "blocks": 3441,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_mcdonalds-restaurant_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "commercial_blacksmith-shop-exterior_mc-mod_x.schematic",
+   "name": "Blacksmith Shop Exterior",
+   "category": "commercial",
+   "tags": [
+    "shop",
+    "tiny"
+   ],
+   "dims": "7x6x10",
+   "blocks": 276,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_blacksmith-shop-exterior_mc-mod_x.png",
+   "metaFlags": [
+    "non-real/fantasy"
+   ]
+  },
+  {
+   "file": "commercial_small-minecraft-bakery-shop_mc-mod_x.schematic",
+   "name": "Small Minecraft Bakery Shop",
+   "category": "commercial",
+   "tags": [
+    "shop",
+    "tiny"
+   ],
+   "dims": "5x4x10",
+   "blocks": 76,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_small-minecraft-bakery-shop_mc-mod_x.png",
+   "metaFlags": [
+    "franchise"
+   ]
+  },
+  {
+   "file": "commercial_restaurant-building_mc-mod_x.schematic",
+   "name": "Restaurant Building",
+   "category": "commercial",
+   "tags": [
+    "medium"
+   ],
+   "dims": "35x36x27",
+   "blocks": 1686,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_restaurant-building_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "commercial_gucci-store_mc-mod_x.schematic",
+   "name": "Gucci Store",
+   "category": "commercial",
+   "tags": [
+    "shop",
+    "small"
+   ],
+   "dims": "21x17x12",
+   "blocks": 727,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_gucci-store_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_quartz-gold-modern-office-tower_mc-mod_x.schematic",
+   "name": "Quartz Gold Modern Office Tower",
+   "category": "towers",
+   "tags": [
+    "medium",
+    "modern",
+    "office",
+    "tall",
+    "tower"
+   ],
+   "dims": "17x98x33",
+   "blocks": 22594,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_quartz-gold-modern-office-tower_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_cobblestone-and-glass-portal-towers_mc-mod_x.schematic",
+   "name": "Cobblestone and Glass Portal Towers",
+   "category": "public",
+   "tags": [
+    "large",
+    "tall",
+    "tower"
+   ],
+   "dims": "74x71x92",
+   "blocks": 28350,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_cobblestone-and-glass-portal-towers_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_abandonedcraft-fortress-tower_mc-mod_x.schematic",
+   "name": "Abandonedcraft Fortress Tower",
+   "category": "towers",
+   "tags": [
+    "castle-like",
+    "large",
+    "tall",
+    "tower"
+   ],
+   "dims": "28x125x49",
+   "blocks": 30854,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_abandonedcraft-fortress-tower_mc-mod_x.png",
+   "metaFlags": [
+    "non-real/fantasy"
+   ]
+  },
+  {
+   "file": "towers_big-bend-skyscraper-600m-tall_mc-mod_x.schematic",
+   "name": "Big Bend Skyscraper 600m Tall",
+   "category": "towers",
+   "tags": [
+    "huge",
+    "tall",
+    "tower"
+   ],
+   "dims": "170x184x32",
+   "blocks": 184334,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_big-bend-skyscraper-600m-tall_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_desert-tower-with-enchanting-room_mc-mod_x.schematic",
+   "name": "Desert Tower with Enchanting Room",
+   "category": "towers",
+   "tags": [
+    "medium",
+    "tall",
+    "tower"
+   ],
+   "dims": "33x56x26",
+   "blocks": 4432,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_desert-tower-with-enchanting-room_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_rustic-village-with-longhouse-and-towers_mc-mod_x.schematic",
+   "name": "Rustic Village with Longhouse and Towers",
+   "category": "public",
+   "tags": [
+    "house",
+    "large",
+    "tower"
+   ],
+   "dims": "68x28x75",
+   "blocks": 21060,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_rustic-village-with-longhouse-and-towers_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "public_desert-water-temple-with-symmetrical-towers_mc-mod_x.schematic",
+   "name": "Desert Water Temple With Symmetrical Towers",
+   "category": "public",
+   "tags": [
+    "medium",
+    "tower"
+   ],
+   "dims": "59x19x59",
+   "blocks": 19943,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\public_desert-water-temple-with-symmetrical-towers_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_block-showcase-tower-with-mini-biomes_mc-mod_x.schematic",
+   "name": "Block Showcase Tower with Mini Biomes",
+   "category": "towers",
+   "tags": [
+    "large",
+    "tower"
+   ],
+   "dims": "97x23x98",
+   "blocks": 50275,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_block-showcase-tower-with-mini-biomes_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_steampunk-skyscraper-model_mc-mod_1.19.3.schem",
+   "name": "Steampunk Skyscraper Model",
+   "category": "towers",
+   "tags": [
+    "huge",
+    "tall",
+    "tower"
+   ],
+   "dims": "53x251x56",
+   "blocks": 28420,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_steampunk-skyscraper-model_mc-mod_1.19.3.png",
+   "metaFlags": [
+    "non-real/fantasy"
+   ]
+  },
+  {
+   "file": "towers_crusader-style-small-tower_mc-mod_x.schematic",
+   "name": "Crusader Style Small Tower",
+   "category": "towers",
+   "tags": [
+    "shop",
+    "small",
+    "tower"
+   ],
+   "dims": "11x22x11",
+   "blocks": 853,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_crusader-style-small-tower_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_steampunk-skyscraper-model-4_mc-mod_1.19.3.schem",
+   "name": "Steampunk Skyscraper Model 4",
+   "category": "towers",
+   "tags": [
+    "huge",
+    "tall",
+    "tower"
+   ],
+   "dims": "44x251x50",
+   "blocks": 35644,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_steampunk-skyscraper-model-4_mc-mod_1.19.3.png",
+   "metaFlags": [
+    "non-real/fantasy"
+   ]
+  },
+  {
+   "file": "towers_stone-tower-with-automatic-lighting_mc-mod_x.schematic",
+   "name": "Stone Tower with Automatic Lighting",
+   "category": "towers",
+   "tags": [
+    "tiny",
+    "tower"
+   ],
+   "dims": "7x16x7",
+   "blocks": 332,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_stone-tower-with-automatic-lighting_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_steampunk-skyscraper-model-5-tower_mc-mod_1.19.3.schem",
+   "name": "Steampunk Skyscraper Model 5 Tower",
+   "category": "towers",
+   "tags": [
+    "huge",
+    "tall",
+    "tower"
+   ],
+   "dims": "48x273x47",
+   "blocks": 51498,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_steampunk-skyscraper-model-5-tower_mc-mod_1.19.3.png",
+   "metaFlags": [
+    "non-real/fantasy"
+   ]
+  },
+  {
+   "file": "towers_eiffel-tower_mc-mod_x.schematic",
+   "name": "Eiffel Tower",
+   "category": "towers",
+   "tags": [
+    "huge",
+    "tall",
+    "tower"
+   ],
+   "dims": "65x193x65",
+   "blocks": 23853,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_eiffel-tower_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_tower-trivia-game-show_mc-mod_x.schematic",
+   "name": "Tower Trivia Game Show",
+   "category": "towers",
+   "tags": [
+    "medium",
+    "tower"
+   ],
+   "dims": "26x30x37",
+   "blocks": 4816,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_tower-trivia-game-show_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_enchanted-end-stone-brick-tower_mc-mod_x.schematic",
+   "name": "Enchanted End Stone Brick Tower",
+   "category": "towers",
+   "tags": [
+    "medium",
+    "tall",
+    "tower"
+   ],
+   "dims": "17x67x17",
+   "blocks": 632,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_enchanted-end-stone-brick-tower_mc-mod_x.png",
+   "metaFlags": [
+    "non-real/fantasy"
+   ]
+  }
+ ]
+}

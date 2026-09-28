@@ -1,0 +1,577 @@
+{
+ "batch": 27,
+ "items": [
+  {
+   "file": "parks_piston-fountain-small-garden-feature_mc-mod_x.schematic",
+   "name": "Piston Fountain – Small Garden Feature",
+   "category": "parks",
+   "tags": [
+    "fountain",
+    "park",
+    "shop",
+    "tiny",
+    "water"
+   ],
+   "dims": "7x11x7",
+   "blocks": 230,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\parks_piston-fountain-small-garden-feature_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "parks_mini-hedge-maze-with-cave-entrance_mc-mod_x.schematic",
+   "name": "Mini Hedge Maze With Cave Entrance",
+   "category": "parks",
+   "tags": [
+    "small"
+   ],
+   "dims": "20x15x18",
+   "blocks": 1625,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\parks_mini-hedge-maze-with-cave-entrance_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "parks_small-town-square_mc-mod_x.schematic",
+   "name": "Small Town Square",
+   "category": "parks",
+   "tags": [
+    "huge",
+    "park",
+    "shop",
+    "tall"
+   ],
+   "dims": "73x256x64",
+   "blocks": 21597,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\parks_small-town-square_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "parks_rustic-farmhouse-with-garden-and-pond_mc-mod_x.schematic",
+   "name": "Rustic Farmhouse with Garden and Pond",
+   "category": "parks",
+   "tags": [
+    "house",
+    "medium",
+    "park",
+    "pool",
+    "water"
+   ],
+   "dims": "37x29x52",
+   "blocks": 11943,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\parks_rustic-farmhouse-with-garden-and-pond_mc-mod_x.png",
+   "metaFlags": [
+    "non-building-in-name"
+   ]
+  },
+  {
+   "file": "parks_sea-creature-park-megalodon-whale_mc-mod_x.schematic",
+   "name": "Sea Creature Park Megalodon Whale",
+   "category": "parks",
+   "tags": [
+    "medium",
+    "park"
+   ],
+   "dims": "52x26x62",
+   "blocks": 71810,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\parks_sea-creature-park-megalodon-whale_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "parks_small-garden-oasis_mc-mod_x.schematic",
+   "name": "Small Garden Oasis",
+   "category": "parks",
+   "tags": [
+    "medium",
+    "park",
+    "shop",
+    "tall"
+   ],
+   "dims": "35x46x24",
+   "blocks": 2364,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\parks_small-garden-oasis_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "parks_village-fountain_mc-mod_x.schematic",
+   "name": "Village Fountain",
+   "category": "parks",
+   "tags": [
+    "fountain",
+    "house",
+    "small",
+    "water"
+   ],
+   "dims": "13x13x17",
+   "blocks": 831,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\parks_village-fountain_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "parks_soviet-style-city-square_mc-mod_x.schematic",
+   "name": "Soviet Style City Square",
+   "category": "parks",
+   "tags": [
+    "park",
+    "small"
+   ],
+   "dims": "32x13x23",
+   "blocks": 1296,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\parks_soviet-style-city-square_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "parks_two-cubes-modern-house-with-garden-pool_mc-mod_x.schematic",
+   "name": "Two Cubes Modern House With Garden Pool",
+   "category": "parks",
+   "tags": [
+    "house",
+    "modern",
+    "park",
+    "pool",
+    "small",
+    "water"
+   ],
+   "dims": "20x17x18",
+   "blocks": 1803,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\parks_two-cubes-modern-house-with-garden-pool_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "parks_park-ball-structure_mc-mod_x.schematic",
+   "name": "Park Ball Structure",
+   "category": "parks",
+   "tags": [
+    "medium",
+    "park"
+   ],
+   "dims": "41x14x39",
+   "blocks": 4096,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\parks_park-ball-structure_mc-mod_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "parks_creeper-head-fountain_mc-mod_x.schematic",
+   "name": "Creeper Head Fountain",
+   "category": "parks",
+   "tags": [
+    "fountain",
+    "small",
+    "water"
+   ],
+   "dims": "14x15x14",
+   "blocks": 813,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\parks_creeper-head-fountain_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "parks_simple-minecraft-tree_mc-mod_x.schematic",
+   "name": "Simple Minecraft Tree",
+   "category": "parks",
+   "tags": [
+    "tiny",
+    "tree"
+   ],
+   "dims": "8x12x6",
+   "blocks": 153,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\parks_simple-minecraft-tree_mc-mod_x.png",
+   "metaFlags": [
+    "franchise"
+   ]
+  },
+  {
+   "file": "parks_gothic-square-structure_mc-mod_1.20.1.schem",
+   "name": "Gothic Square Structure",
+   "category": "parks",
+   "tags": [
+    "large",
+    "park"
+   ],
+   "dims": "91x29x91",
+   "blocks": 14299,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\parks_gothic-square-structure_mc-mod_1.20.1.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "parks_olive-garden-restaurant-salt-lake-city_mc-mod_1.16.5.schem",
+   "name": "Olive Garden Restaurant Salt Lake City",
+   "category": "parks",
+   "tags": [
+    "park",
+    "small"
+   ],
+   "dims": "26x10x41",
+   "blocks": 2843,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\parks_olive-garden-restaurant-salt-lake-city_mc-mod_1.16.5.png",
+   "metaFlags": []
+  },
+  {
+   "file": "parks_playground-park-for-minecrafty-town_mc-mod_1.19.4.schem",
+   "name": "Playground Park for Minecrafty Town",
+   "category": "parks",
+   "tags": [
+    "park",
+    "small"
+   ],
+   "dims": "18x9x16",
+   "blocks": 122,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\parks_playground-park-for-minecrafty-town_mc-mod_1.19.4.png",
+   "metaFlags": [
+    "franchise"
+   ]
+  },
+  {
+   "file": "parks_survival-sphere-house-and-garden_mc-mod_x.schematic",
+   "name": "Survival Sphere House and Garden",
+   "category": "parks",
+   "tags": [
+    "house",
+    "large",
+    "park",
+    "tall"
+   ],
+   "dims": "70x50x69",
+   "blocks": 27477,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\parks_survival-sphere-house-and-garden_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "parks_spanish-moss-oak-tree_mc-mod_x.schematic",
+   "name": "Spanish Moss Oak Tree",
+   "category": "parks",
+   "tags": [
+    "small",
+    "tree"
+   ],
+   "dims": "20x19x21",
+   "blocks": 236,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\parks_spanish-moss-oak-tree_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "parks_cozy-brick-home-with-garden-and-storage_mc-mod_x.schematic",
+   "name": "Cozy Brick Home with Garden and Storage",
+   "category": "parks",
+   "tags": [
+    "house",
+    "medium",
+    "park"
+   ],
+   "dims": "44x18x31",
+   "blocks": 3871,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\parks_cozy-brick-home-with-garden-and-storage_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "parks_medium-palm-tree-with-cocoa-pods_mc-mod_x.schematic",
+   "name": "Medium Palm Tree With Cocoa Pods",
+   "category": "parks",
+   "tags": [
+    "tiny",
+    "tree"
+   ],
+   "dims": "10x14x10",
+   "blocks": 36,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\parks_medium-palm-tree-with-cocoa-pods_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "parks_beautiful-garden_mc-mod_x.schematic",
+   "name": "Beautiful Garden",
+   "category": "parks",
+   "tags": [
+    "medium",
+    "park"
+   ],
+   "dims": "45x14x45",
+   "blocks": 130,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\parks_beautiful-garden_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "parks_tropical-palm-tree_mc-mod_x.schematic",
+   "name": "Tropical Palm Tree",
+   "category": "parks",
+   "tags": [
+    "tiny",
+    "tree"
+   ],
+   "dims": "7x9x4",
+   "blocks": 38,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\parks_tropical-palm-tree_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "parks_rustic-garden-shed_mc-mod_x.schematic",
+   "name": "Rustic Garden Shed",
+   "category": "parks",
+   "tags": [
+    "park",
+    "tiny"
+   ],
+   "dims": "12x8x7",
+   "blocks": 124,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\parks_rustic-garden-shed_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "parks_small-oak-decorative-tree_mc-mod_x.schematic",
+   "name": "Small Oak Decorative Tree",
+   "category": "parks",
+   "tags": [
+    "shop",
+    "tiny",
+    "tree"
+   ],
+   "dims": "10x13x11",
+   "blocks": 101,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\parks_small-oak-decorative-tree_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "parks_small-tree-decoration_mc-mod_x.schematic",
+   "name": "Small Tree Decoration",
+   "category": "parks",
+   "tags": [
+    "shop",
+    "tiny",
+    "tree"
+   ],
+   "dims": "5x10x7",
+   "blocks": 11,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\parks_small-tree-decoration_mc-mod_x.png",
+   "metaFlags": [
+    "almost-empty"
+   ]
+  },
+  {
+   "file": "parks_3tris-modern-garden-structure_mc-mod_x.schematic",
+   "name": "3Tri’s Modern Garden Structure",
+   "category": "parks",
+   "tags": [
+    "medium",
+    "modern",
+    "park"
+   ],
+   "dims": "47x37x50",
+   "blocks": 5002,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\parks_3tris-modern-garden-structure_mc-mod_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "parks_decorative-lantern-tree_mc-mod_x.schematic",
+   "name": "Decorative Lantern Tree",
+   "category": "parks",
+   "tags": [
+    "tiny",
+    "tree"
+   ],
+   "dims": "10x11x11",
+   "blocks": 65,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\parks_decorative-lantern-tree_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "parks_cozy-house-with-garden-and-garage_mc-mod_x.schematic",
+   "name": "Cozy House with Garden and Garage",
+   "category": "parks",
+   "tags": [
+    "house",
+    "park",
+    "parking",
+    "tiny"
+   ],
+   "dims": "13x12x10",
+   "blocks": 977,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\parks_cozy-house-with-garden-and-garage_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "parks_japanese-garden-house-spruce-dark-oak_mc-mod_x.schematic",
+   "name": "Japanese Garden House – Spruce & Dark Oak",
+   "category": "parks",
+   "tags": [
+    "house",
+    "medium",
+    "park",
+    "tree"
+   ],
+   "dims": "54x23x56",
+   "blocks": 8179,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\parks_japanese-garden-house-spruce-dark-oak_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "parks_massive-tree-structure_mc-mod_x.schematic",
+   "name": "Massive Tree Structure",
+   "category": "parks",
+   "tags": [
+    "medium",
+    "tree"
+   ],
+   "dims": "39x11x48",
+   "blocks": 4306,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\parks_massive-tree-structure_mc-mod_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "parks_large-romantic-tree_mc-mod_x.schematic",
+   "name": "Large Romantic Tree",
+   "category": "parks",
+   "tags": [
+    "medium",
+    "tall",
+    "tree"
+   ],
+   "dims": "42x44x44",
+   "blocks": 14885,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\parks_large-romantic-tree_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "parks_custom-birch-tree-decoration_mc-mod_x.schematic",
+   "name": "Custom Birch Tree Decoration",
+   "category": "parks",
+   "tags": [
+    "tiny",
+    "tree"
+   ],
+   "dims": "8x25x8",
+   "blocks": 39,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\parks_custom-birch-tree-decoration_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "intersections_intersection-road_mcbuild_x.schem",
+   "name": "Intersection Road",
+   "category": "intersections",
+   "tags": [
+    "medium",
+    "road"
+   ],
+   "dims": "171x1x171",
+   "blocks": 29241,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\intersections_intersection-road_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "intersections_sewer-template-intersection-shape_mcbuild_x.schem",
+   "name": "Sewer Template Intersection Shape",
+   "category": "intersections",
+   "tags": [
+    "small"
+   ],
+   "dims": "47x6x47",
+   "blocks": 1923,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\intersections_sewer-template-intersection-shape_mcbuild_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "intersections_drive-on-the-right-dual-simplex-minecart-track-intersectio_mcbuild_x.schem",
+   "name": "Drive on the Right Dual Simplex Minecart Track Intersection",
+   "category": "intersections",
+   "tags": [
+    "car",
+    "medium"
+   ],
+   "dims": "33x34x67",
+   "blocks": 26897,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\intersections_drive-on-the-right-dual-simplex-minecart-track-intersectio_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "intersections_intersection_mcbuild_x.schem",
+   "name": "Intersection",
+   "category": "intersections",
+   "tags": [
+    "medium"
+   ],
+   "dims": "65x10x65",
+   "blocks": 4372,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\intersections_intersection_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "intersections_stoplight_mcbuild_x.schem",
+   "name": "Stoplight",
+   "category": "intersections",
+   "tags": [
+    "tiny"
+   ],
+   "dims": "3x9x3",
+   "blocks": 65,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\intersections_stoplight_mcbuild_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "roads_ride-road-build_buildschematics_x.schematic",
+   "name": "Ride Road Build",
+   "category": "roads",
+   "tags": [
+    "large",
+    "road",
+    "tall"
+   ],
+   "dims": "186x82x10",
+   "blocks": 13336,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\roads_ride-road-build_buildschematics_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "roads_high-speed-quartz-road_buildschematics_x.schematic",
+   "name": "High-Speed Quartz Road",
+   "category": "roads",
+   "tags": [
+    "road",
+    "tiny"
+   ],
+   "dims": "6x2x2",
+   "blocks": 1,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\roads_high-speed-quartz-road_buildschematics_x.png",
+   "metaFlags": [
+    "almost-empty"
+   ]
+  },
+  {
+   "file": "roads_fast-road-car-structure_buildschematics_x.nbt",
+   "name": "Fast Road Car Structure",
+   "category": "roads",
+   "tags": [
+    "car",
+    "road",
+    "tiny"
+   ],
+   "dims": "8x3x5",
+   "blocks": 6,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\roads_fast-road-car-structure_buildschematics_x.png",
+   "metaFlags": [
+    "non-building-in-name",
+    "meta-word-in-name",
+    "almost-empty"
+   ]
+  },
+  {
+   "file": "intersections_wild-west-crossroad_mcbuild_x.schem",
+   "name": "Wild West Crossroad",
+   "category": "intersections",
+   "tags": [
+    "large",
+    "road"
+   ],
+   "dims": "68x30x69",
+   "blocks": 12735,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\intersections_wild-west-crossroad_mcbuild_x.png",
+   "metaFlags": []
+  }
+ ]
+}

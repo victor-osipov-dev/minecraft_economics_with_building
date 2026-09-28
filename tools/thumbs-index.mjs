@@ -1,5 +1,7 @@
 import fs from "node:fs";
-const DEST = "C:/Users/victor/Desktop/Projects/babylon/game/schemes";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+const DEST = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "schemes");
 const catalog = JSON.parse(fs.readFileSync(`${DEST}/catalog.json`, "utf8"));
 
 const TAG_RULES = [

@@ -1,0 +1,573 @@
+{
+ "batch": 13,
+ "items": [
+  {
+   "file": "towers_hotel-hilton_mc-mod_x.schem",
+   "name": "Small Hilton Hotel Build",
+   "category": "towers",
+   "tags": [
+    "hotel",
+    "medium",
+    "shop"
+   ],
+   "dims": "17x31x31",
+   "blocks": 6431,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_hotel-hilton_mc-mod_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "towers_hotel-honk-house_mc-mod_x.schem",
+   "name": "Hotel Honk House",
+   "category": "towers",
+   "tags": [
+    "hotel",
+    "house",
+    "medium"
+   ],
+   "dims": "41x37x38",
+   "blocks": 23840,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_hotel-honk-house_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_hotel-opal-seaside-resort_mc-mod_x.schem",
+   "name": "Hotel Opal Seaside Resort",
+   "category": "towers",
+   "tags": [
+    "hotel",
+    "large",
+    "tall"
+   ],
+   "dims": "66x66x84",
+   "blocks": 53407,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_hotel-opal-seaside-resort_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_hotel-weiss-v2_mc-mod_x.schem",
+   "name": "Hotel Weiss V2",
+   "category": "towers",
+   "tags": [
+    "hotel",
+    "large",
+    "tall"
+   ],
+   "dims": "50x52x50",
+   "blocks": 30321,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_hotel-weiss-v2_mc-mod_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "roads_immersive-railroading-bridge_mc-mod_x.schem",
+   "name": "Immersive Railroading Bridge",
+   "category": "roads",
+   "tags": [
+    "bridge",
+    "road",
+    "small"
+   ],
+   "dims": "11x8x40",
+   "blocks": 611,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\roads_immersive-railroading-bridge_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "roads_immersive-railroading-roundhouse-structure_mc-mod_x.schem",
+   "name": "Immersive Railroading Roundhouse Structure",
+   "category": "roads",
+   "tags": [
+    "house",
+    "large",
+    "road"
+   ],
+   "dims": "110x15x111",
+   "blocks": 12086,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\roads_immersive-railroading-roundhouse-structure_mc-mod_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "roads_immersive-railroading-steamworks-station_mc-mod_x.schem",
+   "name": "Immersive Railroading Steamworks Station",
+   "category": "roads",
+   "tags": [
+    "medium",
+    "road",
+    "station"
+   ],
+   "dims": "66x18x41",
+   "blocks": 5136,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\roads_immersive-railroading-steamworks-station_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_improved-warehouse-storage-structure_mc-mod_x.schem",
+   "name": "Improved Warehouse Storage Structure",
+   "category": "residential",
+   "tags": [
+    "house",
+    "huge"
+   ],
+   "dims": "121x20x217",
+   "blocks": 42262,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_improved-warehouse-storage-structure_mc-mod_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "towers_indian-style-jade-mansion-tower_mc-mod_x.schem",
+   "name": "Indian Style Jade Mansion Tower",
+   "category": "towers",
+   "tags": [
+    "house",
+    "large",
+    "tall",
+    "tower"
+   ],
+   "dims": "61x65x62",
+   "blocks": 23887,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_indian-style-jade-mansion-tower_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "bridges_integral-bridge-structure_mc-mod_x.schem",
+   "name": "Integral Bridge Structure",
+   "category": "bridges",
+   "tags": [
+    "bridge",
+    "small"
+   ],
+   "dims": "49x12x7",
+   "blocks": 726,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\bridges_integral-bridge-structure_mc-mod_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "residential_island-house-lakefront_mc-mod_x.schem",
+   "name": "Island House Lakefront",
+   "category": "residential",
+   "tags": [
+    "house",
+    "large"
+   ],
+   "dims": "63x24x86",
+   "blocks": 52320,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_island-house-lakefront_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_item-storage-warehouse_mc-mod_x.schem",
+   "name": "Item Storage Warehouse",
+   "category": "residential",
+   "tags": [
+    "house",
+    "medium"
+   ],
+   "dims": "84x16x19",
+   "blocks": 8496,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_item-storage-warehouse_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_japanese-tower-style-asian-structure_mc-mod_x.schem",
+   "name": "Japanese Tower Style Asian Structure",
+   "category": "towers",
+   "tags": [
+    "small",
+    "tower"
+   ],
+   "dims": "13x30x13",
+   "blocks": 991,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_japanese-tower-style-asian-structure_mc-mod_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "towers_jive-49-modern-condominium-tower_mc-mod_x.schem",
+   "name": "Jive 49 Modern Condominium Tower",
+   "category": "towers",
+   "tags": [
+    "apartment",
+    "large",
+    "modern",
+    "tall",
+    "tower"
+   ],
+   "dims": "37x100x81",
+   "blocks": 46141,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_jive-49-modern-condominium-tower_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "bridges_jungle-spawn-bridge_mc-mod_x.schem",
+   "name": "Jungle Spawn Bridge",
+   "category": "bridges",
+   "tags": [
+    "bridge",
+    "tiny"
+   ],
+   "dims": "5x5x28",
+   "blocks": 243,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\bridges_jungle-spawn-bridge_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_keralis-style-giant-mansion_mc-mod_x.schem",
+   "name": "Keralis Style Giant Mansion",
+   "category": "residential",
+   "tags": [
+    "house",
+    "huge"
+   ],
+   "dims": "201x30x149",
+   "blocks": 50850,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_keralis-style-giant-mansion_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_kingdom-banker-shop-house_mc-mod_x.schem",
+   "name": "Kingdom Banker Shop House",
+   "category": "residential",
+   "tags": [
+    "bank",
+    "house",
+    "shop",
+    "tiny"
+   ],
+   "dims": "11x11x13",
+   "blocks": 587,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_kingdom-banker-shop-house_mc-mod_x.png",
+   "metaFlags": [
+    "non-real/fantasy"
+   ]
+  },
+  {
+   "file": "towers_kokotonis-furnished-tower_mc-mod_x.schem",
+   "name": "Kokotoni&#8217;s Furnished Tower",
+   "category": "towers",
+   "tags": [
+    "medium",
+    "tall",
+    "tower"
+   ],
+   "dims": "31x82x31",
+   "blocks": 14037,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_kokotonis-furnished-tower_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_lapis-and-pickaxe-shop-medium-house_mc-mod_x.schem",
+   "name": "Lapis and Pickaxe Shop &#8211; Medium House",
+   "category": "residential",
+   "tags": [
+    "house",
+    "medium",
+    "shop"
+   ],
+   "dims": "24x37x23",
+   "blocks": 7934,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_lapis-and-pickaxe-shop-medium-house_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "parks_large-car-park_mc-mod_x.schem",
+   "name": "Large Car Park",
+   "category": "parks",
+   "tags": [
+    "car",
+    "medium",
+    "park"
+   ],
+   "dims": "191x2x175",
+   "blocks": 33721,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\parks_large-car-park_mc-mod_x.png",
+   "metaFlags": [
+    "non-building-in-name"
+   ]
+  },
+  {
+   "file": "residential_large-house-and-shop-building_mc-mod_x.schem",
+   "name": "Large House and Shop Building",
+   "category": "residential",
+   "tags": [
+    "house",
+    "large",
+    "shop",
+    "tall"
+   ],
+   "dims": "54x45x58",
+   "blocks": 9061,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_large-house-and-shop-building_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "commercial_large-modern-hotel-jungle-planks_mc-mod_x.schem",
+   "name": "Large Modern Hotel &#8211; Jungle Planks",
+   "category": "commercial",
+   "tags": [
+    "hotel",
+    "medium",
+    "modern"
+   ],
+   "dims": "44x17x30",
+   "blocks": 8029,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_large-modern-hotel-jungle-planks_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_large-ranch-style-minimalist-house_mc-mod_x.schem",
+   "name": "Large Ranch Style Minimalist House",
+   "category": "residential",
+   "tags": [
+    "house",
+    "medium"
+   ],
+   "dims": "64x20x47",
+   "blocks": 19976,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_large-ranch-style-minimalist-house_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_large-server-warehouse_mc-mod_x.schem",
+   "name": "Large Server Warehouse",
+   "category": "residential",
+   "tags": [
+    "house",
+    "large",
+    "tall"
+   ],
+   "dims": "55x105x54",
+   "blocks": 23556,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_large-server-warehouse_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "commercial_large-smithy-workshop_mc-mod_x.schem",
+   "name": "Large Smithy Workshop",
+   "category": "commercial",
+   "tags": [
+    "shop",
+    "small"
+   ],
+   "dims": "19x21x15",
+   "blocks": 1744,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_large-smithy-workshop_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "bridges_large-stone-brick-bridge_mc-mod_x.schem",
+   "name": "Large Stone Brick Bridge",
+   "category": "bridges",
+   "tags": [
+    "bridge",
+    "small"
+   ],
+   "dims": "7x19x68",
+   "blocks": 3728,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\bridges_large-stone-brick-bridge_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "bridges_large-stone-bridge-with-buildings_mc-mod_x.schem",
+   "name": "Large Stone Bridge With Buildings",
+   "category": "bridges",
+   "tags": [
+    "bridge",
+    "small"
+   ],
+   "dims": "37x25x8",
+   "blocks": 1470,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\bridges_large-stone-bridge-with-buildings_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_large-stone-tower_mc-mod_x.schem",
+   "name": "Large Stone Tower",
+   "category": "towers",
+   "tags": [
+    "small",
+    "tall",
+    "tower"
+   ],
+   "dims": "12x52x11",
+   "blocks": 1507,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_large-stone-tower_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_large-survival-mansion-house_mc-mod_x.schem",
+   "name": "Large Survival Mansion House",
+   "category": "residential",
+   "tags": [
+    "house",
+    "medium"
+   ],
+   "dims": "50x25x55",
+   "blocks": 8972,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_large-survival-mansion-house_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_lava-hotel-resort_mc-mod_x.schem",
+   "name": "Lava Hotel Resort",
+   "category": "towers",
+   "tags": [
+    "hotel",
+    "medium"
+   ],
+   "dims": "27x37x33",
+   "blocks": 10512,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_lava-hotel-resort_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_leniland-office-building_mc-mod_x.schem",
+   "name": "Leniland Office Building",
+   "category": "towers",
+   "tags": [
+    "medium",
+    "office",
+    "tall"
+   ],
+   "dims": "32x41x17",
+   "blocks": 8081,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_leniland-office-building_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "transport_light-rail-transit-station_mc-mod_x.schem",
+   "name": "Light Rail Transit Station",
+   "category": "transport",
+   "tags": [
+    "large",
+    "station"
+   ],
+   "dims": "179x35x51",
+   "blocks": 42220,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\transport_light-rail-transit-station_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_lucavas-tower_mc-mod_x.schem",
+   "name": "Lucava&#8217;s Tower",
+   "category": "towers",
+   "tags": [
+    "large",
+    "tall",
+    "tower"
+   ],
+   "dims": "43x118x42",
+   "blocks": 3842,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_lucavas-tower_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_luxury-mansion-with-party-room_mc-mod_x.schem",
+   "name": "Luxury Mansion With Party Room",
+   "category": "residential",
+   "tags": [
+    "house",
+    "large"
+   ],
+   "dims": "84x20x77",
+   "blocks": 25846,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_luxury-mansion-with-party-room_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "towers_luxury-palace-tower-with-elevator_mc-mod_x.schem",
+   "name": "Luxury Palace Tower With Elevator",
+   "category": "towers",
+   "tags": [
+    "large",
+    "tall",
+    "tower"
+   ],
+   "dims": "40x110x40",
+   "blocks": 52275,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\towers_luxury-palace-tower-with-elevator_mc-mod_x.png",
+   "metaFlags": [
+    "non-building-in-name"
+   ]
+  },
+  {
+   "file": "residential_luxury-studio-apartment_mc-mod_x.schem",
+   "name": "Luxury Studio Apartment",
+   "category": "residential",
+   "tags": [
+    "apartment",
+    "tiny"
+   ],
+   "dims": "4x8x6",
+   "blocks": 155,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_luxury-studio-apartment_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "residential_luxury-villa-with-courtyard-and-pool_mc-mod_x.schem",
+   "name": "Luxury Villa with Courtyard and Pool",
+   "category": "residential",
+   "tags": [
+    "house",
+    "medium",
+    "pool",
+    "water"
+   ],
+   "dims": "46x23x47",
+   "blocks": 12194,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\residential_luxury-villa-with-courtyard-and-pool_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "parks_majestic-fountain-structure_mc-mod_x.schem",
+   "name": "Majestic Fountain Structure",
+   "category": "parks",
+   "tags": [
+    "fountain",
+    "medium",
+    "water"
+   ],
+   "dims": "31x36x39",
+   "blocks": 3692,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\parks_majestic-fountain-structure_mc-mod_x.png",
+   "metaFlags": [
+    "meta-word-in-name"
+   ]
+  },
+  {
+   "file": "commercial_market-stall_mc-mod_x.schem",
+   "name": "Market Stall",
+   "category": "commercial",
+   "tags": [
+    "shop",
+    "tiny"
+   ],
+   "dims": "6x5x7",
+   "blocks": 98,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\commercial_market-stall_mc-mod_x.png",
+   "metaFlags": []
+  },
+  {
+   "file": "bridges_massive-lava-tunnel-with-minecart-track_mc-mod_x.schem",
+   "name": "Massive Lava Tunnel With Minecart Track",
+   "category": "bridges",
+   "tags": [
+    "car",
+    "medium"
+   ],
+   "dims": "11x4x1000",
+   "blocks": 12710,
+   "thumb": "C:\\Projects\\minecraft_economics_with_building\\schemes\\thumbs\\bridges_massive-lava-tunnel-with-minecart-track_mc-mod_x.png",
+   "metaFlags": []
+  }
+ ]
+}
