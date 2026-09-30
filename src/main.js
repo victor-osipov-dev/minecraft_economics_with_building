@@ -2130,6 +2130,7 @@ function levelGround() {
 // B6: полоса призрака — цена и управление видны в мире, а не в hints.
 const ghostBarEl = document.getElementById("ghostBar");
 function updateGhostBar() {
+  updateDraftBar(); // баннер черновиков гаснет и без призрака (Q/кнопка)
   if (!previewPlan) {
     ghostBarEl.classList.remove("show");
     return;
@@ -2394,8 +2395,9 @@ document.addEventListener("pointerlockchange", () => {
   lmbFresh = false;
   if (document.pointerLockElement === canvas) {
     // Курсор захвачен — вернулись в игру: паузу снимаем.
-    // A2: панель города остаётся планшетом-виджетом, остальные закрываем.
-    const keepCity = cityPanelEl.classList.contains("show");
+    // A2: планшетом остаётся только панель, открытая через C;
+    // Tab-меню закрывается полностью, без виджета.
+    const keepCity = cityPanelEl.classList.contains("show") && !commandMenuOpen;
     closePanels();
     paused = false;
     if (keepCity) {
