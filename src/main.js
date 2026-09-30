@@ -2070,10 +2070,14 @@ schemesBtn.addEventListener("click", toggleSchemes);
 buildPicker();
 
 window.addEventListener("keydown", (e) => {
-  // Tab всегда возвращает курсор (выход из захвата).
+  // Tab — умный тогл: в захвате отдаём курсор (потеря захвата откроет паузу),
+  // без захвата возвращаемся в игру (панели закрываются, захват + снятие паузы).
+  // В полях ввода Tab работает как обычно (навигация по фокусу).
   if (e.code === "Tab") {
+    if (isTyping(e)) return;
     e.preventDefault();
     if (document.pointerLockElement) document.exitPointerLock();
+    else resumeGame();
     return;
   }
   if (isTyping(e) && e.code !== "Escape") return;
