@@ -44,6 +44,74 @@
       white-space: nowrap;
     }
     #msg.show { opacity: 1; }
+    /* C13: лог сообщений — последние 5, клик повторяет тост */
+    #msgLog {
+      position: fixed;
+      left: 12px;
+      bottom: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      z-index: 12;
+      max-width: min(360px, 40vw);
+      pointer-events: none;
+    }
+    #msgLog .logItem {
+      background: rgba(0, 0, 0, 0.55);
+      color: rgba(255, 255, 255, 0.85);
+      font: 12px 'Segoe UI', Arial, sans-serif;
+      padding: 4px 10px;
+      border-radius: 6px;
+      border-left: 3px solid rgba(255, 213, 74, 0.6);
+      cursor: pointer;
+      pointer-events: auto;
+      user-select: none;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      opacity: 0.75;
+    }
+    #msgLog .logItem:hover { opacity: 1; }
+    #msgLog .logItem.fresh { opacity: 1; }
+    /* C12: контекстный хинт под HUD */
+    #hudSub {
+      position: fixed;
+      top: 76px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #ffd54a;
+      font: 12px 'Segoe UI', Arial, sans-serif;
+      background: rgba(0, 0, 0, 0.45);
+      padding: 4px 14px;
+      border-radius: 12px;
+      pointer-events: none;
+      user-select: none;
+      white-space: nowrap;
+      z-index: 9;
+      display: none;
+    }
+    #hudSub.show { display: block; }
+    /* C11: обучение-чеклист */
+    #tutorial {
+      position: fixed;
+      top: 12px;
+      left: 12px;
+      background: rgba(8, 10, 14, 0.85);
+      border: 1px solid rgba(255, 213, 74, 0.55);
+      border-radius: 8px;
+      color: #eee;
+      font: 12px 'Segoe UI', Arial, sans-serif;
+      padding: 10px 14px;
+      z-index: 12;
+      pointer-events: none;
+      user-select: none;
+      display: none;
+      line-height: 1.9;
+    }
+    #tutorial.show { display: block; }
+    #tutorial h4 { color: #ffd54a; font-size: 13px; margin-bottom: 4px; }
+    #tutorial .done { color: #59ff73; text-decoration: line-through; opacity: 0.8; }
+    #tutorial .reward { color: #ffd54a; }
     #hotbar {
       position: fixed;
       bottom: 18px;
@@ -393,6 +461,9 @@
     WASD — движение &middot; мышь — камера &middot; Space — полёт &middot; E — блоки &middot; T — постройки &middot; V — подписи · P — пауза
   </div>
   <div id="hotbar"></div>
+  <div id="hudSub"></div>
+  <div id="tutorial"></div>
+  <div id="msgLog"></div>
   <div id="crosshair"></div>
   <div id="lockHint">Кликните по миру, чтобы играть</div>
   <div id="ghostBar"></div>

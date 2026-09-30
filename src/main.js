@@ -155,13 +155,107 @@ torchMat.emissiveColor = new BABYLON.Color3(1.0, 0.82, 0.55);
 torchMat.backFaceCulling = false;
 
 // ---------- message toast ----------
-const msgEl = document.getElementById("msg");
-let msgTimer = null;
+// C13: лог последних 5 сообщений (клик по записи повторяет тост).
+const msgLogEl = document.getElementById("msgLog");
+const msgLog = [];
 function showMsg(text) {
   msgEl.textContent = text;
   msgEl.classList.add("show");
   if (msgTimer) clearTimeout(msgTimer);
   msgTimer = setTimeout(() => msgEl.classList.remove("show"), 3200);
+  if (msgLog[0] !== text) {
+    msgLog.unshift(text);
+    if (msgLog.length > 5) msgLog.pop();
+  }
+  renderMsgLog();
+}
+function renderMsgLog() {
+  msgLogEl.innerHTML = "";
+  msgLog.forEach((t, i) => {
+    const d = document.createElement("div");
+    d.className = "logItem" + (i === 0 ? " fresh" : "");
+    d.textContent = t;
+    d.title = "Показать снова";
+    d.addEventListener("click", () => showMsg(t));
+    msgLogEl.appendChild(d);
+  });
+}
+
+// ---------- C11: обучение-чеклист (первые шаги, +$200 за шаг) ----------
+const TUT_KEY = "babylon-tutorial-done-v1";
+const TUT_REWARD = 200;
+const TUT_STEPS = [
+  { id: "house", text: "Поставь жильё (T → Жильё)" },
+  { id: "road", text: "Подведи дорогу (T → поиск #road)" },
+  { id: "food", text: "Добавь еду (T → Еда)" },
+  { id: "city", text: "Открой панель города (C)" },
+  { id: "pop", text: "Дождись первого жителя" },
+];
+let tutorialDone = false;
+let tutorialState = {};
+try { tutorialDone = localStorage.getItem(TUT_KEY) === "1"; } catch (e) {}
+function tutorialReset() {
+  tutorialState = {};
+  for (const s of TUT_STEPS) tutorialState[s.id] = false;
+  renderTutorial();
+}
+function tutorialGain(id, silent) {
+  if (tutorialDone || tutorialState[id]) return;
+  tutorialState[id] = true;
+  if (!silent) {
+    city.money = Math.round((city.money + TUT_REWARD) * 100) / 100;
+  }
+  const n = TUT_STEPS.filter((s) => tutorialState[s.id]).length;
+  if (n >= TUT_STEPS.length) {
+    tutorialDone = true;
+    try { localStorage.setItem(TUT_KEY, "1"); } catch (e) {}
+  }
+  renderTutorial();
+  if (!silent) {
+    showMsg(n >= TUT_STEPS.length
+      ? "Обучение пройдено! Город твой 🏙️"
+      : `Шаг выполнен (${n}/${TUT_STEPS.length}) +$${TUT_REWARD}`);
+  }
+}
+// Проверка шагов по состоянию города; silent — для загрузки (без наград).
+function checkTutorial(silent) {
+  if (tutorialDone) return;
+  const has = (types) => city.buildings.some((b) => b.active !== false && types.includes(b.typeId));
+  if (has(["house", "apartment"])) tutorialGain("house", silent);
+  if (has(["road"])) tutorialGain("road", silent);
+  if (has(["farm", "fishery", "shop"])) tutorialGain("food", silent);
+  if (city.population > 0) tutorialGain("pop", silent);
+  renderTutorial();
+}
+function renderTutorial() {
+  const el = document.getElementById("tutorial");
+  if (tutorialDone || !mapReady) {
+    el.classList.remove("show");
+    return;
+  }
+  const n = TUT_STEPS.filter((s) => tutorialState[s.id]).length;
+  el.innerHTML = `<h4>Первые шаги ${n}/${TUT_STEPS.length}</h4>` + TUT_STEPS.map((s) =>
+    `<div class="${tutorialState[s.id] ? "done" : ""}">${tutorialState[s.id] ? "✓" : "·"} ${s.text}` +
+    (tutorialState[s.id] ? "" : ` <span class="reward">+$${TUT_REWARD}</span>`) + `</div>`
+  ).join("");
+  el.classList.add("show");
+}
+
+// ---------- C12: контекстный хинт под HUD (по состоянию игры) ----------
+const hudSubEl = document.getElementById("hudSub");
+let lastHint = null;
+function updateHint() {
+  let hint = "";
+  if (mapReady && !paused && !anyPanelOpen() && !previewPlan) {
+    if (city.buildings.length === 0) hint = "T — выбрать постройку · E — блоки · ЛКМ — ломать";
+    else if (city.last && city.last.roadless > 0) hint = `Зданий без дороги: ${city.last.roadless} — подведи дорогу (T)`;
+    else if (city.population === 0) hint = "Жители приедут сами — нужны жильё, еда и счастье";
+  }
+  if (hint !== lastHint) {
+    lastHint = hint;
+    hudSubEl.textContent = hint;
+    hudSubEl.classList.toggle("show", hint !== "");
+  }
 }
 
 // ---------- импорт построек Minecraft (схематики) ----------
@@ -666,6 +760,7 @@ function toggleCity() {
   setPaused(false);
   cityPanelEl.classList.add("show");
   renderCity();
+  tutorialGain("city");
   if (document.pointerLockElement) {
     unlockForPanel = true;
     document.exitPointerLock();
@@ -931,6 +1026,8 @@ function resetGame() {
   mapReady = true;
   camera.position.set(player.x, player.y + EYE, player.z);
   syncResidents();
+  tutorialReset();
+  checkTutorial();
   closePanels();
   setPaused(false);
   refreshTileFunds();
@@ -1040,6 +1137,8 @@ function loadGame() {
     mapReady = true;
     camera.position.set(player.x, player.y + EYE, player.z);
     syncResidents();
+    tutorialReset();
+    checkTutorial(true); // загрузка: шаги отмечаем молча, без наград
     closePanels();
     showMsg(`Загружено: день ${city.day}, построек ${city.buildings.length}`);
   } catch (e) {
@@ -1063,6 +1162,7 @@ function tickCity() {
   for (const rec of buildings) refreshRecordLabel(rec);
   syncResidents();
   refreshTileFunds();
+  checkTutorial();
   if (city.last) {
     if (city.last.milestonesHit) {
       for (const m of city.last.milestonesHit) {
@@ -1953,6 +2053,7 @@ function placePreview() {
     const t = TYPES[typeId];
     refreshTileFunds();
     updateGhostBar();
+    checkTutorial();
     showMsg(`Поставлено ${res.placed} блоков · ${t ? t.name : typeId} · −${fmtMoney(quote ? quote.cost : 0)} · черновик (ПКМ — отмена, Q — выйти)`);
   } catch (err) {
     console.error("Не удалось поставить схему", err);
@@ -2455,8 +2556,9 @@ scene.registerBeforeRender(() => {
 
   // ---- метки построек в просмотре ----
   updateBuildingLabels();
-  // ---- A1: прицел/подсказка захвата ----
+  // ---- A1: прицел/подсказка захвата, C12: контекстный хинт ----
   syncLockUI();
+  updateHint();
 
   // ---- визуальные жители ----
   stepResidentMeshes(dt);
