@@ -156,6 +156,8 @@ torchMat.backFaceCulling = false;
 
 // ---------- message toast ----------
 // C13: лог последних 5 сообщений (клик по записи повторяет тост).
+const msgEl = document.getElementById("msg");
+let msgTimer = null;
 const msgLogEl = document.getElementById("msgLog");
 const msgLog = [];
 function showMsg(text) {
