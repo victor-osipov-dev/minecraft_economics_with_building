@@ -1948,9 +1948,9 @@ function updateBuildBar() {
   schemeBuildBarEl.appendChild(go);
   schemeBuildBarEl.classList.add("show");
 }
-// Закрыть панель и сразу захватить курсор для стройки.
+// Закрыть всё меню и сразу захватить курсор для стройки.
 function closeSchemesToBuild() {
-  schemesPanelEl.classList.remove("show");
+  closeCommandMenu();
   if (previewPlan) {
     const req = canvas.requestPointerLock?.();
     if (req && req.catch) req.catch(() => showMsg("Кликните по миру, чтобы захватить курсор"));
