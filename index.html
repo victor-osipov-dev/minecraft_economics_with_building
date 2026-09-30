@@ -202,6 +202,20 @@
       user-select: none;
     }
     .panel.show { display: block; }
+    /* A2: планшет — панель города виджетом поверх игры (только чтение) */
+    #cityPanel.pinned {
+      left: 12px;
+      top: 12px;
+      transform: none;
+      max-width: 300px;
+      max-height: 62vh;
+      overflow: hidden;
+      pointer-events: none;
+      opacity: 0.93;
+    }
+    #cityPanel.pinned h3:not(:first-child),
+    #cityPanel.pinned #cityLoans,
+    #cityPanel.pinned #cityBuildings { display: none; }
     #pauseMenu { text-align: center; min-width: 240px; }
     #pauseMenu h3 { font-size: 18px; margin-bottom: 12px; }
     .mbtn { display: block; width: 100%; margin: 6px 0; background: rgba(255,213,74,0.2); color: #ffd54a; border: 1px solid rgba(255,213,74,0.5); border-radius: 6px; padding: 8px 12px; cursor: pointer; font: 14px 'Segoe UI', Arial, sans-serif; }

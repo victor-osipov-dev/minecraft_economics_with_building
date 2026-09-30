@@ -3,6 +3,7 @@ import { CustomMaterial } from "@babylonjs/materials/custom/customMaterial";
 import {
   AIR,
   BLOCKS,
+  DIRT,
   TORCH,
   REDSTONE_TORCH,
   OAK_SIGN,
@@ -466,6 +467,8 @@ updateHotbar();
 let previewPlan = null; // { plan, name, rot, rotated }
 let previewAnchor = null;
 let ghostOff = { x: 0, y: 0, z: 0 }; // B6: ручной сдвиг призрака от точки прицела
+let anchorBase = null; // B7: точка прицела; при фиксации замирает
+let ghostFixed = false; // B7: первый ЛКМ зафиксировал позицию, второй ставит
 let ghostLines = null;
 let ghostFill = null;
 let lastSpaceTap = 0;
@@ -654,16 +657,30 @@ function findRecordAt(x, y, z) {
 }
 
 function toggleCity() {
-  const willShow = !cityPanelEl.classList.contains("show");
+  // A2: планшет — повторное C сворачивает панель (в т.ч. закреплённую).
+  if (cityPanelEl.classList.contains("show")) {
+    closePanels();
+    return;
+  }
   closePanels();
   setPaused(false);
-  if (!willShow) return;
   cityPanelEl.classList.add("show");
   renderCity();
   if (document.pointerLockElement) {
     unlockForPanel = true;
     document.exitPointerLock();
   }
+}
+// A2: закреплённая панель переживает захват курсора как виджет только для чтения.
+let cityPinned = false;
+function pinCityPanel() {
+  if (!cityPanelEl.classList.contains("show")) return;
+  cityPinned = true;
+  cityPanelEl.classList.add("pinned");
+}
+function unpinCityPanel() {
+  cityPinned = false;
+  cityPanelEl.classList.remove("pinned");
 }
 
 function fmtMoney(v) {
@@ -1172,6 +1189,7 @@ function closePanels() {
   schemesPanelEl.classList.remove("show");
   cityPanelEl.classList.remove("show");
   pauseMenuEl.classList.remove("show");
+  unpinCityPanel();
 }
 
 // Пауза: останавливает физику, жителей и тик города, показывает меню.
@@ -1636,6 +1654,8 @@ async function selectScheme(url, name) {
     }
     previewPlan = { plan, name, rot: 0, rotated: plan };
     ghostOff = { x: 0, y: 0, z: 0 };
+    anchorBase = null;
+    ghostFixed = false;
     rebuildGhost();
     // B5: панель остаётся открытой — варианты сравниваются без потери скролла.
     updateBuildBar();
@@ -1715,15 +1735,16 @@ function rebuildGhost() {
   ghostFill.isVisible = false;
 }
 
-// Последняя постановка в режиме построек (для отмены ПКМ).
-let lastPlaced = null;
+// B10: стек постановок в режиме построек — ПКМ отменяет вглубь по одной.
+let placedStack = [];
 
 function cancelPreview() {
   if (previewPlan) activatePending();
   previewPlan = null;
   previewAnchor = null;
   ghostOff = { x: 0, y: 0, z: 0 };
-  lastPlaced = null;
+  ghostFixed = false;
+  placedStack = [];
   clearGhost();
   updateBuildBar();
   updateGhostBar();
@@ -1738,7 +1759,7 @@ function activatePending() {
       n++;
     }
   }
-  lastPlaced = null;
+  placedStack = [];
   for (const rec of buildings) refreshRecordLabel(rec);
   if (cityPanelEl.classList.contains("show")) renderCity();
   if (n > 0) showMsg(`Постройки активированы: ${n} (уже влияют на город)`);
@@ -1746,14 +1767,21 @@ function activatePending() {
 
 // ПКМ в режиме построек: снести последнюю постановку целиком, вернуть деньги.
 // Убираем только клетки, совпадающие с планом, — правки игрока не трогаем.
+// Стек: отменяет вглубь по одной, в ghostBar видна глубина.
 function undoLastPlaced() {
   if (!previewPlan) return;
-  const u = lastPlaced;
+  // B7: сначала снимаем фиксацию призрака, а не сносим постройку.
+  if (ghostFixed) {
+    ghostFixed = false;
+    updateGhostBar();
+    showMsg("Позиция откреплена — призрак снова следует за прицелом");
+    return;
+  }
+  const u = placedStack.pop();
   if (!u) {
     showMsg("Нечего отменять (Q — выйти из режима построек)");
     return;
   }
-  lastPlaced = null;
   let cleared = 0;
   for (const [x, y, z, id] of u.cells) {
     if (world.getBlock(x, y, z) === id && world.setBlock(x, y, z, AIR)) cleared++;
@@ -1769,8 +1797,80 @@ function undoLastPlaced() {
   if (u.cost > 0) city.money = Math.round((city.money + u.cost) * 100) / 100;
   applyBuildingVisibility();
   refreshTileFunds();
+  updateGhostBar();
   if (cityPanelEl.classList.contains("show")) renderCity();
-  showMsg(`Отменено: «${u.name}» · убрано ${cleared} блоков · возврат ${fmtMoney(u.cost)}`);
+  const left = placedStack.length;
+  showMsg(`Отменено: «${u.name}» · убрано ${cleared} блоков · возврат ${fmtMoney(u.cost)}` +
+    (left > 0 ? ` · осталось построек: ${left}` : ""));
+}
+
+// B8: выравнивание площадки под фундамент (клавиша F).
+// Освобождаем объём здания, под ним добираем землю до 4 блоков вглубь.
+const LEVEL_PRICE = 1; // $ за срезанный/досыпанный блок
+function footprintBox() {
+  if (!previewPlan || !previewAnchor) return null;
+  const r = previewPlan.rotated;
+  const minY = r.minY ?? previewPlan.plan.minY ?? 0;
+  return {
+    x0: previewAnchor.x - Math.floor(r.W / 2),
+    y0: previewAnchor.y - minY,
+    z0: previewAnchor.z - Math.floor(r.L / 2),
+    W: r.W, H: r.H, L: r.L,
+  };
+}
+// Превью: сколько блоков тронет выравнивание (0 — уже ровно).
+function levelPreview() {
+  const b = footprintBox();
+  if (!b) return null;
+  // Гигантов не считаем каждый кадр-клавишу — дорого; их ровняют вручную.
+  if (b.W * b.L > 60000 || b.W * b.H * b.L > 500000) return { cut: 0, fill: 0, cells: 0, cost: 0, tooBig: true };
+  let cut = 0, fill = 0;
+  for (let x = b.x0; x < b.x0 + b.W; x++) {
+    for (let z = b.z0; z < b.z0 + b.L; z++) {
+      for (let y = b.y0; y < b.y0 + b.H; y++) {
+        if (world.getBlock(x, y, z) !== AIR) cut++;
+      }
+      for (let d = 1; d <= 4; d++) {
+        if (world.getBlock(x, b.y0 - d, z) === AIR) fill++;
+        else break;
+      }
+    }
+  }
+  const cells = cut + fill;
+  return { cut, fill, cells, cost: cells * LEVEL_PRICE };
+}
+function levelGround() {
+  const b = footprintBox();
+  const lv = levelPreview();
+  if (!b || !lv) return;
+  if (lv.tooBig) {
+    showMsg("Слишком большая площадь — ровняйте вручную");
+    return;
+  }
+  if (lv.cells === 0) {
+    showMsg("Площадка ровная — выравнивать нечего");
+    return;
+  }
+  if (city.money < lv.cost) {
+    showMsg(`Не хватает денег на выравнивание: нужно ${fmtMoney(lv.cost)}, есть ${fmtMoney(city.money)}`);
+    return;
+  }
+  for (let x = b.x0; x < b.x0 + b.W; x++) {
+    for (let z = b.z0; z < b.z0 + b.L; z++) {
+      for (let y = b.y0; y < b.y0 + b.H; y++) {
+        if (world.getBlock(x, y, z) !== AIR) world.setBlock(x, y, z, AIR);
+      }
+      for (let d = 1; d <= 4; d++) {
+        if (world.getBlock(x, b.y0 - d, z) === AIR) world.setBlock(x, b.y0 - d, z, DIRT);
+        else break;
+      }
+    }
+  }
+  charge(city, lv.cost);
+  world.flushMeshes(scene, blockMat, cutoutMat, alphaMat, torchMat);
+  refreshTileFunds();
+  updateGhostBar();
+  showMsg(`Выровнено: срезано ${lv.cut}, досыпано ${lv.fill} · −${fmtMoney(lv.cost)}`);
 }
 
 // B6: полоса призрака — цена и управление видны в мире, а не в hints.
@@ -1783,10 +1883,16 @@ function updateGhostBar() {
   const r = previewPlan.rotated;
   const item = schemeMetaFor(selectedSchemeFile);
   const q = schemeBuildCost(item, { W: r.W, H: r.H, L: r.L });
+  const lvl = levelPreview();
+  const n = placedStack.length;
   ghostBarEl.innerHTML =
     `<b>${previewPlan.name}</b> · ${r.W}×${r.H}×${r.L}` +
     (q ? ` · ${fmtMoney(q.cost)}${q.tier > 1 ? ` · ${TIERS[q.tier].icon} ${TIERS[q.tier].name}` : ""}` : "") +
-    `<br>←→↑↓ — двигать · PgUp/PgDn или колесо — высота · R — поворот · ЛКМ — поставить · ПКМ — отмена · Q — выйти`;
+    (n > 0 ? ` · поставлено: ${n}` : "") +
+    (lvl && lvl.cells > 0 ? ` · <b>F — выровнять (~${fmtMoney(lvl.cost)})</b>` : "") +
+    (ghostFixed
+      ? `<br>позиция зафиксирована · ЛКМ — поставить · ПКМ — открепить · Q — выйти`
+      : `<br>←→↑↓ — двигать · PgUp/PgDn или колесо — высота · R — поворот · ЛКМ — зафиксировать · ПКМ — отмена · Q — выйти`);
   ghostBarEl.classList.add("show");
 }
 
@@ -1839,12 +1945,14 @@ function placePreview() {
     const ax0 = previewAnchor.x - Math.floor(r.W / 2);
     const az0 = previewAnchor.z - Math.floor(r.L / 2);
     const ay0 = previewAnchor.y - minY;
-    lastPlaced = {
+    placedStack.push({
       rec, instId: inst.id, cost: quote ? quote.cost : 0, name: previewPlan.name,
       cells: r.blocks.map(([x, y, z, id]) => [ax0 + x, ay0 + y, az0 + z, id]),
-    };
+    });
+    ghostFixed = false; // после постановки призрак снова следует за прицелом
     const t = TYPES[typeId];
     refreshTileFunds();
+    updateGhostBar();
     showMsg(`Поставлено ${res.placed} блоков · ${t ? t.name : typeId} · −${fmtMoney(quote ? quote.cost : 0)} · черновик (ПКМ — отмена, Q — выйти)`);
   } catch (err) {
     console.error("Не удалось поставить схему", err);
@@ -1883,8 +1991,14 @@ window.addEventListener("keydown", (e) => {
     else moved = false;
     if (moved) {
       e.preventDefault();
+      updateGhostBar(); // цена выравнивания зависит от позиции
       return;
     }
+  }
+  // B8: F — выровнять площадку под призраком.
+  if (e.code === "KeyF" && !e.repeat && previewPlan && !schemesPanelEl.classList.contains("show")) {
+    levelGround();
+    return;
   }
   if (e.code === "KeyV" && !e.repeat) {
     setLabelsOn(!labelsOn);
@@ -1948,10 +2062,18 @@ canvas.addEventListener("pointerdown", (e) => {
     if (req && req.catch) req.catch(() => {});
     return;
   }
-  // Режим построек: ЛКМ — поставить, ПКМ — отменить последнюю.
+  // Режим построек: ЛКМ — зафиксировать/поставить, ПКМ — открепить/отменить.
   if (previewPlan) {
-    if (e.button === 0) placePreview();
-    else if (e.button === 2) undoLastPlaced();
+    if (e.button === 0) {
+      // B7: первый клик фиксирует позицию, второй ставит — мимо не кликнуть.
+      if (!ghostFixed && previewAnchor) {
+        ghostFixed = true;
+        updateGhostBar();
+        showMsg("Позиция зафиксирована: стрелки — подвинуть · ЛКМ — поставить · ПКМ — открепить");
+      } else {
+        placePreview();
+      }
+    } else if (e.button === 2) undoLastPlaced();
     return;
   }
   if (e.button === 0) {
@@ -1969,12 +2091,20 @@ document.addEventListener("pointerlockchange", () => {
   mouseDown = { 0: false, 2: false };
   lmbFresh = false;
   if (document.pointerLockElement === canvas) {
-    // Курсор захвачен — вернулись в игру: меню убираем, паузу снимаем.
+    // Курсор захвачен — вернулись в игру: паузу снимаем.
+    // A2: панель города остаётся планшетом-виджетом, остальные закрываем.
+    const keepCity = cityPanelEl.classList.contains("show");
     closePanels();
     paused = false;
+    if (keepCity) {
+      cityPanelEl.classList.add("show");
+      renderCity();
+      pinCityPanel();
+    }
   } else if (unlockForPanel) {
     // Выход из захвата заказали панели (E/T/C) — меню паузы не показываем.
     unlockForPanel = false;
+    unpinCityPanel(); // панель снова интерактивная
   } else if (mapReady) {
     // Захват потерян сам (Esc, Alt+Tab) — это пауза.
     setPaused(true);
@@ -2017,6 +2147,7 @@ window.addEventListener("wheel", (e) => {
   if (e.target && (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA")) return;
   e.preventDefault();
   ghostOff.y += e.deltaY < 0 ? 1 : -1;
+  updateGhostBar();
 }, { passive: false });
 
 // ---------- targeting marker ----------
@@ -2284,13 +2415,17 @@ scene.registerBeforeRender(() => {
 
   // ---- ghost preview for schemes (long reach) ----
   if (previewPlan && ghostLines && ghostFill) {
-    const far = raycast(camera.position.x, camera.position.y, camera.position.z, rayDir.x, rayDir.y, rayDir.z, 120);
-    if (far) {
+    // B7: зафиксированный призрак за прицелом не следует (стрелки работают).
+    if (!ghostFixed) {
+      const far = raycast(camera.position.x, camera.position.y, camera.position.z, rayDir.x, rayDir.y, rayDir.z, 120);
+      anchorBase = far ? { x: far.x + far.nx, y: far.y + far.ny, z: far.z + far.nz } : null;
+    }
+    if (anchorBase) {
       // B6: якорь = точка прицела + ручной сдвиг (стрелки/колесо).
       previewAnchor = {
-        x: far.x + far.nx + ghostOff.x,
-        y: far.y + far.ny + ghostOff.y,
-        z: far.z + far.nz + ghostOff.z,
+        x: anchorBase.x + ghostOff.x,
+        y: anchorBase.y + ghostOff.y,
+        z: anchorBase.z + ghostOff.z,
       };
       const r = previewPlan.rotated;
       const x0 = previewAnchor.x - Math.floor(r.W / 2);
