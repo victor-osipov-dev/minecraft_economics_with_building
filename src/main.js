@@ -684,6 +684,23 @@ if (typeof window !== "undefined") window.CITY = { get state() { return city; } 
 const cityPanelEl = document.getElementById("cityPanel");
 const cityStatsEl = document.getElementById("cityStats");
 const cityBuildingsEl = document.getElementById("cityBuildings");
+// Фильтры и сортировка построек города (состояние живёт между тиками).
+let cityBldType = "all";
+let cityBldTag = "all";
+let cityBldSort = "name";
+// Теги инстанса — из библиотечной схемы по файлу (свои файлы без тегов).
+function instTags(inst) {
+  if (!inst || !inst.file) return [];
+  const meta = schemeMetaFor(inst.file);
+  return meta && Array.isArray(meta.tags) ? meta.tags : [];
+}
+const cityBldSortEl = document.getElementById("cityBldSort");
+if (cityBldSortEl) {
+  cityBldSortEl.addEventListener("change", () => {
+    cityBldSort = cityBldSortEl.value;
+    renderCity();
+  });
+}
 
 function schemeMetaFor(file) {
   return allSchemeItems.find((i) => i.file === file) || null;
@@ -829,11 +846,43 @@ function renderLoans() {
   el.innerHTML = html;
 }
   if (city.buildings.length === 0) {
+    document.getElementById("cityBldTypes").innerHTML = "";
+    document.getElementById("cityBldTags").innerHTML = "";
     cityBuildingsEl.innerHTML = `<div class="chint">Построек пока нет — поставьте схему (T). Каждая постройка стоит денег.</div>`;
     return;
   }
+  // Фильтры по типам и тегам, встречающимся в городе (повторный клик — сброс).
+  const typeCounts = {};
+  for (const b of city.buildings) typeCounts[b.typeId] = (typeCounts[b.typeId] || 0) + 1;
+  const tagCounts = {};
+  for (const b of city.buildings) for (const t of instTags(b)) tagCounts[t] = (tagCounts[t] || 0) + 1;
+  if (cityBldType !== "all" && !typeCounts[cityBldType]) cityBldType = "all";
+  if (cityBldTag !== "all" && !tagCounts[cityBldTag]) cityBldTag = "all";
+  const chip = (label, active, attr) =>
+    `<span class="chip${active ? " active" : ""}" ${attr}>${label}</span>`;
+  document.getElementById("cityBldTypes").innerHTML =
+    chip(`Всё (${city.buildings.length})`, cityBldType === "all", `data-cbtype="all"`) +
+    Object.entries(typeCounts).sort((a, b) => b[1] - a[1]).map(([t, n]) =>
+      chip(`${TYPES[t] ? TYPES[t].name : t} (${n})`, cityBldType === t, `data-cbtype="${t}"`)).join("");
+  document.getElementById("cityBldTags").innerHTML =
+    Object.entries(tagCounts).sort((a, b) => b[1] - a[1]).map(([t, n]) =>
+      chip(`#${t} (${n})`, cityBldTag === t, `data-cbtag="${t}"`)).join("");
+  const sorters = {
+    name: (a, b) => String(a.name).localeCompare(String(b.name), "ru"),
+    health: (a, b) => a.health - b.health,
+    cost: (a, b) => b.stats.buildCost - a.stats.buildCost,
+    housing: (a, b) => (b.stats.housing || 0) - (a.stats.housing || 0),
+  };
+  const list = city.buildings
+    .filter((b) => (cityBldType === "all" || b.typeId === cityBldType) &&
+      (cityBldTag === "all" || instTags(b).includes(cityBldTag)))
+    .sort(sorters[cityBldSort] || sorters.name);
   cityBuildingsEl.innerHTML = "";
-  for (const inst of city.buildings) {
+  if (list.length === 0) {
+    cityBuildingsEl.innerHTML = `<div class="chint">Под фильтр ничего не попало — кликните по активному фильтру, чтобы сбросить.</div>`;
+    return;
+  }
+  for (const inst of list) {
     const t = TYPES[inst.typeId];
     const cost = repairPrice(inst);
     const can = inst.health < 100 && city.money >= cost;
@@ -864,6 +913,21 @@ cityPanelEl.addEventListener("click", async (e) => {
     syncResidents();
     renderCity();
     showMsg(showResidents ? "Жители: показаны" : "Жители: скрыты");
+    return;
+  }
+  // Фильтры построек: повторный клик по активному сбрасывает.
+  const cbt = e.target.closest("[data-cbtype]");
+  if (cbt) {
+    const v = cbt.dataset.cbtype;
+    cityBldType = cityBldType === v ? "all" : v;
+    renderCity();
+    return;
+  }
+  const cbg = e.target.closest("[data-cbtag]");
+  if (cbg) {
+    const v = cbg.dataset.cbtag;
+    cityBldTag = cityBldTag === v ? "all" : v;
+    renderCity();
     return;
   }
   const take = e.target.closest("[data-loan-take]");
@@ -1575,7 +1639,10 @@ const schemeSpacerEl = document.createElement("div");
 schemeSpacerEl.id = "schemeSpacer";
 
 function layoutTiles() {
-  const w = schemeListEl.clientWidth || 300;
+  // clientWidth включает паддинги — вычитаем, иначе плитки шире контента
+  const cs = getComputedStyle(schemeListEl);
+  const w = Math.max(50, schemeListEl.clientWidth -
+    parseFloat(cs.paddingLeft || 0) - parseFloat(cs.paddingRight || 0));
   const cols = Math.max(1, Math.floor((w + TILE_GAP) / (TILE_MIN_W + TILE_GAP)));
   const tileW = (w - (cols - 1) * TILE_GAP) / cols;
   // медиабокс aspect 232/176 + текстовый блок (~72px); точную высоту калибруем замером
