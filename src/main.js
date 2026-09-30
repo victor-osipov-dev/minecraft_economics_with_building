@@ -1552,7 +1552,7 @@ const allSchemeItems = [...schemesIndex.items, ...extraSchemeItems];
 for (const it of allSchemeItems) {
   it._eco = ECO_OF_TYPE[resolveType(it)] || [];
 }
-const schemeFilter = { q: "", eco: "all", tags: new Set(), list: "all" };
+const schemeFilter = { q: "", eco: "all", tags: new Set(), list: "all", sort: "default" };
 let selectedSchemeFile = null;
 // ---------- B9: избранное и недавние постройки (localStorage) ----------
 const FAV_KEY = "babylon-scheme-fav-v1";
@@ -1697,6 +1697,18 @@ function renderTileWindow(corrected) {
 
 function renderSchemeTiles() {
   schemeShown = allSchemeItems.filter(schemeMatches);
+  // Сортировка витрины (цены/жильё кэшируются — данные статичны).
+  if (schemeFilter.sort !== "default") {
+    const by = {
+      cheap: (a, b) => (schemeQuoteCached(a)?.cost ?? Infinity) - (schemeQuoteCached(b)?.cost ?? Infinity),
+      exp: (a, b) => (schemeQuoteCached(b)?.cost ?? -1) - (schemeQuoteCached(a)?.cost ?? -1),
+      big: (a, b) => schemeBlocksNum(b) - schemeBlocksNum(a),
+      housing: (a, b) => (schemeQuoteCached(b)?.housing || 0) - (schemeQuoteCached(a)?.housing || 0),
+      name: (a, b) => String(a.name).localeCompare(String(b.name), "ru"),
+    };
+    const cmp = by[schemeFilter.sort] || null;
+    if (cmp) schemeShown = [...schemeShown].sort(cmp);
+  }
   schemeCountEl.textContent = `· ${schemeShown.length} из ${allSchemeItems.length}`;
   schemeListEl.innerHTML = "";
   schemeListEl.appendChild(schemeSpacerEl);
@@ -1704,6 +1716,29 @@ function renderSchemeTiles() {
   renderTileWindow();
   schemeListScroll = schemeListEl.scrollTop;
 }
+
+// Кэш витринных чисел схемы (цена/жильё): статичны, считаем один раз.
+const schemeQuoteCache = new Map();
+function schemeQuoteCached(item) {
+  let q = schemeQuoteCache.get(item.file);
+  if (q === undefined) {
+    q = null;
+    const W = Number(item.w), H = Number(item.h), L = Number(item.l);
+    if (Number.isFinite(W) && Number.isFinite(H) && Number.isFinite(L)) {
+      const qq = schemeBuildCost(item, { W, H, L });
+      if (qq) {
+        const s = instStats(qq.typeId, { W, H, L }, qq.tier);
+        q = { cost: qq.cost, housing: s.housing || 0 };
+      }
+    }
+    schemeQuoteCache.set(item.file, q);
+  }
+  return q;
+}
+const schemeBlocksNum = (item) => {
+  const b = Number(item.blocks);
+  return Number.isFinite(b) ? b : -1;
+};
 
 // Одна плитка списка (создаётся только для видимого окна).
 function createTile(item) {
@@ -1848,6 +1883,13 @@ schemeSearchEl.addEventListener("input", () => {
   schemeFilter.q = schemeSearchEl.value;
   renderSchemeTiles();
 });
+const schemeSortEl = document.getElementById("schemeSort");
+if (schemeSortEl) {
+  schemeSortEl.addEventListener("change", () => {
+    schemeFilter.sort = schemeSortEl.value;
+    renderSchemeTiles();
+  });
+}
 
 async function selectScheme(url, name) {
   showMsg("Читаю схему...");

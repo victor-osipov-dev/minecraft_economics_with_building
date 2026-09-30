@@ -276,6 +276,18 @@
       outline: none;
     }
     #cityBldSort option { background: #14161c; }
+    /* сортировка построек: тот же вид селекта */
+    #schemeSort {
+      background: rgba(255, 255, 255, 0.08);
+      color: #eee;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 6px;
+      padding: 4px 8px;
+      font-size: 12px;
+      outline: none;
+    }
+    #schemeSort option { background: #14161c; }
+    .sort-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
     #cityBldTypes, #cityBldTags { display: flex; flex-wrap: wrap; gap: 5px; }
     .cbld { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); border-radius: 6px; padding: 7px 10px; }
     .cbhead { display: flex; justify-content: space-between; gap: 8px; margin-bottom: 5px; }
@@ -581,6 +593,16 @@
     <h3>Постройки <span id="schemeCount"></span></h3>
     <input id="schemeSearch" type="text" placeholder="Поиск: название или #тег…" autocomplete="off" />
     <div id="schemeLists"></div>
+    <div class="sort-row"><span class="cdim">Сортировка:</span>
+      <select id="schemeSort">
+        <option value="default">порядок каталога</option>
+        <option value="cheap">сначала дешёвые</option>
+        <option value="exp">сначала дорогие</option>
+        <option value="big">сначала большие</option>
+        <option value="housing">сначала жилые</option>
+        <option value="name">по имени</option>
+      </select>
+    </div>
     <div id="schemeEco" style="margin:8px 0"></div>
     <div id="schemeTags"></div>
     <div id="schemeBuildBar"></div>
