@@ -2148,6 +2148,37 @@ function updateGhostBar() {
       ? `<br>позиция зафиксирована · ЛКМ — поставить · ПКМ — открепить · Q — выйти`
       : `<br>←→↑↓ — двигать · PgUp/PgDn или колесо — высота · R — поворот · ЛКМ — зафиксировать · ПКМ — отмена · Q — выйти`);
   ghostBarEl.classList.add("show");
+  updateDraftBar();
+}
+
+// Баннер черновиков: поставлены, но город их не видит — нужен Q.
+// Висит всегда, пока есть черновики; кнопка работает при свободном курсоре,
+// в захвате — клавиша Q.
+const draftBarEl = document.getElementById("draftBar");
+function updateDraftBar() {
+  const n = city.buildings.filter((b) => b.active === false).length;
+  if (!previewPlan || n === 0) {
+    draftBarEl.classList.remove("show");
+    draftBarEl.innerHTML = "";
+    return;
+  }
+  draftBarEl.innerHTML = "";
+  const info = document.createElement("span");
+  info.innerHTML = `🏗 <b>Черновики: ${n}</b> — город их не видит!`;
+  const go = document.createElement("button");
+  go.textContent = "Применить (Q)";
+  go.addEventListener("click", exitBuildMode);
+  draftBarEl.appendChild(info);
+  draftBarEl.appendChild(go);
+  draftBarEl.classList.add("show");
+}
+
+// Выход из режима построек: черновики оживают и входят в статистику.
+function exitBuildMode() {
+  if (!previewPlan) return;
+  const n = city.buildings.filter((b) => b.active === false).length;
+  cancelPreview();
+  if (n === 0) showMsg("Режим построек выключен");
 }
 
 function rotatePreview() {
@@ -2281,11 +2312,7 @@ window.addEventListener("keydown", (e) => {
   }
   if (e.code === "KeyQ" && !e.repeat) {
     // Выход из режима построек (в захвате Esc занят браузером).
-    if (previewPlan) {
-      const n = city.buildings.filter((b) => b.active === false).length;
-      cancelPreview();
-      if (n === 0) showMsg("Режим построек выключен");
-    }
+    exitBuildMode();
     return;
   }
   if (e.code === "KeyC" && !e.repeat) {

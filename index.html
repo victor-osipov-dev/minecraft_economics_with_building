@@ -223,6 +223,44 @@
     }
     #ghostBar.show { display: block; }
     #ghostBar b { color: #ffd54a; }
+    /* Баннер черновиков: здания поставлены, но город их не видит */
+    #draftBar {
+      position: fixed;
+      top: 110px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(8, 10, 14, 0.9);
+      border: 2px solid #ffd54a;
+      border-radius: 10px;
+      color: #eee;
+      font: 14px 'Segoe UI', Arial, sans-serif;
+      padding: 9px 16px;
+      z-index: 12;
+      display: none;
+      align-items: center;
+      gap: 12px;
+      white-space: nowrap;
+      user-select: none;
+      animation: draftPulse 1.4s ease-in-out infinite;
+    }
+    #draftBar.show { display: flex; }
+    #draftBar b { color: #ffd54a; }
+    #draftBar button {
+      background: rgba(255, 213, 74, 0.25);
+      color: #ffd54a;
+      border: 1px solid #ffd54a;
+      border-radius: 6px;
+      padding: 5px 14px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 700;
+      pointer-events: auto;
+    }
+    #draftBar button:hover { background: rgba(255, 213, 74, 0.45); }
+    @keyframes draftPulse {
+      0%, 100% { box-shadow: 0 0 0 rgba(255, 213, 74, 0); }
+      50% { box-shadow: 0 0 18px rgba(255, 213, 74, 0.7); }
+    }
     #loadBtn {
       position: fixed;
       top: 12px;
@@ -546,6 +584,7 @@
   <div id="crosshair"></div>
   <div id="lockHint">Кликните по миру, чтобы играть</div>
   <div id="tabHint"><b>НАЖМИ TAB</b><span>постройки и город</span></div>
+  <div id="draftBar"></div>
   <div id="ghostBar"></div>
   <div id="msg"></div>
   <div id="labels"></div>
