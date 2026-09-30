@@ -465,6 +465,7 @@ updateHotbar();
 // ---------- песочница: призрак и постановка схем ----------
 let previewPlan = null; // { plan, name, rot, rotated }
 let previewAnchor = null;
+let ghostOff = { x: 0, y: 0, z: 0 }; // B6: ручной сдвиг призрака от точки прицела
 let ghostLines = null;
 let ghostFill = null;
 let lastSpaceTap = 0;
@@ -1214,9 +1215,18 @@ function toggleSchemes() {
   const willShow = !schemesPanelEl.classList.contains("show");
   closePanels();
   setPaused(false);
-  if (!willShow) return;
+  if (!willShow) {
+    // B5: закрыли панель с активным призраком — сразу к строительству.
+    if (previewPlan) {
+      const req = canvas.requestPointerLock?.();
+      if (req && req.catch) req.catch(() => {});
+    }
+    return;
+  }
   schemesPanelEl.classList.add("show");
   buildSchemeList();
+  schemeListEl.scrollTop = schemeListScroll;
+  updateBuildBar();
   if (document.pointerLockElement) {
     unlockForPanel = true;
     document.exitPointerLock();
@@ -1340,14 +1350,38 @@ const allSchemeItems = [...schemesIndex.items, ...extraSchemeItems];
 for (const it of allSchemeItems) {
   it._eco = ECO_OF_TYPE[resolveType(it)] || [];
 }
-const schemeFilter = { q: "", eco: "all", tags: new Set() };
+const schemeFilter = { q: "", eco: "all", tags: new Set(), list: "all" };
 let selectedSchemeFile = null;
+// ---------- B9: избранное и недавние постройки (localStorage) ----------
+const FAV_KEY = "babylon-scheme-fav-v1";
+const RECENT_KEY = "babylon-scheme-recent-v1";
+let schemeFavs = new Set();
+let schemeRecent = [];
+try {
+  const f = JSON.parse(localStorage.getItem(FAV_KEY) || "[]");
+  if (Array.isArray(f)) schemeFavs = new Set(f.filter((x) => typeof x === "string"));
+  const r = JSON.parse(localStorage.getItem(RECENT_KEY) || "[]");
+  if (Array.isArray(r)) schemeRecent = r.filter((x) => typeof x === "string").slice(0, 10);
+} catch (e) { /* приватный режим — без персистентности */ }
+function saveFavRecent() {
+  try {
+    localStorage.setItem(FAV_KEY, JSON.stringify([...schemeFavs]));
+    localStorage.setItem(RECENT_KEY, JSON.stringify(schemeRecent));
+  } catch (e) {}
+}
+function pushRecent(file) {
+  if (!file) return;
+  schemeRecent = [file, ...schemeRecent.filter((f) => f !== file)].slice(0, 10);
+  saveFavRecent();
+}
 const schemeSearchEl = document.getElementById("schemeSearch");
 const schemeEcoEl = document.getElementById("schemeEco");
 const schemeTagsEl = document.getElementById("schemeTags");
 const schemeCountEl = document.getElementById("schemeCount");
 
 function schemeMatches(item) {
+  if (schemeFilter.list === "fav" && !schemeFavs.has(item.file)) return false;
+  if (schemeFilter.list === "recent" && !schemeRecent.includes(item.file)) return false;
   if (schemeFilter.eco !== "all" && !(item._eco || []).includes(schemeFilter.eco)) return false;
   for (const t of schemeFilter.tags) {
     if (!item.tags.includes(t)) return false;
@@ -1446,6 +1480,7 @@ function observeThumbs(imgs) {
 }
 
 function renderSchemeTiles() {
+  const keepScroll = schemeListEl.scrollTop;
   schemeListEl.innerHTML = "";
   thumbQueue.length = 0; // прошлые плитки уже не нужны — наблюдатель создастся заново
   const thumbImgs = [];
@@ -1454,6 +1489,24 @@ function renderSchemeTiles() {
   for (const item of shown) {
     const tile = document.createElement("div");
     tile.className = "tile" + (selectedSchemeFile === item.file ? " selected" : "");
+    // B9: звезда избранного (клик не выбирает схему).
+    const fav = document.createElement("button");
+    const isFav = schemeFavs.has(item.file);
+    fav.className = "fav" + (isFav ? " on" : "");
+    fav.textContent = isFav ? "★" : "☆";
+    fav.title = "В избранное";
+    fav.addEventListener("click", (ev) => {
+      ev.stopPropagation();
+      if (schemeFavs.has(item.file)) schemeFavs.delete(item.file);
+      else schemeFavs.add(item.file);
+      saveFavRecent();
+      const on = schemeFavs.has(item.file);
+      fav.classList.toggle("on", on);
+      fav.textContent = on ? "★" : "☆";
+      buildSchemeLists();
+      if (schemeFilter.list === "fav") renderSchemeTiles();
+    });
+    tile.appendChild(fav);
     const base = item.file.replace(/\.(schem|schematic|nbt)$/i, "");
     if (schemeThumbByFile[base]) {
       const img = document.createElement("img");
@@ -1511,18 +1564,55 @@ function renderSchemeTiles() {
         return;
       }
       selectedSchemeFile = item.file;
+      // B5: подсветка без полной перестройки — скролл и превью целы.
+      for (const t2 of schemeListEl.children) {
+        t2.classList.toggle("selected", t2.dataset.file === item.file);
+      }
       selectScheme(url, item.name);
-      renderSchemeTiles();
     });
     schemeListEl.appendChild(tile);
   }
+  schemeListEl.scrollTop = schemeListScroll = keepScroll;
   observeThumbs(thumbImgs);
 }
 
 function buildSchemeList() {
+  buildSchemeLists();
   buildSchemeChips();
   renderSchemeTiles();
 }
+
+// B9: вкладки Всё / Избранное / Недавние (со счётчиками).
+const schemeListsEl = document.getElementById("schemeLists");
+const LIST_DEFS = [
+  { id: "all", name: "Всё" },
+  { id: "fav", name: "⭐ Избранное" },
+  { id: "recent", name: "🕘 Недавние" },
+];
+function listCount(id) {
+  if (id === "fav") return allSchemeItems.filter((i) => schemeFavs.has(i.file)).length;
+  if (id === "recent") return allSchemeItems.filter((i) => schemeRecent.includes(i.file)).length;
+  return allSchemeItems.length;
+}
+function buildSchemeLists() {
+  schemeListsEl.innerHTML = "";
+  for (const l of LIST_DEFS) {
+    const chip = document.createElement("span");
+    chip.className = "chip" + (schemeFilter.list === l.id ? " active" : "");
+    chip.textContent = `${l.name} (${listCount(l.id)})`;
+    chip.addEventListener("click", () => {
+      schemeFilter.list = l.id;
+      buildSchemeLists();
+      renderSchemeTiles();
+    });
+    schemeListsEl.appendChild(chip);
+  }
+}
+// Скролл списка переживает перерисовки и закрытия панели.
+let schemeListScroll = 0;
+schemeListEl.addEventListener("scroll", () => {
+  schemeListScroll = schemeListEl.scrollTop;
+});
 
 schemeSearchEl.addEventListener("input", () => {
   schemeFilter.q = schemeSearchEl.value;
@@ -1545,12 +1635,51 @@ async function selectScheme(url, name) {
       return;
     }
     previewPlan = { plan, name, rot: 0, rotated: plan };
-    closePanels();
+    ghostOff = { x: 0, y: 0, z: 0 };
     rebuildGhost();
-    showMsg(`${name}: ${plan.W}×${plan.H}×${plan.L} · R — поворот · ЛКМ — поставить · ПКМ — отмена · Q — выйти`);
+    // B5: панель остаётся открытой — варианты сравниваются без потери скролла.
+    updateBuildBar();
+    updateGhostBar();
+    if (selectedSchemeFile) {
+      pushRecent(selectedSchemeFile);
+      buildSchemeLists();
+      if (schemeFilter.list === "recent") renderSchemeTiles();
+    }
+    showMsg(`${name}: ${plan.W}×${plan.H}×${plan.L} · T — к строительству · R — поворот · ЛКМ — поставить · ПКМ — отмена · Q — выйти`);
   } catch (err) {
     console.error("Не удалось прочитать схему", err);
     showMsg(`Ошибка схемы: ${err.message}`);
+  }
+}
+
+// B5: полоса выбранной схемы — уйти к строительству, не теряя место в списке.
+const schemeBuildBarEl = document.getElementById("schemeBuildBar");
+function updateBuildBar() {
+  if (!previewPlan) {
+    schemeBuildBarEl.classList.remove("show");
+    schemeBuildBarEl.innerHTML = "";
+    return;
+  }
+  const r = previewPlan.rotated;
+  const item = schemeMetaFor(selectedSchemeFile);
+  const q = schemeBuildCost(item, { W: r.W, H: r.H, L: r.L });
+  schemeBuildBarEl.innerHTML = "";
+  const info = document.createElement("span");
+  info.innerHTML = `<b>${previewPlan.name}</b> · ${r.W}×${r.H}×${r.L}` +
+    (q ? ` · ${fmtMoney(q.cost)}${q.tier > 1 ? ` · ${TIERS[q.tier].icon} ${TIERS[q.tier].name}` : ""}` : "");
+  const go = document.createElement("button");
+  go.textContent = "К строительству (T)";
+  go.addEventListener("click", closeSchemesToBuild);
+  schemeBuildBarEl.appendChild(info);
+  schemeBuildBarEl.appendChild(go);
+  schemeBuildBarEl.classList.add("show");
+}
+// Закрыть панель и сразу захватить курсор для стройки.
+function closeSchemesToBuild() {
+  schemesPanelEl.classList.remove("show");
+  if (previewPlan) {
+    const req = canvas.requestPointerLock?.();
+    if (req && req.catch) req.catch(() => showMsg("Кликните по миру, чтобы захватить курсор"));
   }
 }
 
@@ -1593,8 +1722,11 @@ function cancelPreview() {
   if (previewPlan) activatePending();
   previewPlan = null;
   previewAnchor = null;
+  ghostOff = { x: 0, y: 0, z: 0 };
   lastPlaced = null;
   clearGhost();
+  updateBuildBar();
+  updateGhostBar();
 }
 
 // Выход из режима построек: черновые здания оживают и входят в статистику.
@@ -1641,11 +1773,30 @@ function undoLastPlaced() {
   showMsg(`Отменено: «${u.name}» · убрано ${cleared} блоков · возврат ${fmtMoney(u.cost)}`);
 }
 
+// B6: полоса призрака — цена и управление видны в мире, а не в hints.
+const ghostBarEl = document.getElementById("ghostBar");
+function updateGhostBar() {
+  if (!previewPlan) {
+    ghostBarEl.classList.remove("show");
+    return;
+  }
+  const r = previewPlan.rotated;
+  const item = schemeMetaFor(selectedSchemeFile);
+  const q = schemeBuildCost(item, { W: r.W, H: r.H, L: r.L });
+  ghostBarEl.innerHTML =
+    `<b>${previewPlan.name}</b> · ${r.W}×${r.H}×${r.L}` +
+    (q ? ` · ${fmtMoney(q.cost)}${q.tier > 1 ? ` · ${TIERS[q.tier].icon} ${TIERS[q.tier].name}` : ""}` : "") +
+    `<br>←→↑↓ — двигать · PgUp/PgDn или колесо — высота · R — поворот · ЛКМ — поставить · ПКМ — отмена · Q — выйти`;
+  ghostBarEl.classList.add("show");
+}
+
 function rotatePreview() {
   if (!previewPlan) return;
   previewPlan.rot = (previewPlan.rot + 1) % 4;
   previewPlan.rotated = rotatePlan(previewPlan.plan, previewPlan.rot);
   rebuildGhost();
+  updateBuildBar();
+  updateGhostBar();
   const r = previewPlan.rotated;
   showMsg(`${previewPlan.name}: поворот ${previewPlan.rot * 90}° · ${r.W}×${r.H}×${r.L} · ЛКМ — поставить · ПКМ — отмена · Q — выйти`);
 }
@@ -1715,6 +1866,26 @@ window.addEventListener("keydown", (e) => {
     return;
   }
   if (isTyping(e) && e.code !== "Escape") return;
+  // B6: стрелки и PgUp/PgDn двигают призрак по сетке (шаг 1 блок).
+  // Пока открыта панель построек — стрелки скроллят список, призрак не трогаем.
+  if (previewPlan && !schemesPanelEl.classList.contains("show")) {
+    const fx = rayDir.x, fz = rayDir.z;
+    const fl = Math.hypot(fx, fz) || 1;
+    const Fx = fx / fl, Fz = fz / fl;
+    const Rx = -Fz, Rz = Fx;
+    let moved = true;
+    if (e.code === "ArrowUp") { ghostOff.x += Math.round(Fx); ghostOff.z += Math.round(Fz); }
+    else if (e.code === "ArrowDown") { ghostOff.x -= Math.round(Fx); ghostOff.z -= Math.round(Fz); }
+    else if (e.code === "ArrowLeft") { ghostOff.x -= Math.round(Rx); ghostOff.z -= Math.round(Rz); }
+    else if (e.code === "ArrowRight") { ghostOff.x += Math.round(Rx); ghostOff.z += Math.round(Rz); }
+    else if (e.code === "PageUp") ghostOff.y += 1;
+    else if (e.code === "PageDown") ghostOff.y -= 1;
+    else moved = false;
+    if (moved) {
+      e.preventDefault();
+      return;
+    }
+  }
   if (e.code === "KeyV" && !e.repeat) {
     setLabelsOn(!labelsOn);
     return;
@@ -1810,6 +1981,29 @@ document.addEventListener("pointerlockchange", () => {
   }
 });
 document.addEventListener("contextmenu", (e) => e.preventDefault());
+// ---------- A1: индикатор захвата курсора ----------
+// Прицел виден только в захвате; без захвата, паузы и панелей —
+// подсказка «кликните по миру». Вызывается каждый кадр, дёшево.
+const crosshairEl = document.getElementById("crosshair");
+const lockHintEl = document.getElementById("lockHint");
+let lastLocked = null;
+function anyPanelOpen() {
+  return pickerEl.classList.contains("show") || schemesPanelEl.classList.contains("show") ||
+    cityPanelEl.classList.contains("show") || pauseMenuEl.classList.contains("show");
+}
+function syncLockUI() {
+  const locked = document.pointerLockElement === canvas;
+  if (locked !== lastLocked) {
+    lastLocked = locked;
+    crosshairEl.classList.toggle("free", !locked);
+    // Потеря захвата без панелей и паузы (редкий случай — обычно это пауза):
+    // подсказываем, что делать дальше.
+    if (!locked && !paused && !anyPanelOpen() && mapReady) {
+      showMsg("Курсор свободен — кликните по миру, чтобы играть");
+    }
+  }
+  lockHintEl.classList.toggle("show", !locked && !paused && !anyPanelOpen() && mapReady);
+}
 document.addEventListener("mousemove", (e) => {
   if (document.pointerLockElement !== canvas) return;
   const sens = 0.0021;
@@ -1817,6 +2011,13 @@ document.addEventListener("mousemove", (e) => {
   camPitch += e.movementY * sens;
   camPitch = Math.max(-1.45, Math.min(1.45, camPitch));
 });
+// B6: колесо в захвате меняет высоту призрака (вне захвата — обычный скролл).
+window.addEventListener("wheel", (e) => {
+  if (!previewPlan || document.pointerLockElement !== canvas) return;
+  if (e.target && (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA")) return;
+  e.preventDefault();
+  ghostOff.y += e.deltaY < 0 ? 1 : -1;
+}, { passive: false });
 
 // ---------- targeting marker ----------
 const outlineMat = new BABYLON.StandardMaterial("outlineMat", scene);
@@ -2085,7 +2286,12 @@ scene.registerBeforeRender(() => {
   if (previewPlan && ghostLines && ghostFill) {
     const far = raycast(camera.position.x, camera.position.y, camera.position.z, rayDir.x, rayDir.y, rayDir.z, 120);
     if (far) {
-      previewAnchor = { x: far.x + far.nx, y: far.y + far.ny, z: far.z + far.nz };
+      // B6: якорь = точка прицела + ручной сдвиг (стрелки/колесо).
+      previewAnchor = {
+        x: far.x + far.nx + ghostOff.x,
+        y: far.y + far.ny + ghostOff.y,
+        z: far.z + far.nz + ghostOff.z,
+      };
       const r = previewPlan.rotated;
       const x0 = previewAnchor.x - Math.floor(r.W / 2);
       const z0 = previewAnchor.z - Math.floor(r.L / 2);
@@ -2114,6 +2320,8 @@ scene.registerBeforeRender(() => {
 
   // ---- метки построек в просмотре ----
   updateBuildingLabels();
+  // ---- A1: прицел/подсказка захвата ----
+  syncLockUI();
 
   // ---- визуальные жители ----
   stepResidentMeshes(dt);

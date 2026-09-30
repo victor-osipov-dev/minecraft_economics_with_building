@@ -88,6 +88,48 @@
       pointer-events: none;
       z-index: 10;
     }
+    /* A1: при свободном курсоре прицел прячем, вместо него — подсказка */
+    #crosshair.free { display: none; }
+    #lockHint {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(0, 0, 0, 0.6);
+      color: #ffd54a;
+      font: 14px 'Segoe UI', Arial, sans-serif;
+      padding: 10px 22px;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 213, 74, 0.6);
+      pointer-events: none;
+      user-select: none;
+      z-index: 10;
+      display: none;
+      white-space: nowrap;
+    }
+    #lockHint.show { display: block; }
+    /* B6: полоса призрака — цена и управление у стройки, а не в hints */
+    #ghostBar {
+      position: fixed;
+      bottom: 84px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(8, 10, 14, 0.85);
+      border: 1px solid rgba(255, 213, 74, 0.55);
+      border-radius: 8px;
+      color: #eee;
+      font: 12px 'Segoe UI', Arial, sans-serif;
+      line-height: 1.6;
+      padding: 7px 14px;
+      pointer-events: none;
+      user-select: none;
+      z-index: 12;
+      display: none;
+      text-align: center;
+      max-width: 92vw;
+    }
+    #ghostBar.show { display: block; }
+    #ghostBar b { color: #ffd54a; }
     #loadBtn {
       position: fixed;
       top: 12px;
@@ -269,6 +311,51 @@
     .tile .tn { font-size: 12px; font-weight: 600; margin: 5px 0 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .tile .td { font-size: 11px; opacity: 0.65; }
     .tile .tt { font-size: 11px; color: #ffd54a; opacity: 0.9; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    /* B9: звезда избранного на плитке */
+    .tile { position: relative; }
+    .tile .fav {
+      position: absolute;
+      top: 2px;
+      right: 2px;
+      width: 26px;
+      height: 26px;
+      background: rgba(0, 0, 0, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 6px;
+      color: #888;
+      font-size: 14px;
+      cursor: pointer;
+      z-index: 2;
+      line-height: 1;
+      padding: 0;
+    }
+    .tile .fav.on { color: #ffd54a; border-color: #ffd54a; }
+    /* B9: вкладки Всё / Избранное / Недавние */
+    #schemeLists { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 8px; }
+    /* B5: полоса выбранной схемы — к строительству без потери места в списке */
+    #schemeBuildBar {
+      display: none;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      background: rgba(255, 213, 74, 0.1);
+      border: 1px solid #ffd54a;
+      border-radius: 8px;
+      padding: 8px 12px;
+      margin-bottom: 8px;
+      font-size: 12px;
+    }
+    #schemeBuildBar.show { display: flex; }
+    #schemeBuildBar button {
+      background: rgba(255, 213, 74, 0.25);
+      color: #ffd54a;
+      border: 1px solid #ffd54a;
+      border-radius: 5px;
+      padding: 4px 12px;
+      cursor: pointer;
+      font-size: 12px;
+    }
+    #schemeBuildBar button:hover { background: rgba(255, 213, 74, 0.4); }
     #dropOverlay {
       position: fixed;
       inset: 0;
@@ -293,6 +380,8 @@
   </div>
   <div id="hotbar"></div>
   <div id="crosshair"></div>
+  <div id="lockHint">Кликните по миру, чтобы играть</div>
+  <div id="ghostBar"></div>
   <div id="msg"></div>
   <div id="labels"></div>
   <button id="loadBtn" title="Загрузить постройку из файла (.schem / .schematic / .nbt)">Загрузить схему</button>
@@ -328,9 +417,11 @@
   <div id="schemesPanel" class="panel wide">
     <h3>Постройки <span id="schemeCount"></span></h3>
     <input id="schemeSearch" type="text" placeholder="Поиск: название или #тег…" autocomplete="off" />
+    <div id="schemeLists"></div>
     <div id="schemeEco" style="margin:8px 0"></div>
     <div id="schemeTags"></div>
-    <div class="hint">Клик по плитке — призрак на прицеле · R — поворот · ЛКМ — поставить · ПКМ — отмена · Q — выйти</div>
+    <div id="schemeBuildBar"></div>
+    <div class="hint">Клик — выбрать (панель остаётся, можно сравнить) · T — к строительству · R — поворот · ЛКМ — поставить · ПКМ — отмена · Q — выйти</div>
     <div id="schemeList" class="tiles"></div>
   </div>
   <input type="file" id="schemFile" accept=".schem,.schematic,.nbt" hidden />
