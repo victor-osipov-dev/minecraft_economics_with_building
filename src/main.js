@@ -584,7 +584,6 @@ for (const it of schemesIndex.items) {
 const viewBtn = document.getElementById("viewBtn");
 const framesBtn = document.getElementById("framesBtn");
 const blocksBtn = document.getElementById("blocksBtn");
-const schemesBtn = document.getElementById("schemesBtn");
 const pickerEl = document.getElementById("picker");
 const pickGridEl = document.getElementById("pickGrid");
 const schemesPanelEl = document.getElementById("schemesPanel");
@@ -604,7 +603,7 @@ function setLabelsOn(on) {
 
 function setShowFrames(on) {
   showFrames = on;
-  framesBtn.textContent = on ? "Рамки: вкл" : "Рамки: выкл";
+  framesBtn.textContent = on ? "Рамки: вкл (G)" : "Рамки: выкл (G)";
   framesBtn.classList.toggle("active", on);
   applyBuildingVisibility();
 }
@@ -682,7 +681,6 @@ function clearBuildings() {
 let city = newCityState();
 if (typeof window !== "undefined") window.CITY = { get state() { return city; } };
 
-const cityBtn = document.getElementById("cityBtn");
 const cityPanelEl = document.getElementById("cityPanel");
 const cityStatsEl = document.getElementById("cityStats");
 const cityBuildingsEl = document.getElementById("cityBuildings");
@@ -999,8 +997,6 @@ async function demolishBuilding(id) {
   showMsg(`Снесено: «${name}» · убрано ${cleared} блоков · возврат ${fmtMoney(refund)}`);
 }
 
-cityBtn.addEventListener("click", toggleCity);
-
 const pauseMenuEl = document.getElementById("pauseMenu");
 document.getElementById("resumeBtn").addEventListener("click", resumeGame);
 document.getElementById("saveBtn").addEventListener("click", saveGame);
@@ -1153,7 +1149,7 @@ function loadGame() {
 // Живое обновление серости плиток без перестройки списка (скролл не прыгает).
 function refreshTileFunds() {
   if (!schemesPanelEl.classList.contains("show")) return;
-  for (const tile of schemeListEl.children) {
+  for (const tile of schemeListEl.querySelectorAll(".tile")) {
     const cost = Number(tile.dataset.cost);
     tile.classList.toggle("poor", tile.dataset.cost !== "" && cost > city.money);
   }
@@ -1288,10 +1284,32 @@ function updateBuildingLabels() {
 
 function closePanels() {
   pickerEl.classList.remove("show");
-  schemesPanelEl.classList.remove("show");
-  cityPanelEl.classList.remove("show");
+  schemesPanelEl.classList.remove("show", "dock-left");
+  cityPanelEl.classList.remove("show", "dock-right");
   pauseMenuEl.classList.remove("show");
+  commandMenuOpen = false;
   unpinCityPanel();
+}
+
+// Tab-меню: две панели одновременно — постройки слева, город справа.
+let commandMenuOpen = false;
+function openCommandMenu() {
+  closePanels();
+  setPaused(false);
+  schemesPanelEl.classList.add("show", "dock-left");
+  cityPanelEl.classList.add("show", "dock-right");
+  commandMenuOpen = true;
+  buildSchemeList();
+  schemeListEl.scrollTop = schemeListScroll;
+  updateBuildBar();
+  renderCity();
+  if (document.pointerLockElement) {
+    unlockForPanel = true;
+    document.exitPointerLock();
+  }
+}
+function closeCommandMenu() {
+  closePanels(); // снимает show, dock и флаг
 }
 
 // Пауза: останавливает физику, жителей и тик города, показывает меню.
@@ -1545,68 +1563,83 @@ function buildSchemeChips() {
   }
 }
 
-// Превью подгружаем только для плиток, близких к видимой области: их тысячи, и
-// одновременная отдача всех запросов роняет узкие каналы/прокси (502, «пустые»
-// карточки). IntersectionObserver выбирает ближайшие плитки, очередь держит
-// ограниченное число одновременных загрузок.
-const THUMB_CONCURRENCY = 3;
-const thumbQueue = [];
-let thumbActive = 0;
-let thumbObserver = null;
+// ---------- виртуальный список построек ----------
+// В DOM только видимое окно + overscan: 1160 тяжёлых плиток целиком не влезают.
+// Пикер блоков (46 штук без картинок) виртуализации не требует.
+const TILE_GAP = 8;
+const TILE_MIN_W = 148;
+const TILE_OVERSCAN_ROWS = 3;
+let schemeShown = [];
+let tileLayout = { cols: 1, tileW: 150, rowH: 260 };
+const schemeSpacerEl = document.createElement("div");
+schemeSpacerEl.id = "schemeSpacer";
 
-function pumpThumbs() {
-  while (thumbActive < THUMB_CONCURRENCY && thumbQueue.length) {
-    const img = thumbQueue.shift();
-    // плитка могла быть выброшена перерисовкой списка
-    if (!img.isConnected || !img.dataset.src || img.src) continue;
-    thumbActive++;
-    let settled = false;
-    const done = () => {
-      if (settled) return;
-      settled = true;
-      clearTimeout(watchdog);
-      thumbActive--;
-      pumpThumbs();
-    };
-    // страховка: если load/error не пришёл — не держим слот
-    const watchdog = setTimeout(done, 10000);
-    img.addEventListener("load", done, { once: true });
-    img.addEventListener("error", done, { once: true });
-    img.src = img.dataset.src;
-  }
+function layoutTiles() {
+  const w = schemeListEl.clientWidth || 300;
+  const cols = Math.max(1, Math.floor((w + TILE_GAP) / (TILE_MIN_W + TILE_GAP)));
+  const tileW = (w - (cols - 1) * TILE_GAP) / cols;
+  // медиабокс aspect 232/176 + текстовый блок (~72px); точную высоту калибруем замером
+  tileLayout = { cols, tileW, rowH: tileW * (176 / 232) + 72 };
 }
 
-function observeThumbs(imgs) {
-  if (thumbObserver) thumbObserver.disconnect();
-  if (typeof IntersectionObserver === "undefined") {
-    // без наблюдателя грузим всё, как раньше
-    thumbQueue.push(...imgs);
-    pumpThumbs();
-    return;
+// Окно видимых плиток; rAF-троттлинг — скролл не душит рендер.
+let tileWindowQueued = false;
+function scheduleTileWindow() {
+  if (tileWindowQueued) return;
+  tileWindowQueued = true;
+  requestAnimationFrame(() => {
+    tileWindowQueued = false;
+    if (schemesPanelEl.classList.contains("show")) renderTileWindow();
+  });
+}
+
+function renderTileWindow(corrected) {
+  const { cols, tileW, rowH } = tileLayout;
+  const total = schemeShown.length;
+  const rows = Math.ceil(total / cols);
+  const step = rowH + TILE_GAP;
+  schemeSpacerEl.style.height = (rows > 0 ? rows * rowH + (rows - 1) * TILE_GAP : 0) + "px";
+  const st = schemeListEl.scrollTop;
+  const vh = schemeListEl.clientHeight || 400;
+  const r0 = Math.max(0, Math.floor(st / step) - TILE_OVERSCAN_ROWS);
+  const r1 = Math.min(rows - 1, Math.ceil((st + vh) / step) + TILE_OVERSCAN_ROWS);
+  schemeSpacerEl.innerHTML = "";
+  for (let r = r0; r1 >= 0 && r <= r1; r++) {
+    for (let c = 0; c < cols; c++) {
+      const i = r * cols + c;
+      if (i >= total) break;
+      const tile = createTile(schemeShown[i]);
+      tile.style.width = tileW + "px";
+      tile.style.left = (c * (tileW + TILE_GAP)) + "px";
+      tile.style.top = (r * step) + "px";
+      schemeSpacerEl.appendChild(tile);
+    }
   }
-  thumbObserver = new IntersectionObserver(
-    (entries) => {
-      for (const e of entries) {
-        if (!e.isIntersecting) continue;
-        thumbObserver.unobserve(e.target);
-        if (!e.target.dataset.src || e.target.src) continue;
-        thumbQueue.push(e.target);
+  // Калибровка высоты по реальной плитке (шрифты/зум могут отличаться от оценки).
+  if (!corrected) {
+    const first = schemeSpacerEl.querySelector(".tile");
+    if (first) {
+      const h = first.offsetHeight;
+      if (h > 0 && Math.abs(h - tileLayout.rowH) > 2) {
+        tileLayout.rowH = h;
+        renderTileWindow(true);
       }
-      pumpThumbs();
-    },
-    { root: schemeListEl, rootMargin: "400px" }
-  );
-  for (const img of imgs) thumbObserver.observe(img);
+    }
+  }
 }
 
 function renderSchemeTiles() {
-  const keepScroll = schemeListEl.scrollTop;
+  schemeShown = allSchemeItems.filter(schemeMatches);
+  schemeCountEl.textContent = `· ${schemeShown.length} из ${allSchemeItems.length}`;
   schemeListEl.innerHTML = "";
-  thumbQueue.length = 0; // прошлые плитки уже не нужны — наблюдатель создастся заново
-  const thumbImgs = [];
-  const shown = allSchemeItems.filter(schemeMatches);
-  schemeCountEl.textContent = `· ${shown.length} из ${allSchemeItems.length}`;
-  for (const item of shown) {
+  schemeListEl.appendChild(schemeSpacerEl);
+  layoutTiles();
+  renderTileWindow();
+  schemeListScroll = schemeListEl.scrollTop;
+}
+
+// Одна плитка списка (создаётся только для видимого окна).
+function createTile(item) {
     const tile = document.createElement("div");
     tile.className = "tile" + (selectedSchemeFile === item.file ? " selected" : "");
     // B9: звезда избранного (клик не выбирает схему).
@@ -1629,11 +1662,17 @@ function renderSchemeTiles() {
     tile.appendChild(fav);
     const base = item.file.replace(/\.(schem|schematic|nbt)$/i, "");
     if (schemeThumbByFile[base]) {
+      // Видимое окно маленькое — грузим сразу, очередь не нужна.
       const img = document.createElement("img");
       img.alt = item.name;
-      img.dataset.src = schemeThumbByFile[base];
-      thumbImgs.push(img);
+      img.loading = "lazy";
+      img.src = schemeThumbByFile[base];
       tile.appendChild(img);
+    } else {
+      // Заглушка той же высоты: все плитки uniform, сетка не пляшет.
+      const ph = document.createElement("div");
+      ph.className = "tileph";
+      tile.appendChild(ph);
     }
     const nm = document.createElement("div");
     nm.className = "tn";
@@ -1685,15 +1724,12 @@ function renderSchemeTiles() {
       }
       selectedSchemeFile = item.file;
       // B5: подсветка без полной перестройки — скролл и превью целы.
-      for (const t2 of schemeListEl.children) {
+      for (const t2 of schemeSpacerEl.children) {
         t2.classList.toggle("selected", t2.dataset.file === item.file);
       }
       selectScheme(url, item.name);
     });
-    schemeListEl.appendChild(tile);
-  }
-  schemeListEl.scrollTop = schemeListScroll = keepScroll;
-  observeThumbs(thumbImgs);
+    return tile;
 }
 
 function buildSchemeList() {
@@ -1732,6 +1768,13 @@ function buildSchemeLists() {
 let schemeListScroll = 0;
 schemeListEl.addEventListener("scroll", () => {
   schemeListScroll = schemeListEl.scrollTop;
+  scheduleTileWindow(); // виртуализация: подкатить видимое окно
+});
+// Ширина панели влияет на сетку (доки Tab-меню, ресайз окна).
+window.addEventListener("resize", () => {
+  if (!schemesPanelEl.classList.contains("show")) return;
+  layoutTiles();
+  renderTileWindow();
 });
 
 schemeSearchEl.addEventListener("input", () => {
@@ -2066,18 +2109,24 @@ function placePreview() {
 viewBtn.addEventListener("click", () => setLabelsOn(!labelsOn));
 framesBtn.addEventListener("click", () => setShowFrames(!showFrames));
 blocksBtn.addEventListener("click", togglePicker);
-schemesBtn.addEventListener("click", toggleSchemes);
 buildPicker();
 
 window.addEventListener("keydown", (e) => {
-  // Tab — умный тогл: в захвате отдаём курсор (потеря захвата откроет паузу),
-  // без захвата возвращаемся в игру (панели закрываются, захват + снятие паузы).
+  // Tab — меню-командир: постройки слева + город справа.
   // В полях ввода Tab работает как обычно (навигация по фокусу).
   if (e.code === "Tab") {
     if (isTyping(e)) return;
     e.preventDefault();
-    if (document.pointerLockElement) document.exitPointerLock();
-    else resumeGame();
+    if (document.pointerLockElement) {
+      unlockForPanel = true;
+      document.exitPointerLock();
+      openCommandMenu();
+    } else if (commandMenuOpen) {
+      closeCommandMenu();
+      resumeGame();
+    } else {
+      openCommandMenu();
+    }
     return;
   }
   if (isTyping(e) && e.code !== "Escape") return;
@@ -2109,6 +2158,10 @@ window.addEventListener("keydown", (e) => {
   }
   if (e.code === "KeyV" && !e.repeat) {
     setLabelsOn(!labelsOn);
+    return;
+  }
+  if (e.code === "KeyG" && !e.repeat) {
+    setShowFrames(!showFrames);
     return;
   }
   if (e.code === "KeyQ" && !e.repeat) {

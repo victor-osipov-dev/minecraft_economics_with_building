@@ -336,6 +336,22 @@
     }
     .schemeRow button:hover { background: rgba(255, 213, 74, 0.4); }
     .panel.wide { max-width: min(940px, 94vw); }
+    /* Tab-меню: постройки слева, город справа (две панели одновременно) */
+    #schemesPanel.dock-left {
+      left: 12px;
+      top: 12px;
+      transform: none;
+      max-width: min(600px, 46vw);
+      max-height: calc(100vh - 24px);
+    }
+    #cityPanel.dock-right {
+      left: auto;
+      right: 12px;
+      top: 12px;
+      transform: none;
+      max-width: min(430px, 40vw);
+      max-height: calc(100vh - 24px);
+    }
     #schemeSearch {
       width: 100%;
       background: rgba(255, 255, 255, 0.08);
@@ -363,13 +379,14 @@
     .chip.active { background: rgba(255, 213, 74, 0.3); border-color: #ffd54a; color: #ffd54a; }
     .chip.cat { font-weight: 600; }
     #schemeList.tiles {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(148px, 1fr));
-      gap: 8px;
+      display: block;
       max-height: 46vh;
       overflow-y: auto;
       padding-right: 2px;
     }
+    /* виртуализация: в DOM только видимое окно + overscan, высота — спейсером */
+    #schemeSpacer { position: relative; }
+    #schemeList.tiles .tile { position: absolute; top: 0; left: 0; }
     .tile {
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid transparent;
@@ -389,6 +406,13 @@
       background: rgba(255, 255, 255, 0.04);
       border-radius: 5px;
       display: block;
+    }
+    /* заглушка медиабокса: высота плитки uniform даже без превью */
+    .tile .tileph {
+      width: 100%;
+      aspect-ratio: 232 / 176;
+      background: rgba(255, 255, 255, 0.04);
+      border-radius: 5px;
     }
     .tile .tn { font-size: 12px; font-weight: 600; margin: 5px 0 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .tile .td { font-size: 11px; opacity: 0.65; }
@@ -458,7 +482,7 @@
 <body>
   <div id="hud">
     ЛКМ — ломать &middot; ПКМ — поставить &middot; 1–9 — блок: <span class="block" id="selBlock">—</span><br />
-    WASD — движение &middot; мышь — камера &middot; Space — полёт &middot; E — блоки &middot; T — постройки &middot; V — подписи · P — пауза
+    WASD — движение &middot; мышь — камера &middot; Space — полёт &middot; Tab — меню &middot; E — блоки &middot; T — постройки &middot; C — город &middot; V — подписи &middot; G — рамки &middot; P — пауза
   </div>
   <div id="hotbar"></div>
   <div id="hudSub"></div>
@@ -471,10 +495,8 @@
   <div id="labels"></div>
   <button id="loadBtn" title="Загрузить постройку из файла (.schem / .schematic / .nbt)">Загрузить схему</button>
   <button id="viewBtn" class="topbtn active" title="Подписи построек (V)">Подписи: вкл (V)</button>
-  <button id="framesBtn" class="topbtn active" title="Показать или скрыть рамки построек">Рамки: вкл</button>
-  <button id="blocksBtn" class="topbtn" title="Выбор блоков (E)">Блоки</button>
-  <button id="cityBtn" class="topbtn" title="Панель города (C)">Город (C)</button>
-  <button id="schemesBtn" class="topbtn" title="Постройки из schemes (T)">Постройки</button>
+  <button id="framesBtn" class="topbtn active" title="Показать или скрыть рамки построек (G)">Рамки: вкл (G)</button>
+  <button id="blocksBtn" class="topbtn" title="Выбор блоков (E)">Блоки (E)</button>
   <div id="cityPanel" class="panel wide">
     <h3>Город <span id="cityDay" class="cdim"></span></h3>
     <div id="cityStats"></div>
@@ -490,7 +512,7 @@
     <button id="loadSaveBtn" class="mbtn">Загрузить игру</button>
     <button id="newGameBtn" class="mbtn">Начать заново</button>
     <div class="hint" id="saveInfo"></div>
-    <div class="hint">E — блоки · T — постройки · C — город · V — просмотр · P — пауза · Tab — курсор</div>
+    <div class="hint">E — блоки · T — постройки · C — город · V — подписи · G — рамки · P — пауза · Tab — меню</div>
   </div>
   <div id="picker" class="panel">
     <h3>Блоки песочницы</h3>
