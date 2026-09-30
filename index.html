@@ -26,6 +26,31 @@
       text-align: center;
     }
     #hud .block { color: #aaffaa; }
+    /* Крупная подсказка TAB: вход в игру — через меню */
+    #tabHint {
+      position: fixed;
+      top: 36%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      pointer-events: none;
+      user-select: none;
+      z-index: 15;
+      display: none;
+    }
+    #tabHint.show { display: block; animation: tabPulse 1.6s ease-in-out infinite; }
+    #tabHint b {
+      display: block;
+      font: 700 64px 'Segoe UI', Arial, sans-serif;
+      color: #ffd54a;
+      letter-spacing: 6px;
+      text-shadow: 0 0 24px rgba(255, 213, 74, 0.6), 0 3px 0 #000;
+    }
+    #tabHint span { font: 15px 'Segoe UI', Arial, sans-serif; color: #fff; opacity: 0.85; }
+    @keyframes tabPulse {
+      0%, 100% { transform: translate(-50%, -50%) scale(1); }
+      50% { transform: translate(-50%, -50%) scale(1.07); }
+    }
     #msg {
       position: fixed;
       bottom: 130px;
@@ -336,20 +361,21 @@
     }
     .schemeRow button:hover { background: rgba(255, 213, 74, 0.4); }
     .panel.wide { max-width: min(940px, 94vw); }
-    /* Tab-меню: постройки слева, город справа (две панели одновременно) */
+    /* Tab-меню: две панели единым блоком по центру (постройки + город) */
     #schemesPanel.dock-left {
-      left: 12px;
-      top: 12px;
-      transform: none;
-      max-width: min(600px, 46vw);
+      left: 50%;
+      right: auto;
+      top: 50%;
+      transform: translate(calc(-100% - 10px), -50%);
+      max-width: min(560px, 54vw);
       max-height: calc(100vh - 24px);
     }
     #cityPanel.dock-right {
-      left: auto;
-      right: 12px;
-      top: 12px;
-      transform: none;
-      max-width: min(430px, 40vw);
+      left: calc(50% + 10px);
+      right: auto;
+      top: 50%;
+      transform: translateY(-50%);
+      max-width: min(400px, 34vw);
       max-height: calc(100vh - 24px);
     }
     #schemeSearch {
@@ -365,12 +391,15 @@
     }
     #schemeSearch:focus { border-color: #ffd54a; }
     #schemeCats, #schemeTags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 8px; }
+    /* чипы эко-фильтра тоже flex: инлайновые спаны наезжали друг на друга */
+    #schemeEco { display: flex; flex-wrap: wrap; gap: 5px; }
     .chip {
       background: rgba(255, 255, 255, 0.07);
       border: 1px solid rgba(255, 255, 255, 0.16);
       border-radius: 12px;
       color: #ddd;
       font-size: 12px;
+      line-height: 1.6;
       padding: 3px 10px;
       cursor: pointer;
       user-select: none;
@@ -481,8 +510,7 @@
 </head>
 <body>
   <div id="hud">
-    ЛКМ — ломать &middot; ПКМ — поставить &middot; 1–9 — блок: <span class="block" id="selBlock">—</span><br />
-    WASD — движение &middot; мышь — камера &middot; Space — полёт &middot; Tab — меню &middot; E — блоки &middot; T — постройки &middot; C — город &middot; V — подписи &middot; G — рамки &middot; P — пауза
+    ЛКМ — ломать &middot; ПКМ — поставить &middot; 1–9 — блок: <span class="block" id="selBlock">—</span>
   </div>
   <div id="hotbar"></div>
   <div id="hudSub"></div>
@@ -490,6 +518,7 @@
   <div id="msgLog"></div>
   <div id="crosshair"></div>
   <div id="lockHint">Кликните по миру, чтобы играть</div>
+  <div id="tabHint"><b>НАЖМИ TAB</b><span>постройки и город</span></div>
   <div id="ghostBar"></div>
   <div id="msg"></div>
   <div id="labels"></div>

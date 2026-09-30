@@ -2117,6 +2117,12 @@ window.addEventListener("keydown", (e) => {
   if (e.code === "Tab") {
     if (isTyping(e)) return;
     e.preventDefault();
+    // TAB нажат — крупную подсказку больше не показываем.
+    if (!tabEverPressed) {
+      tabEverPressed = true;
+      try { localStorage.setItem("babylon-tab-hint-v1", "1"); } catch (err) {}
+      updateTabHint();
+    }
     if (document.pointerLockElement) {
       unlockForPanel = true;
       document.exitPointerLock();
@@ -2276,6 +2282,15 @@ document.addEventListener("contextmenu", (e) => e.preventDefault());
 // подсказка «кликните по миру». Вызывается каждый кадр, дёшево.
 const crosshairEl = document.getElementById("crosshair");
 const lockHintEl = document.getElementById("lockHint");
+const tabHintEl = document.getElementById("tabHint");
+// Крупный TAB-хинт: показываем, пока игрок ни разу не открыл меню.
+// Закрыл меню, так и не нажав? Появится снова сам (условие то же).
+let tabEverPressed = false;
+try { tabEverPressed = localStorage.getItem("babylon-tab-hint-v1") === "1"; } catch (e) {}
+function updateTabHint() {
+  const show = mapReady && !tabEverPressed && !paused && !anyPanelOpen();
+  tabHintEl.classList.toggle("show", show);
+}
 let lastLocked = null;
 function anyPanelOpen() {
   return pickerEl.classList.contains("show") || schemesPanelEl.classList.contains("show") ||
@@ -2292,7 +2307,7 @@ function syncLockUI() {
       showMsg("Курсор свободен — кликните по миру, чтобы играть");
     }
   }
-  lockHintEl.classList.toggle("show", !locked && !paused && !anyPanelOpen() && mapReady);
+  lockHintEl.classList.toggle("show", !locked && !paused && !anyPanelOpen() && mapReady && tabEverPressed);
 }
 document.addEventListener("mousemove", (e) => {
   if (document.pointerLockElement !== canvas) return;
@@ -2618,6 +2633,7 @@ scene.registerBeforeRender(() => {
   // ---- A1: прицел/подсказка захвата, C12: контекстный хинт ----
   syncLockUI();
   updateHint();
+  updateTabHint();
 
   // ---- визуальные жители ----
   stepResidentMeshes(dt);
