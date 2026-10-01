@@ -1664,15 +1664,19 @@ let tileLayout = { cols: 1, tileW: 150, rowH: 260 };
 const schemeSpacerEl = document.createElement("div");
 schemeSpacerEl.id = "schemeSpacer";
 
+function contentWidth() {
+  const cs = getComputedStyle(schemeListEl);
+  return Math.max(50, schemeListEl.clientWidth -
+    parseFloat(cs.paddingLeft || 0) - parseFloat(cs.paddingRight || 0));
+}
+
 function layoutTiles() {
   // clientWidth включает паддинги — вычитаем, иначе плитки шире контента
-  const cs = getComputedStyle(schemeListEl);
-  const w = Math.max(50, schemeListEl.clientWidth -
-    parseFloat(cs.paddingLeft || 0) - parseFloat(cs.paddingRight || 0));
+  const w = contentWidth();
   const cols = Math.max(1, Math.floor((w + TILE_GAP) / (TILE_MIN_W + TILE_GAP)));
   const tileW = (w - (cols - 1) * TILE_GAP) / cols;
   // медиабокс aspect 232/176 + текстовый блок (~72px); точную высоту калибруем замером
-  tileLayout = { cols, tileW, rowH: tileW * (176 / 232) + 72 };
+  tileLayout = { cols, tileW, rowH: tileW * (176 / 232) + 72, w };
 }
 
 // Окно видимых плиток; rAF-троттлинг — скролл не душит рендер.
@@ -1708,8 +1712,15 @@ function renderTileWindow(corrected) {
       schemeSpacerEl.appendChild(tile);
     }
   }
-  // Калибровка высоты по реальной плитке (шрифты/зум могут отличаться от оценки).
+  // Калибровка геометрии по факту:
+  // 1) скроллбар отъел ширину после наполнения — перераскладка (один проход);
+  // 2) высота строки по реальной плитке (шрифты/зум).
   if (!corrected) {
+    if (Math.abs(contentWidth() - (tileLayout.w || 0)) > 1) {
+      layoutTiles();
+      renderTileWindow(true);
+      return;
+    }
     const first = schemeSpacerEl.querySelector(".tile");
     if (first) {
       const h = first.offsetHeight;
