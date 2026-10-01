@@ -523,12 +523,12 @@ function updateHotbar() {
   const marks = [];
   for (let i = 0; i < 9; i++) {
     const id = creativeSlots[i];
+    const active = i === creativeSel ? ' active' : '';
     if (id == null) {
-      marks.push('<div class="hslot"></div>');
+      marks.push(`<div class="hslot${active}"></div>`);
       continue;
     }
     const b = BLOCKS[id];
-    const active = i === creativeSel ? ' active' : '';
     const css = blockIconStyle(b);
     const icon = css
       ? `<span class="tx" style="${css}"></span>`
