@@ -380,8 +380,20 @@ export function getLang() {
 export function locale() {
   return lang === "en" ? "en-US" : "ru-RU";
 }
+function pick(section, key) {
+  // Ключ с точкой идёт по вложенному объекту ("saveDb.noCity").
+  if (key.indexOf(".") < 0) return section[key];
+  let cur = section;
+  for (const part of key.split(".")) {
+    if (cur === null || typeof cur !== "object") return undefined;
+    cur = cur[part];
+  }
+  return cur;
+}
+
 export function t(key, vars) {
-  let s = (STR[lang] && STR[lang][key] !== undefined ? STR[lang][key] : STR.ru[key]);
+  let s = pick(STR[lang], key);
+  if (s === undefined) s = pick(STR.ru, key);
   if (s === undefined) return key;
   if (typeof s !== "string") return s;
   if (vars) {

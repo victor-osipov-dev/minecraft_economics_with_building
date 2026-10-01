@@ -211,12 +211,12 @@ function showMsg(text) {
 }
 function renderMsgLog() {
   msgLogEl.innerHTML = "";
-  msgLog.forEach((t, i) => {
+  msgLog.forEach((txt, i) => {
     const d = document.createElement("div");
     d.className = "logItem" + (i === 0 ? " fresh" : "");
-    d.textContent = t;
+    d.textContent = txt;
     d.title = t("showAgain");
-    d.addEventListener("click", () => showMsg(t));
+    d.addEventListener("click", () => showMsg(txt));
     msgLogEl.appendChild(d);
   });
 }
@@ -614,8 +614,8 @@ window.addEventListener("keydown", (e) => {
 
 // Ввод в полях поиска: сочетания клавиш не работают (кроме Esc).
 function isTyping(e) {
-  const t = e.target;
-  return !!t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA");
+  const el = e.target;
+  return !!el && (el.tagName === "INPUT" || el.tagName === "TEXTAREA");
 }
 updateHotbar();
 
@@ -923,7 +923,7 @@ function renderLoans() {
   const typeCounts = {};
   for (const b of city.buildings) typeCounts[b.typeId] = (typeCounts[b.typeId] || 0) + 1;
   const tagCounts = {};
-  for (const b of city.buildings) for (const t of instTags(b)) tagCounts[t] = (tagCounts[t] || 0) + 1;
+  for (const b of city.buildings) for (const tag of instTags(b)) tagCounts[tag] = (tagCounts[tag] || 0) + 1;
   if (cityBldType !== "all" && !typeCounts[cityBldType]) cityBldType = "all";
   if (cityBldTag !== "all" && !tagCounts[cityBldTag]) cityBldTag = "all";
   const chip = (label, active, attr) =>
@@ -1730,7 +1730,7 @@ const ECO_TYPES = {
 };
 const ECO_DEFS = ECO_IDS.map((id) => ({ id, get name() { return t("eco")[id]; }, types: ECO_TYPES[id] }));
 const ECO_OF_TYPE = {};
-for (const e of ECO_DEFS) for (const t of e.types) (ECO_OF_TYPE[t] = ECO_OF_TYPE[t] || []).push(e.id);
+for (const e of ECO_DEFS) for (const tid of e.types) (ECO_OF_TYPE[tid] = ECO_OF_TYPE[tid] || []).push(e.id);
 
 const indexFiles = new Set(schemesIndex.items.map((i) => i.file));
 const extraSchemeItems = Object.keys(schemeUrlByFile)
@@ -1773,11 +1773,11 @@ function schemeMatches(item) {
   if (schemeFilter.list === "fav" && !schemeFavs.has(item.file)) return false;
   if (schemeFilter.list === "recent" && !schemeRecent.includes(item.file)) return false;
   if (schemeFilter.eco !== "all" && !(item._eco || []).includes(schemeFilter.eco)) return false;
-  for (const t of schemeFilter.tags) {
-    if (!item.tags.includes(t)) return false;
+  for (const tag of schemeFilter.tags) {
+    if (!item.tags.includes(tag)) return false;
   }
   const q = schemeFilter.q.trim().toLowerCase().replace(/^#+/, "");
-  if (q && !(item.name.toLowerCase().includes(q) || item.tags.some((t) => t.includes(q)))) return false;
+  if (q && !(item.name.toLowerCase().includes(q) || item.tags.some((tg) => tg.includes(q)))) return false;
   return true;
 }
 
@@ -1801,13 +1801,13 @@ function buildSchemeChips() {
     schemeEcoEl.appendChild(chip);
   }
   schemeTagsEl.innerHTML = "";
-  for (const t of schemesIndex.tags) {
+  for (const tag of schemesIndex.tags) {
     const chip = document.createElement("span");
-    chip.className = "chip" + (schemeFilter.tags.has(t) ? " active" : "");
-    chip.textContent = "#" + t;
+    chip.className = "chip" + (schemeFilter.tags.has(tag) ? " active" : "");
+    chip.textContent = "#" + tag;
     chip.addEventListener("click", () => {
-      if (schemeFilter.tags.has(t)) schemeFilter.tags.delete(t);
-      else schemeFilter.tags.add(t);
+      if (schemeFilter.tags.has(tag)) schemeFilter.tags.delete(tag);
+      else schemeFilter.tags.add(tag);
       buildSchemeChips();
       renderSchemeTiles();
     });
@@ -1984,10 +1984,9 @@ function createTile(item) {
     dim.textContent = `${item.w}×${item.h}×${item.l} · ${item.blocks}`;
     // Вместо тегов — цена и важные числа: тип, жильё, работы, еда, доход.
     const q = schemeBuildCost(item, { W: item.w, H: item.h, L: item.l });
-    const t = q ? TYPES[q.typeId] : null;
     const info = document.createElement("div");
     info.className = "tt";
-    if (t && q) {
+    if (q) {
       const tierMark = q.tier > 1 ? `${TIERS[q.tier].icon} ${tierName(q.tier)}` : null;
       const parts = [`$${q.cost}`, typeName(q.typeId)];
       if (tierMark) parts.push(tierMark);
@@ -2512,14 +2511,12 @@ window.addEventListener("keydown", (e) => {
     return;
   }
   if (e.code === "KeyC" && !e.repeat) {
-    const t = e.target;
-    if (t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA")) return;
+    if (isTyping(e)) return;
     toggleCity();
     return;
   }
   if (e.code === "KeyP" && !e.repeat) {
-    const t = e.target;
-    if (t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA")) return;
+    if (isTyping(e)) return;
     if (document.pointerLockElement) document.exitPointerLock();
     else if (paused) resumeGame();
     else setPaused(true);
