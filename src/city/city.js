@@ -91,8 +91,8 @@ export const MAX_LOANS = 3;
 
 export function takeLoan(state, optionId) {
   const opt = LOAN_OPTIONS.find((o) => o.id === optionId);
-  if (!opt) return { ok: false, reason: "нет такого займа" };
-  if (state.loans.length >= MAX_LOANS) return { ok: false, reason: "слишком много займов" };
+  if (!opt) return { ok: false, reason: "loanNone" };
+  if (state.loans.length >= MAX_LOANS) return { ok: false, reason: "loanMany" };
   const owed = Math.round(opt.amount * (1 + opt.rate) * 100) / 100;
   state.money = Math.round((state.money + opt.amount) * 100) / 100;
   state.loans.push({ owed, total: owed, daysLeft: opt.days, principal: opt.amount });
@@ -412,13 +412,14 @@ export function tick(state) {
   state.pollution = clamp(Math.round((state.pollution * 0.97 + emission * 0.02) * 10) / 10, 0, 100);
 
   // Вехи: население достигло круглой цифры — разовый бонус в казну.
+  // В last кладём id (имена — в словаре i18n).
   const milestonesHit = [];
   if (!Array.isArray(state.milestones)) state.milestones = [];
   for (const m of MILESTONES) {
     if (!state.milestones.includes(m.id) && state.population >= m.pop) {
       state.milestones.push(m.id);
       state.money = Math.round((state.money + m.bonus) * 100) / 100;
-      milestonesHit.push(m.name);
+      milestonesHit.push(m.id);
     }
   }
 

@@ -2,10 +2,12 @@ import fs from "node:fs";
 import path from "node:path";
 import { defineConfig } from "vite";
 
-// The scheme library is referenced by plain URL paths (`/schemes/<file>`),
+// The scheme library is referenced by relative URL paths (`schemes/<file>`),
 // built at runtime from schemes/index.json — one request per file actually
 // used, instead of one import-module request per file at startup.
 // This copies the library into dist/ so those paths also work after `build`.
+// base './' + relative paths: required for the Yandex Games archive build,
+// which is served from an arbitrary subpath inside an iframe.
 function copySchemes() {
   return {
     name: "copy-schemes",
@@ -35,5 +37,6 @@ function copySchemes() {
 }
 
 export default defineConfig({
+  base: "./",
   plugins: [copySchemes()],
 });

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Воксельная тюрьма</title>
+  <title>Воксель-Сити</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body { width: 100%; height: 100%; overflow: hidden; background: #000; }
@@ -116,6 +116,35 @@
       display: none;
     }
     #hudSub.show { display: block; }
+    /* Плашка про ПК-режим для сенсорных устройств */
+    #mobileNote {
+      position: fixed;
+      left: 50%;
+      bottom: 12px;
+      transform: translateX(-50%);
+      background: rgba(8, 10, 14, 0.92);
+      border: 1px solid #ffd54a;
+      border-radius: 8px;
+      color: #eee;
+      font: 13px 'Segoe UI', Arial, sans-serif;
+      padding: 10px 14px;
+      z-index: 40;
+      display: none;
+      align-items: center;
+      gap: 12px;
+      max-width: 92vw;
+    }
+    #mobileNote.show { display: flex; }
+    #mobileNote button {
+      background: rgba(255, 213, 74, 0.25);
+      color: #ffd54a;
+      border: 1px solid #ffd54a;
+      border-radius: 5px;
+      padding: 5px 12px;
+      cursor: pointer;
+      font-size: 13px;
+      white-space: nowrap;
+    }
     /* Настройки подсказок в паузе */
     .setrow {
       display: flex;
@@ -590,29 +619,30 @@
   <div id="tutorial"></div>
   <div id="msgLog"></div>
   <div id="crosshair"></div>
-  <div id="lockHint">Кликните по миру, чтобы играть</div>
-  <div id="tabHint"><b>НАЖМИ TAB</b><span>постройки и город</span></div>
+  <div id="lockHint" data-i18n="lockHint">Кликните по миру, чтобы играть</div>
+  <div id="tabHint"><b data-i18n="tabHint">НАЖМИ TAB</b><span data-i18n="tabHintSub">постройки и город</span></div>
+  <div id="mobileNote"><span data-i18n="ygMobile">📱 Игра рассчитана на ПК (клавиатура + мышь). На телефоне управление недоступно.</span><button id="mobileGo" data-i18n="ygMobileGo">Всё равно продолжить</button></div>
   <div id="draftBar"></div>
   <div id="ghostBar"></div>
   <div id="msg"></div>
   <div id="labels"></div>
-  <button id="loadBtn" title="Загрузить постройку из файла (.schem / .schematic / .nbt)">Загрузить схему</button>
-  <button id="viewBtn" class="topbtn active" title="Подписи построек (V)">Подписи: вкл (V)</button>
-  <button id="framesBtn" class="topbtn active" title="Показать или скрыть рамки построек (G)">Рамки: вкл (G)</button>
-  <button id="blocksBtn" class="topbtn" title="Выбор блоков (E)">Блоки (E)</button>
+  <button id="loadBtn" data-i18n="loadScheme" data-i18n-title="loadSchemeTitle">Загрузить схему</button>
+  <button id="viewBtn" class="topbtn active" data-i18n-title="labelsTitle">Подписи: вкл (V)</button>
+  <button id="framesBtn" class="topbtn active" data-i18n-title="framesTitle">Рамки: вкл (G)</button>
+  <button id="blocksBtn" class="topbtn" data-i18n="blocksBtn" data-i18n-title="blocksBtnTitle">Блоки (E)</button>
   <div id="cityPanel" class="panel wide">
-    <h3>Город <span id="cityDay" class="cdim"></span></h3>
+    <h3><span data-i18n="city">Город</span> <span id="cityDay" class="cdim"></span></h3>
     <div id="cityStats"></div>
-    <h3 style="margin-top:12px">Кредиты</h3>
+    <h3 style="margin-top:12px" data-i18n="loans">Кредиты</h3>
     <div id="cityLoans"></div>
-    <h3 style="margin-top:12px">Постройки</h3>
+    <h3 style="margin-top:12px" data-i18n="buildings">Постройки</h3>
     <div id="cityBldTools">
-      <div class="cbtools-row"><span class="cdim">Сортировка:</span>
+      <div class="cbtools-row"><span class="cdim" data-i18n="sortLabel">Сортировка:</span>
         <select id="cityBldSort">
-          <option value="name">по имени</option>
-          <option value="health">сначала повреждённые</option>
-          <option value="cost">сначала дорогие</option>
-          <option value="housing">сначала жилые</option>
+          <option value="name" data-i18n="sortName">по имени</option>
+          <option value="health" data-i18n="sortHealth">сначала повреждённые</option>
+          <option value="cost" data-i18n="sortCost">сначала дорогие</option>
+          <option value="housing" data-i18n="sortHousing">сначала жилые</option>
         </select>
       </div>
       <div id="cityBldTypes"></div>
@@ -621,46 +651,48 @@
     <div id="cityBuildings"></div>
   </div>
   <div id="pauseMenu" class="panel">
-    <h3>Пауза</h3>
-    <button id="resumeBtn" class="mbtn">Продолжить</button>
-    <button id="saveBtn" class="mbtn">Сохранить игру</button>
-    <button id="loadSaveBtn" class="mbtn">Загрузить игру</button>
-    <button id="newGameBtn" class="mbtn">Начать заново</button>
+    <h3 data-i18n="pause">Пауза</h3>
+    <button id="resumeBtn" class="mbtn" data-i18n="resume">Продолжить</button>
+    <button id="saveBtn" class="mbtn" data-i18n="save">Сохранить игру</button>
+    <button id="loadSaveBtn" class="mbtn" data-i18n="load">Загрузить игру</button>
+    <button id="newGameBtn" class="mbtn" data-i18n="newGameBtn">Начать заново</button>
+    <button id="authBtn" class="mbtn" data-i18n="ygLogin">👤 Войти (Яндекс ID)</button>
+    <div class="hint" id="authInfo" data-i18n="ygLoginWhy">Облачные сейвы, имя в таблице рекордов</div>
     <div class="hint" id="saveInfo"></div>
-    <div class="hint">Подсказки:</div>
-    <label class="setrow"><input type="checkbox" id="setTutorial" checked /> Обучение «Первые шаги»</label>
-    <label class="setrow"><input type="checkbox" id="setTabHint" checked /> Подсказка «Нажми TAB»</label>
-    <div class="hint">E — блоки · T — постройки · C — город · V — подписи · G — рамки · P — пауза · Tab — меню</div>
+    <div class="hint" data-i18n="hintsLabel">Подсказки:</div>
+    <label class="setrow"><input type="checkbox" id="setTutorial" checked /> <span data-i18n="setTut">Обучение «Первые шаги»</span></label>
+    <label class="setrow"><input type="checkbox" id="setTabHint" checked /> <span data-i18n="setTab">Подсказка «Нажми TAB»</span></label>
+    <div class="hint" data-i18n="pauseHint">E — блоки · T — постройки · C — город · V — подписи · G — рамки · P — пауза · Tab — меню</div>
   </div>
   <div id="picker" class="panel">
-    <h3>Блоки песочницы</h3>
-    <div class="hint">Клик — положить в выбранный слот (1–9) · E — закрыть</div>
+    <h3 data-i18n="blocksTitle">Блоки песочницы</h3>
+    <div class="hint" data-i18n="blocksHint">Клик — положить в выбранный слот (1–9) · E — закрыть</div>
     <div id="pickCats"></div>
-    <input id="pickSearch" type="text" placeholder="Поиск блока…" autocomplete="off" />
+    <input id="pickSearch" type="text" data-i18n-ph="blockSearchPh" placeholder="Поиск блока…" autocomplete="off" />
     <div id="pickGrid"></div>
   </div>
   <div id="schemesPanel" class="panel wide">
-    <h3>Постройки <span id="schemeCount"></span></h3>
-    <input id="schemeSearch" type="text" placeholder="Поиск: название или #тег…" autocomplete="off" />
+    <h3><span data-i18n="schemesTitle">Постройки</span> <span id="schemeCount"></span></h3>
+    <input id="schemeSearch" type="text" data-i18n-ph="schemeSearchPh" placeholder="Поиск: название или #тег…" autocomplete="off" />
     <div id="schemeLists"></div>
-    <div class="sort-row"><span class="cdim">Сортировка:</span>
+    <div class="sort-row"><span class="cdim" data-i18n="sortLabel">Сортировка:</span>
       <select id="schemeSort">
-        <option value="default">порядок каталога</option>
-        <option value="cheap">сначала дешёвые</option>
-        <option value="exp">сначала дорогие</option>
-        <option value="big">сначала большие</option>
-        <option value="housing">сначала жилые</option>
-        <option value="name">по имени</option>
+        <option value="default" data-i18n="sortDefault">порядок каталога</option>
+        <option value="cheap" data-i18n="sortCheap">сначала дешёвые</option>
+        <option value="exp" data-i18n="sortExp">сначала дорогие</option>
+        <option value="big" data-i18n="sortBig">сначала большие</option>
+        <option value="housing" data-i18n="sortHousing">сначала жилые</option>
+        <option value="name" data-i18n="sortName">по имени</option>
       </select>
     </div>
     <div id="schemeEco" style="margin:8px 0"></div>
     <div id="schemeTags"></div>
     <div id="schemeBuildBar"></div>
-    <div class="hint">Клик — выбрать (панель остаётся, можно сравнить) · T — к строительству · R — поворот · ЛКМ — поставить · ПКМ — отмена · Q — выйти</div>
+    <div class="hint" data-i18n="schemeHint">Клик — выбрать (панель остаётся, можно сравнить) · T — к строительству · R — поворот · ЛКМ — поставить · ПКМ — отмена · Q — выйти</div>
     <div id="schemeList" class="tiles"></div>
   </div>
   <input type="file" id="schemFile" accept=".schem,.schematic,.nbt" hidden />
-  <div id="dropOverlay">Перетащите файл схемы (.schem / .schematic / .nbt)</div>
+  <div id="dropOverlay" data-i18n="dropOverlay">Перетащите файл схемы (.schem / .schematic / .nbt)</div>
   <canvas id="scene"></canvas>
 
   <script type="module" src="/src/main.js"></script>

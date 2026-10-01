@@ -2,6 +2,7 @@
 // Чистые функции: мир здесь — любой объект { chunks, states, touched }.
 import { TYPES } from "./buildingTypes.js";
 import { newCityState } from "./city.js";
+import { t } from "../i18n.js";
 
 export const SAVE_VERSION = 1;
 
@@ -66,10 +67,10 @@ export function serializeCity(city) {
 }
 
 export function deserializeCity(data) {
-  if (!data || typeof data !== "object") throw new Error("сейв: нет данных города");
+  if (!data || typeof data !== "object") throw new Error(t("saveDb.noCity"));
   const st = newCityState();
   for (const k of ["money", "population", "food", "energy", "happiness", "pollution", "day", "nextId"]) {
-    if (!isNum(data[k])) throw new Error("сейв: битое поле " + k);
+    if (!isNum(data[k])) throw new Error(t("saveDb.badField", { k }));
   }
   Object.assign(st, {
     money: data.money, population: Math.max(0, Math.floor(data.population)),
@@ -92,15 +93,15 @@ export function deserializeCity(data) {
         principal: isNum(l.principal) ? Math.max(0, l.principal) : 0,
       })) : [],
   });
-  if (!Array.isArray(data.buildings)) throw new Error("сейв: нет списка построек");
+  if (!Array.isArray(data.buildings)) throw new Error(t("saveDb.noList"));
   st._buildings = data.buildings.map((b, i) => {
     for (const k of ["x0", "y0", "z0", "W", "H", "L", "health", "placedBlocks"]) {
-      if (!isNum(b[k])) throw new Error(`сейв: постройка ${i}: битое поле ${k}`);
+      if (!isNum(b[k])) throw new Error(t("saveDb.badBld", { i, k }));
     }
     return {
       id: typeof b.id === "string" ? b.id : "b_" + String(i + 1).padStart(3, "0"),
       typeId: TYPES[b.typeId] ? b.typeId : "generic",
-      name: String(b.name || "Постройка").slice(0, 80),
+      name: String(b.name || t("saveDb.fallbackName")).slice(0, 80),
       file: typeof b.file === "string" ? b.file.slice(0, 200) : "",
       rot: Number.isFinite(b.rot) ? b.rot : 0,
       tier: b.tier === 3 ? 3 : b.tier === 2 ? 2 : 1,
@@ -120,25 +121,25 @@ export function parseSave(raw) {
   try {
     data = JSON.parse(raw);
   } catch (e) {
-    throw new Error("сейв: не JSON");
+    throw new Error(t("saveDb.noJson"));
   }
-  if (!data || data.v !== SAVE_VERSION) throw new Error("сейв: версия не поддерживается");
+  if (!data || data.v !== SAVE_VERSION) throw new Error(t("saveDb.badVer"));
   if (!data.player || !isNum(data.player.x) || !isNum(data.player.y) || !isNum(data.player.z)) {
-    throw new Error("сейв: нет позиции игрока");
+    throw new Error(t("saveDb.noPlayer"));
   }
-  if (!data.chunks || typeof data.chunks !== "object") throw new Error("сейв: нет блоков");
+  if (!data.chunks || typeof data.chunks !== "object") throw new Error(t("saveDb.noChunks"));
   const chunks = [];
   for (const [key, cells] of Object.entries(data.chunks)) {
-    if (!KEY_RE.test(key)) throw new Error("сейв: битый ключ чанка");
-    if (!Array.isArray(cells)) throw new Error("сейв: битый чанк " + key);
+    if (!KEY_RE.test(key)) throw new Error(t("saveDb.badKey"));
+    if (!Array.isArray(cells)) throw new Error(t("saveDb.badChunk", { key }));
     for (const cell of cells) {
       if (!Array.isArray(cell) || (cell.length !== 2 && cell.length !== 3)) {
-        throw new Error("сейв: битая клетка в " + key);
+        throw new Error(t("saveDb.badCell", { key }));
       }
       const [idx, id, s] = cell;
-      if (!Number.isInteger(idx) || idx < 0 || idx >= 4096) throw new Error("сейв: битый индекс");
-      if (!Number.isInteger(id) || id < 0 || id > 255) throw new Error("сейв: битый id блока");
-      if (s !== undefined && (!Number.isInteger(s) || s < 0 || s > 255)) throw new Error("сейв: битое состояние");
+      if (!Number.isInteger(idx) || idx < 0 || idx >= 4096) throw new Error(t("saveDb.badIdx"));
+      if (!Number.isInteger(id) || id < 0 || id > 255) throw new Error(t("saveDb.badId"));
+      if (s !== undefined && (!Number.isInteger(s) || s < 0 || s > 255)) throw new Error(t("saveDb.badState"));
     }
     chunks.push({ key, cells });
   }

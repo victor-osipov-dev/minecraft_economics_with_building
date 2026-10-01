@@ -51,7 +51,45 @@ import {
   SAVE_VERSION, serializeWorld, serializeCity, parseSave,
 } from "./city/save.js";
 import { LOAN_OPTIONS, takeLoan, repayLoan } from "./city/city.js";
+import { yg } from "./yg.js";
+import { t, setLang, getLang, locale, typeName, tierName, mstoneName } from "./i18n.js";
 import schemesIndex from "../schemes/index.json";
+
+// Язык берём из SDK, когда он готов; до этого — по браузеру (см. yg.js).
+setLang(yg.lang);
+// Локализация статичного HTML: элементы с data-i18n* обновляются на язык.
+function applyI18n() {
+  for (const el of document.querySelectorAll("[data-i18n]")) {
+    el.textContent = t(el.dataset.i18n);
+  }
+  for (const el of document.querySelectorAll("[data-i18n-title]")) {
+    el.title = t(el.dataset.i18nTitle);
+  }
+  for (const el of document.querySelectorAll("[data-i18n-ph]")) {
+    el.placeholder = t(el.dataset.i18nPh);
+  }
+  setLabelsOn(labelsOn);
+  setShowFrames(showFrames);
+  renderTutorial();
+  updateAuthUI();
+  if (cityPanelEl.classList.contains("show")) renderCity();
+  if (schemesPanelEl.classList.contains("show")) buildSchemeList();
+}
+
+// Яндекс: кнопка входа (с объяснением выгоды, п.1.2.1) и имя игрока.
+function updateAuthUI() {
+  const btn = document.getElementById("authBtn");
+  const info = document.getElementById("authInfo");
+  if (!btn || !info) return;
+  if (yg.authorized) {
+    btn.style.display = "none";
+    info.textContent = t("ygHello", { name: yg.playerName || "…" });
+  } else {
+    btn.style.display = "";
+    btn.textContent = t("ygLogin");
+    info.textContent = t("ygLoginWhy");
+  }
+}
 
 // ---------- engine / scene ----------
 const canvas = document.getElementById("scene");
@@ -177,7 +215,7 @@ function renderMsgLog() {
     const d = document.createElement("div");
     d.className = "logItem" + (i === 0 ? " fresh" : "");
     d.textContent = t;
-    d.title = "Показать снова";
+    d.title = t("showAgain");
     d.addEventListener("click", () => showMsg(t));
     msgLogEl.appendChild(d);
   });
@@ -217,12 +255,9 @@ if (setTabHintEl) {
 // Прогресс поместный: новый мир — обучение заново (если включено в настройках).
 const TUT_REWARD = 200;
 const TUT_STEPS = [
-  { id: "house", text: "Поставь жильё (T → Жильё)" },
-  { id: "road", text: "Подведи дорогу (T → поиск #road)" },
-  { id: "food", text: "Добавь еду (T → Еда)" },
-  { id: "city", text: "Открой панель города (C)" },
-  { id: "pop", text: "Дождись первого жителя" },
+  { id: "house" }, { id: "road" }, { id: "food" }, { id: "city" }, { id: "pop" },
 ];
+const tutText = (id) => t("tutSteps")[id] || id;
 let tutorialComplete = false;
 let tutorialState = {};
 function tutorialReset() {
@@ -242,8 +277,8 @@ function tutorialGain(id, silent) {
   renderTutorial();
   if (!silent) {
     showMsg(n >= TUT_STEPS.length
-      ? "Обучение пройдено! Город твой 🏙️"
-      : `Шаг выполнен (${n}/${TUT_STEPS.length}) +$${TUT_REWARD}`);
+      ? t("tutDone")
+      : t("tutStep", { n, total: TUT_STEPS.length, reward: TUT_REWARD }));
   }
 }
 // Проверка шагов по состоянию города; silent — для загрузки (без наград).
@@ -263,8 +298,8 @@ function renderTutorial() {
     return;
   }
   const n = TUT_STEPS.filter((s) => tutorialState[s.id]).length;
-  el.innerHTML = `<h4>Первые шаги ${n}/${TUT_STEPS.length}</h4>` + TUT_STEPS.map((s) =>
-    `<div class="${tutorialState[s.id] ? "done" : ""}">${tutorialState[s.id] ? "✓" : "·"} ${s.text}` +
+  el.innerHTML = `<h4>${t("tutTitle")} ${n}/${TUT_STEPS.length}</h4>` + TUT_STEPS.map((s) =>
+    `<div class="${tutorialState[s.id] ? "done" : ""}">${tutorialState[s.id] ? "✓" : "·"} ${tutText(s.id)}` +
     (tutorialState[s.id] ? "" : ` <span class="reward">+$${TUT_REWARD}</span>`) + `</div>`
   ).join("");
   el.classList.add("show");
@@ -276,9 +311,9 @@ let lastHint = null;
 function updateHint() {
   let hint = "";
   if (mapReady && !paused && !anyPanelOpen() && !previewPlan) {
-    if (city.buildings.length === 0) hint = "T — выбрать постройку · E — блоки · ЛКМ — ломать";
-    else if (city.last && city.last.roadless > 0) hint = `Зданий без дороги: ${city.last.roadless} — подведи дорогу (T)`;
-    else if (city.population === 0) hint = "Жители приедут сами — нужны жильё, еда и счастье";
+    if (city.buildings.length === 0) hint = t("hintEmpty");
+    else if (city.last && city.last.roadless > 0) hint = t("hintRoadless", { n: city.last.roadless });
+    else if (city.population === 0) hint = t("hintNoPop");
   }
   if (hint !== lastHint) {
     lastHint = hint;
@@ -305,7 +340,7 @@ function placeSchematic(plan, cx, cz, floorY = 1, replaceWorld = false) {
   const spawn = findSafePlayerSpawn(result, plan, targetWorld);
   if (!spawn) {
     if (replaceWorld) targetWorld.clear();
-    throw new Error("в схеме нет безопасной поддерживаемой точки появления");
+    throw new Error(t("noSpawn"));
   }
 
   // Flush the detached meshes before swapping the world reference.  This
@@ -340,13 +375,13 @@ function placeSchematic(plan, cx, cz, floorY = 1, replaceWorld = false) {
 
 function importSchematicBytes(bytes, fileName) {
   if (!mapReady) {
-    showMsg("Дождитесь готовности мира");
+    showMsg(t("worldWait"));
     return;
   }
   try {
     const plan = parseSchematicFile(bytes);
     if (!plan || plan.blocks.length === 0) {
-      showMsg("В схеме нет распознанных блоков");
+      showMsg(t("noBlocks"));
       return;
     }
     const cx = Math.round(player.x);
@@ -366,10 +401,10 @@ function importSchematicBytes(bytes, fileName) {
       placed: res.placed,
     });
     registerRecord(rec, resolveType({ file: fileName, name: fileName }));
-    showMsg(`Схема «${fileName}» (${plan.format}) · поставлено ${res.placed} блоков · ${plan.W}×${plan.H}×${plan.L}`);
+    showMsg(t("schemePlaced", { name: fileName, format: plan.format, n: res.placed, dims: `${plan.W}×${plan.H}×${plan.L}` }));
   } catch (err) {
     console.error("Не удалось загрузить схему", err);
-    showMsg(`Ошибка загрузки схемы: ${err.message}`);
+    showMsg(t("schemeLoadErr", { err: err.message }));
   }
 }
 
@@ -378,8 +413,8 @@ function readSchematicFile(file) {
   file.arrayBuffer()
     .then((buf) => importSchematicBytes(new Uint8Array(buf), file.name))
     .catch((error) => {
-      console.error("Не удалось прочитать файл схемы", error);
-      showMsg(`Ошибка чтения схемы: ${error.message || "неизвестная ошибка"}`);
+    console.error("Не удалось прочитать файл схемы", error);
+    showMsg(t("schemeReadErr", { err: error.message || t("schemeUnknownErr") }));
     });
 }
 
@@ -602,8 +637,8 @@ const FLY_SPEED = 11;
 const schemeUrlByFile = {};
 const schemeThumbByFile = {};
 for (const it of schemesIndex.items) {
-  schemeUrlByFile[it.file] = `/schemes/${it.file}`;
-  if (it.thumb) schemeThumbByFile[it.file.replace(/\.(schem|schematic|nbt)$/i, "")] = `/schemes/${it.thumb}`;
+  schemeUrlByFile[it.file] = `schemes/${it.file}`;
+  if (it.thumb) schemeThumbByFile[it.file.replace(/\.(schem|schematic|nbt)$/i, "")] = `schemes/${it.thumb}`;
 }
 
 const viewBtn = document.getElementById("viewBtn");
@@ -622,13 +657,13 @@ let showFrames = true;
 // V — просто подписи над рамками, отдельного режима нет: строить можно всегда.
 function setLabelsOn(on) {
   labelsOn = on;
-  viewBtn.textContent = on ? "Подписи: вкл (V)" : "Подписи: выкл (V)";
+  viewBtn.textContent = on ? t("labelsOn") : t("labelsOff");
   viewBtn.classList.toggle("active", on);
 }
 
 function setShowFrames(on) {
   showFrames = on;
-  framesBtn.textContent = on ? "Рамки: вкл (G)" : "Рамки: выкл (G)";
+  framesBtn.textContent = on ? t("framesOn") : t("framesOff");
   framesBtn.classList.toggle("active", on);
   applyBuildingVisibility();
 }
@@ -675,7 +710,7 @@ function recordBuilding({ name, file, x0, y0, z0, W, H, L, rot, placed }) {
   label.style.borderColor = col.css;
   label.innerHTML =
     `<b style="color:${col.css}">▮ ${name}</b><br>` +
-    `${W}×${H}×${L} · блоков: ${placed}<br>` +
+    `${W}×${H}×${L} · ${t("tileBlocks")}: ${placed}<br>` +
     `x:${x0} y:${y0} z:${z0}` + (rot ? ` · ↻${rot * 90}°` : "");
   label.style.display = "none";
   labelsEl.appendChild(label);
@@ -769,16 +804,16 @@ function refreshRecordLabel(rec) {
     rec.label.innerHTML = rec.labelBase;
     return;
   }
-  const t = TYPES[inst.typeId];
+  const tn = typeName(inst.typeId);
   const hp = Math.round(inst.health);
-  const parts = [`состояние ${hp}%`];
-  if (inst.active === false) parts.push("черновик");
-  if (inst.tier > 1) parts.push(`${TIERS[inst.tier].icon} ${TIERS[inst.tier].name}`);
-  if (inst.roadAccess === false && inst.active !== false) parts.push("без дороги!");
-  if (inst.stats.housing > 0) parts.push(`жители ${inst.residents || 0}/${inst.stats.housing}`);
-  if (inst.stats.jobs > 0) parts.push(`работники ${inst.workers}/${inst.stats.jobs}`);
+  const parts = [`${t("cond")} ${hp}%`];
+  if (inst.active === false) parts.push(t("draft"));
+  if (inst.tier > 1) parts.push(`${TIERS[inst.tier].icon} ${tierName(inst.tier)}`);
+  if (inst.roadAccess === false && inst.active !== false) parts.push(t("noRoad"));
+  if (inst.stats.housing > 0) parts.push(`${t("residentsOf")} ${inst.residents || 0}/${inst.stats.housing}`);
+  if (inst.stats.jobs > 0) parts.push(`${t("workersOf")} ${inst.workers}/${inst.stats.jobs}`);
   rec.label.innerHTML = rec.labelBase +
-    `<br><span style="color:${rec.css}">[${t ? t.name : inst.typeId}] ` +
+    `<br><span style="color:${rec.css}">[${tn}] ` +
     parts.join(" · ") + `</span>`;
 }
 
@@ -822,58 +857,66 @@ function unpinCityPanel() {
 
 function fmtMoney(v) {
   const r = Math.round(v * 100) / 100;
-  return (r < 0 ? "−$" : "$") + Math.abs(r).toLocaleString("ru-RU");
+  return (r < 0 ? "−$" : "$") + Math.abs(r).toLocaleString(locale());
+}
+function fmtNum(v) {
+  return Number(v).toLocaleString(locale());
 }
 
 function renderCity() {
-  document.getElementById("cityDay").textContent = `· день ${city.day}`;
+  document.getElementById("cityDay").textContent = `${t("stDay")} ${city.day}`;
   const last = city.last;
   const workers = city.buildings.reduce((a, b) => a + b.workers, 0);
   const jobsCap = last ? last.jobsTotal : city.buildings.reduce((a, b) => a + b.stats.jobs, 0);
   const taxRate = Number.isFinite(city.taxRate) ? city.taxRate : TAX_PER_CAPITA;
   const nextMs = MILESTONES.find((m) => !(city.milestones || []).includes(m.id));
-  const moneyNote = city.money < 0 ? ` <span class="cdim">банкротство при −$${Math.abs(BANKRUPT_AT).toLocaleString("ru-RU")}!</span>` : "";
+  const moneyNote = city.money < 0 ? ` <span class="cdim">${t("bankruptAt", { sum: fmtNum(Math.abs(BANKRUPT_AT)) })}</span>` : "";
   const rows = [
-    ["Деньги", `${fmtMoney(city.money)} <span class="cdim">(${(last && last.income >= 0 ? "+" : "") + (last ? last.income : 0)} / −${last ? last.upkeep : 0} в день)</span>${moneyNote}`],
-    ["День", `${city.day}`],
-    ["Жители", `${city.population} <span class="cdim">(${last && last.migrants >= 0 ? "+" : ""}${last ? last.migrants : 0}/день)</span>`],
-    ["Счастье", `${city.happiness}%`],
-    ["Налоги", `<input type="range" id="taxRange" min="0" max="1" step="0.05" value="${taxRate}" style="width:130px;vertical-align:middle"> <b>$${taxRate.toFixed(2)}/жит</b> <span class="cdim">${taxRate > TAX_PER_CAPITA ? "давят на счастье" : taxRate < TAX_PER_CAPITA ? "радуют горожан" : "базовая ставка"}</span>`],
-    ["Цель", nextMs ? `${nextMs.name} <span class="cdim">бонус $${nextMs.bonus.toLocaleString("ru-RU")}</span>` : "все вехи достигнуты!"],
-    ["Жильё", `${city.population} / ${last ? last.housingCap : 0}`],
-    ["Работы", `${workers} / ${jobsCap}`],
-    ["Еда", `${city.food}`],
-    ["Энергия", `${city.energy}`],
-    ["Вода", `${city.water}${city.last && city.last.waterShortage ? " — нет воды!" : ""}`],
-    ["Мусор", `${Math.round(city.waste)}`],
-    ["Преступность", `${city.last ? city.last.crime : 0}`],
-    ["Загрязнение", `${city.pollution}`],
-    ["Без дорог", `${last ? last.roadless : 0} <span class="cdim">работают вполсилы</span>`],
-    ["Жители на карте", `${residents.length} <button data-residents="">${showResidents ? "скрыть" : "показать"}</button>`],
+    [t("stMoney"), `${fmtMoney(city.money)} <span class="cdim">(${(last && last.income >= 0 ? "+" : "") + (last ? last.income : 0)} / −${last ? last.upkeep : 0} ${t("perDay")})</span>${moneyNote}`],
+    [t("stDay"), `${city.day}`],
+    [t("stPop"), `${city.population} <span class="cdim">(${last && last.migrants >= 0 ? "+" : ""}${last ? last.migrants : 0}${t("perDay")})</span>`],
+    [t("stHappy"), `${city.happiness}%`],
+    [t("stTax"), `<input type="range" id="taxRange" min="0" max="1" step="0.05" value="${taxRate}" style="width:130px;vertical-align:middle"> <b>$${taxRate.toFixed(2)}${t("perResident")}</b> <span class="cdim">${taxRate > TAX_PER_CAPITA ? t("taxHigh") : taxRate < TAX_PER_CAPITA ? t("taxLow") : t("taxBase")}</span>`],
+    [t("stGoal"), nextMs ? `${mstoneName(nextMs.id)} <span class="cdim">${t("bonus")}${fmtNum(nextMs.bonus)}</span>` : t("goalDone")],
+    [t("stHousing"), `${city.population} / ${last ? last.housingCap : 0}`],
+    [t("stJobs"), `${workers} / ${jobsCap}`],
+    [t("stFood"), `${city.food}`],
+    [t("stEnergy"), `${city.energy}`],
+    [t("stWater"), `${city.water}${city.last && city.last.waterShortage ? t("noWater") : ""}`],
+    [t("stWaste"), `${Math.round(city.waste)}`],
+    [t("stCrime"), `${city.last ? city.last.crime : 0}`],
+    [t("stPollution"), `${city.pollution}`],
+    [t("stRoadless"), `${last ? last.roadless : 0} <span class="cdim">${t("workHalf")}</span>`],
+    [t("stAgents"), `${residents.length} <button data-residents="">${showResidents ? t("hide") : t("show")}</button>`],
   ];
   cityStatsEl.innerHTML = rows.map(([k, v]) =>
     `<div class="crow"><span>${k}</span><b>${v}</b></div>`).join("");
   renderLoans();
 
+// Бонус казне за досмотр rewarded video (необязательный, п.4.5).
+const YG_REWARD = 1500;
+
 function renderLoans() {
   const el = document.getElementById("cityLoans");
   if (!el) return;
   const debt = city.loans.reduce((a, l) => a + l.owed, 0);
-  let html = `<div class="crow"><span>Долг</span><b>${fmtMoney(debt)}</b></div><div class="cbtake">` +
+  let html = `<div class="crow"><span>${t("debt")}</span><b>${fmtMoney(debt)}</b></div><div class="cbtake">` +
     LOAN_OPTIONS.map((o) =>
       `<button data-loan-take="${o.id}"${city.loans.length >= 3 ? " disabled" : ""}>` +
-      `$${o.amount.toLocaleString("ru-RU")} / ${o.days} дн / ${Math.round(o.rate * 100)}%</button>`
+      `$${fmtNum(o.amount)} / ${o.days} ${t("daysShort")} / ${Math.round(o.rate * 100)}%</button>`
     ).join("") + `</div>`;
   city.loans.forEach((l, i) => {
-    html += `<div class="cbsub"><span>$${Math.round(l.owed)} осталось · ${l.daysLeft} дн</span>` +
-      `<button data-loan-repay="${i}"${city.money >= l.owed ? "" : " disabled"}>Погасить</button></div>`;
+    html += `<div class="cbsub"><span>$${Math.round(l.owed)} ${t("leftOwed")} · ${l.daysLeft} ${t("daysShort")}</span>` +
+      `<button data-loan-repay="${i}"${city.money >= l.owed ? "" : " disabled"}>${t("repay")}</button></div>`;
   });
+  // Rewarded video: необязательный бонус в казну (п.4.5), прогресс не блокирует.
+  html += `<div class="cbtake"><button data-rewarded="" title="${t("ygRewardTitle", { sum: fmtMoney(YG_REWARD) })}">${t("ygReward", { sum: fmtMoney(YG_REWARD) })}</button></div>`;
   el.innerHTML = html;
 }
   if (city.buildings.length === 0) {
     document.getElementById("cityBldTypes").innerHTML = "";
     document.getElementById("cityBldTags").innerHTML = "";
-    cityBuildingsEl.innerHTML = `<div class="chint">Построек пока нет — поставьте схему (T). Каждая постройка стоит денег.</div>`;
+    cityBuildingsEl.innerHTML = `<div class="chint">${t("noBuildings")}</div>`;
     return;
   }
   // Фильтры по типам и тегам, встречающимся в городе (повторный клик — сброс).
@@ -886,14 +929,14 @@ function renderLoans() {
   const chip = (label, active, attr) =>
     `<span class="chip${active ? " active" : ""}" ${attr}>${label}</span>`;
   document.getElementById("cityBldTypes").innerHTML =
-    chip(`Всё (${city.buildings.length})`, cityBldType === "all", `data-cbtype="all"`) +
-    Object.entries(typeCounts).sort((a, b) => b[1] - a[1]).map(([t, n]) =>
-      chip(`${TYPES[t] ? TYPES[t].name : t} (${n})`, cityBldType === t, `data-cbtype="${t}"`)).join("");
+    chip(`${t("all")} (${city.buildings.length})`, cityBldType === "all", `data-cbtype="all"`) +
+    Object.entries(typeCounts).sort((a, b) => b[1] - a[1]).map(([typeId, n]) =>
+      chip(`${typeName(typeId)} (${n})`, cityBldType === typeId, `data-cbtype="${typeId}"`)).join("");
   document.getElementById("cityBldTags").innerHTML =
     Object.entries(tagCounts).sort((a, b) => b[1] - a[1]).map(([t, n]) =>
       chip(`#${t} (${n})`, cityBldTag === t, `data-cbtag="${t}"`)).join("");
   const sorters = {
-    name: (a, b) => String(a.name).localeCompare(String(b.name), "ru"),
+    name: (a, b) => String(a.name).localeCompare(String(b.name), locale()),
     health: (a, b) => a.health - b.health,
     cost: (a, b) => b.stats.buildCost - a.stats.buildCost,
     housing: (a, b) => (b.stats.housing || 0) - (a.stats.housing || 0),
@@ -904,29 +947,28 @@ function renderLoans() {
     .sort(sorters[cityBldSort] || sorters.name);
   cityBuildingsEl.innerHTML = "";
   if (list.length === 0) {
-    cityBuildingsEl.innerHTML = `<div class="chint">Под фильтр ничего не попало — кликните по активному фильтру, чтобы сбросить.</div>`;
+    cityBuildingsEl.innerHTML = `<div class="chint">${t("noFilterHit")}</div>`;
     return;
   }
   for (const inst of list) {
-    const t = TYPES[inst.typeId];
     const cost = repairPrice(inst);
     const can = inst.health < 100 && city.money >= cost;
     const refund = Math.floor(inst.stats.buildCost * 0.5);
     const row = document.createElement("div");
     row.className = "cbld";
     const hp = Math.round(inst.health);
-    const parts = [`состояние ${hp}%`];
-    if (inst.active === false) parts.push("черновик");
-    if (inst.tier > 1) parts.push(`${TIERS[inst.tier].icon} ${TIERS[inst.tier].name}`);
-    if (inst.roadAccess === false && inst.active !== false) parts.push("без дороги!");
-    if (inst.stats.housing > 0) parts.push(`жители ${inst.residents || 0}/${inst.stats.housing}`);
-    if (inst.stats.jobs > 0) parts.push(`работники ${inst.workers}/${inst.stats.jobs}`);
+    const parts = [`${t("cond")} ${hp}%`];
+    if (inst.active === false) parts.push(t("draft"));
+    if (inst.tier > 1) parts.push(`${TIERS[inst.tier].icon} ${tierName(inst.tier)}`);
+    if (inst.roadAccess === false && inst.active !== false) parts.push(t("noRoad"));
+    if (inst.stats.housing > 0) parts.push(`${t("residentsOf")} ${inst.residents || 0}/${inst.stats.housing}`);
+    if (inst.stats.jobs > 0) parts.push(`${t("workersOf")} ${inst.workers}/${inst.stats.jobs}`);
     row.innerHTML =
-      `<div class="cbhead"><b>${inst.name}</b><span class="cdim">${t ? t.name : inst.typeId}</span></div>` +
+      `<div class="cbhead"><b>${inst.name}</b><span class="cdim">${typeName(inst.typeId)}${inst.tier > 1 ? ` · ${TIERS[inst.tier].icon} ${tierName(inst.tier)}` : ""}</span></div>` +
       `<div class="cbar"><div class="cfill" style="width:${hp}%;${hp < 35 ? "background:#ff5952;" : hp < 70 ? "background:#ffd54d;" : ""}"></div></div>` +
       `<div class="cbsub"><span>${parts.join(" · ")}</span>` +
-      `<button data-repair="${inst.id}"${can ? "" : " disabled"}>Ремонт ${inst.health >= 100 ? "" : fmtMoney(cost)}</button>` +
-      `<button data-demolish="${inst.id}" title="Снести, вернуть ${fmtMoney(refund)}">Снос +${fmtMoney(refund)}</button></div>`;
+      `<button data-repair="${inst.id}"${can ? "" : " disabled"}>${t("repair")} ${inst.health >= 100 ? "" : fmtMoney(cost)}</button>` +
+      `<button data-demolish="${inst.id}" title="${t("demolishTitle", { sum: fmtMoney(refund) })}">${t("demolish")} +${fmtMoney(refund)}</button></div>`;
     cityBuildingsEl.appendChild(row);
   }
 }
@@ -937,7 +979,7 @@ cityPanelEl.addEventListener("click", async (e) => {
     showResidents = !showResidents;
     syncResidents();
     renderCity();
-    showMsg(showResidents ? "Жители: показаны" : "Жители: скрыты");
+    showMsg(showResidents ? t("residentsShown") : t("residentsHidden"));
     return;
   }
   // Фильтры построек: повторный клик по активному сбрасывает.
@@ -959,8 +1001,8 @@ cityPanelEl.addEventListener("click", async (e) => {
   if (take && !take.disabled) {
     const res = takeLoan(city, Number(take.dataset.loanTake));
     showMsg(res.ok
-      ? `Кредит: +$${res.owed} к возврату (${fmtMoney(city.money)} на руках)`
-      : `Кредит: ${res.reason}`);
+      ? t("loanTaken", { owed: res.owed, money: fmtMoney(city.money) })
+      : t("loanDenied", { reason: t(res.reason) }));
     refreshTileFunds();
     renderCity();
     return;
@@ -968,7 +1010,21 @@ cityPanelEl.addEventListener("click", async (e) => {
   const pay = e.target.closest("[data-loan-repay]");
   if (pay && !pay.disabled) {
     const res = repayLoan(city, Number(pay.dataset.loanRepay));
-    showMsg(res.ok ? `Погашено досрочно за ${fmtMoney(res.cost)}` : "Не хватает денег");
+    showMsg(res.ok ? t("repaidEarly", { cost: fmtMoney(res.cost) }) : t("noMoney"));
+    renderCity();
+    return;
+  }
+  // Бонус за просмотр rewarded video (только досмотр засчитывает награду).
+  const rw = e.target.closest("[data-rewarded]");
+  if (rw) {
+    const earned = await yg.rewarded();
+    if (earned) {
+      city.money = Math.round((city.money + YG_REWARD) * 100) / 100;
+      showMsg(t("ygRewarded", { sum: fmtMoney(YG_REWARD) }));
+    } else {
+      showMsg(t("ygNoAdv"));
+    }
+    refreshTileFunds();
     renderCity();
     return;
   }
@@ -982,10 +1038,10 @@ cityPanelEl.addEventListener("click", async (e) => {
         restored = await restoreBuildingBlocks(rec);
         refreshRecordLabel(rec);
       }
-      showMsg(`Отремонтировано за ${fmtMoney(res.cost)}` +
-        (restored > 0 ? ` · блоков восстановлено: ${restored}` : ""));
+      showMsg(t("repaired", { cost: fmtMoney(res.cost) }) +
+        (restored > 0 ? t("repairedBlocks", { n: restored }) : ""));
     } else {
-      showMsg("Не хватает денег на ремонт");
+      showMsg(t("noMoneyRepair"));
     }
     renderCity();
     return;
@@ -1002,7 +1058,7 @@ cityPanelEl.addEventListener("change", (e) => {
   if (e.target && e.target.id === "taxRange") {
     const v = Math.min(1, Math.max(0, Number(e.target.value)));
     city.taxRate = Math.round(v * 100) / 100;
-    showMsg(`Налоги: $${city.taxRate.toFixed(2)} с жителя в день`);
+    showMsg(t("taxSet", { rate: city.taxRate.toFixed(2) }));
     renderCity();
   }
 });
@@ -1049,7 +1105,7 @@ async function demolishBuilding(id) {
   if (!inst) return;
   const isDraft = inst.active === false;
   const refund = isDraft ? inst.stats.buildCost : Math.floor(inst.stats.buildCost * 0.5);
-  if (!window.confirm(`Снести «${inst.name}»? Возврат ${fmtMoney(refund)}.`)) return;
+  if (!window.confirm(t("demolishAsk", { name: inst.name, sum: fmtMoney(refund) }))) return;
   const rec = buildings.find((b) => b.cityId === id);
   let cleared = 0;
   if (rec) {
@@ -1083,7 +1139,7 @@ async function demolishBuilding(id) {
   refreshTileFunds();
   syncResidents();
   if (cityPanelEl.classList.contains("show")) renderCity();
-  showMsg(`Снесено: «${name}» · убрано ${cleared} блоков · возврат ${fmtMoney(refund)}`);
+  showMsg(t("demolished", { name, n: cleared, sum: fmtMoney(refund) }));
 }
 
 const pauseMenuEl = document.getElementById("pauseMenu");
@@ -1091,8 +1147,12 @@ document.getElementById("resumeBtn").addEventListener("click", resumeGame);
 document.getElementById("saveBtn").addEventListener("click", saveGame);
 document.getElementById("loadSaveBtn").addEventListener("click", loadGame);
 document.getElementById("newGameBtn").addEventListener("click", () => {
-  if (!window.confirm("Начать заново? Мир, постройки и город будут стёрты.")) return;
-  resetGame();
+  if (!window.confirm(t("newGameAsk"))) return;
+  // Рестарт — логическая пауза: сначала полноэкранная реклама, потом мир.
+  yg.playStop();
+  yg.fullscreenAdv().then(() => {
+    if (mapReady) resetGame();
+  });
 });
 
 // Новая игра: чистый плоский мир, стартовый город, игрок на спавне.
@@ -1119,7 +1179,7 @@ function resetGame() {
   closePanels();
   setPaused(false);
   refreshTileFunds();
-  showMsg("Новая игра: пустой мир и $10 000");
+  showMsg(t("newGame")); // Новая игра: пустой мир и $10 000
 }
 
 // ---------- сохранение/загрузка (этап 24): город отдельно от блоков ----------
@@ -1131,16 +1191,16 @@ function refreshSaveInfo() {
   try {
     const raw = localStorage.getItem(SAVE_KEY);
     if (!raw) {
-      el.textContent = "Сохранений пока нет";
+      el.textContent = t("noSaves");
       return;
     }
-    el.textContent = "Сохранение: " + new Date(JSON.parse(raw).savedAt || 0).toLocaleString("ru-RU");
+    el.textContent = t("saveAt", { date: new Date(JSON.parse(raw).savedAt || 0).toLocaleString(locale()) });
   } catch (e) {
-    el.textContent = "Сохранение битое";
+    el.textContent = t("saveBroken");
   }
 }
 
-function saveGame() {
+async function saveGame() {
   try {
     const data = {
       v: SAVE_VERSION,
@@ -1151,25 +1211,115 @@ function saveGame() {
     };
     const json = JSON.stringify(data);
     localStorage.setItem(SAVE_KEY, json);
-    showMsg(`Сохранено: день ${city.day}, построек ${city.buildings.length}, ${(json.length / 1024).toFixed(0)} КБ`);
+    // Облако (только у авторизованных): полный сейв, если влезает в лимит
+    // SDK (~180 КБ), иначе компактный профиль города.
+    let cloud = false;
+    if (yg.authorized) {
+      const payload = json.length < 180 * 1024
+        ? { v: 1, kind: "full", save: data }
+        : { v: 1, kind: "profile", profile: cloudProfile() };
+      cloud = await yg.cloudSave({ citysave: payload });
+    }
+    showMsg(t(cloud ? "savedCloud" : "saved",
+      { day: city.day, n: city.buildings.length, kb: (json.length / 1024).toFixed(0) }));
   } catch (e) {
     console.error(e);
-    showMsg("Не сохранилось (переполнено?): " + (e.message || e));
+    showMsg(t("saveFail", { err: e.message || e }));
   }
   refreshSaveInfo();
 }
 
-function loadGame() {
+// Компактный профиль для облака (кросс-девайс), когда мир не влезает в лимит.
+function cloudProfile() {
+  return {
+    money: city.money, population: city.population,
+    food: city.food, energy: city.energy,
+    water: city.water || 0, waste: city.waste || 0,
+    happiness: city.happiness, pollution: city.pollution,
+    day: city.day, taxRate: city.taxRate, milestones: city.milestones || [],
+    best: ygBestPop,
+    buildings: city.buildings.map((b) => ({
+      typeId: b.typeId, name: b.name,
+      x0: b.x0, y0: b.y0, z0: b.z0, W: b.W, H: b.H, L: b.L, health: b.health,
+    })),
+  };
+}
+
+// Рекорд населения: локально всегда, в лидерборд — авторизованным.
+let ygBestPop = 0;
+try { ygBestPop = Math.max(0, Math.floor(Number(localStorage.getItem("babylon-best-pop")) || 0)); } catch (e) {}
+function notePopulation() {
+  if (city.population > ygBestPop) {
+    ygBestPop = city.population;
+    try { localStorage.setItem("babylon-best-pop", String(ygBestPop)); } catch (e) {}
+    yg.submitPopulation(ygBestPop);
+  }
+}
+
+// Профиль из облака: свежая местность + экономика/день/население.
+// Воксели построек в облако не влезают — город продолжает жить с нуля застройки.
+function applyCloudProfile(p) {
+  try {
+    world.clear();
+    clearBuildings();
+    nextBuildingId = 1;
+    city = newCityState();
+    const num = (v, d) => (Number.isFinite(v) ? v : d);
+    Object.assign(city, {
+      money: num(p.money, city.money), population: Math.max(0, Math.floor(num(p.population, 0))),
+      food: num(p.food, city.food), energy: num(p.energy, city.energy),
+      water: num(p.water, 0), waste: num(p.waste, 0),
+      happiness: num(p.happiness, city.happiness), pollution: num(p.pollution, 0),
+      day: Math.max(0, Math.floor(num(p.day, 0))),
+      taxRate: num(p.taxRate, city.taxRate),
+      milestones: Array.isArray(p.milestones) ? p.milestones : [],
+    });
+    if (Number.isFinite(p.best) && p.best > ygBestPop) {
+      ygBestPop = Math.floor(p.best);
+      try { localStorage.setItem("babylon-best-pop", String(ygBestPop)); } catch (e) {}
+    }
+    resetMapTransientState();
+    mapReady = true;
+    world.ensureFlatAround(player.x, player.z);
+    world.flushMeshes(scene, blockMat, cutoutMat, alphaMat, torchMat);
+    syncResidents();
+    tutorialReset();
+    checkTutorial(true);
+    closePanels();
+    setPaused(false);
+    showMsg(t("loaded", { day: city.day, n: 0 }));
+  } catch (e) {
+    console.error(e);
+    showMsg(t("loadFail", { err: e.message || e }));
+  }
+  refreshSaveInfo();
+}
+
+async function loadGame() {
   let parsed;
   try {
     const raw = localStorage.getItem(SAVE_KEY);
     if (!raw) {
-      showMsg("Сохранений нет");
-      return;
+      // Локально пусто — пробуем облако (гость: сразу "нет сохранений").
+      const cloud = await yg.cloudload(["citysave"]);
+      if (cloud && cloud.citysave) {
+        const payload = cloud.citysave;
+        if (payload.kind === "full" && payload.save) {
+          parsed = parseSave(JSON.stringify(payload.save));
+        } else if (payload.kind === "profile" && payload.profile) {
+          applyCloudProfile(payload.profile);
+          return;
+        }
+      }
+      if (!parsed) {
+        showMsg(t("noSavesLoad"));
+        return;
+      }
+    } else {
+      parsed = parseSave(raw);
     }
-    parsed = parseSave(raw);
   } catch (e) {
-    showMsg("Загрузка: " + (e.message || e));
+    showMsg(t("loadErr", { err: e.message || e }));
     return;
   }
   try {
@@ -1228,10 +1378,10 @@ function loadGame() {
     tutorialReset();
     checkTutorial(true); // загрузка: шаги отмечаем молча, без наград
     closePanels();
-    showMsg(`Загружено: день ${city.day}, построек ${city.buildings.length}`);
+    showMsg(t("loaded", { day: city.day, n: city.buildings.length }));
   } catch (e) {
     console.error(e);
-    showMsg("Загрузка не удалась: " + (e.message || e));
+    showMsg(t("loadFail", { err: e.message || e }));
   }
   refreshSaveInfo();
 }
@@ -1246,31 +1396,41 @@ function refreshTileFunds() {
 }
 
 function tickCity() {
+  if (yg.advOpen) return; // реклама на экране: процесс стоит (п.4.7)
   tick(city);
+  notePopulation();
   for (const rec of buildings) refreshRecordLabel(rec);
   syncResidents();
   refreshTileFunds();
   checkTutorial();
   if (city.last) {
     if (city.last.milestonesHit) {
-      for (const m of city.last.milestonesHit) {
-        const def = MILESTONES.find((x) => x.name === m);
-        showMsg(`Веха: ${m}! Бонус ${fmtMoney(def ? def.bonus : 0)} в казну`);
+      for (const mid of city.last.milestonesHit) {
+        const def = MILESTONES.find((x) => x.id === mid);
+        showMsg(t("milestone", { name: mstoneName(mid), sum: fmtMoney(def ? def.bonus : 0) }));
+        yg.submitPopulation(city.population);
       }
     }
     if (city.last.fires) {
       for (const f of city.last.fires) {
-        showMsg(`Пожар: «${f.name}» горит! Состояние ${Math.round(f.health)}% — чините (C)`);
+        showMsg(t("fire", { name: f.name, hp: Math.round(f.health) }));
         const rec = buildings.find((b) => b.cityId === f.id);
         if (rec) refreshRecordLabel(rec);
       }
     }
   }
   // Банкротство: казна ниже лимита — пауза с шансом спастись кредитом.
+  // Перед паузой — полноэкранная реклама (логическая пауза, game over).
   if (city.money < BANKRUPT_AT && !city.bankrupt) {
     city.bankrupt = true;
-    setPaused(true);
-    showMsg(`Банкротство! Казна ${fmtMoney(city.money)}. Возьмите кредит (C) или начните заново (P → Начать заново)`);
+    const c = city;
+    yg.playStop();
+    yg.fullscreenAdv().then(() => {
+      if (city === c && city.bankrupt && mapReady) {
+        setPaused(true);
+        showMsg(t("bankrupt", { money: fmtMoney(city.money) }));
+      }
+    });
   } else if (city.money >= BANKRUPT_AT) {
     city.bankrupt = false;
   }
@@ -1413,6 +1573,12 @@ function setPaused(on) {
   if (on) closePanels(); // пауза тоже ни с кем не делит экран
   pauseMenuEl.classList.toggle("show", on);
   if (on) refreshSaveInfo();
+  if (on) {
+    yg.playStop();
+    updateAuthUI();
+  } else {
+    yg.playStart();
+  }
   if (on && document.pointerLockElement) document.exitPointerLock();
 }
 
@@ -1420,7 +1586,7 @@ function resumeGame() {
   setPaused(false);
   const req = canvas.requestPointerLock?.();
   // Chrome запрещает захват сразу после выхода по Esc (~1.2 с): ловим отказ.
-  if (req && req.catch) req.catch(() => showMsg("Подождите секунду и нажмите «Продолжить» ещё раз"));
+  if (req && req.catch) req.catch(() => showMsg(t("waitResume")));
 }
 
 function togglePicker() {
@@ -1486,14 +1652,8 @@ function blockIconStyle(b) {
   );
 }
 
-const BLOCK_CAT_LABELS = {
-  build: "Стройка",
-  nature: "Природа",
-  decor: "Декор",
-  parts: "Частичные",
-  mech: "Механизмы",
-};
 const BLOCK_CAT_ORDER = ["build", "nature", "decor", "parts", "mech"];
+const catLabel = (c) => (t("blockCats") && t("blockCats")[c]) || c;
 const pickFilter = { q: "", cat: "all" };
 const pickCatsEl = document.getElementById("pickCats");
 
@@ -1507,7 +1667,7 @@ function renderPickChips() {
       : BLOCKS.filter((b, id) => id !== AIR && b && b.cat === c).length;
     const chip = document.createElement("span");
     chip.className = "chip cat" + (pickFilter.cat === c ? " active" : "");
-    chip.textContent = (c === "all" ? "Все" : BLOCK_CAT_LABELS[c] || c) + ` (${n})`;
+    chip.textContent = (c === "all" ? t("all") : catLabel(c)) + ` (${n})`;
     chip.addEventListener("click", () => {
       pickFilter.cat = c;
       renderPicker();
@@ -1556,17 +1716,19 @@ pickSearchEl.addEventListener("input", () => {
   renderPicker();
 });
 
-// Фильтр по экономике: что даёт постройка городу.
-const ECO_DEFS = [
-  { id: "housing", name: "Жильё", types: ["house", "apartment"] },
-  { id: "food", name: "Еда", types: ["farm", "fishery", "shop"] },
-  { id: "water", name: "Вода", types: ["waterplant"] },
-  { id: "energy", name: "Электричество", types: ["powerplant"] },
-  { id: "waste", name: "Мусор", types: ["landfill"] },
-  { id: "jobs", name: "Работа", types: ["factory", "farm", "fishery", "shop", "office", "powerplant", "waterplant", "school", "hospital", "service", "entertainment", "police", "fire", "landfill"] },
-  { id: "happy", name: "Счастье", types: ["park", "entertainment", "school", "hospital", "service"] },
-  { id: "safety", name: "Защита", types: ["police", "fire", "hospital"] },
-];
+// Фильтр по экономике: что даёт постройка городу (имена — из словаря).
+const ECO_IDS = ["housing", "food", "water", "energy", "waste", "jobs", "happy", "safety"];
+const ECO_TYPES = {
+  housing: ["house", "apartment"],
+  food: ["farm", "fishery", "shop"],
+  water: ["waterplant"],
+  energy: ["powerplant"],
+  waste: ["landfill"],
+  jobs: ["factory", "farm", "fishery", "shop", "office", "powerplant", "waterplant", "school", "hospital", "service", "entertainment", "police", "fire", "landfill"],
+  happy: ["park", "entertainment", "school", "hospital", "service"],
+  safety: ["police", "fire", "hospital"],
+};
+const ECO_DEFS = ECO_IDS.map((id) => ({ id, get name() { return t("eco")[id]; }, types: ECO_TYPES[id] }));
 const ECO_OF_TYPE = {};
 for (const e of ECO_DEFS) for (const t of e.types) (ECO_OF_TYPE[t] = ECO_OF_TYPE[t] || []).push(e.id);
 
@@ -1623,7 +1785,7 @@ function buildSchemeChips() {
   schemeEcoEl.innerHTML = "";
   const presentEco = new Set();
   for (const i of allSchemeItems) for (const e of i._eco || []) presentEco.add(e);
-  const ecos = [{ id: "all", name: "Всё" },
+  const ecos = [{ id: "all", name: t("all") },
     ...ECO_DEFS.filter((e) => presentEco.has(e.id))];
   for (const e of ecos) {
     const n = e.id === "all" ? allSchemeItems.length
@@ -1746,7 +1908,7 @@ function renderSchemeTiles() {
     const cmp = by[schemeFilter.sort] || null;
     if (cmp) schemeShown = [...schemeShown].sort(cmp);
   }
-  schemeCountEl.textContent = `· ${schemeShown.length} из ${allSchemeItems.length}`;
+  schemeCountEl.textContent = t("ofCount", { a: schemeShown.length, b: allSchemeItems.length });
   schemeListEl.innerHTML = "";
   schemeListEl.appendChild(schemeSpacerEl);
   layoutTiles();
@@ -1786,7 +1948,7 @@ function createTile(item) {
     const isFav = schemeFavs.has(item.file);
     fav.className = "fav" + (isFav ? " on" : "");
     fav.textContent = isFav ? "★" : "☆";
-    fav.title = "В избранное";
+    fav.title = t("toFav");
     fav.addEventListener("click", (ev) => {
       ev.stopPropagation();
       if (schemeFavs.has(item.file)) schemeFavs.delete(item.file);
@@ -1826,24 +1988,24 @@ function createTile(item) {
     const info = document.createElement("div");
     info.className = "tt";
     if (t && q) {
-      const tierMark = q.tier > 1 ? `${TIERS[q.tier].icon} ${TIERS[q.tier].name}` : null;
-      const parts = [`$${q.cost}`, t.name];
+      const tierMark = q.tier > 1 ? `${TIERS[q.tier].icon} ${tierName(q.tier)}` : null;
+      const parts = [`$${q.cost}`, typeName(q.typeId)];
       if (tierMark) parts.push(tierMark);
       const W = Number(item.w), H = Number(item.h), L = Number(item.l);
       if (Number.isFinite(W) && Number.isFinite(H) && Number.isFinite(L)) {
         const s = instStats(q.typeId, { W, H, L }, q.tier);
-        if (s.housing > 0) parts.push(`жильё ${s.housing}`);
-        if (s.jobs > 0) parts.push(`работы ${s.jobs}`);
-        if (s.foodProd > 0) parts.push(`еда +${s.foodProd}`);
-        if (s.energyProd > 0) parts.push(`энергия +${s.energyProd}`);
-        if (s.waterProd > 0) parts.push(`вода +${s.waterProd}`);
-        if (s.wasteCap > 0) parts.push(`мусор −${s.wasteCap}`);
-        if (s.income > 0) parts.push(`доход $${s.income}`);
+        if (s.housing > 0) parts.push(`${t("tileHousing")} ${s.housing}`);
+        if (s.jobs > 0) parts.push(`${t("tileJobs")} ${s.jobs}`);
+        if (s.foodProd > 0) parts.push(`${t("tileFood")}${s.foodProd}`);
+        if (s.energyProd > 0) parts.push(`${t("tileEnergy")}${s.energyProd}`);
+        if (s.waterProd > 0) parts.push(`${t("tileWater")}${s.waterProd}`);
+        if (s.wasteCap > 0) parts.push(`${t("tileWaste")}${s.wasteCap}`);
+        if (s.income > 0) parts.push(`${t("tileIncome")}${s.income}`);
       }
       info.textContent = parts.join(" · ");
-      tile.title = `${item.name} · ${item.w}×${item.h}×${item.l} · блоков: ${item.blocks} · ` + parts.join(" · ");
+      tile.title = `${item.name} · ${item.w}×${item.h}×${item.l} · ${t("tileBlocks")}: ${item.blocks} · ` + parts.join(" · ");
     } else {
-      tile.title = `${item.name} · ${item.w}×${item.h}×${item.l} · блоков: ${item.blocks}`;
+      tile.title = `${item.name} · ${item.w}×${item.h}×${item.l} · ${t("tileBlocks")}: ${item.blocks}`;
     }
     tile.append(nm, dim, info);
     tile.dataset.file = item.file;
@@ -1853,12 +2015,12 @@ function createTile(item) {
     tile.addEventListener("click", () => {
       const url = schemeUrlByFile[item.file];
       if (!url) {
-        showMsg("Файл не найден в сборке");
+        showMsg(t("noFile"));
         return;
       }
       const live = schemeBuildCost(item, { W: item.w, H: item.h, L: item.l });
       if (live && live.cost > city.money) {
-        showMsg(`Не хватает денег: нужно ${fmtMoney(live.cost)}, есть ${fmtMoney(city.money)}`);
+        showMsg(t("needMoney", { need: fmtMoney(live.cost), have: fmtMoney(city.money) }));
         return;
       }
       selectedSchemeFile = item.file;
@@ -1880,9 +2042,9 @@ function buildSchemeList() {
 // B9: вкладки Всё / Избранное / Недавние (со счётчиками).
 const schemeListsEl = document.getElementById("schemeLists");
 const LIST_DEFS = [
-  { id: "all", name: "Всё" },
-  { id: "fav", name: "⭐ Избранное" },
-  { id: "recent", name: "🕘 Недавние" },
+  { id: "all", get name() { return t("lists").all; } },
+  { id: "fav", get name() { return t("lists").fav; } },
+  { id: "recent", get name() { return t("lists").recent; } },
 ];
 function listCount(id) {
   if (id === "fav") return allSchemeItems.filter((i) => schemeFavs.has(i.file)).length;
@@ -1929,7 +2091,7 @@ if (schemeSortEl) {
 }
 
 async function selectScheme(url, name) {
-  showMsg("Читаю схему...");
+  showMsg(t("reading"));
   try {
     let plan = planCache.get(url);
     if (!plan) {
@@ -1940,7 +2102,7 @@ async function selectScheme(url, name) {
       planCache.set(url, plan);
     }
     if (!plan.blocks.length) {
-      showMsg("В схеме нет распознанных блоков");
+      showMsg(t("noBlocks"));
       return;
     }
     previewPlan = { plan, name, rot: 0, rotated: plan };
@@ -1956,10 +2118,10 @@ async function selectScheme(url, name) {
       buildSchemeLists();
       if (schemeFilter.list === "recent") renderSchemeTiles();
     }
-    showMsg(`${name}: ${plan.W}×${plan.H}×${plan.L} · T — к строительству · R — поворот · ЛКМ — поставить · ПКМ — отмена · Q — выйти`);
+    showMsg(t("selectedHint", { name, dims: `${plan.W}×${plan.H}×${plan.L}` }));
   } catch (err) {
     console.error("Не удалось прочитать схему", err);
-    showMsg(`Ошибка схемы: ${err.message}`);
+    showMsg(t("schemeErr", { err: err.message }));
   }
 }
 
@@ -1977,9 +2139,9 @@ function updateBuildBar() {
   schemeBuildBarEl.innerHTML = "";
   const info = document.createElement("span");
   info.innerHTML = `<b>${previewPlan.name}</b> · ${r.W}×${r.H}×${r.L}` +
-    (q ? ` · ${fmtMoney(q.cost)}${q.tier > 1 ? ` · ${TIERS[q.tier].icon} ${TIERS[q.tier].name}` : ""}` : "");
+    (q ? ` · ${fmtMoney(q.cost)}${q.tier > 1 ? ` · ${TIERS[q.tier].icon} ${tierName(q.tier)}` : ""}` : "");
   const go = document.createElement("button");
-  go.textContent = "К строительству (T)";
+  go.textContent = t("toBuild");
   go.addEventListener("click", closeSchemesToBuild);
   schemeBuildBarEl.appendChild(info);
   schemeBuildBarEl.appendChild(go);
@@ -1990,7 +2152,7 @@ function closeSchemesToBuild() {
   closeCommandMenu();
   if (previewPlan) {
     const req = canvas.requestPointerLock?.();
-    if (req && req.catch) req.catch(() => showMsg("Кликните по миру, чтобы захватить курсор"));
+    if (req && req.catch) req.catch(() => showMsg(t("clickToLock")));
   }
 }
 
@@ -2053,7 +2215,7 @@ function activatePending() {
   placedStack = [];
   for (const rec of buildings) refreshRecordLabel(rec);
   if (cityPanelEl.classList.contains("show")) renderCity();
-  if (n > 0) showMsg(`Постройки активированы: ${n} (уже влияют на город)`);
+  if (n > 0) showMsg(t("activated", { n }));
 }
 
 // ПКМ в режиме построек: снести последнюю постановку целиком, вернуть деньги.
@@ -2065,12 +2227,12 @@ function undoLastPlaced() {
   if (ghostFixed) {
     ghostFixed = false;
     updateGhostBar();
-    showMsg("Позиция откреплена — призрак снова следует за прицелом");
+    showMsg(t("unpinned"));
     return;
   }
   const u = placedStack.pop();
   if (!u) {
-    showMsg("Нечего отменять (Q — выйти из режима построек)");
+    showMsg(t("nothingUndo"));
     return;
   }
   let cleared = 0;
@@ -2091,8 +2253,8 @@ function undoLastPlaced() {
   updateGhostBar();
   if (cityPanelEl.classList.contains("show")) renderCity();
   const left = placedStack.length;
-  showMsg(`Отменено: «${u.name}» · убрано ${cleared} блоков · возврат ${fmtMoney(u.cost)}` +
-    (left > 0 ? ` · осталось построек: ${left}` : ""));
+  showMsg(t("undone", { name: u.name, n: cleared, sum: fmtMoney(u.cost) }) +
+    (left > 0 ? t("undoneLeft", { left }) : ""));
 }
 
 // B8: выравнивание площадки под фундамент (клавиша F).
@@ -2135,15 +2297,15 @@ function levelGround() {
   const lv = levelPreview();
   if (!b || !lv) return;
   if (lv.tooBig) {
-    showMsg("Слишком большая площадь — ровняйте вручную");
+    showMsg(t("areaTooBig"));
     return;
   }
   if (lv.cells === 0) {
-    showMsg("Площадка ровная — выравнивать нечего");
+    showMsg(t("areaFlat"));
     return;
   }
   if (city.money < lv.cost) {
-    showMsg(`Не хватает денег на выравнивание: нужно ${fmtMoney(lv.cost)}, есть ${fmtMoney(city.money)}`);
+    showMsg(t("noMoneyLevel", { need: fmtMoney(lv.cost), have: fmtMoney(city.money) }));
     return;
   }
   for (let x = b.x0; x < b.x0 + b.W; x++) {
@@ -2161,7 +2323,7 @@ function levelGround() {
   world.flushMeshes(scene, blockMat, cutoutMat, alphaMat, torchMat);
   refreshTileFunds();
   updateGhostBar();
-  showMsg(`Выровнено: срезано ${lv.cut}, досыпано ${lv.fill} · −${fmtMoney(lv.cost)}`);
+  showMsg(t("leveled", { cut: lv.cut, fill: lv.fill, cost: fmtMoney(lv.cost) }));
 }
 
 // B6: полоса призрака — цена и управление видны в мире, а не в hints.
@@ -2179,12 +2341,10 @@ function updateGhostBar() {
   const n = placedStack.length;
   ghostBarEl.innerHTML =
     `<b>${previewPlan.name}</b> · ${r.W}×${r.H}×${r.L}` +
-    (q ? ` · ${fmtMoney(q.cost)}${q.tier > 1 ? ` · ${TIERS[q.tier].icon} ${TIERS[q.tier].name}` : ""}` : "") +
-    (n > 0 ? ` · поставлено: ${n}` : "") +
-    (lvl && lvl.cells > 0 ? ` · <b>F — выровнять (~${fmtMoney(lvl.cost)})</b>` : "") +
-    (ghostFixed
-      ? `<br>позиция зафиксирована · ЛКМ — поставить · ПКМ — открепить · Q — выйти`
-      : `<br>←→↑↓ — двигать · PgUp/PgDn или колесо — высота · R — поворот · ЛКМ — зафиксировать · ПКМ — отмена · Q — выйти`);
+    (q ? ` · ${fmtMoney(q.cost)}${q.tier > 1 ? ` · ${TIERS[q.tier].icon} ${tierName(q.tier)}` : ""}` : "") +
+    (n > 0 ? ` · ${t("placedCount", { n })}` : "") +
+    (lvl && lvl.cells > 0 ? ` · <b>${t("levelBtn", { cost: fmtMoney(lvl.cost) })}</b>` : "") +
+    (ghostFixed ? `<br>${t("ghostFixed")}` : `<br>${t("ghostFree2")}`);
   ghostBarEl.classList.add("show");
   updateDraftBar();
 }
@@ -2202,9 +2362,9 @@ function updateDraftBar() {
   }
   draftBarEl.innerHTML = "";
   const info = document.createElement("span");
-  info.innerHTML = `🏗 <b>Черновики: ${n}</b> — город их не видит!`;
+  info.innerHTML = t("drafts", { n });
   const go = document.createElement("button");
-  go.textContent = "Применить (Q)";
+  go.textContent = t("applyQ");
   go.addEventListener("click", exitBuildMode);
   draftBarEl.appendChild(info);
   draftBarEl.appendChild(go);
@@ -2216,7 +2376,7 @@ function exitBuildMode() {
   if (!previewPlan) return;
   const n = city.buildings.filter((b) => b.active === false).length;
   cancelPreview();
-  if (n === 0) showMsg("Режим построек выключен");
+  if (n === 0) showMsg(t("buildModeOff"));
 }
 
 function rotatePreview() {
@@ -2227,12 +2387,12 @@ function rotatePreview() {
   updateBuildBar();
   updateGhostBar();
   const r = previewPlan.rotated;
-  showMsg(`${previewPlan.name}: поворот ${previewPlan.rot * 90}° · ${r.W}×${r.H}×${r.L} · ЛКМ — поставить · ПКМ — отмена · Q — выйти`);
+  showMsg(t("rotated", { name: previewPlan.name, deg: previewPlan.rot * 90, dims: `${r.W}×${r.H}×${r.L}` }));
 }
 
 function placePreview() {
   if (!previewAnchor) {
-    showMsg("Наведи прицел на блок");
+    showMsg(t("aimBlock"));
     return;
   }
   try {
@@ -2243,7 +2403,7 @@ function placePreview() {
     const quote = schemeBuildCost(item, r);
     const typeId = quote ? quote.typeId : "generic";
     if (quote && city.money < quote.cost) {
-      showMsg(`Не хватает денег: нужно ${fmtMoney(quote.cost)}, есть ${fmtMoney(city.money)} (город — C)`);
+      showMsg(t("needMoneyCity", { need: fmtMoney(quote.cost), have: fmtMoney(city.money) }));
       return;
     }
     const res = pasteSchematic(world, r, previewAnchor.x, previewAnchor.z, previewAnchor.y, { clear: false });
@@ -2273,14 +2433,13 @@ function placePreview() {
       cells: r.blocks.map(([x, y, z, id]) => [ax0 + x, ay0 + y, az0 + z, id]),
     });
     ghostFixed = false; // после постановки призрак снова следует за прицелом
-    const t = TYPES[typeId];
     refreshTileFunds();
     updateGhostBar();
     checkTutorial();
-    showMsg(`Поставлено ${res.placed} блоков · ${t ? t.name : typeId} · −${fmtMoney(quote ? quote.cost : 0)} · черновик (ПКМ — отмена, Q — выйти)`);
+    showMsg(t("placed", { n: res.placed, type: typeName(typeId), cost: fmtMoney(quote ? quote.cost : 0) }));
   } catch (err) {
     console.error("Не удалось поставить схему", err);
-    showMsg(`Ошибка: ${err.message}`);
+    showMsg(t("placeErr", { err: err.message }));
   }
 }
 
@@ -2381,14 +2540,14 @@ window.addEventListener("keydown", (e) => {
     if (previewPlan) {
       const n = city.buildings.filter((b) => b.active === false).length;
       cancelPreview();
-      if (n === 0) showMsg("Предпросмотр отменён");
+      if (n === 0) showMsg(t("previewOff"));
     }
   } else if (e.code === "Space" && !e.repeat) {
     const now = performance.now();
     if (now - lastSpaceTap < 300) {
       flying = !flying;
       player.vy = 0;
-      showMsg(flying ? "Полёт: вкл (Space вверх, Shift вниз)" : "Полёт: выкл");
+      showMsg(flying ? t("flyOn") : t("flyOff"));
     }
     lastSpaceTap = now;
   }
@@ -2408,7 +2567,7 @@ canvas.addEventListener("pointerdown", (e) => {
       if (!ghostFixed && previewAnchor) {
         ghostFixed = true;
         updateGhostBar();
-        showMsg("Позиция зафиксирована: стрелки — подвинуть · ЛКМ — поставить · ПКМ — открепить");
+        showMsg(t("fixedPos"));
       } else {
         placePreview();
       }
@@ -2436,6 +2595,7 @@ document.addEventListener("pointerlockchange", () => {
     const keepCity = cityPanelEl.classList.contains("show") && !commandMenuOpen;
     closePanels();
     paused = false;
+    yg.playStart();
     if (keepCity) {
       cityPanelEl.classList.add("show");
       renderCity();
@@ -2451,6 +2611,11 @@ document.addEventListener("pointerlockchange", () => {
   }
 });
 document.addEventListener("contextmenu", (e) => e.preventDefault());
+document.addEventListener("visibilitychange", () => {
+  // Уход на другую вкладку останавливает процесс (разметка геймплея).
+  // Возвращает игрок вручную (Continue/клик) — так надёжнее автовозврата.
+  if (document.hidden && mapReady) setPaused(true);
+});
 // ---------- A1: индикатор захвата курсора ----------
 // Прицел виден только в захвате; без захвата, паузы и панелей —
 // подсказка «кликните по миру». Вызывается каждый кадр, дёшево.
@@ -2476,7 +2641,7 @@ function syncLockUI() {
     // Потеря захвата без панелей и паузы (редкий случай — обычно это пауза):
     // подсказываем, что делать дальше.
     if (!locked && !paused && !anyPanelOpen() && mapReady) {
-      showMsg("Курсор свободен — кликните по миру, чтобы играть");
+      showMsg(t("ghostFree"));
     }
   }
   lockHintEl.classList.toggle("show", !locked && !paused && !anyPanelOpen() && mapReady && tabPressedWorld);
@@ -2523,7 +2688,7 @@ function breakOne(hit) {
       if (inst) {
         refreshRecordLabel(rec);
         if (inst.health <= 0) {
-          showMsg(`«${inst.name}» разрушено! Ремонт — в панели города (C)`);
+          showMsg(t("destroyed", { name: inst.name }));
         }
       }
     }
@@ -2584,7 +2749,7 @@ function handlePlace() {
   if (!hit) return;
   const id = creativeSlots[creativeSel];
   if (id == null) {
-    showMsg("Выбери блок: нажми E");
+    showMsg(t("pickBlock"));
     return;
   }
   const entry = { id, count: Infinity };
@@ -2826,9 +2991,56 @@ function initFlatWorld() {
   resetMapTransientState();
   mapReady = true;
   camera.position.set(player.x, player.y + EYE, player.z);
-  showMsg("Песочница: E — блоки, T — постройки, V — просмотр");
+  // Стартовый мир: пустая плоская местность.
+  showMsg(t("sandboxHint"));
 }
 
 engine.runRenderLoop(() => scene.render());
 initFlatWorld();
 window.addEventListener("resize", () => engine.resize());
+
+// ---------- Яндекс Игры: платформа ----------
+// Гость играет без ограничений; вне платформы всё тихо отключено.
+document.getElementById("authBtn").addEventListener("click", async () => {
+  const ok = await yg.auth();
+  updateAuthUI();
+  if (ok) {
+    // Вход успешен: подтягиваем облачный прогресс в фоне (не мешаем играть).
+    try {
+      const cloud = await yg.cloudload(["citysave"]);
+      if (cloud && cloud.citysave && cloud.citysave.kind === "profile" && cloud.citysave.profile) {
+        const p = cloud.citysave.profile;
+        if (Number.isFinite(p.best) && p.best > ygBestPop) {
+          ygBestPop = Math.floor(p.best);
+          try { localStorage.setItem("babylon-best-pop", String(ygBestPop)); } catch (e) {}
+        }
+      }
+    } catch (e) {}
+    showMsg(t("ygHello", { name: yg.playerName || "…" }));
+  }
+});
+document.getElementById("mobileGo").addEventListener("click", () => {
+  document.getElementById("mobileNote").classList.remove("show");
+});
+yg.onPause = () => {
+  if (mapReady) setPaused(true);
+};
+yg.onResume = () => {
+  // Возобновляет игрок вручную: у нас нет автопаузы по resume,
+  // чтобы не ломать логику разметки (см. yg.js).
+};
+yg.init().then((ok) => {
+  if (!ok) return;
+  // Автоязык платформы (п.2.14): заявлены ru+en.
+  if (getLang() !== yg.lang) {
+    setLang(yg.lang);
+    applyI18n();
+  }
+  updateAuthUI();
+  // Мобайл/планшет: игра десктопная (pointer lock) — честно предупреждаем.
+  if (yg.device === "mobile" || yg.device === "tablet") {
+    document.getElementById("mobileNote").classList.add("show");
+  }
+  // Мир уже готов (initFlatWorld выше): платформе можно играть.
+  if (mapReady) yg.gameReady();
+});
