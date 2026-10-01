@@ -1,7 +1,14 @@
 // Yandex Games SDK: изоляция платформы от игры.
-// Вне iframe Яндекса (локалка, обычный хостинг) всё деградирует в гостя:
-// игра работает, облако/реклама/таблица тихо отключены.
-const SDK_URL = "https://yandex.ru/games/sdk/v2";
+// Вне iframe Яндекса (локалка без прокси, обычный хостинг) всё деградирует
+// в гостя: игра работает, облако/реклама/таблица тихо отключены.
+//
+// Пути подключения по документации (sdk-about#connect):
+// - игра загружена архивом в Консоль -> ОТНОСИТЕЛЬНЫЙ путь (рекомендуется);
+// - игра на своём домене -> абсолютный путь.
+// Относительный /sdk.js — это точка входа: платформа (и локальный прокси
+// @yandex-games/sdk-dev-proxy) сама отдаёт актуальную v2. Абсолютный —
+// запасной вариант для своего домена.
+const SDK_URLS = ["/sdk.js", "https://yandex.ru/games/sdk/v2"];
 const SDK_TIMEOUT_MS = 8000;
 
 function loadScript(url, timeoutMs) {
@@ -17,6 +24,7 @@ function loadScript(url, timeoutMs) {
     };
     s.onerror = (e) => {
       clearTimeout(timer);
+      s.remove();
       reject(e instanceof Error ? e : new Error("sdk load error"));
     };
     s.src = url;
@@ -24,8 +32,25 @@ function loadScript(url, timeoutMs) {
   });
 }
 
+// Первый рабочий URL из списка.
+async function loadSdk() {
+  let lastErr = null;
+  for (const url of SDK_URLS) {
+    try {
+      await loadScript(url, SDK_TIMEOUT_MS);
+      if (window.YaGames && typeof window.YaGames.init === "function") return url;
+      lastErr = new Error("YaGames undefined: " + url);
+    } catch (e) {
+      lastErr = e;
+    }
+  }
+  throw lastErr || new Error("sdk unavailable");
+}
+
 export const yg = {
   ok: false, // SDK жив и инициализирован
+  sdkUrl: "", // какой путь сработал
+  mock: false, // локальный dev-режим прокси: вызовы SDK заглушены
   ysdk: null,
   player: null,
   authorized: false,
@@ -38,11 +63,18 @@ export const yg = {
 
   async init() {
     try {
-      await loadScript(SDK_URL, SDK_TIMEOUT_MS);
+      this.sdkUrl = await loadSdk();
       const YG = window.YaGames;
       if (!YG || typeof YG.init !== "function") return false;
       const ysdk = await YG.init();
       this.ysdk = ysdk;
+      // Локальный dev-режим (@yandex-games/sdk-dev-proxy --dev-mode):
+      // платформы за игрой нет, все ответы — моки.
+      try {
+        this.mock = !ysdk.environment.appId;
+      } catch (e) {
+        this.mock = true;
+      }
       // Язык интерфейса платформы -> язык игры (заявлены ru+en).
       try {
         const l = ysdk.environment && ysdk.environment.i18n && ysdk.environment.i18n.lang;
