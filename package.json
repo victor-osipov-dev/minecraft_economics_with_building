@@ -4,12 +4,12 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "node scripts/dev.mjs",
+    "dev:game": "vite",
+    "dev:prod": "node scripts/dev.mjs --prod",
+    "dev:dist": "node scripts/dev.mjs --dist",
     "build": "vite build",
-    "preview": "vite preview",
-    "yg:dev": "npx @yandex-games/sdk-dev-proxy -h http://localhost:5173 --dev-mode=true",
-    "yg:prod": "npx @yandex-games/sdk-dev-proxy -h http://localhost:5173",
-    "yg:dist": "npx @yandex-games/sdk-dev-proxy -p ./dist"
+    "preview": "vite preview"
   },
   "dependencies": {
     "@babylonjs/core": "^7.0.0",

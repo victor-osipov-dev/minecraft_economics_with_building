@@ -10,6 +10,8 @@
 // запасной вариант для своего домена.
 const SDK_URLS = ["/sdk.js", "https://yandex.ru/games/sdk/v2"];
 const SDK_TIMEOUT_MS = 8000;
+// Ставится dev.mjs при --no-proxy: скрипты SDK не грузятся вообще.
+const NO_SDK = import.meta.env.VITE_YG_NO_SDK === "1";
 
 function loadScript(url, timeoutMs) {
   return new Promise((resolve, reject) => {
@@ -62,6 +64,7 @@ export const yg = {
   onResume: null, // назначит игра: game_api_resume
 
   async init() {
+    if (NO_SDK) return false;
     try {
       this.sdkUrl = await loadSdk();
       const YG = window.YaGames;
