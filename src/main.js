@@ -183,8 +183,38 @@ function renderMsgLog() {
   });
 }
 
+// ---------- настройки подсказок (пауза; действуют на каждый новый мир) ----------
+const SETTINGS_KEY = "babylon-settings-v1";
+const settings = { tutorial: true, tabHint: true };
+try {
+  const s = JSON.parse(localStorage.getItem(SETTINGS_KEY) || "{}");
+  if (typeof s.tutorial === "boolean") settings.tutorial = s.tutorial;
+  if (typeof s.tabHint === "boolean") settings.tabHint = s.tabHint;
+} catch (e) {}
+function saveSettings() {
+  try { localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings)); } catch (e) {}
+}
+const setTutorialEl = document.getElementById("setTutorial");
+const setTabHintEl = document.getElementById("setTabHint");
+if (setTutorialEl) {
+  setTutorialEl.checked = settings.tutorial;
+  setTutorialEl.addEventListener("change", () => {
+    settings.tutorial = setTutorialEl.checked;
+    saveSettings();
+    renderTutorial();
+  });
+}
+if (setTabHintEl) {
+  setTabHintEl.checked = settings.tabHint;
+  setTabHintEl.addEventListener("change", () => {
+    settings.tabHint = setTabHintEl.checked;
+    saveSettings();
+    updateTabHint();
+  });
+}
+
 // ---------- C11: обучение-чеклист (первые шаги, +$200 за шаг) ----------
-const TUT_KEY = "babylon-tutorial-done-v1";
+// Прогресс поместный: новый мир — обучение заново (если включено в настройках).
 const TUT_REWARD = 200;
 const TUT_STEPS = [
   { id: "house", text: "Поставь жильё (T → Жильё)" },
@@ -193,25 +223,22 @@ const TUT_STEPS = [
   { id: "city", text: "Открой панель города (C)" },
   { id: "pop", text: "Дождись первого жителя" },
 ];
-let tutorialDone = false;
+let tutorialComplete = false;
 let tutorialState = {};
-try { tutorialDone = localStorage.getItem(TUT_KEY) === "1"; } catch (e) {}
 function tutorialReset() {
+  tutorialComplete = false;
   tutorialState = {};
   for (const s of TUT_STEPS) tutorialState[s.id] = false;
   renderTutorial();
 }
 function tutorialGain(id, silent) {
-  if (tutorialDone || tutorialState[id]) return;
+  if (tutorialComplete || tutorialState[id]) return;
   tutorialState[id] = true;
   if (!silent) {
     city.money = Math.round((city.money + TUT_REWARD) * 100) / 100;
   }
   const n = TUT_STEPS.filter((s) => tutorialState[s.id]).length;
-  if (n >= TUT_STEPS.length) {
-    tutorialDone = true;
-    try { localStorage.setItem(TUT_KEY, "1"); } catch (e) {}
-  }
+  if (n >= TUT_STEPS.length) tutorialComplete = true;
   renderTutorial();
   if (!silent) {
     showMsg(n >= TUT_STEPS.length
@@ -221,7 +248,7 @@ function tutorialGain(id, silent) {
 }
 // Проверка шагов по состоянию города; silent — для загрузки (без наград).
 function checkTutorial(silent) {
-  if (tutorialDone) return;
+  if (tutorialComplete || !settings.tutorial) return;
   const has = (types) => city.buildings.some((b) => b.active !== false && types.includes(b.typeId));
   if (has(["house", "apartment"])) tutorialGain("house", silent);
   if (has(["road"])) tutorialGain("road", silent);
@@ -231,7 +258,7 @@ function checkTutorial(silent) {
 }
 function renderTutorial() {
   const el = document.getElementById("tutorial");
-  if (tutorialDone || !mapReady) {
+  if (tutorialComplete || !settings.tutorial || !mapReady) {
     el.classList.remove("show");
     return;
   }
@@ -514,10 +541,8 @@ let mouseDown = { 0: false, 2: false };
 let flying = true; // в песочнице полёт включён сразу
 let creativeSlots = new Array(9).fill(null);
 let creativeSel = 0;
-const hudEl = document.getElementById("hud");
-const defaultHud = hudEl.innerHTML;
 const hotbarEl = document.getElementById("hotbar");
-const selBlockEl = document.getElementById("selBlock");
+const selBlockEl = document.getElementById("selBlock"); // может отсутствовать (верхний хинт убран)
 
 function updateHotbar() {
   const marks = [];
@@ -540,7 +565,7 @@ function updateHotbar() {
   }
   hotbarEl.innerHTML = marks.join("");
   const name = creativeSlots[creativeSel] != null ? BLOCKS[creativeSlots[creativeSel]].name : "—";
-  if (selBlockEl.textContent !== name) selBlockEl.textContent = name;
+  if (selBlockEl && selBlockEl.textContent !== name) selBlockEl.textContent = name;
 }
 
 window.addEventListener("keydown", (e) => {
@@ -1089,6 +1114,7 @@ function resetGame() {
   camera.position.set(player.x, player.y + EYE, player.z);
   syncResidents();
   tutorialReset();
+  tabPressedWorld = false; // новый мир — подсказки заново
   checkTutorial();
   closePanels();
   setPaused(false);
@@ -2258,10 +2284,9 @@ window.addEventListener("keydown", (e) => {
   if (e.code === "Tab") {
     if (isTyping(e)) return;
     e.preventDefault();
-    // TAB нажат — крупную подсказку больше не показываем.
-    if (!tabEverPressed) {
-      tabEverPressed = true;
-      try { localStorage.setItem("babylon-tab-hint-v1", "1"); } catch (err) {}
+    // TAB нажат — крупную подсказку в этом мире больше не показываем.
+    if (!tabPressedWorld) {
+      tabPressedWorld = true;
       updateTabHint();
     }
     if (document.pointerLockElement) {
@@ -2421,12 +2446,10 @@ document.addEventListener("contextmenu", (e) => e.preventDefault());
 const crosshairEl = document.getElementById("crosshair");
 const lockHintEl = document.getElementById("lockHint");
 const tabHintEl = document.getElementById("tabHint");
-// Крупный TAB-хинт: показываем, пока игрок ни разу не открыл меню.
-// Закрыл меню, так и не нажав? Появится снова сам (условие то же).
-let tabEverPressed = false;
-try { tabEverPressed = localStorage.getItem("babylon-tab-hint-v1") === "1"; } catch (e) {}
+// Крупный TAB-хинт: поместный — новый мир показывает заново (если включено).
+let tabPressedWorld = false;
 function updateTabHint() {
-  const show = mapReady && !tabEverPressed && !paused && !anyPanelOpen();
+  const show = mapReady && settings.tabHint && !tabPressedWorld && !paused && !anyPanelOpen();
   tabHintEl.classList.toggle("show", show);
 }
 let lastLocked = null;
@@ -2445,7 +2468,7 @@ function syncLockUI() {
       showMsg("Курсор свободен — кликните по миру, чтобы играть");
     }
   }
-  lockHintEl.classList.toggle("show", !locked && !paused && !anyPanelOpen() && mapReady && tabEverPressed);
+  lockHintEl.classList.toggle("show", !locked && !paused && !anyPanelOpen() && mapReady && tabPressedWorld);
 }
 document.addEventListener("mousemove", (e) => {
   if (document.pointerLockElement !== canvas) return;
