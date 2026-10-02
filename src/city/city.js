@@ -96,75 +96,68 @@ export function charge(state, amount) {
 }
 
 // ---------- кредиты: деньги сейчас, возврат с процентом потом ----------
-// Сумму, срок и ставку задаёт игрок; минимум диктует банк — 0,65% за день
-// срока (старые пресеты 10%/15д, 15%/20д, 20%/30д ≈ эта ставка). Ставка
-// сверх минимума расширяет лимит: +1 п.п. = +2% суммы (до ×3).
+// Сумму и срок задаёт игрок; ставка считается автоматически — 0,5% за день
+// срока (100 дней = 50%), дальше строго по пропорции к сроку.
 export const LOAN_MIN_DAYS = 10;
 export const LOAN_MAX_DAYS = 365;
 export const MAX_LOANS = 3;
-const LOAN_DAILY_RATE = 0.0065;
+const LOAN_DAILY_RATE = 0.005;
 
-// Ставка за весь срок, % (округление вверх до 0,5).
+// Ставка за весь срок, % — всегда выводится из срока, менять её нельзя.
 export function loanMinRate(days) {
   return Math.ceil(Math.max(LOAN_MIN_DAYS, days) * LOAN_DAILY_RATE * 200) / 2;
 }
-export function loanMaxRate(days) {
-  return loanMinRate(days) + 100;
-}
 
-// Базовый лимит — «под зарплату города»: население, доход, вехи.
-export function loanBaseLimit(state) {
+// Лимит — «под зарплату города»: население, доход, вехи.
+export function loanLimit(state) {
   const pop = Math.max(0, state.population || 0);
   const inc = state.last && Number.isFinite(state.last.income) ? Math.max(0, state.last.income) : 0;
   const miles = Array.isArray(state.milestones) ? state.milestones.length : 0;
   return Math.round((1500 + pop * 30 + inc * 15 + miles * 2500) / 100) * 100;
 }
 
-export function loanLimit(state, days, rate) {
-  const min = loanMinRate(days);
-  const extra = Number.isFinite(rate) ? Math.max(0, rate - min) : 0;
-  return Math.round(loanBaseLimit(state) * (1 + extra * 0.02) / 100) * 100;
-}
-
-// Всего к возврату и платёж в день.
-export function loanQuote(amount, days, rate) {
+// Всего к возврату, платёж в день и ставка за срок.
+export function loanQuote(amount, days) {
+  const rate = loanMinRate(days);
   const owed = Math.round(amount * (1 + rate / 100) * 100) / 100;
-  return { owed, daily: Math.round(owed / Math.max(1, days) * 100) / 100 };
+  return { owed, daily: Math.round(owed / Math.max(1, days) * 100) / 100, rate };
 }
 
+// Кредит простой как для детей: взял на N дней — первые N дней не платишь
+// вообще, следующие N дней платишь равными частями.
 export function takeLoan(state, params) {
   if (!params || typeof params !== "object") return { ok: false, reason: "loanNone" };
   if (state.loans.length >= MAX_LOANS) return { ok: false, reason: "loanMany" };
   const d = Math.floor(params.days);
   if (!Number.isFinite(d) || d < LOAN_MIN_DAYS || d > LOAN_MAX_DAYS) return { ok: false, reason: "loanBadDays" };
-  const r = Math.round(Number(params.rate) * 2) / 2;
-  const min = loanMinRate(d);
-  if (!Number.isFinite(r) || r < min || r > loanMaxRate(d)) return { ok: false, reason: "loanBadRate" };
   const a = Math.round(Number(params.amount));
-  const limit = loanLimit(state, d, r);
+  const limit = loanLimit(state);
   if (!Number.isFinite(a) || a < 100 || a > limit) return { ok: false, reason: "loanBadAmount" };
-  const { owed } = loanQuote(a, d, r);
+  const { owed } = loanQuote(a, d);
   state.money = Math.round((state.money + a) * 100) / 100;
-  state.loans.push({ owed, total: owed, daysLeft: d, principal: a, days: d, paid: 0 });
+  state.loans.push({ owed, total: owed, daysLeft: d, days: d, graceLeft: d, principal: a, paid: 0 });
   return { ok: true, owed };
 }
 
-// Досрочное погашение: остаток основного долга + проценты за использованные
-// дни. Предел — остаток по графику (после середины срока выгоднее гасить по
-// графику), минимум — основной долг плюс проценты за один день (кредит не
-// бывает бесплатным). Старые займы без days/paid закрываются по остатку.
+// Досрочное погашение: основной долг + проценты за прожитые дни цикла
+// (цикл = d дней паузы + d дней платежей). Предел — остаток по графику,
+// минимум — основной долг плюс проценты за один день. Старые займы без
+// полей days/paid закрываются по остатку, как раньше.
 export function loanPayoff(loan) {
   const owed = Math.max(0, loan.owed || 0);
   const P = loan.principal, T = loan.total, d = loan.days;
+  const grace = Number.isFinite(loan.graceLeft) ? Math.max(0, loan.graceLeft) : 0;
   if (!Number.isFinite(d) || !Number.isFinite(loan.paid) ||
-      !(P > 0) || !(T > P) || !(d > 0) || loan.daysLeft <= 0) return owed;
-  const elapsed = Math.min(d, d - loan.daysLeft);
+      !(P > 0) || !(T > P) || !(d > 0) ||
+      (grace === 0 && loan.daysLeft <= 0)) return owed;
+  const elapsed = (d - Math.min(d, grace)) + Math.min(d, d - Math.max(0, loan.daysLeft));
+  const cycle = d * 2;
   const I = T - P;
-  const accrued = I * elapsed / d;
+  const accrued = Math.min(I, I * elapsed / cycle);
   const paid = Math.max(0, loan.paid);
   const principalRem = Math.max(0, P - Math.max(0, paid - accrued));
   const unpaidAccrued = Math.max(0, accrued - paid);
-  const floor = principalRem + I / d;
+  const floor = P + I / cycle;
   return Math.round(Math.min(owed, Math.max(principalRem + unpaidAccrued, floor)) * 100) / 100;
 }
 
@@ -178,13 +171,16 @@ export function repayLoan(state, idx) {
   return { ok: true, cost };
 }
 
-// Ежедневные автоплатежи; просрочка растёт на 5% в день и бьёт по счастью.
+// Деньги: сначала пауза (graceLeft дни — платёжей нет), потом ежедневные
+// автоплатежи; просрочка растёт на 5% в день и бьёт по счастью.
 function processLoans(state) {
   let paid = 0;
   let overdue = false;
   for (let i = state.loans.length - 1; i >= 0; i--) {
     const loan = state.loans[i];
-    if (loan.daysLeft > 0) {
+    if (loan.graceLeft > 0) {
+      loan.graceLeft = Math.max(0, loan.graceLeft - 1);
+    } else if (loan.daysLeft > 0) {
       const part = loan.owed / loan.daysLeft;
       const pay = state.money > 0 ? Math.min(state.money, part) : 0;
       loan.owed = Math.round((loan.owed - pay) * 100) / 100;

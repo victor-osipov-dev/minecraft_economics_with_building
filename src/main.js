@@ -52,7 +52,7 @@ import {
 } from "./city/save.js";
 import {
   MAX_LOANS, LOAN_MIN_DAYS, LOAN_MAX_DAYS, takeLoan, repayLoan,
-  loanMinRate, loanMaxRate, loanLimit, loanQuote,
+  loanLimit, loanQuote, loanMinRate, loanPayoff,
 } from "./city/city.js";
 import { yg } from "./yg.js";
 import { t, setLang, getLang, locale, typeName, tierName, mstoneName } from "./i18n.js";
@@ -888,40 +888,43 @@ function taxRow(label, id, rate, opts = {}) {
 }
 
 // Черновик кредитной формы — живёт между перерисовками панели (тик в 5 с).
-const loanDraft = { amount: null, days: 30, rate: null };
+// Ставка не редактируется: она считается из срока (loanQuote).
+const loanDraft = { amount: null, days: 30 };
+// Готовые варианты: клик = кредит сразу, без ввода. Суммы-заготовки
+// лимитируются по city, кнопка гаснет, если вариант не влезает.
+const LOAN_PRESETS = [
+  { amount: 500, days: 30 },
+  { amount: 1500, days: 60 },
+  { amount: 5000, days: 100 },
+  { amount: 15000, days: 180 },
+];
 function loanDraftSync() {
   const d = Math.min(LOAN_MAX_DAYS, Math.max(LOAN_MIN_DAYS, Math.round(Number(loanDraft.days)) || 30));
-  const min = loanMinRate(d), max = loanMaxRate(d);
-  let r = Number.isFinite(loanDraft.rate) ? loanDraft.rate : min;
-  r = Math.min(max, Math.max(min, Math.round(r * 2) / 2));
-  const limit = loanLimit(city, d, r);
+  const limit = loanLimit(city);
   let a = Number.isFinite(loanDraft.amount) ? loanDraft.amount : Math.min(5000, limit);
   a = Math.min(limit, Math.max(100, Math.round(a / 100) * 100));
   loanDraft.amount = a;
   loanDraft.days = d;
-  loanDraft.rate = r;
 }
 // Живой пересчёт подсказки, пока игрок печатает (панель не перерисовываем).
 function updateLoanQuote() {
   const box = document.getElementById("loanQuote");
   if (!box) return;
   const d = Math.max(1, Math.round(Number(loanDraft.days)) || 1);
-  const r = Number.isFinite(loanDraft.rate) ? loanDraft.rate : 0;
   const a = Number.isFinite(loanDraft.amount) ? Math.max(0, loanDraft.amount) : 0;
-  const q = loanQuote(a, d, r);
+  const q = loanQuote(a, d);
   box.innerHTML =
     `${t("loanQuote", { daily: fmtMoney(q.daily), total: fmtMoney(q.owed) })}<br>` +
-    t("loanLimit", { limit: fmtMoney(loanLimit(city, d, r)), min: loanMinRate(d) });
-  const rateEl = document.getElementById("loanRate");
-  if (rateEl) { rateEl.min = loanMinRate(d); rateEl.max = loanMaxRate(d); }
+    `${t("loanLimit", { limit: fmtMoney(loanLimit(city)), rate: q.rate })}<br>` +
+    t("loanGraceHint", { days: d });
   const amtEl = document.getElementById("loanAmount");
-  if (amtEl) amtEl.max = loanLimit(city, d, r);
+  if (amtEl) amtEl.max = loanLimit(city);
 }
 
 function renderCity() {
   // Пока игрок печатает в кредитных полях — панель не перестраиваем.
   const ae = document.activeElement;
-  if (ae && (ae.id === "loanAmount" || ae.id === "loanDays" || ae.id === "loanRate")) return;
+  if (ae && (ae.id === "loanAmount" || ae.id === "loanDays")) return;
   document.getElementById("cityDay").textContent = `${t("stDay")} ${city.day}`;
   const last = city.last;
   const workers = city.buildings.reduce((a, b) => a + b.workers, 0);
@@ -960,26 +963,30 @@ function renderLoans() {
   if (!el) return;
   loanDraftSync();
   const debt = city.loans.reduce((a, l) => a + l.owed, 0);
-  const { amount, days, rate } = loanDraft;
-  const q = loanQuote(amount, days, rate);
-  const min = loanMinRate(days), max = loanMaxRate(days);
-  const limit = loanLimit(city, days, rate);
+  const { amount, days } = loanDraft;
+  const q = loanQuote(amount, days);
+  const limit = loanLimit(city);
   const full = city.loans.length >= MAX_LOANS;
   let html = `<div class="crow"><span>${t("debt")}</span><b>${fmtMoney(debt)}</b></div>` +
     `<div class="cbloan">
       <div class="clrow">
         <label>${t("loanAmountLbl")}<input type="number" id="loanAmount" min="100" max="${limit}" step="100" value="${amount}"></label>
         <label>${t("loanDaysLbl")}<input type="number" id="loanDays" min="${LOAN_MIN_DAYS}" max="${LOAN_MAX_DAYS}" step="1" value="${days}"></label>
-        <label>${t("loanRateLbl")}<input type="number" id="loanRate" min="${min}" max="${max}" step="0.5" value="${rate}"></label>
       </div>
-      <div class="clquote" id="loanQuote">${t("loanQuote", { daily: fmtMoney(q.daily), total: fmtMoney(q.owed) })}<br>${t("loanLimit", { limit: fmtMoney(limit), min })}</div>
+      <div class="cbtake">${LOAN_PRESETS.map((p) =>
+        `<button data-loan-preset="${p.amount},${p.days}"${full || p.amount > limit ? " disabled" : ""} title="${t("loanPresetTitle")}">` +
+        `${fmtMoney(p.amount)} · ${p.days} ${t("daysShort")} · ${loanMinRate(p.days)}%</button>`).join("")}</div>
+      <div class="clquote" id="loanQuote">${t("loanQuote", { daily: fmtMoney(q.daily), total: fmtMoney(q.owed) })}<br>${t("loanLimit", { limit: fmtMoney(limit), rate: q.rate })}<br>${t("loanGraceHint", { days })}</div>
       <button data-loan-take=""${full ? " disabled" : ""}>${t("loanTake")}</button>
       <div class="clquote clhint">${t("loanHint")}</div>
     </div>`;
   city.loans.forEach((l, i) => {
-    const per = l.daysLeft > 0 ? ` · ${fmtMoney(l.owed / l.daysLeft)}${t("perDay")}` : "";
-    html += `<div class="cbsub"><span>${fmtMoney(l.owed)} ${t("leftOwed")} · ${l.daysLeft} ${t("daysShort")}${per}</span>` +
-      `<button data-loan-repay="${i}"${city.money >= l.owed ? "" : " disabled"}>${t("repay")}</button></div>`;
+    const phase = l.graceLeft > 0
+      ? ` · ${t("loanGraceLeft", { n: l.graceLeft })}`
+      : ` · ${l.daysLeft} ${t("daysShort")}${l.daysLeft > 0 ? ` · ${fmtMoney(l.owed / l.daysLeft)}${t("perDay")}` : ""}`;
+    const cost = loanPayoff(l);
+    html += `<div class="cbsub"><span>${fmtMoney(l.owed)} ${t("leftOwed")}${phase}</span>` +
+      `<button data-loan-repay="${i}"${city.money >= cost ? "" : " disabled"}>${t("repay")}</button></div>`;
   });
   // Rewarded video: необязательный бонус в казну (п.4.5), прогресс не блокирует.
   html += `<div class="cbtake"><button data-rewarded="" title="${t("ygRewardTitle", { sum: fmtMoney(YG_REWARD) })}">${t("ygReward", { sum: fmtMoney(YG_REWARD) })}</button></div>`;
@@ -1049,13 +1056,12 @@ function renderLoans() {
 // (иначе тик в 5 с сбрасывает ввод и фокус).
 cityPanelEl.addEventListener("input", (e) => {
   const id = e.target && e.target.id;
-  if (id !== "loanAmount" && id !== "loanDays" && id !== "loanRate") return;
+  if (id !== "loanAmount" && id !== "loanDays") return;
   if (e.target.value === "") return;
   const v = Number(e.target.value);
   if (!Number.isFinite(v)) return;
   if (id === "loanAmount") loanDraft.amount = v;
-  else if (id === "loanDays") loanDraft.days = v;
-  else loanDraft.rate = v;
+  else loanDraft.days = v;
   updateLoanQuote();
 });
 
@@ -1083,10 +1089,22 @@ cityPanelEl.addEventListener("click", async (e) => {
     renderCity();
     return;
   }
+  const pre = e.target.closest("[data-loan-preset]");
+  if (pre && !pre.disabled) {
+    const [amount, days] = pre.dataset.loanPreset.split(",").map(Number);
+    const res = takeLoan(city, { amount, days });
+    showMsg(res.ok
+      ? t("loanTaken", { owed: Math.round(res.owed), money: fmtMoney(city.money) })
+      : t("loanDenied", { reason: t(res.reason) }));
+    if (res.ok) { loanDraft.amount = amount; loanDraft.days = days; }
+    refreshTileFunds();
+    renderCity();
+    return;
+  }
   const take = e.target.closest("[data-loan-take]");
   if (take && !take.disabled) {
     loanDraftSync();
-    const res = takeLoan(city, { amount: loanDraft.amount, days: loanDraft.days, rate: loanDraft.rate });
+    const res = takeLoan(city, { amount: loanDraft.amount, days: loanDraft.days });
     showMsg(res.ok
       ? t("loanTaken", { owed: Math.round(res.owed), money: fmtMoney(city.money) })
       : t("loanDenied", { reason: t(res.reason) }));

@@ -81,6 +81,7 @@ export function serializeCity(city) {
       daysLeft: Math.max(0, Math.floor(l.daysLeft || 0)),
       principal: Math.max(0, l.principal || 0),
       days: isNum(l.days) && l.days > 0 ? Math.floor(l.days) : null,
+      graceLeft: isNum(l.graceLeft) ? Math.max(0, Math.floor(l.graceLeft)) : 0,
       paid: isNum(l.paid) ? Math.max(0, l.paid) : 0,
     })),
     buildings: city.buildings.map((b) => ({
@@ -127,6 +128,7 @@ export function deserializeCity(data) {
         daysLeft: isNum(l.daysLeft) ? Math.max(0, Math.floor(l.daysLeft)) : 0,
         principal: isNum(l.principal) ? Math.max(0, l.principal) : 0,
         days: isNum(l.days) && l.days > 0 ? Math.floor(l.days) : null,
+        graceLeft: isNum(l.graceLeft) ? Math.max(0, Math.floor(l.graceLeft)) : 0,
         paid: isNum(l.paid) ? Math.max(0, l.paid) : 0,
       })) : [],
   });
