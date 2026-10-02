@@ -42,15 +42,18 @@ import { TYPES, TIERS, resolveType, resolveTier, instStats } from "./city/buildi
 import {
   newCityState, buildCostFor, addBuilding, charge,
   damageAt, repair, repairPrice, demolish, tick,
-  MILESTONES, BANKRUPT_AT, TAX_PER_CAPITA,
+  MILESTONES, BANKRUPT_AT, TAX_PER_CAPITA, FOOD_PER_CAPITA, TAX_TOLERANCE,
 } from "./city/city.js";
 import {
   createResident, assignTarget, stepResidents, desiredAgents,
 } from "./city/residents.js";
 import {
-  SAVE_VERSION, serializeWorld, serializeCity, parseSave,
+  SAVE_VERSION, serializeWorld, serializeCity, parseSave, encodeChunks,
 } from "./city/save.js";
-import { LOAN_OPTIONS, takeLoan, repayLoan } from "./city/city.js";
+import {
+  MAX_LOANS, LOAN_MIN_DAYS, LOAN_MAX_DAYS, takeLoan, repayLoan,
+  loanMinRate, loanMaxRate, loanLimit, loanQuote,
+} from "./city/city.js";
 import { yg } from "./yg.js";
 import { t, setLang, getLang, locale, typeName, tierName, mstoneName } from "./i18n.js";
 import schemesIndex from "../schemes/index.json";
@@ -480,6 +483,7 @@ const GRAVITY = 26;
 const JUMP_SPEED = 9.3;
 const WALK_SPEED = 6.5;
 const SPRINT_SPEED = 10.5;
+const BOOST_SPEED = 22;
 const EYE = 1.7;
 const REACH = 6;
 
@@ -543,9 +547,11 @@ const player = { x: respawnPoint.x, y: respawnPoint.y, z: respawnPoint.z, vy: 0,
 let camYaw = 0;
 let camPitch = -0.06;
 
-const keys = { w: false, a: false, s: false, d: false, shift: false, jump: false };
+const keys = { w: false, a: false, s: false, d: false, shift: false, jump: false, boost: false };
 
 window.addEventListener("keydown", (e) => {
+  // Не реагируем на клавиши при вводе текста в поля формы.
+  if (e.target && (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA")) return;
   switch (e.code) {
     case "KeyW": keys.w = true; break;
     case "KeyA": keys.a = true; break;
@@ -554,6 +560,9 @@ window.addEventListener("keydown", (e) => {
     case "Space": keys.jump = true; break;
     case "ShiftLeft":
     case "ShiftRight": keys.shift = true; break;
+    // X, а не Ctrl: Ctrl+W — системная комбинация Chrome «закрыть вкладку»,
+    // её нельзя перехватить на уровне страницы.
+    case "KeyX": keys.boost = !keys.boost; break;
   }
 });
 window.addEventListener("keyup", (e) => {
@@ -629,7 +638,7 @@ let ghostLines = null;
 let ghostFill = null;
 let lastSpaceTap = 0;
 const planCache = new Map();
-const FLY_SPEED = 11;
+const FLY_SPEED = 22;
 // Все постройки из папки schemes (видны и ставятся в креативе).
 // URL-карта строится из index.json, а не из import.meta.glob(...eager):
 // glob давал отдельный модуль-запрос на каждый файл и каждое превью
@@ -827,22 +836,6 @@ function findRecordAt(x, y, z) {
   return null;
 }
 
-function toggleCity() {
-  // A2: планшет — повторное C сворачивает панель (в т.ч. закреплённую).
-  if (cityPanelEl.classList.contains("show")) {
-    closePanels();
-    return;
-  }
-  closePanels();
-  setPaused(false);
-  cityPanelEl.classList.add("show");
-  renderCity();
-  tutorialGain("city");
-  if (document.pointerLockElement) {
-    unlockForPanel = true;
-    document.exitPointerLock();
-  }
-}
 // A2: закреплённая панель переживает захват курсора как виджет только для чтения.
 let cityPinned = false;
 function pinCityPanel() {
@@ -863,12 +856,79 @@ function fmtNum(v) {
   return Number(v).toLocaleString(locale());
 }
 
+// Бонус казне за досмотр rewarded video (необязательный, п.4.5).
+const YG_REWARD = 1500;
+
+// Дельта ресурса за день для статистики: "+X/день" / "−X/день".
+function netDelta(v) {
+  if (!Number.isFinite(v)) return "";
+  return ` <span class="cdim">(${v > 0 ? "+" : ""}${v} ${t("perDay")})</span>`;
+}
+
+// Уровень показателя «много это или нет»: мало (зелёный) / много (жёлтый)
+// / критично (красный). Пороги — где показатель начинает вредить городу.
+function lvlBadge(v, warn, crit) {
+  const n = Number.isFinite(v) ? v : 0;
+  const lvl = n >= crit ? 2 : n >= warn ? 1 : 0;
+  const cls = ["lvlOk", "lvlWarn", "lvlBad"][lvl];
+  return ` <span class="${cls}">${t(["indLow", "indHigh", "indCrit"][lvl])}</span>`;
+}
+
+// Строка слайдера одного из трёх налогов: ставка + пометка (выше порога
+// допустимости — «идут банкротства»).
+function taxRow(label, id, rate, opts = {}) {
+  const { tol = Infinity, suffix = "", lowKey = "taxLow", highKey = "taxHigh" } = opts;
+  const bad = rate > tol;
+  const note = bad ? t("taxFail")
+    : rate > TAX_PER_CAPITA ? t(highKey)
+    : rate < TAX_PER_CAPITA ? t(lowKey) : t("taxBase");
+  return [t(label),
+    `<input type="range" id="${id}" min="0" max="1" step="0.05" value="${rate}" style="width:130px;vertical-align:middle"> ` +
+    `<b>$${rate.toFixed(2)}${suffix}</b> <span class="${bad ? "lvlBad" : "cdim"}">${note}</span>`];
+}
+
+// Черновик кредитной формы — живёт между перерисовками панели (тик в 5 с).
+const loanDraft = { amount: null, days: 30, rate: null };
+function loanDraftSync() {
+  const d = Math.min(LOAN_MAX_DAYS, Math.max(LOAN_MIN_DAYS, Math.round(Number(loanDraft.days)) || 30));
+  const min = loanMinRate(d), max = loanMaxRate(d);
+  let r = Number.isFinite(loanDraft.rate) ? loanDraft.rate : min;
+  r = Math.min(max, Math.max(min, Math.round(r * 2) / 2));
+  const limit = loanLimit(city, d, r);
+  let a = Number.isFinite(loanDraft.amount) ? loanDraft.amount : Math.min(5000, limit);
+  a = Math.min(limit, Math.max(100, Math.round(a / 100) * 100));
+  loanDraft.amount = a;
+  loanDraft.days = d;
+  loanDraft.rate = r;
+}
+// Живой пересчёт подсказки, пока игрок печатает (панель не перерисовываем).
+function updateLoanQuote() {
+  const box = document.getElementById("loanQuote");
+  if (!box) return;
+  const d = Math.max(1, Math.round(Number(loanDraft.days)) || 1);
+  const r = Number.isFinite(loanDraft.rate) ? loanDraft.rate : 0;
+  const a = Number.isFinite(loanDraft.amount) ? Math.max(0, loanDraft.amount) : 0;
+  const q = loanQuote(a, d, r);
+  box.innerHTML =
+    `${t("loanQuote", { daily: fmtMoney(q.daily), total: fmtMoney(q.owed) })}<br>` +
+    t("loanLimit", { limit: fmtMoney(loanLimit(city, d, r)), min: loanMinRate(d) });
+  const rateEl = document.getElementById("loanRate");
+  if (rateEl) { rateEl.min = loanMinRate(d); rateEl.max = loanMaxRate(d); }
+  const amtEl = document.getElementById("loanAmount");
+  if (amtEl) amtEl.max = loanLimit(city, d, r);
+}
+
 function renderCity() {
+  // Пока игрок печатает в кредитных полях — панель не перестраиваем.
+  const ae = document.activeElement;
+  if (ae && (ae.id === "loanAmount" || ae.id === "loanDays" || ae.id === "loanRate")) return;
   document.getElementById("cityDay").textContent = `${t("stDay")} ${city.day}`;
   const last = city.last;
   const workers = city.buildings.reduce((a, b) => a + b.workers, 0);
   const jobsCap = last ? last.jobsTotal : city.buildings.reduce((a, b) => a + b.stats.jobs, 0);
   const taxRate = Number.isFinite(city.taxRate) ? city.taxRate : TAX_PER_CAPITA;
+  const bizTax = Number.isFinite(city.bizTax) ? city.bizTax : TAX_PER_CAPITA;
+  const indTax = Number.isFinite(city.indTax) ? city.indTax : TAX_PER_CAPITA;
   const nextMs = MILESTONES.find((m) => !(city.milestones || []).includes(m.id));
   const moneyNote = city.money < 0 ? ` <span class="cdim">${t("bankruptAt", { sum: fmtNum(Math.abs(BANKRUPT_AT)) })}</span>` : "";
   const rows = [
@@ -876,16 +936,18 @@ function renderCity() {
     [t("stDay"), `${city.day}`],
     [t("stPop"), `${city.population} <span class="cdim">(${last && last.migrants >= 0 ? "+" : ""}${last ? last.migrants : 0}${t("perDay")})</span>`],
     [t("stHappy"), `${city.happiness}%`],
-    [t("stTax"), `<input type="range" id="taxRange" min="0" max="1" step="0.05" value="${taxRate}" style="width:130px;vertical-align:middle"> <b>$${taxRate.toFixed(2)}${t("perResident")}</b> <span class="cdim">${taxRate > TAX_PER_CAPITA ? t("taxHigh") : taxRate < TAX_PER_CAPITA ? t("taxLow") : t("taxBase")}</span>`],
+    taxRow("stTax", "taxRange", taxRate, { suffix: t("perResident") }),
+    taxRow("stTaxBiz", "bizTaxRange", bizTax, { tol: TAX_TOLERANCE.biz, lowKey: "taxDown", highKey: "taxUp" }),
+    taxRow("stTaxInd", "indTaxRange", indTax, { tol: TAX_TOLERANCE.ind, lowKey: "taxDown", highKey: "taxUp" }),
     [t("stGoal"), nextMs ? `${mstoneName(nextMs.id)} <span class="cdim">${t("bonus")}${fmtNum(nextMs.bonus)}</span>` : t("goalDone")],
     [t("stHousing"), `${city.population} / ${last ? last.housingCap : 0}`],
     [t("stJobs"), `${workers} / ${jobsCap}`],
-    [t("stFood"), `${city.food}`],
-    [t("stEnergy"), `${city.energy}`],
-    [t("stWater"), `${city.water}${city.last && city.last.waterShortage ? t("noWater") : ""}`],
-    [t("stWaste"), `${Math.round(city.waste)}`],
-    [t("stCrime"), `${city.last ? city.last.crime : 0}`],
-    [t("stPollution"), `${city.pollution}`],
+    [t("stFood"), `${city.food}${netDelta(last && last.foodNet)}`],
+    [t("stEnergy"), `${city.energy}${netDelta(last && last.energyNet)}${last && last.energyEff < 1 ? t("noEnergy") : ""}`],
+    [t("stWater"), `${city.water}${netDelta(last && last.waterNet)}${city.last && city.last.waterShortage ? t("noWater") : ""}`],
+    [t("stWaste"), `${Math.round(city.waste)}${lvlBadge(city.waste, 50, 200)}`],
+    [t("stCrime"), `${city.last ? city.last.crime : 0}${lvlBadge(city.last ? city.last.crime : 0, 30, 60)}`],
+    [t("stPollution"), `${city.pollution}${lvlBadge(city.pollution, 40, 70)}`],
     [t("stRoadless"), `${last ? last.roadless : 0} <span class="cdim">${t("workHalf")}</span>`],
     [t("stAgents"), `${residents.length} <button data-residents="">${showResidents ? t("hide") : t("show")}</button>`],
   ];
@@ -893,20 +955,30 @@ function renderCity() {
     `<div class="crow"><span>${k}</span><b>${v}</b></div>`).join("");
   renderLoans();
 
-// Бонус казне за досмотр rewarded video (необязательный, п.4.5).
-const YG_REWARD = 1500;
-
 function renderLoans() {
   const el = document.getElementById("cityLoans");
   if (!el) return;
+  loanDraftSync();
   const debt = city.loans.reduce((a, l) => a + l.owed, 0);
-  let html = `<div class="crow"><span>${t("debt")}</span><b>${fmtMoney(debt)}</b></div><div class="cbtake">` +
-    LOAN_OPTIONS.map((o) =>
-      `<button data-loan-take="${o.id}"${city.loans.length >= 3 ? " disabled" : ""}>` +
-      `$${fmtNum(o.amount)} / ${o.days} ${t("daysShort")} / ${Math.round(o.rate * 100)}%</button>`
-    ).join("") + `</div>`;
+  const { amount, days, rate } = loanDraft;
+  const q = loanQuote(amount, days, rate);
+  const min = loanMinRate(days), max = loanMaxRate(days);
+  const limit = loanLimit(city, days, rate);
+  const full = city.loans.length >= MAX_LOANS;
+  let html = `<div class="crow"><span>${t("debt")}</span><b>${fmtMoney(debt)}</b></div>` +
+    `<div class="cbloan">
+      <div class="clrow">
+        <label>${t("loanAmountLbl")}<input type="number" id="loanAmount" min="100" max="${limit}" step="100" value="${amount}"></label>
+        <label>${t("loanDaysLbl")}<input type="number" id="loanDays" min="${LOAN_MIN_DAYS}" max="${LOAN_MAX_DAYS}" step="1" value="${days}"></label>
+        <label>${t("loanRateLbl")}<input type="number" id="loanRate" min="${min}" max="${max}" step="0.5" value="${rate}"></label>
+      </div>
+      <div class="clquote" id="loanQuote">${t("loanQuote", { daily: fmtMoney(q.daily), total: fmtMoney(q.owed) })}<br>${t("loanLimit", { limit: fmtMoney(limit), min })}</div>
+      <button data-loan-take=""${full ? " disabled" : ""}>${t("loanTake")}</button>
+      <div class="clquote clhint">${t("loanHint")}</div>
+    </div>`;
   city.loans.forEach((l, i) => {
-    html += `<div class="cbsub"><span>$${Math.round(l.owed)} ${t("leftOwed")} · ${l.daysLeft} ${t("daysShort")}</span>` +
+    const per = l.daysLeft > 0 ? ` · ${fmtMoney(l.owed / l.daysLeft)}${t("perDay")}` : "";
+    html += `<div class="cbsub"><span>${fmtMoney(l.owed)} ${t("leftOwed")} · ${l.daysLeft} ${t("daysShort")}${per}</span>` +
       `<button data-loan-repay="${i}"${city.money >= l.owed ? "" : " disabled"}>${t("repay")}</button></div>`;
   });
   // Rewarded video: необязательный бонус в казну (п.4.5), прогресс не блокирует.
@@ -973,6 +1045,20 @@ function renderLoans() {
   }
 }
 
+// Поля кредитной формы: обновляем черновик и подсказку без перерисовки
+// (иначе тик в 5 с сбрасывает ввод и фокус).
+cityPanelEl.addEventListener("input", (e) => {
+  const id = e.target && e.target.id;
+  if (id !== "loanAmount" && id !== "loanDays" && id !== "loanRate") return;
+  if (e.target.value === "") return;
+  const v = Number(e.target.value);
+  if (!Number.isFinite(v)) return;
+  if (id === "loanAmount") loanDraft.amount = v;
+  else if (id === "loanDays") loanDraft.days = v;
+  else loanDraft.rate = v;
+  updateLoanQuote();
+});
+
 cityPanelEl.addEventListener("click", async (e) => {
   const tog = e.target.closest("[data-residents]");
   if (tog) {
@@ -999,10 +1085,12 @@ cityPanelEl.addEventListener("click", async (e) => {
   }
   const take = e.target.closest("[data-loan-take]");
   if (take && !take.disabled) {
-    const res = takeLoan(city, Number(take.dataset.loanTake));
+    loanDraftSync();
+    const res = takeLoan(city, { amount: loanDraft.amount, days: loanDraft.days, rate: loanDraft.rate });
     showMsg(res.ok
-      ? t("loanTaken", { owed: res.owed, money: fmtMoney(city.money) })
+      ? t("loanTaken", { owed: Math.round(res.owed), money: fmtMoney(city.money) })
       : t("loanDenied", { reason: t(res.reason) }));
+    if (res.ok) loanDraft.amount = null; // новая сумма под новый лимит
     refreshTileFunds();
     renderCity();
     return;
@@ -1053,14 +1141,18 @@ cityPanelEl.addEventListener("click", async (e) => {
   }
 });
 
-// Слайдер налогов (событие change — срабатывает при отпускании, перерисовка не мешает).
+// Слайдеры налогов (событие change — срабатывает при отпускании, перерисовка не мешает).
 cityPanelEl.addEventListener("change", (e) => {
-  if (e.target && e.target.id === "taxRange") {
-    const v = Math.min(1, Math.max(0, Number(e.target.value)));
-    city.taxRate = Math.round(v * 100) / 100;
-    showMsg(t("taxSet", { rate: city.taxRate.toFixed(2) }));
-    renderCity();
-  }
+  const id = e.target && e.target.id;
+  if (id !== "taxRange" && id !== "bizTaxRange" && id !== "indTaxRange") return;
+  const v = Math.min(1, Math.max(0, Number(e.target.value)));
+  const rate = Math.round(v * 100) / 100;
+  if (id === "taxRange") city.taxRate = rate;
+  else if (id === "bizTaxRange") city.bizTax = rate;
+  else city.indTax = rate;
+  const key = id === "taxRange" ? "taxSet" : id === "bizTaxRange" ? "taxSetBiz" : "taxSetInd";
+  showMsg(t(key, { rate: rate.toFixed(2) }));
+  renderCity();
 });
 
 // План схемы из библиотеки (кеш или fetch), повёрнутый как при постройке.
@@ -1144,7 +1236,17 @@ async function demolishBuilding(id) {
 
 const pauseMenuEl = document.getElementById("pauseMenu");
 document.getElementById("resumeBtn").addEventListener("click", resumeGame);
-document.getElementById("saveBtn").addEventListener("click", saveGame);
+document.getElementById("saveBtn").addEventListener("click", () => saveGame());
+// Прогресс терялся: автосейва не было, а сейв падал с quota-ошибкой (лечится
+// сжатием чанков в save.js). Теперь мир сохраняем тихо: по таймеру, при
+// уходе вкладки в фон и перед выгрузкой — тост показываем только вручную.
+setInterval(() => { if (mapReady) saveGame({ silent: true }); }, 120_000);
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "hidden" && mapReady) saveGame({ silent: true });
+});
+window.addEventListener("beforeunload", () => {
+  if (mapReady) saveGame({ silent: true });
+});
 document.getElementById("loadSaveBtn").addEventListener("click", loadGame);
 document.getElementById("newGameBtn").addEventListener("click", () => {
   if (!window.confirm(t("newGameAsk"))) return;
@@ -1200,14 +1302,16 @@ function refreshSaveInfo() {
   }
 }
 
-async function saveGame() {
+async function saveGame({ silent = false } = {}) {
   try {
     const data = {
       v: SAVE_VERSION,
       savedAt: Date.now(),
       player: { x: player.x, y: player.y, z: player.z },
       city: serializeCity(city),
-      chunks: serializeWorld(world),
+      // Чанки сжимаем: без этого JSON переполнял квоту localStorage и сейв
+      // падал с QuotaExceededError (прогресс терялся).
+      chunks: encodeChunks(serializeWorld(world)),
     };
     const json = JSON.stringify(data);
     localStorage.setItem(SAVE_KEY, json);
@@ -1220,8 +1324,11 @@ async function saveGame() {
         : { v: 1, kind: "profile", profile: cloudProfile() };
       cloud = await yg.cloudSave({ citysave: payload });
     }
-    showMsg(t(cloud ? "savedCloud" : "saved",
-      { day: city.day, n: city.buildings.length, kb: (json.length / 1024).toFixed(0) }));
+    // Автосейвы молчат; ошибку показываем всегда.
+    if (!silent) {
+      showMsg(t(cloud ? "savedCloud" : "saved",
+        { day: city.day, n: city.buildings.length, kb: (json.length / 1024).toFixed(0) }));
+    }
   } catch (e) {
     console.error(e);
     showMsg(t("saveFail", { err: e.message || e }));
@@ -1236,7 +1343,8 @@ function cloudProfile() {
     food: city.food, energy: city.energy,
     water: city.water || 0, waste: city.waste || 0,
     happiness: city.happiness, pollution: city.pollution,
-    day: city.day, taxRate: city.taxRate, milestones: city.milestones || [],
+    day: city.day, taxRate: city.taxRate, bizTax: city.bizTax, indTax: city.indTax,
+    milestones: city.milestones || [],
     best: ygBestPop,
     buildings: city.buildings.map((b) => ({
       typeId: b.typeId, name: b.name,
@@ -1272,6 +1380,8 @@ function applyCloudProfile(p) {
       happiness: num(p.happiness, city.happiness), pollution: num(p.pollution, 0),
       day: Math.max(0, Math.floor(num(p.day, 0))),
       taxRate: num(p.taxRate, city.taxRate),
+      bizTax: num(p.bizTax, city.bizTax),
+      indTax: num(p.indTax, city.indTax),
       milestones: Array.isArray(p.milestones) ? p.milestones : [],
     });
     if (Number.isFinite(p.best) && p.best > ygBestPop) {
@@ -1335,6 +1445,8 @@ async function loadGame() {
       day: parsed.city.day, nextId: 1, last: parsed.city.last,
       loans: Array.isArray(parsed.city.loans) ? parsed.city.loans : [],
       taxRate: Number.isFinite(parsed.city.taxRate) ? parsed.city.taxRate : TAX_PER_CAPITA,
+      bizTax: Number.isFinite(parsed.city.bizTax) ? parsed.city.bizTax : TAX_PER_CAPITA,
+      indTax: Number.isFinite(parsed.city.indTax) ? parsed.city.indTax : TAX_PER_CAPITA,
       milestones: Array.isArray(parsed.city.milestones) ? parsed.city.milestones : [],
     });
     for (const { key, cells } of parsed.chunks) {
@@ -1371,6 +1483,13 @@ async function loadGame() {
       refreshRecordLabel(rec);
     }
     city.nextId = parsed.city.nextId;
+    // До первого тика (≤5 с) панель показывала «Работы 0/…» — проставляем
+    // работников из сохранённого отчёта, чтобы цифры были осмысленными.
+    const er = parsed.city.last && Number.isFinite(parsed.city.last.employmentRatio)
+      ? parsed.city.last.employmentRatio : 1;
+    for (const b of city.buildings) {
+      b.workers = b.stats.jobs > 0 ? Math.round(b.stats.jobs * (b.health / 100) * er) : 0;
+    }
     resetMapTransientState();
     mapReady = true;
     camera.position.set(player.x, player.y + EYE, player.z);
@@ -1435,8 +1554,31 @@ function tickCity() {
     city.bankrupt = false;
   }
   if (cityPanelEl.classList.contains("show")) renderCity();
+  cityWarnings();
 }
 setInterval(() => { if (mapReady && !paused) tickCity(); }, 5000);
+
+// Тосты о кризисах ресурсов: не чаще раза в несколько игровых дней,
+// иначе сообщение заедает остальные тосты.
+const warnLastDay = {};
+function cityWarnings() {
+  const l = city.last;
+  if (!l) return;
+  const say = (key, msg, every) => {
+    if (city.day - (warnLastDay[key] ?? -Infinity) < every) return false;
+    warnLastDay[key] = city.day;
+    showMsg(msg);
+    return true;
+  };
+  if (l.hunger) { say("hunger", t("warnHunger"), 5); return; }
+  if (Number.isFinite(l.foodNet) && l.foodNet < 0 && city.population > 0) {
+    const days = Math.floor(city.food / Math.max(1, city.population * FOOD_PER_CAPITA));
+    if (days <= 20 && say("food", t("warnFoodLow", { days }), 10)) return;
+  }
+  if (l.bankrupts > 0 && say("bankrupt", t("warnBankrupt", { n: l.bankrupts }), 10)) return;
+  if (city.energy <= 0 && say("energy", t("warnNoEnergy"), 10)) return;
+  if (city.water <= 0) say("water", t("warnNoWater"), 10);
+}
 
 // ---------- визуальные жители: кружочки, не источник истины ----------
 let residents = [];
@@ -1553,6 +1695,7 @@ function openCommandMenu() {
   schemeListEl.scrollTop = schemeListScroll;
   updateBuildBar();
   renderCity();
+  tutorialGain("city"); // шаг «Открой панель города» — панель даёт TAB
   if (document.pointerLockElement) {
     unlockForPanel = true;
     document.exitPointerLock();
@@ -2510,11 +2653,6 @@ window.addEventListener("keydown", (e) => {
     exitBuildMode();
     return;
   }
-  if (e.code === "KeyC" && !e.repeat) {
-    if (isTyping(e)) return;
-    toggleCity();
-    return;
-  }
   if (e.code === "KeyP" && !e.repeat) {
     if (isTyping(e)) return;
     if (document.pointerLockElement) document.exitPointerLock();
@@ -2524,7 +2662,8 @@ window.addEventListener("keydown", (e) => {
   }
   if (e.code === "KeyE") {
     togglePicker();
-  } else if (e.code === "KeyT") {
+  } else if (e.code === "KeyT" && schemesPanelEl.classList.contains("show")) {
+    // Панели открывает только TAB; T здесь — закрыть их и уйти к строительству.
     toggleSchemes();
   } else if (e.code === "KeyR") {
     rotatePreview();
@@ -2847,7 +2986,12 @@ scene.registerBeforeRender(() => {
   if (!mapReady) return;
   if (paused) return; // пауза: мир замер, рендер идёт
   const dt = Math.min(engine.getDeltaTime() / 1000, 0.05);
-  const speed = flying ? FLY_SPEED : keys.shift ? SPRINT_SPEED : WALK_SPEED;
+  // Полёт быстрее земли, а X в полёту даёт ×2 к полётной скорости.
+  const speed = flying
+    ? (keys.boost ? BOOST_SPEED * 2 : FLY_SPEED)
+    : keys.boost ? BOOST_SPEED
+    : keys.shift ? SPRINT_SPEED
+    : WALK_SPEED;
 
   // Бесконечный плоский пол: догенерируем чанки травы вокруг игрока.
   genTimer += dt;
@@ -2880,8 +3024,15 @@ scene.registerBeforeRender(() => {
     mz /= mlen;
   }
 
-  player.x = moveAxis(player, world, "x", mx * speed * dt);
-  player.z = moveAxis(player, world, "z", mz * speed * dt);
+  // Подшаги мельче бокса игрока (0.6): moveAxis проверяет только точку
+  // назначения, поэтому на 44 бл/с при низком FPS можно проскочить стену.
+  const stepDist = speed * dt;
+  const substeps = Math.max(1, Math.ceil(stepDist / 0.5));
+  const stepX = mx * stepDist / substeps, stepZ = mz * stepDist / substeps;
+  for (let i = 0; i < substeps; i++) {
+    player.x = moveAxis(player, world, "x", stepX);
+    player.z = moveAxis(player, world, "z", stepZ);
+  }
 
   if (flying) {
     // Полёт: гравитации нет, Space вверх, Shift вниз, столкновения остаются.
@@ -2975,7 +3126,7 @@ scene.registerBeforeRender(() => {
 
 // ---------- стартовый мир: пустая плоская местность ----------
 // Вокруг спавна догенерируется трава, игрок начинает на ней и строит сам
-// (блоки — E, постройки — T; V — просмотр рамок построек).
+// (блоки — E, панели — TAB; V — просмотр рамок построек).
 function initFlatWorld() {
   world.ensureFlatAround(0, 0);
   world.flushMeshes(scene, blockMat, cutoutMat, alphaMat, torchMat);

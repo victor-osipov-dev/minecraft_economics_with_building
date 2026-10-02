@@ -339,6 +339,9 @@
     .crow { display: flex; justify-content: space-between; gap: 10px; padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.07); }
     .crow b { font-weight: 600; }
     .cdim { opacity: 0.6; font-weight: 400; }
+    .lvlOk { color: #7dff9b; font-weight: 600; }
+    .lvlWarn { color: #ffd75e; font-weight: 600; }
+    .lvlBad { color: #ff8080; font-weight: 600; }
     .chint { opacity: 0.7; font-size: 12px; margin: 8px 0; }
     #cityBuildings { margin-top: 10px; display: flex; flex-direction: column; gap: 8px; }
     /* сортировка и фильтры построек города */
@@ -377,6 +380,14 @@
     .cbtake { display: flex; gap: 6px; flex-wrap: wrap; margin: 6px 0; }
     .cbtake button { background: rgba(255,213,74,0.2); color: #ffd54a; border: 1px solid rgba(255,213,74,0.5); border-radius: 5px; padding: 3px 8px; cursor: pointer; font-size: 12px; }
     .cbtake button:disabled { opacity: 0.35; cursor: default; }
+    .cbloan { display: block; margin: 6px 0; }
+    .cbloan .clrow { display: flex; gap: 6px; flex-wrap: wrap; }
+    .cbloan label { flex: 1 1 90px; display: flex; flex-direction: column; gap: 2px; font-size: 11px; opacity: 0.85; }
+    .cbloan input { width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.35); border: 1px solid rgba(255,255,255,0.18); color: inherit; border-radius: 5px; padding: 4px 6px; font-size: 13px; }
+    .cbloan button { background: rgba(255,213,74,0.2); color: #ffd54a; border: 1px solid rgba(255,213,74,0.5); border-radius: 5px; padding: 4px 10px; cursor: pointer; font-size: 12px; }
+    .cbloan button:disabled { opacity: 0.35; cursor: default; }
+    .clquote { font-size: 11px; opacity: 0.75; margin: 4px 0; line-height: 1.4; }
+    .clhint { opacity: 0.55; font-style: italic; }
     .crow button { background: rgba(255,213,74,0.2); color: #ffd54a; border: 1px solid rgba(255,213,74,0.5); border-radius: 5px; padding: 2px 10px; cursor: pointer; font-size: 12px; }
     #labels { position: fixed; inset: 0; pointer-events: none; z-index: 11; overflow: hidden; }
     .blabel { position: absolute; transform: translate(-50%, -100%); background: rgba(8, 10, 14, 0.82); border: 1px solid #fff; border-left-width: 4px; border-radius: 6px; color: #fff; font: 12px 'Segoe UI', Arial, sans-serif; padding: 4px 8px; white-space: nowrap; text-align: left; line-height: 1.45; }
@@ -410,9 +421,7 @@
       pointer-events: none;
       opacity: 0.93;
     }
-    #cityPanel.pinned h3:not(:first-child),
-    #cityPanel.pinned #cityLoans,
-    #cityPanel.pinned #cityBuildings { display: none; }
+    #cityPanel.pinned h3:not(:first-child) { display: none; }
     #pauseMenu { text-align: center; min-width: 240px; }
     #pauseMenu h3 { font-size: 18px; margin-bottom: 12px; }
     .mbtn { display: block; width: 100%; margin: 6px 0; background: rgba(255,213,74,0.2); color: #ffd54a; border: 1px solid rgba(255,213,74,0.5); border-radius: 6px; padding: 8px 12px; cursor: pointer; font: 14px 'Segoe UI', Arial, sans-serif; }
@@ -662,7 +671,7 @@
     <div class="hint" data-i18n="hintsLabel">Подсказки:</div>
     <label class="setrow"><input type="checkbox" id="setTutorial" checked /> <span data-i18n="setTut">Обучение «Первые шаги»</span></label>
     <label class="setrow"><input type="checkbox" id="setTabHint" checked /> <span data-i18n="setTab">Подсказка «Нажми TAB»</span></label>
-    <div class="hint" data-i18n="pauseHint">E — блоки · T — постройки · C — город · V — подписи · G — рамки · P — пауза · Tab — меню</div>
+    <div class="hint" data-i18n="pauseHint">TAB — постройки и город · E — блоки · V — подписи · G — рамки · P — пауза</div>
   </div>
   <div id="picker" class="panel">
     <h3 data-i18n="blocksTitle">Блоки песочницы</h3>

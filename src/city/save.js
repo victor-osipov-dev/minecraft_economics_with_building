@@ -1,5 +1,6 @@
 // Сохранение/загрузка: город отдельно от блоков (по плану, этап 24).
 // Чистые функции: мир здесь — любой объект { chunks, states, touched }.
+import { deflateSync, inflateSync, strToU8, strFromU8 } from "fflate";
 import { TYPES } from "./buildingTypes.js";
 import { newCityState } from "./city.js";
 import { t } from "../i18n.js";
@@ -8,6 +9,34 @@ export const SAVE_VERSION = 1;
 
 const isNum = (v) => typeof v === "number" && Number.isFinite(v);
 const KEY_RE = /^-?\d+,-?\d+,-?\d+$/;
+
+// Тронутые чанки растут вместе с городом и не влезали в квоту localStorage
+// (setItem бросал QuotaExceededError — прогресс не сохранялся). Пишем их
+// сжатыми (raw deflate + base64): 8 МБ JSON → ~1.8 МБ. Чтение старых
+// несжатых сейвов сохранено — см. parseSave.
+function bytesToBase64(bytes) {
+  let s = "";
+  const CHUNK = 0x8000;
+  for (let i = 0; i < bytes.length; i += CHUNK) {
+    s += String.fromCharCode.apply(null, bytes.subarray(i, i + CHUNK));
+  }
+  return btoa(s);
+}
+
+function base64ToBytes(b64) {
+  const s = atob(b64);
+  const out = new Uint8Array(s.length);
+  for (let i = 0; i < s.length; i++) out[i] = s.charCodeAt(i);
+  return out;
+}
+
+export function encodeChunks(chunks) {
+  return bytesToBase64(deflateSync(strToU8(JSON.stringify(chunks))));
+}
+
+export function decodeChunks(packed) {
+  return JSON.parse(strFromU8(inflateSync(base64ToBytes(packed))));
+}
 
 // Только тронутые чанки (постройки и ручные правки); автопол перегенерируется.
 export function serializeWorld(w) {
@@ -42,6 +71,8 @@ export function serializeCity(city) {
     day: city.day,
     nextId: city.nextId,
     taxRate: Number.isFinite(city.taxRate) ? city.taxRate : 0.3,
+    bizTax: Number.isFinite(city.bizTax) ? city.bizTax : 0.3,
+    indTax: Number.isFinite(city.indTax) ? city.indTax : 0.3,
     milestones: Array.isArray(city.milestones) ? city.milestones.filter((m) => typeof m === "string") : [],
     last: city.last,
     loans: (city.loans || []).map((l) => ({
@@ -49,6 +80,8 @@ export function serializeCity(city) {
       total: Math.max(0, l.total || 0),
       daysLeft: Math.max(0, Math.floor(l.daysLeft || 0)),
       principal: Math.max(0, l.principal || 0),
+      days: isNum(l.days) && l.days > 0 ? Math.floor(l.days) : null,
+      paid: isNum(l.paid) ? Math.max(0, l.paid) : 0,
     })),
     buildings: city.buildings.map((b) => ({
       id: b.id,
@@ -81,6 +114,8 @@ export function deserializeCity(data) {
     day: Math.max(0, Math.floor(data.day)),
     nextId: Math.max(1, Math.floor(data.nextId)),
     taxRate: isNum(data.taxRate) ? Math.min(1, Math.max(0, data.taxRate)) : 0.3,
+    bizTax: isNum(data.bizTax) ? Math.min(1, Math.max(0, data.bizTax)) : 0.3,
+    indTax: isNum(data.indTax) ? Math.min(1, Math.max(0, data.indTax)) : 0.3,
     milestones: Array.isArray(data.milestones) ? data.milestones.filter((m) => typeof m === "string") : [],
     last: data.last && typeof data.last === "object" ? data.last : null,
     loans: Array.isArray(data.loans) ? data.loans
@@ -91,6 +126,8 @@ export function deserializeCity(data) {
         total: isNum(l.total) && l.total > 0 ? l.total : l.owed,
         daysLeft: isNum(l.daysLeft) ? Math.max(0, Math.floor(l.daysLeft)) : 0,
         principal: isNum(l.principal) ? Math.max(0, l.principal) : 0,
+        days: isNum(l.days) && l.days > 0 ? Math.floor(l.days) : null,
+        paid: isNum(l.paid) ? Math.max(0, l.paid) : 0,
       })) : [],
   });
   if (!Array.isArray(data.buildings)) throw new Error(t("saveDb.noList"));
@@ -127,9 +164,18 @@ export function parseSave(raw) {
   if (!data.player || !isNum(data.player.x) || !isNum(data.player.y) || !isNum(data.player.z)) {
     throw new Error(t("saveDb.noPlayer"));
   }
-  if (!data.chunks || typeof data.chunks !== "object") throw new Error(t("saveDb.noChunks"));
+  let chunksData = data.chunks;
+  if (typeof chunksData === "string") {
+    // Новый формат: чанки — сжатая строка (deflate+base64).
+    try {
+      chunksData = decodeChunks(chunksData);
+    } catch (e) {
+      throw new Error(t("saveDb.noChunks"));
+    }
+  }
+  if (!chunksData || typeof chunksData !== "object") throw new Error(t("saveDb.noChunks"));
   const chunks = [];
-  for (const [key, cells] of Object.entries(data.chunks)) {
+  for (const [key, cells] of Object.entries(chunksData)) {
     if (!KEY_RE.test(key)) throw new Error(t("saveDb.badKey"));
     if (!Array.isArray(cells)) throw new Error(t("saveDb.badChunk", { key }));
     for (const cell of cells) {

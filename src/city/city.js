@@ -4,7 +4,20 @@
 import { TYPES, instStats } from "./buildingTypes.js";
 
 export const FOOD_PER_CAPITA = 0.5; // еды на жителя в день
+export const ENERGY_PER_CAPITA = 0.3; // энергии на жителя в день
+export const WATER_PER_CAPITA = 0.7; // воды на жителя в день
+export const POP_UPKEEP = 0.2; // содержание городской инфраструктуры на жителя в день
 export const TAX_PER_CAPITA = 0.3; // стартовый налог с жителя в день (дальше — слайдер)
+// Налоговые категории слайдеров «бизнес» и «фабрики»: город собирает
+// ставку/0.30 от дохода здания; выше порога предприятие теряет здоровье и
+// закрывается (банкротство) — чинится «Ремонтом» после снижения ставки.
+// ЖКХ, школы, дороги и жильё налогом не облагаются.
+export const TAX_TOLERANCE = { biz: 0.55, ind: 0.6 };
+const TAX_CATEGORY = {
+  shop: "biz", office: "biz", service: "biz", entertainment: "biz",
+  farm: "biz", fishery: "biz", factory: "ind",
+};
+const TAX_STRESS = 40; // здоровья в день за каждый пункт ставки выше порога
 export const ROAD_RADIUS = 10; // дорога рядом: AABB здания + столько по XZ
 export const ROAD_PENALTY = 0.5; // множитель эффективности без дороги
 export const ROAD_FREE = new Set(["road", "decor"]); // этим типам дорога не нужна
@@ -21,7 +34,7 @@ const START_MONEY = 10000;
 const START_FOOD = 800;
 const START_ENERGY = 400;
 
-const START_WATER = 300;
+const START_WATER = 600;
 
 export function newCityState() {
   return {
@@ -38,6 +51,8 @@ export function newCityState() {
     loans: [],
     nextId: 1,
     taxRate: TAX_PER_CAPITA,
+    bizTax: TAX_PER_CAPITA,
+    indTax: TAX_PER_CAPITA,
     milestones: [],
     bankrupt: false,
     last: null,
@@ -81,31 +96,86 @@ export function charge(state, amount) {
 }
 
 // ---------- кредиты: деньги сейчас, возврат с процентом потом ----------
-// Варианты займа: сумма / срок в днях / ставка за весь срок.
-export const LOAN_OPTIONS = [
-  { id: 0, amount: 1000, days: 15, rate: 0.10 },
-  { id: 1, amount: 5000, days: 20, rate: 0.15 },
-  { id: 2, amount: 15000, days: 30, rate: 0.20 },
-];
+// Сумму, срок и ставку задаёт игрок; минимум диктует банк — 0,65% за день
+// срока (старые пресеты 10%/15д, 15%/20д, 20%/30д ≈ эта ставка). Ставка
+// сверх минимума расширяет лимит: +1 п.п. = +2% суммы (до ×3).
+export const LOAN_MIN_DAYS = 10;
+export const LOAN_MAX_DAYS = 365;
 export const MAX_LOANS = 3;
+const LOAN_DAILY_RATE = 0.0065;
 
-export function takeLoan(state, optionId) {
-  const opt = LOAN_OPTIONS.find((o) => o.id === optionId);
-  if (!opt) return { ok: false, reason: "loanNone" };
+// Ставка за весь срок, % (округление вверх до 0,5).
+export function loanMinRate(days) {
+  return Math.ceil(Math.max(LOAN_MIN_DAYS, days) * LOAN_DAILY_RATE * 200) / 2;
+}
+export function loanMaxRate(days) {
+  return loanMinRate(days) + 100;
+}
+
+// Базовый лимит — «под зарплату города»: население, доход, вехи.
+export function loanBaseLimit(state) {
+  const pop = Math.max(0, state.population || 0);
+  const inc = state.last && Number.isFinite(state.last.income) ? Math.max(0, state.last.income) : 0;
+  const miles = Array.isArray(state.milestones) ? state.milestones.length : 0;
+  return Math.round((1500 + pop * 30 + inc * 15 + miles * 2500) / 100) * 100;
+}
+
+export function loanLimit(state, days, rate) {
+  const min = loanMinRate(days);
+  const extra = Number.isFinite(rate) ? Math.max(0, rate - min) : 0;
+  return Math.round(loanBaseLimit(state) * (1 + extra * 0.02) / 100) * 100;
+}
+
+// Всего к возврату и платёж в день.
+export function loanQuote(amount, days, rate) {
+  const owed = Math.round(amount * (1 + rate / 100) * 100) / 100;
+  return { owed, daily: Math.round(owed / Math.max(1, days) * 100) / 100 };
+}
+
+export function takeLoan(state, params) {
+  if (!params || typeof params !== "object") return { ok: false, reason: "loanNone" };
   if (state.loans.length >= MAX_LOANS) return { ok: false, reason: "loanMany" };
-  const owed = Math.round(opt.amount * (1 + opt.rate) * 100) / 100;
-  state.money = Math.round((state.money + opt.amount) * 100) / 100;
-  state.loans.push({ owed, total: owed, daysLeft: opt.days, principal: opt.amount });
+  const d = Math.floor(params.days);
+  if (!Number.isFinite(d) || d < LOAN_MIN_DAYS || d > LOAN_MAX_DAYS) return { ok: false, reason: "loanBadDays" };
+  const r = Math.round(Number(params.rate) * 2) / 2;
+  const min = loanMinRate(d);
+  if (!Number.isFinite(r) || r < min || r > loanMaxRate(d)) return { ok: false, reason: "loanBadRate" };
+  const a = Math.round(Number(params.amount));
+  const limit = loanLimit(state, d, r);
+  if (!Number.isFinite(a) || a < 100 || a > limit) return { ok: false, reason: "loanBadAmount" };
+  const { owed } = loanQuote(a, d, r);
+  state.money = Math.round((state.money + a) * 100) / 100;
+  state.loans.push({ owed, total: owed, daysLeft: d, principal: a, days: d, paid: 0 });
   return { ok: true, owed };
+}
+
+// Досрочное погашение: остаток основного долга + проценты за использованные
+// дни. Предел — остаток по графику (после середины срока выгоднее гасить по
+// графику), минимум — основной долг плюс проценты за один день (кредит не
+// бывает бесплатным). Старые займы без days/paid закрываются по остатку.
+export function loanPayoff(loan) {
+  const owed = Math.max(0, loan.owed || 0);
+  const P = loan.principal, T = loan.total, d = loan.days;
+  if (!Number.isFinite(d) || !Number.isFinite(loan.paid) ||
+      !(P > 0) || !(T > P) || !(d > 0) || loan.daysLeft <= 0) return owed;
+  const elapsed = Math.min(d, d - loan.daysLeft);
+  const I = T - P;
+  const accrued = I * elapsed / d;
+  const paid = Math.max(0, loan.paid);
+  const principalRem = Math.max(0, P - Math.max(0, paid - accrued));
+  const unpaidAccrued = Math.max(0, accrued - paid);
+  const floor = principalRem + I / d;
+  return Math.round(Math.min(owed, Math.max(principalRem + unpaidAccrued, floor)) * 100) / 100;
 }
 
 // Досрочное погашение целиком.
 export function repayLoan(state, idx) {
   const loan = state.loans[idx];
   if (!loan) return { ok: false };
-  if (!charge(state, loan.owed)) return { ok: false, cost: loan.owed };
+  const cost = loanPayoff(loan);
+  if (!charge(state, cost)) return { ok: false, cost };
   state.loans.splice(idx, 1);
-  return { ok: true, cost: loan.owed };
+  return { ok: true, cost };
 }
 
 // Ежедневные автоплатежи; просрочка растёт на 5% в день и бьёт по счастью.
@@ -119,6 +189,7 @@ function processLoans(state) {
       const pay = state.money > 0 ? Math.min(state.money, part) : 0;
       loan.owed = Math.round((loan.owed - pay) * 100) / 100;
       state.money = Math.round((state.money - pay) * 100) / 100;
+      loan.paid = (Number.isFinite(loan.paid) ? loan.paid : 0) + pay;
       paid += pay;
       loan.daysLeft--;
     } else if (loan.owed > 0) {
@@ -127,6 +198,7 @@ function processLoans(state) {
       const pay = state.money > 0 ? Math.min(state.money, loan.owed) : 0;
       loan.owed = Math.round((loan.owed - pay) * 100) / 100;
       state.money = Math.round((state.money - pay) * 100) / 100;
+      loan.paid = (Number.isFinite(loan.paid) ? loan.paid : 0) + pay;
       paid += pay;
     }
     if (loan.owed <= 0.005) state.loans.splice(i, 1);
@@ -232,20 +304,30 @@ export function tick(state) {
     energyCons += b.stats.energyCons * effOf(b);
   }
   const foodCons = pop * FOOD_PER_CAPITA;
+  // Энергия тратится и на жителей: без этого запасы растут в потолок
+  // и блэкаут в игре недостижим. Кап ≈ 5 дней потребления — копить
+  // впрок бессмысленно, дефицит наступает быстро.
+  energyCons += pop * ENERGY_PER_CAPITA;
+  const energyCap = Math.max(400, Math.round(energyCons * 5));
+  const foodNet = Math.round((foodProd - foodCons) * 10) / 10;
+  const energyNet = Math.round((energyProd - energyCons) * 10) / 10;
   state.food = clamp(Math.round((state.food + foodProd - foodCons) * 10) / 10, 0, 99999);
-  state.energy = clamp(Math.round((state.energy + energyProd - energyCons) * 10) / 10, 0, 99999);
+  state.energy = clamp(Math.round((state.energy + energyProd - energyCons) * 10) / 10, 0, energyCap);
   const hunger = state.food <= 0 && foodCons > 0;
   // Блэкаут режет эффективность, но не в ноль (иначе смерть спиралью).
   const energyEff = state.energy > 0 || energyProd >= energyCons
     ? 1 : energyCons > 0 ? 0.35 + 0.65 * (energyProd / energyCons) : 1;
 
-  // Вода: производство водокачек против потребления зданий.
+  // Вода: производство водокачек против потребления зданий и жителей.
   let waterProd = 0, waterCons = 0;
   for (const b of state.buildings) {
     waterProd += b.stats.waterProd * effOf(b) * staffing;
     waterCons += b.stats.waterCons * effOf(b);
   }
-  state.water = clamp(Math.round((state.water + waterProd - waterCons) * 10) / 10, 0, 99999);
+  waterCons += pop * WATER_PER_CAPITA;
+  const waterCap = Math.max(300, Math.round(waterCons * 5));
+  const waterNet = Math.round((waterProd - waterCons) * 10) / 10;
+  state.water = clamp(Math.round((state.water + waterProd - waterCons) * 10) / 10, 0, waterCap);
   const waterShortage = state.water <= 0 && waterCons > 0;
 
   // Мусор: производство против мощности свалок; избыток копится городом.
@@ -262,8 +344,14 @@ export function tick(state) {
 
   // 6-7. Доход и расходы.
   let income = 0, upkeep = 0;
+  const bizTax = Number.isFinite(state.bizTax) ? state.bizTax : TAX_PER_CAPITA;
+  const indTax = Number.isFinite(state.indTax) ? state.indTax : TAX_PER_CAPITA;
   for (const b of state.buildings) {
-    income += b.stats.income * effOf(b) * staffing * energyEff;
+    // Город собирает налог с дохода бизнеса/фабрик: базовая ставка 0.30
+    // забирает весь вклад как раньше, выше — больше, 0 — ничего.
+    const cat = TAX_CATEGORY[b.typeId];
+    const taxMul = cat ? (cat === "biz" ? bizTax : indTax) / TAX_PER_CAPITA : 1;
+    income += b.stats.income * effOf(b) * staffing * energyEff * taxMul;
     // Простаивающее/разрушенное здание стоит дешевле (консервация 40%).
     // Черновые не стоят ничего и не приносят ничего.
     if (isActive(b)) upkeep += b.stats.maintenance * (0.4 + 0.6 * effOf(b) * staffing);
@@ -271,9 +359,26 @@ export function tick(state) {
   // Базовый налог с жителей по ставке-слайдеру (по умолчанию TAX_PER_CAPITA).
   const taxRate = Number.isFinite(state.taxRate) ? state.taxRate : TAX_PER_CAPITA;
   income += pop * taxRate;
+  // Содержание инфраструктуры на жителя: постоянный расход, растущий
+  // с городом — иначе казна копится вечно без игрового напряжения.
+  upkeep += pop * POP_UPKEEP;
   income = Math.round(income * 100) / 100;
   upkeep = Math.round(upkeep * 100) / 100;
   state.money = Math.round((state.money + income - upkeep) * 100) / 100;
+
+  // Налоговое давление ( Cities: Skylines ): ставка выше порога роняет
+  // здоровье предприятий — доход от них тает, на нуле здание закрыто
+  // (банкротство); возвращается ремонтом после снижения ставки.
+  let bankrupts = 0;
+  for (const b of state.buildings) {
+    const cat = TAX_CATEGORY[b.typeId];
+    if (!cat) continue;
+    const over = (cat === "biz" ? bizTax : indTax) - TAX_TOLERANCE[cat];
+    if (over <= 0 || effOf(b) <= 0) continue;
+    const before = b.health;
+    b.health = Math.max(0, Math.round((b.health - over * TAX_STRESS) * 10) / 10);
+    if (before > 0 && b.health <= 0) bankrupts++;
+  }
 
   // Кредиты: автоплатёж после всех доходов/расходов дня.
   const { paid: loanPaid, overdue } = processLoans(state);
@@ -317,8 +422,6 @@ export function tick(state) {
     houseCount++;
   }
   const localAvg = houseCount > 0 ? bonusSum / houseCount : 0;
-  // Преступность растёт от безработицы; полиция в радиусе защищает дома.
-  const crimeIdx = pop > 10 ? clamp((1 - employmentRate) * 60 + state.pollution * 0.2, 0, 100) : 0;
   let protSum = 0, protTotal = 0;
   for (const h of state.buildings) {
     if (h.stats.housing <= 0) {
@@ -341,10 +444,18 @@ export function tick(state) {
     protTotal += w;
   }
   const unprotected = protTotal > 0 ? 1 - protSum / protTotal : 1;
+  // Преступность: безработица, загрязнение и плотность населения создают
+  // напряжение; полиция в радиусе гасит его — без участков множитель 1.0,
+  // при полном покрытии жилья ×0.3. Раньше полиция на сам индекс не влияла
+  // и участки были бесполезны (описание врало).
+  const crimeBase = pop > 10
+    ? clamp((1 - employmentRate) * 60 + state.pollution * 0.2 + Math.min(25, pop / 40), 0, 100)
+    : 0;
+  const crimeIdx = clamp(crimeBase * (0.3 + 0.7 * unprotected), 0, 100);
   const entertainmentScore = pop === 0 ? 100 : clamp((entCap * 15 / Math.max(1, pop)) * 100, 0, 100);
-  const safetyScore = clamp(70 + safeBonus - state.pollution * 0.5 - crimeIdx * unprotected * 0.5, 0, 100);
+  const safetyScore = clamp(70 + safeBonus - state.pollution * 0.5 - crimeIdx * 0.5, 0, 100);
   // Налоги выше базовых давят на счастье, нулевые — радуют.
-  const taxPenalty = (taxRate - TAX_PER_CAPITA) * 40;
+  const taxPenalty = (taxRate - TAX_PER_CAPITA) * 48;
   state.happiness = clamp(Math.round(
     (housingScore + foodScore + employmentScore + entertainmentScore + safetyScore) / 5 +
     clamp(happyGlobal * 0.5, -10, 10) + clamp(localAvg, 0, 10) -
@@ -378,9 +489,11 @@ export function tick(state) {
   const freeJobs = jobsTotal - Math.min(pop, jobsTotal);
   const attract = (state.happiness - 55) / 8 + (freeJobs > 0 ? 1.5 : 0) +
     (freeHousing > 0 ? 1 : -3) + (hunger ? -4 : 0) + (waterShortage ? -2 : 0);
-  let migrants = clamp(Math.round(attract), -6, 8);
+  let migrants = clamp(Math.round(attract), -6, 8) + 0; // +0 убирает −0 в UI
   if (migrants > 0) migrants = Math.min(migrants, Math.max(0, Math.floor(freeHousing)));
-  const births = Math.floor(pop * 0.012);
+  // Рождения только при свободном жилье: иначе население обгоняет
+  // вместимость и перенаселение копится бесконечно.
+  const births = freeHousing > 0 ? Math.floor(pop * 0.012) : 0;
   const deaths = Math.floor(pop * 0.008 + (hunger ? pop * 0.03 : 0));
   state.population = Math.max(0, pop + migrants + births - deaths);
 
@@ -431,9 +544,10 @@ export function tick(state) {
     employmentRatio: Math.round(employmentRatio * 100) / 100,
     employmentRate: Math.round(employmentRate * 100) / 100,
     housingCap, jobsTotal, energyEff: Math.round(energyEff * 100) / 100, hunger,
+    foodNet, energyNet, waterNet,
     waterShortage, waste: state.waste, crime: Math.round(crimeIdx * 10) / 10, fires,
     loanPaid, overdue, debt: Math.round(state.loans.reduce((a, l) => a + l.owed, 0) * 100) / 100,
-    roadless, milestonesHit, taxRate,
+    roadless, milestonesHit, taxRate, bankrupts,
   };
   return state.last;
 }
