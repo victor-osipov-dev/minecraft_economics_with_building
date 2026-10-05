@@ -156,6 +156,10 @@
       cursor: pointer;
     }
     .setrow input { accent-color: #ffd54a; }
+    /* Переключатель языка в паузе */
+    .langrow { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; }
+    .langrow .mbtn { display: inline-block; width: auto; flex: 1 1 auto; margin: 0; padding: 5px 10px; font-size: 12px; }
+    .langrow .mbtn.on { background: rgba(255,213,74,0.55); color: #fff; border-color: #ffd54a; font-weight: 600; }
     /* C11: обучение-чеклист */
     #tutorial {
       position: fixed;
@@ -671,6 +675,12 @@
     <div class="hint" data-i18n="hintsLabel">Подсказки:</div>
     <label class="setrow"><input type="checkbox" id="setTutorial" checked /> <span data-i18n="setTut">Обучение «Первые шаги»</span></label>
     <label class="setrow"><input type="checkbox" id="setTabHint" checked /> <span data-i18n="setTab">Подсказка «Нажми TAB»</span></label>
+    <div class="hint" data-i18n="langLabel">Язык интерфейса:</div>
+    <div class="setrow langrow">
+      <button class="mbtn langbtn" data-lang="auto" data-i18n="langAuto">Как в системе</button>
+      <button class="mbtn langbtn" data-lang="ru" data-i18n="langRu">Русский</button>
+      <button class="mbtn langbtn" data-lang="en" data-i18n="langEn">English</button>
+    </div>
     <div class="hint" data-i18n="pauseHint">TAB — постройки и город · E — блоки · V — подписи · G — рамки · P — пауза</div>
   </div>
   <div id="picker" class="panel">

@@ -5,7 +5,6 @@
 // от габаритов схемы. Все дневные цифры — за 1 тик симуляции (1 день).
 export const TYPES = {
   house: {
-    name: "Дом", desc: "Жильё для горожан",
     buildCost: 500, maintenance: 3,
     housing: 8, jobs: 0,
     foodProd: 0, energyProd: 0, energyCons: 2,
@@ -14,7 +13,6 @@ export const TYPES = {
     income: 0, happiness: 1, entertainment: 0, safety: 0, pollution: 0,
   },
   apartment: {
-    name: "Многоквартирный дом", desc: "Много жилья на малом пятне",
     buildCost: 1500, maintenance: 9,
     housing: 30, jobs: 0,
     foodProd: 0, energyProd: 0, energyCons: 6,
@@ -23,7 +21,6 @@ export const TYPES = {
     income: 0, happiness: 1, entertainment: 0, safety: 0, pollution: 0,
   },
   shop: {
-    name: "Магазин", desc: "Рабочие места, доход и немного еды",
     buildCost: 800, maintenance: 6,
     housing: 0, jobs: 4,
     foodProd: 6, energyProd: 0, energyCons: 3,
@@ -32,7 +29,6 @@ export const TYPES = {
     income: 24, happiness: 1, entertainment: 1, safety: 0, pollution: 0,
   },
   office: {
-    name: "Офис", desc: "Много рабочих мест, стабильный доход",
     buildCost: 1200, maintenance: 9,
     housing: 0, jobs: 8,
     foodProd: 0, energyProd: 0, energyCons: 4,
@@ -41,7 +37,6 @@ export const TYPES = {
     income: 34, happiness: 0, entertainment: 0, safety: 0, pollution: 0,
   },
   factory: {
-    name: "Фабрика", desc: "Высокий доход, загрязнение, жрёт энергию",
     buildCost: 2000, maintenance: 16,
     housing: 0, jobs: 15,
     foodProd: 0, energyProd: 0, energyCons: 12,
@@ -50,7 +45,6 @@ export const TYPES = {
     income: 72, happiness: -1, entertainment: 0, safety: 0, pollution: 2,
   },
   fishery: {
-    name: "Рыбное хозяйство", desc: "Еда для города",
     buildCost: 600, maintenance: 5,
     housing: 0, jobs: 3,
     foodProd: 20, energyProd: 0, energyCons: 2,
@@ -59,7 +53,6 @@ export const TYPES = {
     income: 10, happiness: 0, entertainment: 0, safety: 0, pollution: 0,
   },
   farm: {
-    name: "Ферма", desc: "Много еды",
     buildCost: 600, maintenance: 5,
     housing: 0, jobs: 3,
     foodProd: 25, energyProd: 0, energyCons: 1,
@@ -68,7 +61,6 @@ export const TYPES = {
     income: 8, happiness: 0, entertainment: 0, safety: 0, pollution: 0,
   },
   powerplant: {
-    name: "Электростанция", desc: "Энергия для города",
     buildCost: 1500, maintenance: 12,
     housing: 0, jobs: 4,
     foodProd: 0, energyProd: 80, energyCons: 0,
@@ -77,7 +69,6 @@ export const TYPES = {
     income: 0, happiness: -1, entertainment: 0, safety: 0, pollution: 1,
   },
   park: {
-    name: "Парк", desc: "Счастье рядом (пока глобально)",
     buildCost: 300, maintenance: 1,
     housing: 0, jobs: 0,
     foodProd: 0, energyProd: 0, energyCons: 0,
@@ -85,7 +76,6 @@ export const TYPES = {
     radius: 30,
   },
   school: {
-    name: "Школа", desc: "Счастье и рабочие места",
     buildCost: 800, maintenance: 6,
     housing: 0, jobs: 6,
     foodProd: 0, energyProd: 0, energyCons: 3,
@@ -95,7 +85,6 @@ export const TYPES = {
     radius: 20,
   },
   hospital: {
-    name: "Больница", desc: "Здоровье и безопасность города",
     buildCost: 1100, maintenance: 9,
     housing: 0, jobs: 7,
     foodProd: 0, energyProd: 0, energyCons: 4,
@@ -105,7 +94,6 @@ export const TYPES = {
     radius: 20,
   },
   service: {
-    name: "Общественное здание", desc: "Культура и услуги",
     buildCost: 600, maintenance: 5,
     housing: 0, jobs: 3,
     foodProd: 0, energyProd: 0, energyCons: 2,
@@ -115,7 +103,6 @@ export const TYPES = {
     radius: 15,
   },
   entertainment: {
-    name: "Развлечения", desc: "Стадион, бассейн — досуг горожан",
     buildCost: 900, maintenance: 6,
     housing: 0, jobs: 5,
     foodProd: 0, energyProd: 0, energyCons: 3,
@@ -125,7 +112,6 @@ export const TYPES = {
     radius: 25,
   },
   waterplant: {
-    name: "Водокачка", desc: "Вода для города",
     buildCost: 900, maintenance: 8,
     housing: 0, jobs: 3,
     foodProd: 0, energyProd: 0, energyCons: 4,
@@ -134,7 +120,6 @@ export const TYPES = {
     income: 0, happiness: 0, entertainment: 0, safety: 0, pollution: 0,
   },
   landfill: {
-    name: "Свалка", desc: "Перерабатывает мусор, но грязная и неприятная",
     buildCost: 500, maintenance: 6,
     housing: 0, jobs: 3,
     foodProd: 0, energyProd: 0, energyCons: 1,
@@ -143,7 +128,6 @@ export const TYPES = {
     income: 0, happiness: -1, entertainment: 0, safety: 0, pollution: 2,
   },
   police: {
-    name: "Полиция", desc: "Снижает преступность в радиусе 25",
     buildCost: 1000, maintenance: 8,
     housing: 0, jobs: 6,
     foodProd: 0, energyProd: 0, energyCons: 3,
@@ -153,7 +137,6 @@ export const TYPES = {
     radius: 25,
   },
   fire: {
-    name: "Пожарная", desc: "Не даёт зданиям гореть в радиусе 25",
     buildCost: 900, maintenance: 8,
     housing: 0, jobs: 6,
     foodProd: 0, energyProd: 0, energyCons: 3,
@@ -163,21 +146,18 @@ export const TYPES = {
     radius: 25,
   },
   road: {
-    name: "Инфраструктура", desc: "Дороги и транспорт: связывают город",
     buildCost: 150, maintenance: 1,
     housing: 0, jobs: 0,
     foodProd: 0, energyProd: 0, energyCons: 0,
     income: 0, happiness: 1, entertainment: 0, safety: 0, pollution: 0,
   },
   decor: {
-    name: "Декор", desc: "Украшение: чуть счастья",
     buildCost: 50, maintenance: 0,
     housing: 0, jobs: 0,
     foodProd: 0, energyProd: 0, energyCons: 0,
     income: 0, happiness: 1, entertainment: 0, safety: 0, pollution: 0,
   },
   generic: {
-    name: "Постройка", desc: "Без специализации",
     buildCost: 200, maintenance: 2,
     housing: 0, jobs: 0,
     foodProd: 0, energyProd: 0, energyCons: 0,
@@ -276,9 +256,9 @@ const CATEGORY_FALLBACK = {
 // Тиры построек: обычные доступны сразу, элита и легенды — дороже,
 // но и отдача выше. Без элиты игра проходится: это ускорение, не ворота.
 export const TIERS = {
-  1: { name: "Обычная", icon: "", cost: 1, stats: 1 },
-  2: { name: "Элита", icon: "💎", cost: 2.2, stats: 1.7 },
-  3: { name: "Легенда", icon: "👑", cost: 4.5, stats: 2.6 },
+  1: { icon: "", cost: 1, stats: 1 },
+  2: { icon: "💎", cost: 2.2, stats: 1.7 },
+  3: { icon: "👑", cost: 4.5, stats: 2.6 },
 };
 const ELITE_RE = /(luxury|deluxe|grand|premium|royal|mansion|villa|hotel|manor|estate|penthouse|plaza|resort|majestic|superior|prestige|chateau)/i;
 const LANDMARK_RE = /(mega|ultimate|skyscraper|palace|monument|empire|casino|cathedral|coloss)/i;

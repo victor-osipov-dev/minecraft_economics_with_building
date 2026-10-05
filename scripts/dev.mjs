@@ -6,7 +6,7 @@
 //   npm run dev -- --no-proxy   только vite, SDK деградирует в гостя
 //   npm run dev -- --dist       отдать собранный dist через прокси
 //
-// Флаги: --port N (vite), --proxy-port N, --tld ru|com, --app-id ID,
+// Флаги: --port N (vite), --proxy-port N, --host H, --tld ru|com, --app-id ID,
 //        --debug-sdk (в баннере даём ссылку с ?debug-sdk=1 — так его читает адаптер)
 import { spawn } from "node:child_process";
 import { createRequire } from "node:module";
@@ -21,6 +21,12 @@ const val = (f, d) => {
 };
 
 const ROOT = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
+// Vite и прокси должны говорить на ОДНОМ адресе. `localhost` для связки
+// vite -> proxy не годится: на части машин (в т.ч. здесь) connect к [::1]
+// отбивается фильтром с EACCES, а vite по умолчанию вешается на ::1 —
+// прокси получает AggregateError [EACCES, ECONNREFUSED] и отдаёт 500 на /.
+// Поэтому адрес задаётся явно и по умолчанию — IPv4 loopback.
+const HOST = val("--host", process.env.YG_HOST || "127.0.0.1");
 const GAME_PORT = Number(val("--port", process.env.YG_GAME_PORT || 5173));
 const PROXY_PORT = Number(val("--proxy-port", process.env.YG_PROXY_PORT || 8080));
 const TLD = val("--tld", "ru");
@@ -60,7 +66,7 @@ process.on("exit", () => {
 function startProxy() {
   const args = ["--port", String(PROXY_PORT)];
   if (DIST) args.push("-p", path.join(ROOT, "dist"));
-  else args.push("-h", `http://localhost:${GAME_PORT}`);
+  else args.push("-h", `http://${HOST}:${GAME_PORT}`);
   if (!DIST && !PROD) args.push("--dev-mode=true");
   if (TLD) args.push("--tld", TLD);
   if (APP_ID) args.push("--app-id", APP_ID);
@@ -107,7 +113,7 @@ async function main() {
     const { createServer } = await import("vite");
     vite = await createServer({
       root: ROOT,
-      server: { port: GAME_PORT, strictPort: true, open: false },
+      server: { host: HOST, port: GAME_PORT, strictPort: true, open: false },
     });
     await vite.listen();
   }

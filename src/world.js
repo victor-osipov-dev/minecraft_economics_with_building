@@ -28,6 +28,15 @@ export const CHUNK = 16;
 export const WORLD_H = 64;
 export { ATLAS_COLS, ATLAS_ROWS } from "./blocks.js";
 
+// Радиус автогенерации плоского пола в чанках. Держим его дальше границы
+// тумана: при fogDensity 0.0065 (см. main.js) картинка уходит в fogColor
+// примерно к 330 блокам, а пол должен тянуться минимум до 22*16 = 352,
+// иначе на краю сгенерированного мира видно дыры до неба.
+export const FLAT_RADIUS = 22;
+// Сколько чанков держим вокруг игрока. Всё дальше — автопол, который
+// перегенерируется сам, поэтому его можно выкинуть из памяти (см. pruneAuto).
+export const FLAT_KEEP = 28;
+
 const INSET = 0.03;
 
 const FACES = [
@@ -65,6 +74,31 @@ export class World {
     this.touched = new Set();
     this.dirty = new Set();
     this.meshes = new Map();
+    // levelKey -> список индексов факелов внутри чанка. Без него сбор света
+    // перебирал весь объём (16+2*BAKE_RADIUS)^3 вокселей на каждый чанк — на
+    // радиусе в десятки чанков это десятки миллионов getBlock.
+    this.torchIndex = new Map();
+  }
+
+  // Пересобирает список факелов чанка. Дёшево (4096 байт) и вызывается
+  // только когда блок чанка реально стал/перестал быть факелом.
+  indexTorches(cx, cy, cz) {
+    const key = levelKey(cx, cy, cz);
+    const c = this.chunks.get(key);
+    if (!c) {
+      this.torchIndex.delete(key);
+      return;
+    }
+    let list = null;
+    for (let i = 0; i < c.length; i++) {
+      const id = c[i];
+      if (id === TORCH || id === REDSTONE_TORCH) {
+        if (!list) list = [];
+        list.push(i);
+      }
+    }
+    if (list) this.torchIndex.set(key, list);
+    else this.torchIndex.delete(key);
   }
 
   _idx(wx, wy, wz, cx, cy, cz) {
@@ -134,6 +168,7 @@ export class World {
     // меняет glow в радиусе BAKE_RADIUS, поэтому пачкаем все чанки в округе,
     // а не только соседей по границе.
     if (prev === TORCH || prev === REDSTONE_TORCH || id === TORCH || id === REDSTONE_TORCH) {
+      this.indexTorches(cx, cy, cz);
       const ccx0 = Math.floor((x - BAKE_RADIUS) / CHUNK);
       const ccx1 = Math.floor((x + BAKE_RADIUS) / CHUNK);
       const ccz0 = Math.floor((z - BAKE_RADIUS) / CHUNK);
@@ -284,6 +319,7 @@ export class World {
           this.touched.add(key);
           const chunk = this.chunks.get(key);
           if (!chunk) continue;
+          if (this.torchIndex.has(key)) this.indexTorches(cx, cy, cz);
           const minX = Math.max(x, cx * CHUNK);
           const maxX = Math.min(x1, (cx + 1) * CHUNK);
           const minY = Math.max(cy0, cy * CHUNK);
@@ -331,36 +367,74 @@ export class World {
     this.states.clear();
     this.touched.clear();
     this.dirty.clear();
+    this.torchIndex.clear();
   }
 
   // Бесконечный плоский пол как в flat-мире: один слой травы на y=0 в
   // чанках вокруг (x, z), где ещё ничего нет. Тронутые чанки (постройки,
   // правки игрока, очищенные области) пропускаем. Вызывать периодически
-  // (раз в ~0.3 c): создаёт максимум (2r+1)^2 чанков за проход.
-  ensureFlatAround(x, z, radius = 2) {
+  // (раз в ~0.3 c): за проход создаётся максимум (2r+1)^2 чанков.
+  // Обход идёт кольцами от игрока наружу, потому что dirty — это Set с
+  // порядком вставки, и flushMeshes берёт из него голову: так ближний
+  // пол появляется первым, а не догоняет игрока через километр пустоты.
+  ensureFlatAround(x, z, radius = FLAT_RADIUS) {
     if (!Number.isFinite(x) || !Number.isFinite(z)) return;
     const ccx = Math.floor(x / CHUNK);
     const ccz = Math.floor(z / CHUNK);
-    for (let dx = -radius; dx <= radius; dx++) {
-      for (let dz = -radius; dz <= radius; dz++) {
-        const cx = ccx + dx;
-        const cz = ccz + dz;
-        const key = levelKey(cx, 0, cz);
-        if (this.chunks.has(key) || this.touched.has(key)) continue;
-        const c = this.ensureChunk(cx, 0, cz);
-        for (let lz = 0; lz < CHUNK; lz++) {
-          for (let lx = 0; lx < CHUNK; lx++) {
-            c[lz * CHUNK + lx] = GRASS_BLOCK;
+    for (let r = 0; r <= radius; r++) {
+      for (let dz = -r; dz <= r; dz++) {
+        for (let dx = -r; dx <= r; dx++) {
+          if (Math.max(Math.abs(dx), Math.abs(dz)) !== r) continue;
+          const cx = ccx + dx;
+          const cz = ccz + dz;
+          const key = levelKey(cx, 0, cz);
+          if (this.chunks.has(key) || this.touched.has(key)) continue;
+          const c = this.ensureChunk(cx, 0, cz);
+          for (let lz = 0; lz < CHUNK; lz++) {
+            for (let lx = 0; lx < CHUNK; lx++) {
+              c[lz * CHUNK + lx] = GRASS_BLOCK;
+            }
           }
-        }
-        this.dirty.add(key);
-        // Соседям тоже обновить грани (пол могут перекрыть их боковины).
-        for (const [nx, nz] of [[cx - 1, cz], [cx + 1, cz], [cx, cz - 1], [cx, cz + 1]]) {
-          const nkey = levelKey(nx, 0, nz);
-          if (this.chunks.has(nkey)) this.dirty.add(nkey);
+          this.dirty.add(key);
+          // Соседям тоже обновить грани (пол могут перекрыть их боковины).
+          for (const [nx, nz] of [[cx - 1, cz], [cx + 1, cz], [cx, cz - 1], [cx, cz + 1]]) {
+            const nkey = levelKey(nx, 0, nz);
+            if (this.chunks.has(nkey)) this.dirty.add(nkey);
+          }
         }
       }
     }
+  }
+
+  // Выкидывает из памяти автопол, до которого игрок уже не дойдёт: за ним
+  // всё равно не видно (fog уходит в цвет неба примерно к 330 блокам, а
+  // хранится до 28*16 = 448), а ensureFlatAround создаст его заново. Тронутые
+  // чанки — постройки, правки, схемы — храним всегда, иначе игрок вернётся
+  // на выкопанную яму и обнаружит её засыпанной.
+  pruneAuto(x, z, keep = FLAT_KEEP) {
+    if (!Number.isFinite(x) || !Number.isFinite(z)) return 0;
+    const ccx = Math.floor(x / CHUNK);
+    const ccz = Math.floor(z / CHUNK);
+    let dropped = 0;
+    for (const key of [...this.chunks.keys()]) {
+      const [cx, cy, cz] = key.split(",").map(Number);
+      if (Math.max(Math.abs(cx - ccx), Math.abs(cz - ccz)) <= keep) continue;
+      if (this.touched.has(key)) continue;
+      this.chunks.delete(key);
+      this.states.delete(key);
+      this.torchIndex.delete(key);
+      this.dirty.delete(key);
+      for (const layer of ["opaque", "cutout", "alpha", "torch"]) {
+        const meshKey = `${key}:${layer}`;
+        const mesh = this.meshes.get(meshKey);
+        if (mesh) {
+          mesh.dispose();
+          this.meshes.delete(meshKey);
+        }
+      }
+      dropped++;
+    }
+    return dropped;
   }
 
   flushMeshes(scene, opaqueMaterial, cutoutMaterial = opaqueMaterial, alphaMaterial = cutoutMaterial, torchMaterial = cutoutMaterial, limit = Infinity) {
@@ -380,7 +454,9 @@ export class World {
         const meshKey = `${key}:${layer}`;
         const gd = layers[layer];
         let mesh = this.meshes.get(meshKey);
-        if (gd) {
+        // Пустая геометрия — не создаём Mesh: на радиусе в десятки чанков
+        // это тысячи пустых объектов в сцене, которые всё равно не рисуются.
+        if (gd && gd.indices.length > 0) {
           if (!mesh) {
             mesh = new BABYLON.Mesh(`chunk_${key}_${layer}`, scene);
             mesh.material = material;
@@ -728,18 +804,49 @@ const BAKE_WARM_G = 0.62;
 const BAKE_WARM_B = 0.3;
 const BAKE_MAX = 2.2;
 
-// Все факелы в чанке плюс окрестность радиуса: {x, y, z, i} (i — яркость).
+// Все факелы, свет которых попадает в чанк: {x, y, z, i} (i — яркость).
+// Идём по индексу факелов (world.torchIndex), а не по всем вокселям
+// окрестности: BAKE_RADIUS (9) меньше размера чанка (16), поэтому
+// достаточно соседних чанков — 8..27 lookup'ов вместо ~39 тысяч.
 function collectTorchGlow(world, ox, oy, oz) {
   const list = [];
+  const x0 = ox - BAKE_RADIUS;
+  const x1 = ox + CHUNK + BAKE_RADIUS;
   const y0 = Math.max(0, oy - BAKE_RADIUS);
   const y1 = Math.min(WORLD_H, oy + CHUNK + BAKE_RADIUS);
-  for (let y = y0; y < y1; y++) {
-    for (let z = oz - BAKE_RADIUS; z < oz + CHUNK + BAKE_RADIUS; z++) {
-      for (let x = ox - BAKE_RADIUS; x < ox + CHUNK + BAKE_RADIUS; x++) {
-        const id = world.getBlock(x, y, z);
-        if (id !== TORCH && id !== REDSTONE_TORCH) continue;
-        const floorTorch = world.getState(x, y, z) === TORCH_FLOOR;
-        list.push({ x: x + 0.5, y: y + (floorTorch ? 0.6 : 0.83), z: z + 0.5, i: id === TORCH ? 1 : 0.7 });
+  const z0 = oz - BAKE_RADIUS;
+  const z1 = oz + CHUNK + BAKE_RADIUS;
+  for (let cy = Math.floor(y0 / CHUNK); cy <= Math.floor((y1 - 1) / CHUNK); cy++) {
+    for (let cx = Math.floor(x0 / CHUNK); cx <= Math.floor((x1 - 1) / CHUNK); cx++) {
+      for (let cz = Math.floor(z0 / CHUNK); cz <= Math.floor((z1 - 1) / CHUNK); cz++) {
+        const key = levelKey(cx, cy, cz);
+        const torchIdx = world.torchIndex.get(key);
+        if (!torchIdx) continue;
+        const chunk = world.chunks.get(key);
+        if (!chunk) continue;
+        const st = world.states.get(key);
+        const baseX = cx * CHUNK;
+        const baseY = cy * CHUNK;
+        const baseZ = cz * CHUNK;
+        for (let n = 0; n < torchIdx.length; n++) {
+          const i = torchIdx[n];
+          const ly = (i / (CHUNK * CHUNK)) | 0;
+          const lz = ((i / CHUNK) | 0) % CHUNK;
+          const x = baseX + (i % CHUNK);
+          const y = baseY + ly;
+          const z = baseZ + lz;
+          // На всякий случай отсекаем всё, что реально вне радиуса.
+          if (x < x0 || x >= x1 || y < y0 || y >= y1 || z < z0 || z >= z1) continue;
+          // Отсутствующий массив состояний — это state 0, а 0 = TORCH_FLOOR
+          // (факел по умолчанию стоит на полу). Так же ведёт себя getState.
+          const floorTorch = (st ? st[i] : 0) === TORCH_FLOOR;
+          list.push({
+            x: x + 0.5,
+            y: y + (floorTorch ? 0.6 : 0.83),
+            z: z + 0.5,
+            i: chunk[i] === TORCH ? 1 : 0.7,
+          });
+        }
       }
     }
   }
@@ -831,6 +938,21 @@ function renderLayer(def) {
   return "opaque";
 }
 
+// Быстрое чтение вокселя для мешеров. Внутри своего чанка значение лежит в
+// Uint8Array — берём его напрямую. За пределами чанка идём в world.getBlock,
+// чтобы не потерять его правила (y < 0 → STONE, y ≥ WORLD_H → AIR,
+// отсутствующий чанк → AIR). На радиусе в десятки чанков это главный
+// выигрыш: getBlock раньше строил строковый ключ на каждый воксель.
+function makeReader(world, chunk, ox, oy, oz) {
+  return (x, y, z) => {
+    if (x >= ox && x < ox + CHUNK && y >= oy && y < oy + CHUNK && z >= oz && z < oz + CHUNK) {
+      if (chunk === undefined) return AIR;
+      return chunk[((y - oy) * CHUNK + (z - oz)) * CHUNK + (x - ox)];
+    }
+    return world.getBlock(x, y, z);
+  };
+}
+
 export function buildChunkGeometry(world, cx, cy, cz) {
   const layers = {
     opaque: emptyGeometry(),
@@ -863,6 +985,10 @@ export function buildChunkGeometry(world, cx, cy, cz) {
   layers.cutout.torches = glow;
   layers.alpha.torches = glow;
   layers.torch.torches = glow;
+  // Каждая грань принадлежит блоку внутри своего чанка, поэтому пустой
+  // чанк не может дать геометрии — дальше можно не сканировать вовсе.
+  if (!hasBlocks) return layers;
+  const read = makeReader(world, home, ox, oy, oz);
 
   for (let ly = 0; ly < CHUNK; ly++) {
     for (let lz = 0; lz < CHUNK; lz++) {
@@ -870,7 +996,7 @@ export function buildChunkGeometry(world, cx, cy, cz) {
         const wx = ox + lx;
         const wy = oy + ly;
         const wz = oz + lz;
-        const id = world.getBlock(wx, wy, wz);
+        const id = home[(ly * CHUNK + lz) * CHUNK + lx];
         if (id === AIR) continue;
         const def = BLOCKS[id];
         if (!def) continue;
@@ -935,7 +1061,7 @@ export function buildChunkGeometry(world, cx, cy, cz) {
           const nx = wx + n[0];
           const ny = wy + n[1];
           const nz = wz + n[2];
-          const nb = world.getBlock(nx, ny, nz);
+          const nb = read(nx, ny, nz);
           const nbDef = BLOCKS[nb];
           // Не рисуем внутренние грани соседних прозрачных блоков.
           // Это особенно важно для стекла и воды: иначе при выключенном
@@ -956,7 +1082,7 @@ export function buildChunkGeometry(world, cx, cy, cz) {
     }
   }
 
-  if (greedy) buildGreedyOpaque(world, layers.opaque, cx, cy, cz);
+  if (greedy) buildGreedyOpaque(world, home, layers.opaque, cx, cy, cz);
 
   return layers;
 }
@@ -995,8 +1121,41 @@ function pushFace(gd, bx, by, bz, face, tile, shade, COLS, ROWS, INSET) {
 // opaque-слоя (blockMat в main.js) повторяет тайл fract()'ом внутри его
 // границ tileInfo — merged-грань выглядит как отдельные блоки.
 // Cutout/alpha/torch/sign/bars сюда не входят и рисуются как раньше.
-function buildGreedyOpaque(world, gd, cx, cy, cz) {
+function buildGreedyOpaque(world, home, gd, cx, cy, cz) {
   const origin = [cx * CHUNK, cy * CHUNK, cz * CHUNK];
+  // Разметка «блок вливается в greedy-merge»: полный куб либо двойная плита
+  // (id блока, 0 = не вливается). Считается один раз на чанк, иначе проход
+  // ниже искал бы BLOCKS для каждого из 6*16*16*16 = 24576 вокселей.
+  const AREA = CHUNK * CHUNK;
+  const stride = [1, AREA, CHUNK]; // раскладка локального индекса: x, z, y
+  const solid = new Uint8Array(AREA * CHUNK);
+  // Бит-маска занятых срезов по каждой оси: позволяет пропускать пустые
+  // плоскости в цикле граней. У плоского пола по вертикали занят один срез.
+  const plane = [0, 0, 0];
+  for (let i = 0; i < solid.length; i++) {
+    const id = home[i];
+    if (id === AIR) continue;
+    const def = BLOCKS[id];
+    if (!isOpaqueBlock(def)) continue;
+    const ly = (i / AREA) | 0;
+    const lz = ((i / CHUNK) | 0) % CHUNK;
+    const lx = i % CHUNK;
+    // Половины плит, факелы, таблички, ступени рисуются отдельно: их
+    // геометрия зависит от data и в merge не участвует.
+    if (def.shape !== "cube" &&
+        !(def.shape === "slab" &&
+          world.getState(origin[0] + lx, origin[1] + ly, origin[2] + lz) === SLAB_DOUBLE)) {
+      continue;
+    }
+    solid[i] = id;
+    plane[0] |= 1 << lx;
+    plane[1] |= 1 << ly;
+    plane[2] |= 1 << lz;
+  }
+  // Свой блок всегда лежит в home; сосед по грани отличается ровно на sign
+  // вдоль axis, поэтому внутри чанка это тот же массив со сдвигом на
+  // sign*AREA, а наружу уходит только у самого края среза.
+  const read = makeReader(world, home, origin[0], origin[1], origin[2]);
   for (let f = 0; f < FACES.length; f++) {
     const face = FACES[f];
     const n = face.n;
@@ -1018,37 +1177,56 @@ function buildGreedyOpaque(world, gd, cx, cy, cz) {
     const vAxis = V[0] !== 0 ? 0 : (V[1] !== 0 ? 1 : 2);
     const uSign = U[uAxis];
     const vSign = V[vAxis];
+    // Локальный индекс вокселя = сумма координат по их шагам в массиве
+    // (x — быстрее всех, потом z, потом y). Все три компонента меняются на
+    // константу за шаг обхода, поэтому индекс строки считается раз на строку,
+    // а не на клетку: 6*16*16*16 чтений остаются чтениями байтов.
+    const du = stride[uAxis] * uSign;
+    const dv = stride[vAxis] * vSign;
+    const u0 = (uSign > 0 ? 0 : CHUNK - 1) * stride[uAxis];
+    const v0 = (vSign > 0 ? 0 : CHUNK - 1) * stride[vAxis];
+    const sliceStride = stride[axis];
+    const mask = new Uint16Array(AREA);
     for (let slice = 0; slice < CHUNK; slice++) {
-      const mask = new Uint16Array(CHUNK * CHUNK);
+      if (((plane[axis] >>> slice) & 1) === 0) continue;
+      mask.fill(0);
+      let any = false;
       const axisCoord = origin[axis] + slice;
+      const sliceBase = slice * sliceStride;
+      const nbSlice = slice + sign;
+      const nbInChunk = nbSlice >= 0 && nbSlice < CHUNK;
+      const nbBase = nbSlice * sliceStride;
       for (let v = 0; v < CHUNK; v++) {
-        const vCoord = origin[vAxis] + (vSign > 0 ? v : CHUNK - 1 - v);
+        const vLocal = vSign > 0 ? v : CHUNK - 1 - v;
+        const rowBase = sliceBase + v0 + dv * v;
+        const nbRowBase = nbBase + v0 + dv * v;
         for (let u = 0; u < CHUNK; u++) {
-          const uCoord = origin[uAxis] + (uSign > 0 ? u : CHUNK - 1 - u);
-          const px = axis === 0 ? axisCoord : (uAxis === 0 ? uCoord : vCoord);
-          const py = axis === 1 ? axisCoord : (uAxis === 1 ? uCoord : vCoord);
-          const pz = axis === 2 ? axisCoord : (uAxis === 2 ? uCoord : vCoord);
-          const id = world.getBlock(px, py, pz);
-          const def = BLOCKS[id];
-          if (!isOpaqueBlock(def)) continue;
-          // Мержим полные кубы и двойные плиты (геометрия та же).
-          // Половины плит, факелы и таблички рисуются отдельно: их
-          // геометрия зависит от data и в merge не участвует.
-          if (def.shape !== "cube" &&
-              !(def.shape === "slab" && world.getState(px, py, pz) === SLAB_DOUBLE)) continue;
-          const nbx = px + n[0];
-          const nby = py + n[1];
-          const nbz = pz + n[2];
-          const nbDef = BLOCKS[world.getBlock(nbx, nby, nbz)];
-          // Внутренняя грань между полными кубами не нужна. Рядом с половиной
-          // плиты грань видна хотя бы частично — клетку включаем в merge,
-          // перекрытая часть закроется соседом по глубине.
+          const off = u0 + du * u;
+          const id = solid[rowBase + off];
+          if (id === 0) continue;
+          // Внутренняя грань между двумя вливаемымися блоками не нужна, это
+          // самый частый случай — проверяем разметкой, без чтения BLOCKS.
+          // solid отмечает только вливаемыеся блоки, поэтому настоящий id
+          // соседа для медленного пути берём из home, а не из solid.
+          const nbIdx = nbRowBase + off;
+          if (nbInChunk && solid[nbIdx] !== 0) continue;
+          const lu = uSign > 0 ? u : CHUNK - 1 - u;
+          const px = axis === 0 ? axisCoord : (uAxis === 0 ? origin[uAxis] + lu : origin[vAxis] + vLocal);
+          const py = axis === 1 ? axisCoord : (uAxis === 1 ? origin[uAxis] + lu : origin[vAxis] + vLocal);
+          const pz = axis === 2 ? axisCoord : (uAxis === 2 ? origin[uAxis] + lu : origin[vAxis] + vLocal);
+          const nbDef = BLOCKS[nbInChunk
+            ? home[nbIdx]
+            : read(px + n[0], py + n[1], pz + n[2])];
+          // Рядом с половиной плиты или ступенью грань видна хотя бы частично —
+          // клетку включаем в merge, перекрытая часть закроется соседом по глубине.
           const partial = nbDef && (nbDef.shape === "slab" || nbDef.shape === "stairs");
-          const nbState = partial ? world.getState(nbx, nby, nbz) : 0;
+          const nbState = partial ? world.getState(px + n[0], py + n[1], pz + n[2]) : 0;
           if (faceHiddenByNeighbor(n[0], n[1], n[2], 0, 1, nbDef, nbState)) continue;
           mask[v * CHUNK + u] = id;
+          any = true;
         }
       }
+      if (!any) continue;
       for (let v = 0; v < CHUNK; v++) {
         for (let u = 0; u < CHUNK; u++) {
           const id = mask[v * CHUNK + u];

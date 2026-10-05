@@ -35,7 +35,7 @@ import {
   TRAP_BOTTOM,
   TRAP_TOP,
 } from "./blocks.js";
-import { World, WORLD_H } from "./world.js";
+import { World, WORLD_H, CHUNK } from "./world.js";
 import { HALF, HEIGHT, moveAxis, updateGrounded, clampPlayerToWorld } from "./physics.js";
 import { parseSchematicFile, pasteSchematic, rotatePlan } from "./schematic.js";
 import { TYPES, TIERS, resolveType, resolveTier, instStats } from "./city/buildingTypes.js";
@@ -55,13 +55,14 @@ import {
   loanLimit, loanQuote, loanMinRate, loanPayoff,
 } from "./city/city.js";
 import { yg } from "./yg.js";
-import { t, setLang, getLang, locale, typeName, tierName, mstoneName } from "./i18n.js";
+import { t, setLang, getLang, locale, typeName, tierName, mstoneName, blockName, blockNameSearch, tagName, tagNameSearch } from "./i18n.js";
 import schemesIndex from "../schemes/index.json";
 
 // Язык берём из SDK, когда он готов; до этого — по браузеру (см. yg.js).
 setLang(yg.lang);
 // Локализация статичного HTML: элементы с data-i18n* обновляются на язык.
 function applyI18n() {
+  document.title = t("pageTitle");
   for (const el of document.querySelectorAll("[data-i18n]")) {
     el.textContent = t(el.dataset.i18n);
   }
@@ -75,6 +76,11 @@ function applyI18n() {
   setShowFrames(showFrames);
   renderTutorial();
   updateAuthUI();
+  // Имена блоков и названия типов зависят от языка — перерисовываем то, что видно.
+  updateHotbar();
+  renderPickChips();
+  renderPicker();
+  if (typeof syncLangButtons === "function") syncLangButtons();
   if (cityPanelEl.classList.contains("show")) renderCity();
   if (schemesPanelEl.classList.contains("show")) buildSchemeList();
 }
@@ -100,7 +106,10 @@ const engine = new BABYLON.Engine(canvas, true, { preserveDrawingBuffer: true })
 
 const scene = new BABYLON.Scene(engine);
 scene.fogMode = BABYLON.Scene.FOGMODE_EXP2;
-scene.fogDensity = 0.0085;
+// EXP2: туман уходит в fogColor на ~2.15/density блоках. Здесь граница зоны
+// видимости — ~357 блоков, её держит FLAT_RADIUS в world.js (384 блока), иначе
+// на краю сгенерированного пола были бы видны дыры до неба.
+scene.fogDensity = 0.006;
 scene.fogColor = new BABYLON.Color3(0.62, 0.65, 0.7);
 scene.clearColor = new BABYLON.Color4(0.62, 0.65, 0.7, 1);
 
@@ -226,11 +235,12 @@ function renderMsgLog() {
 
 // ---------- настройки подсказок (пауза; действуют на каждый новый мир) ----------
 const SETTINGS_KEY = "babylon-settings-v1";
-const settings = { tutorial: true, tabHint: true };
+const settings = { tutorial: true, tabHint: true, lang: "auto" };
 try {
   const s = JSON.parse(localStorage.getItem(SETTINGS_KEY) || "{}");
   if (typeof s.tutorial === "boolean") settings.tutorial = s.tutorial;
   if (typeof s.tabHint === "boolean") settings.tabHint = s.tabHint;
+  if (s.lang === "ru" || s.lang === "en" || s.lang === "auto") settings.lang = s.lang;
 } catch (e) {}
 function saveSettings() {
   try { localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings)); } catch (e) {}
@@ -251,6 +261,28 @@ if (setTabHintEl) {
     settings.tabHint = setTabHintEl.checked;
     saveSettings();
     updateTabHint();
+  });
+}
+// ---------- переключатель языка в паузе ----------
+// "auto" — язык платформы/браузера (yg.lang), ru/en — принудительно. Выбор
+// помнится в settings и переживает перезапуск, поэтому ручной выбор не
+// затирается автоопределением при yg.init.
+const langBtns = Array.from(document.querySelectorAll(".langrow .langbtn"));
+function resolvedLang() {
+  return settings.lang === "auto" ? (yg.lang === "en" ? "en" : "ru") : settings.lang;
+}
+function syncLangButtons() {
+  const cur = getLang();
+  for (const b of langBtns) b.classList.toggle("on", b.dataset.lang === cur);
+}
+if (settings.lang !== "auto") setLang(settings.lang);
+for (const b of langBtns) {
+  b.addEventListener("click", () => {
+    settings.lang = b.dataset.lang;
+    saveSettings();
+    setLang(resolvedLang());
+    syncLangButtons();
+    applyI18n();
   });
 }
 
@@ -406,7 +438,7 @@ function importSchematicBytes(bytes, fileName) {
     registerRecord(rec, resolveType({ file: fileName, name: fileName }));
     showMsg(t("schemePlaced", { name: fileName, format: plan.format, n: res.placed, dims: `${plan.W}×${plan.H}×${plan.L}` }));
   } catch (err) {
-    console.error("Не удалось загрузить схему", err);
+    console.error(t("dbgSchemeLoad"), err);
     showMsg(t("schemeLoadErr", { err: err.message }));
   }
 }
@@ -416,7 +448,7 @@ function readSchematicFile(file) {
   file.arrayBuffer()
     .then((buf) => importSchematicBytes(new Uint8Array(buf), file.name))
     .catch((error) => {
-    console.error("Не удалось прочитать файл схемы", error);
+    console.error(t("dbgSchemeReadFile"), error);
     showMsg(t("schemeReadErr", { err: error.message || t("schemeUnknownErr") }));
     });
 }
@@ -604,11 +636,11 @@ function updateHotbar() {
       : `<span class="sw" style="background:${b.color}"></span>`;
     marks.push(
       `<div class="hslot${active}">${icon}` +
-      `<span class="cnt">∞</span><span class="nm">${b.name}</span></div>`
+      `<span class="cnt">∞</span><span class="nm">${blockName(id)}</span></div>`
     );
   }
   hotbarEl.innerHTML = marks.join("");
-  const name = creativeSlots[creativeSel] != null ? BLOCKS[creativeSlots[creativeSel]].name : "—";
+  const name = creativeSlots[creativeSel] != null ? blockName(creativeSlots[creativeSel]) : "—";
   if (selBlockEl && selBlockEl.textContent !== name) selBlockEl.textContent = name;
 }
 
@@ -1054,15 +1086,62 @@ function renderLoans() {
 
 // Поля кредитной формы: обновляем черновик и подсказку без перерисовки
 // (иначе тик в 5 с сбрасывает ввод и фокус).
+function loanFieldBounds(id) {
+  return id === "loanAmount"
+    ? { min: 100, max: loanLimit(city), step: 100 }
+    : { min: LOAN_MIN_DAYS, max: LOAN_MAX_DAYS, step: 1 };
+}
+// Возвращает введённое в допустимые границы сразу, а не по ближайшему тику:
+// renderCity пропускает перерисовку, пока поле в фокусе, иначе нормализация
+// из renderLoans доезжала бы через 5 с.
+// Пока печатают (live), нижнюю границу не трогаем: иначе «30» дней или
+// «1500» не набрать — промежуточные «3» и «15» тут же прыгали бы на
+// минимум. Верхняя жёсткая сразу: лишняя цифра её только увеличит.
+function loanClampField(el, live) {
+  const raw = el.value;
+  const b = loanFieldBounds(el.id);
+  if (raw === "") {
+    // Поле очистили вручную: на commit возвращаем последнее допустимое.
+    if (!live) {
+      loanDraftSync();
+      el.value = String(el.id === "loanAmount" ? loanDraft.amount : loanDraft.days);
+    }
+    return;
+  }
+  const v = Number(raw);
+  if (!Number.isFinite(v)) return;
+  let n;
+  if (v > b.max) {
+    n = b.max;
+    el.value = String(n);
+  } else if (live) {
+    n = v;
+  } else {
+    n = Math.min(b.max, Math.max(b.min, Math.round(v / b.step) * b.step));
+    if (String(n) !== raw) el.value = String(n);
+  }
+  if (el.id === "loanAmount") loanDraft.amount = n;
+  else loanDraft.days = n;
+  updateLoanQuote();
+}
 cityPanelEl.addEventListener("input", (e) => {
   const id = e.target && e.target.id;
   if (id !== "loanAmount" && id !== "loanDays") return;
-  if (e.target.value === "") return;
-  const v = Number(e.target.value);
-  if (!Number.isFinite(v)) return;
-  if (id === "loanAmount") loanDraft.amount = v;
-  else loanDraft.days = v;
-  updateLoanQuote();
+  loanClampField(e.target, true);
+});
+// Полная нормализация (нижняя граница + шаг) — по Enter, blur или «Взять».
+cityPanelEl.addEventListener("change", (e) => {
+  const id = e.target && e.target.id;
+  if (id !== "loanAmount" && id !== "loanDays") return;
+  loanClampField(e.target, false);
+});
+cityPanelEl.addEventListener("keydown", (e) => {
+  if (e.key !== "Enter") return;
+  const id = e.target && e.target.id;
+  if (id !== "loanAmount" && id !== "loanDays") return;
+  e.preventDefault();
+  loanClampField(e.target, false);
+  e.target.blur();
 });
 
 cityPanelEl.addEventListener("click", async (e) => {
@@ -1189,7 +1268,7 @@ async function getRotatedPlan(file, rot) {
     }
     return rotatePlan(plan, rot || 0);
   } catch (err) {
-    console.error("План для операции", err);
+    console.error(t("dbgPlanOp"), err);
     return null;
   }
 }
@@ -1844,10 +1923,10 @@ function renderPicker() {
   BLOCKS.forEach((b, id) => {
     if (id === AIR) return;
     if (pickFilter.cat !== "all" && b.cat !== pickFilter.cat) return;
-    if (q && !(b.name || "").toLowerCase().includes(q)) return;
+    if (q && !blockNameSearch(id).toLowerCase().includes(q)) return;
     const d = document.createElement("div");
     d.className = "pick";
-    d.title = b.name;
+    d.title = blockName(id);
     const icon = document.createElement("span");
     const css = blockIconStyle(b);
     if (css) {
@@ -1859,7 +1938,7 @@ function renderPicker() {
     }
     const nm = document.createElement("span");
     nm.className = "nm";
-    nm.textContent = b.name;
+    nm.textContent = blockName(id);
     d.append(icon, nm);
     d.addEventListener("click", () => {
       creativeSlots[creativeSel] = id;
@@ -1938,7 +2017,8 @@ function schemeMatches(item) {
     if (!item.tags.includes(tag)) return false;
   }
   const q = schemeFilter.q.trim().toLowerCase().replace(/^#+/, "");
-  if (q && !(item.name.toLowerCase().includes(q) || item.tags.some((tg) => tg.includes(q)))) return false;
+  if (q && !(item.name.toLowerCase().includes(q) ||
+    item.tags.some((tg) => tg.includes(q) || tagNameSearch(tg).toLowerCase().includes(q)))) return false;
   return true;
 }
 
@@ -1965,7 +2045,8 @@ function buildSchemeChips() {
   for (const tag of schemesIndex.tags) {
     const chip = document.createElement("span");
     chip.className = "chip" + (schemeFilter.tags.has(tag) ? " active" : "");
-    chip.textContent = "#" + tag;
+    chip.textContent = "#" + tagName(tag);
+    chip.title = "#" + tag;
     chip.addEventListener("click", () => {
       if (schemeFilter.tags.has(tag)) schemeFilter.tags.delete(tag);
       else schemeFilter.tags.add(tag);
@@ -2064,7 +2145,7 @@ function renderSchemeTiles() {
       exp: (a, b) => (schemeQuoteCached(b)?.cost ?? -1) - (schemeQuoteCached(a)?.cost ?? -1),
       big: (a, b) => schemeBlocksNum(b) - schemeBlocksNum(a),
       housing: (a, b) => (schemeQuoteCached(b)?.housing || 0) - (schemeQuoteCached(a)?.housing || 0),
-      name: (a, b) => String(a.name).localeCompare(String(b.name), "ru"),
+      name: (a, b) => String(a.name).localeCompare(String(b.name), locale()),
     };
     const cmp = by[schemeFilter.sort] || null;
     if (cmp) schemeShown = [...schemeShown].sort(cmp);
@@ -2280,7 +2361,7 @@ async function selectScheme(url, name) {
     }
     showMsg(t("selectedHint", { name, dims: `${plan.W}×${plan.H}×${plan.L}` }));
   } catch (err) {
-    console.error("Не удалось прочитать схему", err);
+    console.error(t("dbgSchemeRead"), err);
     showMsg(t("schemeErr", { err: err.message }));
   }
 }
@@ -2598,7 +2679,7 @@ function placePreview() {
     checkTutorial();
     showMsg(t("placed", { n: res.placed, type: typeName(typeId), cost: fmtMoney(quote ? quote.cost : 0) }));
   } catch (err) {
-    console.error("Не удалось поставить схему", err);
+    console.error(t("dbgSchemePlace"), err);
     showMsg(t("placeErr", { err: err.message }));
   }
 }
@@ -2998,6 +3079,8 @@ const fwd = new BABYLON.Vector3();
 const rgt = new BABYLON.Vector3();
 const rayDir = new BABYLON.Vector3();
 let genTimer = 0;
+let lastKeptCx = NaN;
+let lastKeptCz = NaN;
 
 scene.registerBeforeRender(() => {
   // Physics waits until the starting world is committed.
@@ -3017,9 +3100,20 @@ scene.registerBeforeRender(() => {
     genTimer = 0;
     world.ensureFlatAround(player.x, player.z);
   }
+  // Автопол, до которого игрок уже не дойдёт, выкидываем из памяти. Дергаем
+  // только при переходе через границу чанка: радиус пола заметно меньше
+  // радиуса хранения, поэтому между переходами выкидывать всё равно нечего.
+  const pccx = Math.floor(player.x / CHUNK);
+  const pccz = Math.floor(player.z / CHUNK);
+  if (pccx !== lastKeptCx || pccz !== lastKeptCz) {
+    lastKeptCx = pccx;
+    lastKeptCz = pccz;
+    world.pruneAuto(player.x, player.z);
+  }
   // Свежие чанки (пол, правки) превращаем в меши по несколько за кадр,
-  // иначе сгенерированный пол виден только после ломания блока.
-  world.flushMeshes(scene, blockMat, cutoutMat, alphaMat, torchMat, 3);
+  // иначе сгенерированный пол виден только после ломания блока. Пол
+  // генерируется кольцами от игрока, поэтому сначала мешается то, что видно.
+  world.flushMeshes(scene, blockMat, cutoutMat, alphaMat, torchMat, 8);
 
   camera.rotation.set(camPitch, camYaw, 0);
 
@@ -3197,8 +3291,9 @@ yg.onResume = () => {
 };
 yg.init().then((ok) => {
   if (!ok) return;
-  // Автоязык платформы (п.2.14): заявлены ru+en.
-  if (getLang() !== yg.lang) {
+  // Автоязык платформы (п.2.14): заявлены ru+en. Ручной выбор в паузе
+  // (settings.lang) выше — приоритетнее, иначе он затирался бы здесь.
+  if (settings.lang === "auto" && getLang() !== yg.lang) {
     setLang(yg.lang);
     applyI18n();
   }
@@ -3210,3 +3305,9 @@ yg.init().then((ok) => {
   // Мир уже готов (initFlatWorld выше): платформе можно играть.
   if (mapReady) yg.gameReady();
 });
+
+// Статичный HTML переводим сразу при старте. Без этого русские подписи в
+// index.html (data-i18n) оставались бы на месте, пока язык не отличался бы от
+// языка по умолчанию: applyI18n вызывался только из yg.init и только при смене
+// языка. Здесь — в конце модуля, когда все let-объявления выше уже инициализированы.
+applyI18n();

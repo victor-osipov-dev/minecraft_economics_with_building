@@ -57,6 +57,7 @@ import {
   TRAP_TOP,
 } from "./blocks.js";
 import { WORLD_H } from "./world.js";
+import { t } from "./i18n.js";
 
 // The importer runs synchronously on the main thread.  These limits are
 // intentionally conservative: a valid file is small enough to parse and mesh
@@ -92,44 +93,44 @@ const MAX_PALETTE_ENTRIES = SCHEMATIC_LIMITS.maxPaletteEntries;
 const MAX_PLACEMENT_COORD = SCHEMATIC_LIMITS.maxPlacementCoordinate;
 
 function checkedDimensions(rawW, rawH, rawL, label) {
-  const W = asSafeInt(rawW, `${label}: ширина`);
-  const H = asSafeInt(rawH, `${label}: высота`);
-  const L = asSafeInt(rawL, `${label}: длина`);
+  const W = asSafeInt(rawW, t("sch.dimWidth", { label }));
+  const H = asSafeInt(rawH, t("sch.dimHeight", { label }));
+  const L = asSafeInt(rawL, t("sch.dimLength", { label }));
   if (W <= 0 || H <= 0 || L <= 0) {
-    throw new Error(`${label}: некорректный размер`);
+    throw new Error(t("sch.badDims", { label }));
   }
   if (W > MAX_DIMENSION || H > MAX_DIMENSION || L > MAX_DIMENSION) {
-    throw new Error(`${label}: размер превышает допустимый предел`);
+    throw new Error(t("sch.dimsOverLimit", { label }));
   }
   const volume = W * H * L;
   if (!Number.isSafeInteger(volume) || volume > MAX_VOXELS) {
-    throw new Error(`${label}: слишком большой объём`);
+    throw new Error(t("sch.volumeTooBig", { label }));
   }
   return { W, H, L, volume };
 }
 
-function asSafeInt(value, label = "значение") {
+function asSafeInt(value, label = t("sch.value")) {
   if (typeof value === "bigint") {
     if (value > BigInt(Number.MAX_SAFE_INTEGER) || value < BigInt(Number.MIN_SAFE_INTEGER)) {
-      throw new Error(`${label}: небезопасное целое число`);
+      throw new Error(t("sch.unsafeInt", { label }));
     }
     return Number(value);
   }
   if (!Number.isSafeInteger(value)) {
-    throw new Error(`${label}: некорректное целое число`);
+    throw new Error(t("sch.badInt", { label }));
   }
   return value;
 }
 
-function checkedPaletteIndex(value, label = "схема .schem: индекс палитры") {
+function checkedPaletteIndex(value, label = t("sch.schemPaletteIndex")) {
   const index = asSafeInt(value, label);
   if (index < 0 || index > MAX_PALETTE_INDEX) {
-    throw new Error(`${label}: вне допустимого диапазона`);
+    throw new Error(t("sch.outOfRange", { label }));
   }
   return index;
 }
 
-function checkBlockLimit(count, label = "схема: слишком много блоков") {
+function checkBlockLimit(count, label = t("sch.tooManyBlocks")) {
   if (!Number.isSafeInteger(count) || count < 0 || count > MAX_BLOCKS) {
     throw new Error(label);
   }
@@ -160,14 +161,14 @@ function isByteSequence(value) {
 }
 
 function sequenceLength(value, label) {
-  if (!isSequence(value)) throw new Error(`${label}: ожидается массив`);
+  if (!isSequence(value)) throw new Error(t("sch.expectArray", { label }));
   return value.length;
 }
 
 function exactSequence(value, expected, label) {
   const length = sequenceLength(value, label);
   if (length !== expected) {
-    throw new Error(`${label}: некорректная длина (${length} вместо ${expected})`);
+    throw new Error(t("sch.badLength", { label, length, expected }));
   }
   return value;
 }
@@ -178,7 +179,7 @@ function selectField(container, names, label) {
     if (hasOwn(container, name)) found.push({ name, value: container[name] });
   }
   if (found.length > 1) {
-    throw new Error(`${label}: неоднозначные поля (${found.map((v) => v.name).join(", ")})`);
+    throw new Error(t("sch.ambiguousFields", { label, names: found.map((v) => v.name).join(", ") }));
   }
   return found.length ? found[0] : null;
 }
@@ -195,7 +196,7 @@ function selectSpongeField(scm, names, label) {
     if (hasOwn(scm, name)) found.push({ name, value: scm[name] });
   }
   if (found.length > 1) {
-    throw new Error(`${label}: неоднозначные поля (${found.map((v) => v.name).join(", ")})`);
+    throw new Error(t("sch.ambiguousFields", { label, names: found.map((v) => v.name).join(", ") }));
   }
   return found.length ? found[0] : null;
 }
@@ -237,7 +238,7 @@ function createNbtState(u8, littleEndian) {
 function need(state, count) {
   if (!Number.isSafeInteger(count) || count < 0 ||
       state.offset > state.u8.length - count) {
-    throw nbtError("обрезанные данные");
+    throw nbtError(t("sch.truncatedData"));
   }
 }
 
@@ -245,19 +246,19 @@ function advance(state, count) {
   need(state, count);
   state.offset += count;
   if (state.offset > MAX_DECODED_BYTES) {
-    throw nbtError("слишком много данных");
+    throw nbtError(t("sch.tooMuchData"));
   }
 }
 
 function countTag(state) {
   state.tags++;
-  if (state.tags > MAX_NBT_TAGS) throw nbtError("слишком много тегов");
+  if (state.tags > MAX_NBT_TAGS) throw nbtError(t("sch.tooManyTags"));
 }
 
 function countElements(state, count) {
-  if (!Number.isSafeInteger(count) || count < 0) throw nbtError("некорректная длина коллекции");
+  if (!Number.isSafeInteger(count) || count < 0) throw nbtError(t("sch.badCollectionLen"));
   state.elements += count;
-  if (state.elements > MAX_NBT_ELEMENTS) throw nbtError("слишком много элементов");
+  if (state.elements > MAX_NBT_ELEMENTS) throw nbtError(t("sch.tooManyElements"));
 }
 
 function readU16(state) {
@@ -276,14 +277,14 @@ function readI32(state) {
 
 function readString(state) {
   const length = readU16(state);
-  if (length > MAX_NBT_STRING_BYTES) throw nbtError("слишком длинная строка");
+  if (length > MAX_NBT_STRING_BYTES) throw nbtError(t("sch.stringTooLong"));
   need(state, length);
   const bytes = state.u8.subarray(state.offset, state.offset + length);
   advance(state, length);
   try {
     return UTF8.decode(bytes);
   } catch {
-    throw nbtError("некорректная UTF-8 строка");
+    throw nbtError(t("sch.badUtf8"));
   }
 }
 
@@ -301,21 +302,21 @@ function readLongValue(state) {
 
 function readArrayLength(state, bytesPerElement, label) {
   const length = readI32(state);
-  if (length < 0) throw nbtError(`${label}: отрицательная длина`);
+  if (length < 0) throw nbtError(t("sch.negativeLen", { label }));
   if (length > SCHEMATIC_LIMITS.maxPaletteIndex * 4) {
     // This is still below the general element ceiling, but avoids a huge
     // multiplication/allocation for a hostile length header.
-    throw nbtError(`${label}: слишком большая длина`);
+    throw nbtError(t("sch.lenTooBig", { label }));
   }
   countElements(state, length);
   if (bytesPerElement > 0 && length > Math.floor((state.u8.length - state.offset) / bytesPerElement)) {
-    throw nbtError(`${label}: обрезанный массив`);
+    throw nbtError(t("sch.truncatedArray", { label }));
   }
   return length;
 }
 
 function readValue(state, type, depth) {
-  if (depth > MAX_NBT_DEPTH) throw nbtError("слишком глубокая вложенность");
+  if (depth > MAX_NBT_DEPTH) throw nbtError(t("sch.tooDeep"));
   switch (type) {
     case T_BYTE: {
       need(state, 1);
@@ -360,13 +361,13 @@ function readValue(state, type, depth) {
       const elementType = state.u8[state.offset];
       advance(state, 1);
       const length = readI32(state);
-      if (length < 0) throw nbtError("отрицательная длина списка");
+      if (length < 0) throw nbtError(t("sch.negativeListLen"));
       if (length === 0 && elementType === T_END) return [];
       if (elementType < T_BYTE || elementType > T_LONGARR) {
-        throw nbtError(`неизвестный тип элемента списка ${elementType}`);
+        throw nbtError(t("sch.unknownListElem", { type: elementType }));
       }
       if (length > SCHEMATIC_LIMITS.maxPaletteIndex) {
-        throw nbtError("слишком длинный список");
+        throw nbtError(t("sch.listTooLong"));
       }
       countElements(state, length);
       const result = [];
@@ -386,11 +387,11 @@ function readValue(state, type, depth) {
           break;
         }
         if (childType < T_BYTE || childType > T_LONGARR) {
-          throw nbtError(`неизвестный тип тега ${childType}`);
+          throw nbtError(t("sch.unknownChildTag", { type: childType }));
         }
         advance(state, 1);
         const name = readString(state);
-        if (hasOwn(result, name)) throw nbtError(`дублирующийся тег ${JSON.stringify(name)}`);
+        if (hasOwn(result, name)) throw nbtError(t("sch.dupTag", { name: JSON.stringify(name) }));
         countTag(state);
         result[name] = readValue(state, childType, depth + 1);
       }
@@ -409,13 +410,13 @@ function readValue(state, type, depth) {
       return value;
     }
     default:
-      throw nbtError(`неизвестный тип тега ${type}`);
+      throw nbtError(t("sch.unknownTagType", { type }));
   }
 }
 
 function readNbt(u8, littleEndian = false) {
   if (!(u8 instanceof Uint8Array)) u8 = new Uint8Array(u8);
-  if (u8.length > MAX_DECODED_BYTES) throw nbtError("файл слишком большой");
+  if (u8.length > MAX_DECODED_BYTES) throw nbtError(t("sch.fileTooBig"));
   const state = createNbtState(u8, littleEndian);
 
   // A few old NBT writers emitted one or more empty root tags.  Accept only
@@ -423,21 +424,21 @@ function readNbt(u8, littleEndian = false) {
   let leadingEnds = 0;
   while (state.offset < u8.length && u8[state.offset] === T_END) {
     state.offset++;
-    if (++leadingEnds > 8) throw nbtError("слишком много пустых корневых тегов");
+    if (++leadingEnds > 8) throw nbtError(t("sch.tooManyEmptyRoots"));
   }
-  if (state.offset >= u8.length) throw nbtError("отсутствует корневой тег");
+  if (state.offset >= u8.length) throw nbtError(t("sch.noRootTag"));
 
   const rootType = u8[state.offset++];
-  if (rootType === T_END) throw nbtError("отсутствует корневой тег");
+  if (rootType === T_END) throw nbtError(t("sch.noRootTag"));
   if (rootType < T_BYTE || rootType > T_LONGARR) {
-    throw nbtError(`неизвестный тип корневого тега ${rootType}`);
+    throw nbtError(t("sch.unknownRootTag", { type: rootType }));
   }
   readString(state);
   countTag(state);
   const root = readValue(state, rootType, 0);
   // Хвостовой паддинг встречается в реальных файлах — терпим.
-  if (state.offset > u8.length) throw nbtError("лишние данные после корневого тега");
-  if (rootType !== T_COMPOUND) throw nbtError("корень должен быть compound");
+  if (state.offset > u8.length) throw nbtError(t("sch.trailingData"));
+  if (rootType !== T_COMPOUND) throw nbtError(t("sch.rootNotCompound"));
   return root;
 }
 
@@ -445,12 +446,12 @@ function readNbt(u8, littleEndian = false) {
 // Bounded gzip/zlib handling and format detection
 // ============================================================
 function readLeU16(bytes, offset, label) {
-  if (offset < 0 || offset + 2 > bytes.length) throw new Error(`${label}: обрезанный заголовок`);
+  if (offset < 0 || offset + 2 > bytes.length) throw new Error(t("sch.truncatedHeader", { label }));
   return bytes[offset] | (bytes[offset + 1] << 8);
 }
 
 function readLeU32(bytes, offset, label) {
-  if (offset < 0 || offset + 4 > bytes.length) throw new Error(`${label}: обрезанный размер`);
+  if (offset < 0 || offset + 4 > bytes.length) throw new Error(t("sch.truncatedSize", { label }));
   return (bytes[offset] |
     (bytes[offset + 1] << 8) |
     (bytes[offset + 2] << 16) |
@@ -458,45 +459,45 @@ function readLeU32(bytes, offset, label) {
 }
 
 function validateGzipHeader(bytes) {
-  if (bytes.length < 18) throw new Error("gzip: обрезанный файл");
+  if (bytes.length < 18) throw new Error(t("sch.gzipTruncated"));
   if (bytes[0] !== 0x1f || bytes[1] !== 0x8b || bytes[2] !== 0x08) {
-    throw new Error("gzip: неверная сигнатура");
+    throw new Error(t("sch.gzipBadSig"));
   }
   const flags = bytes[3];
-  if ((flags & 0xe0) !== 0) throw new Error("gzip: зарезервированные флаги установлены");
+  if ((flags & 0xe0) !== 0) throw new Error(t("sch.gzipReservedFlags"));
   let offset = 10;
   if (flags & 0x04) {
     const extraLength = readLeU16(bytes, offset, "gzip");
     offset += 2;
-    if (offset + extraLength > bytes.length - 8) throw new Error("gzip: обрезанное extra-поле");
+    if (offset + extraLength > bytes.length - 8) throw new Error(t("sch.gzipTruncatedExtra"));
     offset += extraLength;
   }
   for (const flag of [0x08, 0x10]) {
     if (!(flags & flag)) continue;
     while (offset < bytes.length - 8 && bytes[offset] !== 0) offset++;
-    if (offset >= bytes.length - 8) throw new Error("gzip: обрезанное строковое поле");
+    if (offset >= bytes.length - 8) throw new Error(t("sch.gzipTruncatedString"));
     offset++;
   }
   if (flags & 0x02) {
-    if (offset + 2 > bytes.length - 8) throw new Error("gzip: обрезанная контрольная сумма заголовка");
+    if (offset + 2 > bytes.length - 8) throw new Error(t("sch.gzipTruncatedCrc"));
     offset += 2;
   }
-  if (offset > bytes.length - 8) throw new Error("gzip: неверная длина заголовка");
+  if (offset > bytes.length - 8) throw new Error(t("sch.gzipBadHeaderLen"));
   const declaredSize = readLeU32(bytes, bytes.length - 4, "gzip");
   if (declaredSize > MAX_DECODED_BYTES) {
-    throw new Error("gzip: распакованный файл превышает предел");
+    throw new Error(t("sch.gzipTooBig"));
   }
   return declaredSize;
 }
 
 function validateZlibHeader(bytes) {
-  if (bytes.length < 6) throw new Error("zlib: обрезанный файл");
+  if (bytes.length < 6) throw new Error(t("sch.zlibTruncated"));
   const cmf = bytes[0];
   const flg = bytes[1];
-  if ((cmf & 0x0f) !== 8 || (cmf >> 4) > 7) throw new Error("zlib: неверный метод сжатия");
-  if (((cmf << 8) | flg) % 31 !== 0) throw new Error("zlib: неверная контрольная сумма заголовка");
-  if ((flg & 0x20) !== 0) throw new Error("zlib: словари не поддерживаются");
-  if ((flg >> 6) > 3) throw new Error("zlib: неверный уровень сжатия");
+  if ((cmf & 0x0f) !== 8 || (cmf >> 4) > 7) throw new Error(t("sch.zlibBadMethod"));
+  if (((cmf << 8) | flg) % 31 !== 0) throw new Error(t("sch.zlibBadCrc"));
+  if ((flg & 0x20) !== 0) throw new Error(t("sch.zlibNoDict"));
+  if ((flg >> 6) > 3) throw new Error(t("sch.zlibBadLevel"));
 }
 
 function collectDecoded(Decoder, bytes) {
@@ -507,14 +508,14 @@ function collectDecoded(Decoder, bytes) {
       if (!chunk || typeof chunk.length !== "number") return;
       total += chunk.length;
       if (!Number.isSafeInteger(total) || total > MAX_DECODED_BYTES) {
-        throw new Error("распакованный файл превышает предел");
+        throw new Error(t("sch.unpackedTooBig"));
       }
       chunks.push(chunk.slice());
     });
     decoder.push(bytes, true);
   } catch (error) {
-    const message = error?.message || "повреждённый поток сжатия";
-    throw new Error(`не удалось распаковать: ${message}`);
+    const message = error?.message || t("sch.corruptStream");
+    throw new Error(t("sch.unpackFail", { message }));
   }
   const output = new Uint8Array(total);
   let offset = 0;
@@ -527,7 +528,7 @@ function collectDecoded(Decoder, bytes) {
 
 function inflateMaybe(bytes) {
   if (bytes.length > MAX_COMPRESSED_BYTES) {
-    throw new Error("сжатый файл превышает предел");
+    throw new Error(t("sch.compressedTooBig"));
   }
   if (bytes.length >= 3 && bytes[0] === 0x1f && bytes[1] === 0x8b) {
     validateGzipHeader(bytes);
@@ -539,7 +540,7 @@ function inflateMaybe(bytes) {
     validateZlibHeader(bytes);
     return collectDecoded(Unzlib, bytes);
   }
-  if (bytes.length > MAX_DECODED_BYTES) throw new Error("файл слишком большой");
+  if (bytes.length > MAX_DECODED_BYTES) throw new Error(t("sch.fileTooBig"));
   return bytes;
 }
 
@@ -699,7 +700,7 @@ function slabData(type) {
 
 export function mapBlockState(rawName, properties, stats) {
   if (properties != null && !isCompound(properties)) {
-    throw new Error("палитра: некорректные свойства блока");
+    throw new Error(t("sch.paletteBadProps"));
   }
   const name = normalizeBlockName(rawName);
   if (!name) {
@@ -914,26 +915,26 @@ function paletteNameAndIndex(entry, implicitIndex, mode, label) {
     if (hasOwn(entry, "Index")) rawIndex = entry.Index;
     else if (hasOwn(entry, "index")) rawIndex = entry.index;
   } else {
-    throw new Error(`${label}: некорректная запись палитры`);
+    throw new Error(t("sch.paletteBadEntry", { label }));
   }
   if (typeof name !== "string" || name.length === 0) {
-    throw new Error(`${label}: отсутствует имя блока`);
+    throw new Error(t("sch.noBlockName", { label }));
   }
   let properties;
   if (entry != null && isCompound(entry) && hasOwn(entry, "Properties")) {
     if (!isCompound(entry.Properties)) {
-      throw new Error(`${label}: некорректные свойства блока`);
+      throw new Error(t("sch.badBlockProps", { label }));
     }
     properties = entry.Properties;
   }
   if (mode === "v3" && rawIndex !== implicitIndex) {
-    throw new Error(`${label}: палитра v3 должна иметь непрерывные индексы`);
+    throw new Error(t("sch.palV3Continuous", { label }));
   }
-  return { name, index: checkedPaletteIndex(rawIndex, `${label}: индекс`), properties };
+  return { name, index: checkedPaletteIndex(rawIndex, t("sch.palIndex", { label })), properties };
 }
 
 function paletteEntries(raw, mode, label, stats = null) {
-  if (raw == null) throw new Error(`${label}: отсутствует палитра`);
+  if (raw == null) throw new Error(t("sch.noPalette", { label }));
   let entries;
   if (isCompound(raw)) {
     const names = Object.keys(raw);
@@ -941,28 +942,28 @@ function paletteEntries(raw, mode, label, stats = null) {
       const value = raw[name];
       if (isCompound(value)) {
         const index = hasOwn(value, "Index") ? value.Index : value.index;
-        if (index == null) throw new Error(`${label}: отсутствует индекс палитры`);
-        return { name, index: checkedPaletteIndex(index, `${label}: индекс`), properties: value.Properties };
+        if (index == null) throw new Error(t("sch.noPalIndex", { label }));
+        return { name, index: checkedPaletteIndex(index, t("sch.palIndex", { label })), properties: value.Properties };
       }
-      return { name, index: checkedPaletteIndex(value, `${label}: индекс`) };
+      return { name, index: checkedPaletteIndex(value, t("sch.palIndex", { label })) };
     });
   } else if (isList(raw)) {
-    if (raw.length > MAX_PALETTE_ENTRIES) throw new Error(`${label}: слишком много блоков в палитре`);
+    if (raw.length > MAX_PALETTE_ENTRIES) throw new Error(t("sch.palTooMany", { label }));
     entries = raw.map((entry, index) => paletteNameAndIndex(entry, index, mode, label));
   } else {
-    throw new Error(`${label}: палитра должна быть compound или list`);
+    throw new Error(t("sch.palCompoundOrList", { label }));
   }
-  if (entries.length === 0) throw new Error(`${label}: пустая палитра`);
-  if (entries.length > MAX_PALETTE_ENTRIES) throw new Error(`${label}: слишком много блоков в палитре`);
+  if (entries.length === 0) throw new Error(t("sch.palEmpty", { label }));
+  if (entries.length > MAX_PALETTE_ENTRIES) throw new Error(t("sch.palTooMany", { label }));
 
   const ids = new Map();
   const names = new Set();
   for (const entry of entries) {
-    if (ids.has(entry.index)) throw new Error(`${label}: дублирующийся индекс палитры`);
+    if (ids.has(entry.index)) throw new Error(t("sch.palDupIndex", { label }));
     const key = canonicalPaletteKey(entry.name);
-    if (!key) throw new Error(`${label}: пустое имя блока`);
-    if (!normalizeBlockName(entry.name)) throw new Error(`${label}: пустое имя блока`);
-    if (names.has(key)) throw new Error(`${label}: дублирующееся имя блока`);
+    if (!key) throw new Error(t("sch.emptyBlockName", { label }));
+    if (!normalizeBlockName(entry.name)) throw new Error(t("sch.emptyBlockName", { label }));
+    if (names.has(key)) throw new Error(t("sch.dupBlockName", { label }));
     names.add(key);
     ids.set(entry.index, mapBlockState(entry.name, entry.properties, stats));
   }
@@ -973,29 +974,29 @@ function parseVarInt(data, offset) {
   let value = 0;
   let shift = 0;
   for (let i = 0; i < 5; i++) {
-    if (offset.o >= data.length) throw new Error("BlockData: обрезанный VarInt");
+    if (offset.o >= data.length) throw new Error(t("sch.bdTruncatedVarint"));
     const byte = data[offset.o++] & 0xff;
     if (i === 4 && (byte & 0xf0) !== 0) {
-      throw new Error("BlockData: VarInt длиннее пяти байт");
+      throw new Error(t("sch.bdVarintTooLong"));
     }
     value += (byte & 0x7f) * (2 ** shift);
     if ((byte & 0x80) === 0) return value;
     shift += 7;
   }
-  throw new Error("BlockData: VarInt длиннее пяти байт");
+  throw new Error(t("sch.bdVarintTooLong"));
 }
 
 function paletteForSponge(scm, version, stats = null) {
   const field = selectSpongeField(
     scm,
     ["Palette", "BlockPalette"],
-    "схема .schem: палитра"
+    t("sch.schemPalette")
   );
-  if (!field) throw new Error("схема .schem: нет палитры");
-  const parsed = paletteEntries(field.value, version === 3 ? "v3" : "v2", "схема .schem", stats);
+  if (!field) throw new Error(t("sch.schemNoPalette"));
+  const parsed = paletteEntries(field.value, version === 3 ? "v3" : "v2", t("sch.schem"), stats);
   if (version === 3) {
     for (let i = 0; i < parsed.entries.length; i++) {
-      if (parsed.entries[i].index !== i) throw new Error("схема .schem: разрывы в палитре v3");
+      if (parsed.entries[i].index !== i) throw new Error(t("sch.schemV3Gaps"));
     }
   }
   return parsed.ids;
@@ -1005,31 +1006,31 @@ function dataForSponge(scm) {
   const field = selectSpongeField(
     scm,
     ["Data", "BlockData"],
-    "схема .schem: данные"
+    t("sch.schemData")
   );
-  if (!field) throw new Error("схема .schem: нет данных блоков");
+  if (!field) throw new Error(t("sch.schemNoBlockData"));
   return field.value;
 }
 
 function parseSponge(scm, stats) {
-  if (!hasOwn(scm, "Version")) throw new Error("схема .schem: отсутствует Version");
-  const version = asSafeInt(scm.Version, "схема .schem: Version");
+  if (!hasOwn(scm, "Version")) throw new Error(t("sch.schemNoVersion"));
+  const version = asSafeInt(scm.Version, t("sch.schemVersion"));
   // v1 по структуре совпадает с v2 (VarInt BlockData + палитра) — читаем тем же путём.
   if (version !== 1 && version !== 2 && version !== 3) {
-    throw new Error(`схема .schem: поддерживаются только версии 1-3 (получено ${version})`);
+    throw new Error(t("sch.schemBadVersion", { version }));
   }
   const { W, H, L, volume } = checkedDimensions(
     scm.Width,
     scm.Height,
     scm.Length,
-    "схема .schem"
+    t("sch.schem")
   );
   const palette = paletteForSponge(scm, version, stats);
   const rawData = dataForSponge(scm);
   const blocks = [];
   const blockAt = (index) => {
-    const safe = checkedPaletteIndex(index, "схема .schem: индекс BlockData");
-    if (!palette.has(safe)) throw new Error("схема .schem: индекс не найден в палитре");
+    const safe = checkedPaletteIndex(index, t("sch.schemBdIndex"));
+    if (!palette.has(safe)) throw new Error(t("sch.schemIdxNotInPal"));
     return palette.get(safe);
   };
   const pushBlock = (x, y, z, entry) => {
@@ -1041,12 +1042,12 @@ function parseSponge(scm, stats) {
 
   if (version === 1 || version === 2) {
     if (!(rawData instanceof Uint8Array || rawData instanceof Int8Array || Array.isArray(rawData))) {
-      throw new Error(`схема .schem v${version}: BlockData должен быть byte array`);
+      throw new Error(t("sch.schemVByteArray", { version }));
     }
     for (let i = 0; i < rawData.length; i++) {
-      const byte = asSafeInt(rawData[i], `схема .schem v2: BlockData[${i}]`);
+      const byte = asSafeInt(rawData[i], t("sch.schemV2Bd", { i }));
       if (byte < -128 || byte > 255) {
-        throw new Error(`схема .schem v2: BlockData[${i}] не является байтом`);
+        throw new Error(t("sch.schemV2BdNotByte", { i }));
       }
     }
     const offset = { o: 0 };
@@ -1058,15 +1059,15 @@ function parseSponge(scm, stats) {
         }
       }
     }
-    if (offset.o !== rawData.length) throw new Error("схема .schem v2: лишние данные BlockData");
+    if (offset.o !== rawData.length) throw new Error(t("sch.schemV2Extra"));
   } else {
     // Ряд экспортеров (включая FAWE) пишет v3-Data VarInt byte array вместо
     // int array из спеки. Принимаем оба представления.
     if (rawData instanceof Uint8Array || rawData instanceof Int8Array) {
       for (let i = 0; i < rawData.length; i++) {
-        const byte = asSafeInt(rawData[i], `схема .schem v3: BlockData[${i}]`);
+        const byte = asSafeInt(rawData[i], t("sch.schemV3Bd", { i }));
         if (byte < -128 || byte > 255) {
-          throw new Error(`схема .schem v3: BlockData[${i}] не является байтом`);
+          throw new Error(t("sch.schemV3BdNotByte", { i }));
         }
       }
       const offset = { o: 0 };
@@ -1077,15 +1078,15 @@ function parseSponge(scm, stats) {
           }
         }
       }
-      if (offset.o !== rawData.length) throw new Error("схема .schem v3: лишние данные BlockData");
+      if (offset.o !== rawData.length) throw new Error(t("sch.schemV3Extra"));
       return planResult(`.schem v${version}`, W, H, L, blocks, stats);
     }
     if (!(rawData instanceof Int32Array || Array.isArray(rawData))) {
-      throw new Error("схема .schem v3: BlockData должен быть int array");
+      throw new Error(t("sch.schemV3IntArray"));
     }
-    exactSequence(rawData, volume, "схема .schem v3: BlockData");
+    exactSequence(rawData, volume, t("sch.schemV3BdLabel"));
     for (let i = 0; i < rawData.length; i++) {
-      asSafeInt(rawData[i], `схема .schem v3: BlockData[${i}]`);
+      asSafeInt(rawData[i], t("sch.schemV3Bd", { i }));
     }
     for (let y = 0; y < H; y++) {
       for (let z = 0; z < L; z++) {
@@ -1116,7 +1117,7 @@ function normalizeVanillaPalettes(raw) {
     (hasOwn(entry, "palette") || hasOwn(entry, "Palette"));
   if (raw.every(isContainer)) {
     const inner = raw.map((entry) => {
-      const selected = selectField(entry, ["palette", "Palette"], "структура .nbt: palettes");
+      const selected = selectField(entry, ["palette", "Palette"], t("sch.nbtPalettes"));
       return selected.value;
     });
     if (inner.every(isCompound)) {
@@ -1124,7 +1125,7 @@ function normalizeVanillaPalettes(raw) {
       for (const palette of inner) {
         for (const name of Object.keys(palette)) {
           if (hasOwn(merged, name)) {
-            throw new Error("структура .nbt: дублирующееся имя в нескольких палитрах");
+            throw new Error(t("sch.nbtDupName"));
           }
           merged[name] = palette[name];
         }
@@ -1132,7 +1133,7 @@ function normalizeVanillaPalettes(raw) {
       return merged;
     }
     if (inner.every(isList)) return inner.flat();
-    throw new Error("структура .nbt: неоднозначный список палитр");
+    throw new Error(t("sch.nbtAmbiguous"));
   }
 
   // Some writers wrap a single compound palette in `palettes: [ {...} ]`.
@@ -1143,7 +1144,7 @@ function normalizeVanillaPalettes(raw) {
     for (const palette of raw) {
       for (const name of Object.keys(palette)) {
         if (hasOwn(merged, name)) {
-          throw new Error("структура .nbt: дублирующееся имя в нескольких палитрах");
+          throw new Error(t("sch.nbtDupName"));
         }
         merged[name] = palette[name];
       }
@@ -1158,15 +1159,15 @@ function normalizeVanillaPalettes(raw) {
 function parseVanillaPalette(raw, label, stats = null) {
   const normalized = normalizeVanillaPalettes(raw);
   if (isList(normalized)) {
-    if (normalized.length === 0) throw new Error(`${label}: пустая палитра`);
-    if (normalized.length > MAX_PALETTE_ENTRIES) throw new Error(`${label}: слишком много блоков в палитре`);
+    if (normalized.length === 0) throw new Error(t("sch.palEmpty", { label }));
+    if (normalized.length > MAX_PALETTE_ENTRIES) throw new Error(t("sch.palTooMany", { label }));
     const entries = normalized.map((entry, index) => paletteNameAndIndex(entry, index, "vanilla", label));
     const ids = new Map();
     for (const entry of entries) {
-      if (ids.has(entry.index)) throw new Error(`${label}: дублирующийся индекс палитры`);
+      if (ids.has(entry.index)) throw new Error(t("sch.palDupIndex", { label }));
       const key = canonicalPaletteKey(entry.name);
       if (!key || !normalizeBlockName(entry.name)) {
-        throw new Error(`${label}: пустое имя блока ${JSON.stringify(key).slice(0, 120)}`);
+        throw new Error(t("sch.emptyBlockNameKey", { label, key: JSON.stringify(key).slice(0, 120) }));
       }
       // Повтор имени с другим индексом — безобидное дублирование состояния
       // (встречается в реальных файлах): маппинг детерминирован парой
@@ -1178,66 +1179,66 @@ function parseVanillaPalette(raw, label, stats = null) {
   if (isCompound(normalized)) {
     const ids = new Map();
     const names = Object.keys(normalized);
-    if (names.length === 0) throw new Error(`${label}: пустая палитра`);
-    if (names.length > MAX_PALETTE_ENTRIES) throw new Error(`${label}: слишком много блоков в палитре`);
+    if (names.length === 0) throw new Error(t("sch.palEmpty", { label }));
+    if (names.length > MAX_PALETTE_ENTRIES) throw new Error(t("sch.palTooMany", { label }));
     const seenNames = new Set();
     for (const name of names) {
-      const index = checkedPaletteIndex(normalized[name], `${label}: индекс`);
+      const index = checkedPaletteIndex(normalized[name], t("sch.palIndex", { label }));
       const key = canonicalPaletteKey(name);
-      if (!key || !normalizeBlockName(name) || seenNames.has(key)) throw new Error(`${label}: дублирующееся имя блока`);
+      if (!key || !normalizeBlockName(name) || seenNames.has(key)) throw new Error(t("sch.dupBlockName", { label }));
       seenNames.add(key);
-      if (ids.has(index)) throw new Error(`${label}: дублирующийся индекс палитры`);
+      if (ids.has(index)) throw new Error(t("sch.palDupIndex", { label }));
       ids.set(index, mapBlockState(name, null, stats));
     }
     return ids;
   }
-  throw new Error(`${label}: некорректная палитра`);
+  throw new Error(t("sch.badPalette", { label }));
 }
 
 function parseVanilla(scm, stats) {
-  const sizeField = selectField(scm, ["size", "Size"], "структура .nbt: size");
+  const sizeField = selectField(scm, ["size", "Size"], t("sch.nbtSize"));
   const paletteField = selectField(
     scm,
     ["palette", "Palette", "palettes", "Palettes"],
-    "структура .nbt: палитра"
+    t("sch.nbtPalette")
   );
-  const blocksField = selectField(scm, ["blocks", "Blocks"], "структура .nbt: blocks");
+  const blocksField = selectField(scm, ["blocks", "Blocks"], t("sch.nbtBlocks"));
   if (!sizeField || !paletteField || !blocksField) {
-    throw new Error("структура .nbt: отсутствуют size/palette/blocks");
+    throw new Error(t("sch.nbtMissingAll"));
   }
   if (!isSequence(sizeField.value) || sizeField.value.length !== 3) {
-    throw new Error("структура .nbt: size должен содержать ровно три координаты");
+    throw new Error(t("sch.nbtSizeCoords"));
   }
   const { W, H, L } = checkedDimensions(
     sizeField.value[0],
     sizeField.value[1],
     sizeField.value[2],
-    "структура .nbt"
+    t("sch.nbt")
   );
-  const palette = parseVanillaPalette(paletteField.value, "структура .nbt", stats);
-  if (!isList(blocksField.value)) throw new Error("структура .nbt: blocks должен быть списком");
-  if (blocksField.value.length > MAX_BLOCKS) throw new Error("структура .nbt: слишком много записей");
+  const palette = parseVanillaPalette(paletteField.value, t("sch.nbt"), stats);
+  if (!isList(blocksField.value)) throw new Error(t("sch.nbtBlocksList"));
+  if (blocksField.value.length > MAX_BLOCKS) throw new Error(t("sch.nbtTooManyEntries"));
 
   const blocks = [];
   const positions = new Set();
   for (const record of blocksField.value) {
-    if (!isCompound(record)) throw new Error("структура .nbt: некорректная запись blocks");
-    const posField = selectField(record, ["pos", "Pos"], "структура .nbt: pos");
-    const stateField = selectField(record, ["state", "State"], "структура .nbt: state");
+    if (!isCompound(record)) throw new Error(t("sch.nbtBadBlocksEntry"));
+    const posField = selectField(record, ["pos", "Pos"], t("sch.nbtPos"));
+    const stateField = selectField(record, ["state", "State"], t("sch.nbtState"));
     if (!posField || !stateField || !isSequence(posField.value) || posField.value.length !== 3) {
-      throw new Error("структура .nbt: некорректные pos/state");
+      throw new Error(t("sch.nbtBadPosState"));
     }
-    const x = asSafeInt(posField.value[0], "структура .nbt: pos.x");
-    const y = asSafeInt(posField.value[1], "структура .nbt: pos.y");
-    const z = asSafeInt(posField.value[2], "структура .nbt: pos.z");
+    const x = asSafeInt(posField.value[0], t("sch.nbtPosX"));
+    const y = asSafeInt(posField.value[1], t("sch.nbtPosY"));
+    const z = asSafeInt(posField.value[2], t("sch.nbtPosZ"));
     if (x < 0 || y < 0 || z < 0 || x >= W || y >= H || z >= L) {
-      throw new Error("структура .nbt: блок вне границ");
+      throw new Error(t("sch.nbtOutOfBounds"));
     }
     const key = `${x},${y},${z}`;
-    if (positions.has(key)) throw new Error("структура .nbt: дублирующаяся позиция блока");
+    if (positions.has(key)) throw new Error(t("sch.nbtDupPos"));
     positions.add(key);
-    const state = checkedPaletteIndex(stateField.value, "структура .nbt: state");
-    if (!palette.has(state)) throw new Error("структура .nbt: неизвестное состояние блока");
+    const state = checkedPaletteIndex(stateField.value, t("sch.nbtState"));
+    if (!palette.has(state)) throw new Error(t("sch.nbtBadState"));
     const entry = palette.get(state);
     if (entry.id !== AIR) {
       blocks.push([x, y, z, entry.id, entry.data]);
@@ -1515,12 +1516,12 @@ export function mapLegacyId(id, data, stats) {
 }
 
 function legacySequence(value, expected, label, byteOnly = false) {
-  if (!isSequence(value)) throw new Error(`${label}: ожидается массив`);
+  if (!isSequence(value)) throw new Error(t("sch.expectArray", { label }));
   exactSequence(value, expected, label);
   if (byteOnly) {
     for (let i = 0; i < value.length; i++) {
       const n = asSafeInt(value[i], `${label}[${i}]`);
-      if (n < -128 || n > 255) throw new Error(`${label}: значение не является байтом`);
+      if (n < -128 || n > 255) throw new Error(t("sch.notByte", { label }));
     }
   }
   return value;
@@ -1528,44 +1529,44 @@ function legacySequence(value, expected, label, byteOnly = false) {
 
 function parseLegacy(scm, stats) {
   if (!hasOwn(scm, "Width") || !hasOwn(scm, "Height") || !hasOwn(scm, "Length")) {
-    throw new Error("схема .schematic: отсутствуют размеры");
+    throw new Error(t("sch.legacyNoDims"));
   }
   const { W, H, L, volume } = checkedDimensions(
     scm.Width,
     scm.Height,
     scm.Length,
-    "схема .schematic"
+    t("sch.legacy")
   );
   const hasBlocks = hasOwn(scm, "Blocks");
   const hasBlockIDs = hasOwn(scm, "BlockIDs");
-  if (!hasBlocks && !hasBlockIDs) throw new Error("схема .schematic: отсутствуют Blocks/BlockIDs");
+  if (!hasBlocks && !hasBlockIDs) throw new Error(t("sch.legacyNoBlocks"));
   // Некоторые экспортеры пишут Blocks и BlockIDs одновременно (дубликаты).
   // Предпочитаем BlockIDs как более точные; AddBlocks тогда игнорируем.
   let isBlockIDs = hasBlockIDs;
   if (hasBlocks && hasBlockIDs) {
     try {
-      legacySequence(scm.BlockIDs, volume, "схема .schematic: BlockIDs", false);
+      legacySequence(scm.BlockIDs, volume, t("sch.legacyBlockIds"), false);
       isBlockIDs = true;
     } catch {
       isBlockIDs = false;
     }
   }
-  legacySequence(isBlockIDs ? scm.BlockIDs : scm.Blocks, volume, "схема .schematic: Blocks", !isBlockIDs);
+  legacySequence(isBlockIDs ? scm.BlockIDs : scm.Blocks, volume, t("sch.legacyBlocks"), !isBlockIDs);
   const rawBlocks = isBlockIDs ? scm.BlockIDs : scm.Blocks;
   let data = null;
   if (hasOwn(scm, "Data")) {
-    data = legacySequence(scm.Data, volume, "схема .schematic: Data", true);
+    data = legacySequence(scm.Data, volume, t("sch.legacyData"), true);
   }
   let add = null;
   if (hasOwn(scm, "AddBlocks") && !isBlockIDs) {
     // Встречается trailing pad-byte (+1 к ceil(volume/2)) — терпим.
     const raw = scm.AddBlocks;
-    if (!isSequence(raw)) throw new Error("схема .schematic: AddBlocks: ожидается массив");
+    if (!isSequence(raw)) throw new Error(t("sch.legacyAddBlocksArray"));
     const expected = Math.ceil(volume / 2);
     if (raw.length !== expected && raw.length !== expected + 1) {
-      exactSequence(raw, expected, "схема .schematic: AddBlocks");
+      exactSequence(raw, expected, t("sch.legacyAddBlocks"));
     }
-    add = legacySequence(raw, raw.length, "схема .schematic: AddBlocks", true);
+    add = legacySequence(raw, raw.length, t("sch.legacyAddBlocks"), true);
   }
 
   const blocks = [];
@@ -1575,7 +1576,7 @@ function parseLegacy(scm, stats) {
         const i = (y * L + z) * W + x;
         let id;
         if (isBlockIDs) {
-          id = asSafeInt(rawBlocks[i], "схема .schematic: BlockIDs");
+          id = asSafeInt(rawBlocks[i], t("sch.legacyBlockIds"));
         } else {
           id = rawBlocks[i] & 0xff;
           if (add) {
@@ -1598,9 +1599,9 @@ function parseLegacy(scm, stats) {
 }
 
 function parseDecodedRoot(root) {
-  if (!isCompound(root)) throw new Error("корень NBT не является compound");
+  if (!isCompound(root)) throw new Error(t("sch.nbtRootNotCompound"));
   const scm = hasOwn(root, "Schematic") ? root.Schematic : root;
-  if (!isCompound(scm)) throw new Error("Schematic должен быть compound");
+  if (!isCompound(scm)) throw new Error(t("sch.schemMustBeCompound"));
 
   const hasSpongeMarkers = hasOwn(scm, "Version") ||
     (hasOwn(scm, "Width") && (hasOwn(scm, "Palette") || hasOwn(scm, "BlockPalette") ||
@@ -1624,7 +1625,7 @@ function parseDecodedRoot(root) {
     return parseLegacy(scm, stats);
   }
 
-  throw new Error("неизвестный формат схемы (поддерживаются .schem, .schematic, .nbt)");
+  throw new Error(t("sch.unknownFormat"));
 }
 
 export function parseSchematicFile(input) {
@@ -1632,19 +1633,19 @@ export function parseSchematicFile(input) {
   try {
     bytes = input instanceof Uint8Array ? input : new Uint8Array(input);
   } catch {
-    throw new Error("не удалось прочитать файл схемы");
+    throw new Error(t("sch.readFail"));
   }
-  if (bytes.length < 2) throw new Error("файл слишком короткий");
-  if (bytes.length > MAX_COMPRESSED_BYTES) throw new Error("файл превышает допустимый предел");
+  if (bytes.length < 2) throw new Error(t("sch.fileTooShort"));
+  if (bytes.length > MAX_COMPRESSED_BYTES) throw new Error(t("sch.fileOverLimit"));
 
   let raw;
   try {
     raw = inflateMaybe(bytes);
   } catch (error) {
-    throw new Error(`не удалось распаковать (gzip/zlib): ${error.message || "повреждённый файл"}`);
+    throw new Error(t("sch.decompressFail", { message: error.message || t("sch.corruptFile") }));
   }
-  if (!(raw instanceof Uint8Array) || raw.length < 2) throw new Error("файл слишком короткий");
-  if (raw.length > MAX_DECODED_BYTES) throw new Error("распакованный файл превышает предел");
+  if (!(raw instanceof Uint8Array) || raw.length < 2) throw new Error(t("sch.fileTooShort"));
+  if (raw.length > MAX_DECODED_BYTES) throw new Error(t("sch.unpackedTooBig"));
 
   let firstError = null;
   for (const littleEndian of [false, true]) {
@@ -1655,9 +1656,9 @@ export function parseSchematicFile(input) {
       if (!firstError) firstError = error;
     }
   }
-  const message = firstError?.message || "неизвестная ошибка";
-  if (message.startsWith("неизвестный формат")) throw new Error(message);
-  throw new Error(`не NBT: ${message}`);
+  const message = firstError?.message || t("sch.unknownError");
+  if (message.startsWith(t("sch.unknownFormatShort"))) throw new Error(message);
+  throw new Error(t("sch.notNbt", { message }));
 }
 
 // ============================================================
@@ -1665,13 +1666,13 @@ export function parseSchematicFile(input) {
 // ============================================================
 function validPlanCoordinate(value, limit, label) {
   if (!Number.isSafeInteger(value) || value < 0 || value >= limit) {
-    throw new Error(`схема: ${label} вне границ`);
+    throw new Error(t("sch.coordOutOfBounds", { label }));
   }
 }
 
 function validPlacementCoord(value, label) {
   if (!Number.isSafeInteger(value) || Math.abs(value) > MAX_PLACEMENT_COORD) {
-    throw new Error(`схема: ${label} вне допустимого диапазона`);
+    throw new Error(t("sch.coordOutOfRange", { label }));
   }
 }
 
@@ -1721,25 +1722,25 @@ export function rotatePlan(plan, times = 1) {
 export function pasteSchematic(world, plan, cx, cz, floorY = 1, options = {}) {
   if (!world || typeof world.getBlock !== "function" || typeof world.setBlock !== "function" ||
       !plan || !Array.isArray(plan.blocks)) {
-    throw new Error("схема для вставки: некорректные данные");
+    throw new Error(t("sch.placeBadData"));
   }
-  const W = asSafeInt(plan.W, "схема для вставки: ширина");
-  const H = asSafeInt(plan.H, "схема для вставки: высота");
-  const L = asSafeInt(plan.L, "схема для вставки: длина");
-  const { volume } = checkedDimensions(W, H, L, "схема для вставки");
-  if (plan.blocks.length > MAX_BLOCKS) throw new Error("схема для вставки: слишком много блоков");
+  const W = asSafeInt(plan.W, t("sch.placeWidth"));
+  const H = asSafeInt(plan.H, t("sch.placeHeight"));
+  const L = asSafeInt(plan.L, t("sch.placeLength"));
+  const { volume } = checkedDimensions(W, H, L, t("sch.place"));
+  if (plan.blocks.length > MAX_BLOCKS) throw new Error(t("sch.placeTooMany"));
   if (!Number.isSafeInteger(cx) || !Number.isSafeInteger(cz) || !Number.isSafeInteger(floorY)) {
-    throw new Error("некорректные координаты вставки схемы");
+    throw new Error(t("sch.placeBadCoords"));
   }
   validPlacementCoord(cx, "cx");
   validPlacementCoord(cz, "cz");
   validPlacementCoord(floorY, "floorY");
   const x0 = cx - Math.floor(W / 2);
   const z0 = cz - Math.floor(L / 2);
-  const dy = floorY - asSafeInt(plan.minY ?? 0, "схема для вставки: minY");
+  const dy = floorY - asSafeInt(plan.minY ?? 0, t("sch.placeMinY"));
   if (!Number.isSafeInteger(x0) || !Number.isSafeInteger(z0) || !Number.isSafeInteger(dy) ||
       !Number.isSafeInteger(x0 + W) || !Number.isSafeInteger(z0 + L)) {
-    throw new Error("некорректные координаты вставки схемы");
+    throw new Error(t("sch.placeBadCoords"));
   }
   validPlacementCoord(x0, "x0");
   validPlacementCoord(z0, "z0");
@@ -1753,27 +1754,27 @@ export function pasteSchematic(world, plan, cx, cz, floorY = 1, options = {}) {
   let highestPlaced = -1;
   for (const tuple of plan.blocks) {
     if (!Array.isArray(tuple) || (tuple.length !== 4 && tuple.length !== 5)) {
-      throw new Error("схема для вставки: некорректная запись блока");
+      throw new Error(t("sch.placeBadBlock"));
     }
-    const x = asSafeInt(tuple[0], "схема: x");
-    const y = asSafeInt(tuple[1], "схема: y");
-    const z = asSafeInt(tuple[2], "схема: z");
-    const id = asSafeInt(tuple[3], "схема: id");
-    const data = tuple.length === 5 ? asSafeInt(tuple[4], "схема: data") : 0;
+    const x = asSafeInt(tuple[0], t("sch.schemX"));
+    const y = asSafeInt(tuple[1], t("sch.schemY"));
+    const z = asSafeInt(tuple[2], t("sch.schemZ"));
+    const id = asSafeInt(tuple[3], t("sch.schemId"));
+    const data = tuple.length === 5 ? asSafeInt(tuple[4], t("sch.schemDataField")) : 0;
     validPlanCoordinate(x, W, "x");
     validPlanCoordinate(y, H, "y");
     validPlanCoordinate(z, L, "z");
     if (id < 0 || id >= BLOCKS.length || !BLOCKS[id]) {
-      throw new Error(`схема: неизвестный ID блока ${id}`);
+      throw new Error(t("sch.unknownBlockId", { id }));
     }
     if (data < 0 || data > 255) {
-      throw new Error("схема: состояние блока вне допустимого диапазона");
+      throw new Error(t("sch.stateOutOfRange"));
     }
     const key = `${x},${y},${z}`;
-    if (seen.has(key)) throw new Error("схема: дублирующаяся позиция блока");
+    if (seen.has(key)) throw new Error(t("sch.schemDupPos"));
     seen.add(key);
     const wy = y + dy;
-    if (!Number.isSafeInteger(wy)) throw new Error("схема: y вне допустимого диапазона");
+    if (!Number.isSafeInteger(wy)) throw new Error(t("sch.yOutOfRange"));
     if (wy < 0 || wy >= WORLD_H) {
       if (id !== AIR) clipped++;
       continue;
@@ -1789,9 +1790,9 @@ export function pasteSchematic(world, plan, cx, cz, floorY = 1, options = {}) {
       checkBlockLimit(placeable);
     }
   }
-  if (placeable === 0) throw new Error("в схеме нет блоков в пределах высоты мира");
-  const rawTopY = asSafeInt(plan.maxY ?? highestPlaced, "схема для вставки: maxY") + dy;
-  if (!Number.isSafeInteger(rawTopY)) throw new Error("схема для вставки: maxY вне диапазона");
+  if (placeable === 0) throw new Error(t("sch.noBlocksInWorld"));
+  const rawTopY = asSafeInt(plan.maxY ?? highestPlaced, t("sch.placeMaxY")) + dy;
+  if (!Number.isSafeInteger(rawTopY)) throw new Error(t("sch.placeMaxYRange"));
   const topY = Math.max(highestPlaced, Math.min(WORLD_H - 1, rawTopY));
 
   // Everything above is preflight-only.  Do not mutate the target world until
@@ -1825,7 +1826,7 @@ export function pasteSchematic(world, plan, cx, cz, floorY = 1, options = {}) {
     }
     if (!cleared) {
       for (const [x, y, z, id, data] of backup) world.setBlock(x, y, z, id, data);
-      throw new Error("схема для вставки: не удалось очистить область");
+      throw new Error(t("sch.placeClearFail"));
     }
   }
 
@@ -1840,7 +1841,7 @@ export function pasteSchematic(world, plan, cx, cz, floorY = 1, options = {}) {
           world.setBlock(px, py, pz, AIR);
         }
       }
-      throw new Error("схема для вставки: не удалось поставить блок");
+      throw new Error(t("sch.placeBlockFail"));
     }
   }
   return { x0, z0, topY, placed: placeable, clipped, volume };

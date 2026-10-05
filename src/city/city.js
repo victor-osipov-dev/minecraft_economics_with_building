@@ -2,6 +2,7 @@
 // Чистая логика без зависимости от Babylon — тестируется в node.
 // 1 тик = 1 игровой день.
 import { TYPES, instStats } from "./buildingTypes.js";
+import { typeName } from "../i18n.js";
 
 export const FOOD_PER_CAPITA = 0.5; // еды на жителя в день
 export const ENERGY_PER_CAPITA = 0.3; // энергии на жителя в день
@@ -24,10 +25,10 @@ export const ROAD_FREE = new Set(["road", "decor"]); // этим типам до
 export const BANKRUPT_AT = -5000; // казна ниже — банкротство (поражение)
 // Цели-вехи: население → разовый бонус в казну.
 export const MILESTONES = [
-  { id: "m50", pop: 50, bonus: 500, name: "Посёлок (50 жителей)" },
-  { id: "m200", pop: 200, bonus: 2000, name: "Городок (200 жителей)" },
-  { id: "m500", pop: 500, bonus: 5000, name: "Город (500 жителей)" },
-  { id: "m1000", pop: 1000, bonus: 15000, name: "Мегаполис (1000 жителей)" },
+  { id: "m50", pop: 50, bonus: 500 },
+  { id: "m200", pop: 200, bonus: 2000 },
+  { id: "m500", pop: 500, bonus: 5000 },
+  { id: "m1000", pop: 1000, bonus: 15000 },
 ];
 const REPAIR_PRICE = 0.01; // доля buildCost за 1% здоровья (полный ремонт = цена постройки)
 const START_MONEY = 10000;
@@ -70,7 +71,9 @@ export function addBuilding(state, { typeId, name, dims, pos, placedBlocks, file
   const inst = {
     id: "b_" + String(state.nextId++).padStart(3, "0"),
     typeId,
-    name: name || TYPES[typeId].name,
+    // typeName(), а не TYPES[typeId].name: .name в buildingTypes.js удалён,
+    // имена и описания типов живут только в i18n (ru + en).
+    name: name || typeName(typeId),
     file: typeof file === "string" ? file : "",
     rot: Number.isFinite(rot) ? rot : 0,
     tier: t3,
