@@ -13,7 +13,11 @@ import {
   SLAB_DOUBLE,
   SLAB_BOTTOM,
   SLAB_TOP,
+  STAIR_PX,
+  STAIR_NX,
+  STAIR_PZ,
   STAIR_NZ,
+  STAIR_TOP_BIT,
   BUTTON_FLOOR,
   BUTTON_CEIL,
   TRAP_BOTTOM,
@@ -598,24 +602,35 @@ function emitSlab(gd, world, wx, wy, wz, def, COLS, ROWS, INSET, data) {
 }
 
 // Ступени как в майнкрафте (только прямые, без угловых inner/outer):
-// нижняя половина на весь отпечаток + верхняя задняя половина по facing
-// (data 1..4: спуск в +X/-X/+Z/-Z). Текстура на каждом боксе целиком.
+// полная половина + вторая половина СО СТОРОНЫ подъёма (facing, data 1..4).
+// data & STAIR_TOP_BIT (half=top, 9..12) — перевёрнутая ступенька: полная
+// половина сверху, усечённая снизу, ею делают угол между потолком и стеной.
+// Угловые формы схемы (shape=inner_*/outer_*, в майнкрафте появляются
+// автоматически при стыке с соседней ступенькой) схлопываются в прямую —
+// facing при этом не меняется. Текстура на каждом боксе целиком.
 function emitStairs(gd, world, wx, wy, wz, def, COLS, ROWS, INSET, data) {
+  const top = (data & STAIR_TOP_BIT) !== 0;
+  const f = top ? data - STAIR_TOP_BIT : data;
+  // Полная половина на весь отпечаток, усечённая — на другой половине по высоте.
+  const lo = top ? 0.5 : 0;
+  const hi = lo + 0.5;
+  const pLo = top ? lo - 0.5 : hi;
+  const pHi = top ? lo : hi + 0.5;
   emitPartialBox(gd, world, wx, wy, wz, def, COLS, ROWS, INSET,
-    0, 0, 0, 1, 0.5, 1, null);
-  if (data === 2) {
+    0, lo, 0, 1, hi, 1, null);
+  if (f === STAIR_PX) {
     emitPartialBox(gd, world, wx, wy, wz, def, COLS, ROWS, INSET,
-      0.5, 0.5, 0, 1, 1, 1, null);
-  } else if (data === 3) {
+      0.5, pLo, 0, 1, pHi, 1, null);
+  } else if (f === STAIR_NX) {
     emitPartialBox(gd, world, wx, wy, wz, def, COLS, ROWS, INSET,
-      0, 0.5, 0, 1, 1, 0.5, null);
-  } else if (data === 4) {
+      0, pLo, 0, 0.5, pHi, 1, null);
+  } else if (f === STAIR_PZ) {
     emitPartialBox(gd, world, wx, wy, wz, def, COLS, ROWS, INSET,
-      0, 0.5, 0.5, 1, 1, 1, null);
+      0, pLo, 0.5, 1, pHi, 1, null);
   } else {
-    // 1 (+X, спуск на восток) и неизвестные: верхняя западная половина.
+    // STAIR_NZ и неизвестные: усечённая половина с северной стороны.
     emitPartialBox(gd, world, wx, wy, wz, def, COLS, ROWS, INSET,
-      0, 0.5, 0, 0.5, 1, 1, null);
+      0, pLo, 0, 1, pHi, 0.5, null);
   }
 }
 
@@ -650,23 +665,27 @@ function emitButton(gd, world, wx, wy, wz, def, COLS, ROWS, INSET, data) {
 }
 
 // Люк как в майнкрафте: закрытый — тонкая панель 3/16 снизу/сверху клетки,
-// открытый — вертикальная панель у своей стороны. data 0/1 закрыт, 2..5 открыт.
+// открытый — вертикальная панель. data 0/1 закрыт, 2..5 открыт.
+// У открытого люка facing — направление, КУДА смотрит панель, а петля и
+// опора лежат с ПРОТИВОПОЛОЖНОЙ стороны: как у настенной таблички/кнопки
+// (facing наружу, тело прижато к стене сзади). Поэтому панель ставим у
+// грани, противоположной facing: data 2 (+X) — у западной грани и т.д.
 function emitTrapdoor(gd, world, wx, wy, wz, def, COLS, ROWS, INSET, data) {
   if (data === TRAP_TOP) {
     emitPartialBox(gd, world, wx, wy, wz, def, COLS, ROWS, INSET,
       0, 13 / 16, 0, 1, 1, 1, null);
   } else if (data === TRAP_OPEN_PX) {
     emitPartialBox(gd, world, wx, wy, wz, def, COLS, ROWS, INSET,
-      13 / 16, 0, 0, 1, 1, 1, null);
+      0, 0, 0, 3 / 16, 1, 1, null);
   } else if (data === TRAP_OPEN_NX) {
     emitPartialBox(gd, world, wx, wy, wz, def, COLS, ROWS, INSET,
-      0, 0, 0, 3 / 16, 1, 1, null);
+      13 / 16, 0, 0, 1, 1, 1, null);
   } else if (data === TRAP_OPEN_PZ) {
     emitPartialBox(gd, world, wx, wy, wz, def, COLS, ROWS, INSET,
-      0, 0, 13 / 16, 1, 1, 1, null);
+      0, 0, 0, 1, 1, 3 / 16, null);
   } else if (data === TRAP_OPEN_NZ) {
     emitPartialBox(gd, world, wx, wy, wz, def, COLS, ROWS, INSET,
-      0, 0, 0, 1, 1, 3 / 16, null);
+      0, 0, 13 / 16, 1, 1, 1, null);
   } else {
     emitPartialBox(gd, world, wx, wy, wz, def, COLS, ROWS, INSET,
       0, 0, 0, 1, 3 / 16, 1, null);
@@ -893,8 +912,9 @@ function isOpaqueBlock(def) {
 }
 
 // Закрывает ли соседний блок грань целиком. Полный куб/двойная плита — да;
-// половина плиты закрывает только свою половину, у ступеней низ закрыт
-// всегда, а верх — только со стороны зада (против facing).
+// половина плиты закрывает только свою половину, у ступеней полная половина
+// закрыта всегда, а усечённая — только со стороны подъёма (facing); у
+// перевёрнутой ступеньки (half=top) половины меняются местами по вертикали.
 // Без этого рядом с неполными блоками появляются дыры: грань полного блока
 // пряталась целиком, хотя сосед закрывал лишь её часть.
 function faceHiddenByNeighbor(nX, nY, nZ, ourY0, ourY1, nbDef, nbState) {
@@ -908,15 +928,26 @@ function faceHiddenByNeighbor(nX, nY, nZ, ourY0, ourY1, nbDef, nbState) {
     return lo <= ourY0 && ourY1 <= hi;
   }
   if (nbDef.shape === "stairs") {
-    // Зад ступени (против facing 1..4): [-X, +X, -Z, +Z].
-    const back = nbState === 1 ? [-1, 0, 0] : nbState === 2 ? [1, 0, 0] :
-      nbState === 3 ? [0, 0, -1] : nbState === 4 ? [0, 0, 1] : null;
-    if (!back) return false; // неизвестно — рисуем (дыра хуже overdraw)
-    if (nY === 1) return true; // низ ступени закрывает грань сверху целиком
-    if (nY === -1) return false; // снизу щель: верхняя половина только сзади
-    // Бок: низ закрыт всегда, верх — если грань со стороны зада.
-    if (ourY1 <= 0.5) return true;
-    return nX === -back[0] && nZ === -back[2];
+    // Перевёрнутая ступенька (half=top, бит STAIR_TOP_BIT) — зеркало по
+    // вертикали: полная половина сверху, усечённая снизу.
+    const top = (nbState & STAIR_TOP_BIT) !== 0;
+    const f = top ? nbState - STAIR_TOP_BIT : nbState;
+    // Усечённая половина — со стороны подъёма (facing 1..4): +X/-X/+Z/-Z.
+    const face = f === 1 ? [1, 0, 0] : f === 2 ? [-1, 0, 0] :
+      f === 3 ? [0, 0, 1] : f === 4 ? [0, 0, -1] : null;
+    if (!face) return false; // неизвестно — рисуем (дыра хуже overdraw)
+    const onFace = nX === face[0] && nZ === face[2];
+    const fLo = top ? 0.5 : 0;  // полная половина на всём отпечатке
+    const fHi = top ? 1 : 0.5;
+    const pLo = top ? 0 : 0.5;  // усечённая — только со стороны подъёма
+    const pHi = top ? 0.5 : 1;
+    if (nY === 1) return !top; // снизу полная половина: прижимает грань сверху
+    if (nY === -1) return top;  // сверху полная половина: прижимает грань снизу
+    // Бок: грань закрыта, если каждая её половина накрыта — либо полной
+    // половиной соседа (везде), либо усечённой (только со стороны подъёма).
+    const covered = (a, b) =>
+      (a >= fLo && b <= fHi) || (onFace && a >= pLo && b <= pHi);
+    return covered(ourY0, 0.5) && covered(0.5, ourY1);
   }
   return true;
 }

@@ -30,6 +30,7 @@ import {
   STAIR_NX,
   STAIR_PZ,
   STAIR_NZ,
+  STAIR_TOP_BIT,
   BUTTON_FLOOR,
   BUTTON_CEIL,
   TRAP_BOTTOM,
@@ -2945,7 +2946,7 @@ function placeData(id, hit) {
   if (!def) return 0;
   if (def.shape === "slab") return hit.ny === -1 ? SLAB_TOP : SLAB_BOTTOM;
   if (def.shape === "stairs") {
-    // Спуск — к игроку (ступени поднимаются от него).
+    // Подъём — к игроку: смотришь на восток, ступень поднимается на запад.
     const look = lookFacing();
     return look === 1 ? STAIR_NX : look === 2 ? STAIR_PX : look === 3 ? STAIR_NZ : STAIR_PZ;
   }
@@ -2998,6 +2999,20 @@ function handlePlace() {
     world.flushMeshes(scene, blockMat, cutoutMat, alphaMat, torchMat);
     updateHotbar();
     return;
+  }
+  // Переворот ступенек как в майнкрафте (у нас без шифта): клик по верхней
+  // грани обычной ступеньки делает её перевёрнутой (half=top) и наоборот —
+  // так делают угол между потолком и стеной.
+  if (def && def.shape === "stairs") {
+    const st = world.getState(hit.x, hit.y, hit.z);
+    const flip = hit.ny === 1 && !(st & STAIR_TOP_BIT) ? st | STAIR_TOP_BIT :
+      hit.ny === -1 && (st & STAIR_TOP_BIT) ? st - STAIR_TOP_BIT : 0;
+    if (flip && world.getBlock(hit.x, hit.y, hit.z) === entry.id) {
+      if (!world.setState(hit.x, hit.y, hit.z, flip)) return;
+      world.flushMeshes(scene, blockMat, cutoutMat, alphaMat, torchMat);
+      updateHotbar();
+      return;
+    }
   }
   const px = hit.x + hit.nx;
   const py = hit.y + hit.ny;

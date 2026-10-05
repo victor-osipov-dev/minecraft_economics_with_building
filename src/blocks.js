@@ -119,11 +119,16 @@ export const SIGN_NZ = 4;
 export const SLAB_DOUBLE = 0;
 export const SLAB_BOTTOM = 1;
 export const SLAB_TOP = 2;
-// Ступени: 1..4 сторона спуска (facing), верхняя половина сзади.
+// Ступени: 1..4 сторона подъёма (facing = MC facing), усечённая половина с
+// этой стороны. Побит 8 (legacy 0x4 upside-down, переносимый в наш state) —
+// half=top: перевёрнутая ступенька, полная половина сверху, а угол получается
+// между потолком и стеной. Итого 1..4 обычные, 9..12 перевёрнутые.
+// Бит 8, а не 4: код 4 уже занят севером (STAIR_NZ).
 export const STAIR_PX = 1;
 export const STAIR_NX = 2;
 export const STAIR_PZ = 3;
 export const STAIR_NZ = 4;
+export const STAIR_TOP_BIT = 8;
 // Кнопка: 0 на полу, 1..4 на стене (сторона взгляда), 5 на потолке.
 export const BUTTON_FLOOR = 0;
 export const BUTTON_PX = 1;

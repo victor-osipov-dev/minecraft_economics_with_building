@@ -51,6 +51,7 @@ import {
   SLAB_DOUBLE,
   SLAB_BOTTOM,
   SLAB_TOP,
+  STAIR_TOP_BIT,
   BUTTON_FLOOR,
   BUTTON_CEIL,
   TRAP_BOTTOM,
@@ -753,7 +754,8 @@ export function mapBlockState(rawName, properties, stats) {
   }
 
   // Люк: half top/bottom + open + facing. До EXACT_BLOCKS ("oak_trapdoor").
-  // data: 0 закрыт снизу, 1 закрыт сверху, 2..5 открыт панелью у +X/-X/+Z/-Z.
+  // data: 0 закрыт снизу, 1 закрыт сверху, 2..5 открыт, панель смотрит в
+  // +X/-X/+Z/-Z, петля и опора — с противоположной стороны (см. emitTrapdoor).
   if (/_trapdoor$/.test(name)) {
     if (props.open === "true") return { id: OAK_TRAPDOOR, data: 1 + facingData(props.facing, 4) };
     return { id: OAK_TRAPDOOR, data: props.half === "top" ? TRAP_TOP : TRAP_BOTTOM };
@@ -765,11 +767,14 @@ export function mapBlockState(rawName, properties, stats) {
     return { id: TRIPWIRE_HOOK, data: facingData(props.facing, 4) };
   }
 
-  // Ступени: facing = сторона спуска. До EXACT_BLOCKS ("oak_stairs" там есть).
-  // Угловые inner/outer формы упрощаем до прямых.
+  // Ступени: facing = сторона подъёма (верхняя половина с этой стороны),
+  // half=top — перевёрнутая ступенька (бит STAIR_TOP_BIT). До EXACT_BLOCKS
+  // ("oak_stairs" там есть). Угловые inner/outer формы упрощаем до прямых —
+  // facing при этом не меняется.
   if (/_stairs$/.test(name)) {
     if (props.shape && props.shape !== "straight") markSimplified(stats, `${name}[shape=${props.shape}]`);
-    return { id: OAK_STAIRS, data: facingData(props.facing, 4) };
+    const data = facingData(props.facing, 4);
+    return { id: OAK_STAIRS, data: props.half === "top" ? data | STAIR_TOP_BIT : data };
   }
 
   if (EXACT_BLOCKS.has(name)) {
@@ -1446,17 +1451,19 @@ function legacyWallSignData(data) {
   return 4;
 }
 
-// Ступени в legacy Data: биты 0-1 — facing (сторона спуска), как в modern
+// Ступени в legacy Data: биты 0-1 — facing (сторона подъёма), как в modern
 // facing: 0=South, 1=West, 2=North, 3=East (та же шкала, что facingData:
-// south=3, west=2, north=4, east=1). Бит 0x4 upside-down игнорируем:
-// перевернутых ступеней у нас нет.
+// south=3, west=2, north=4, east=1). Бит 0x4 = upside-down, переносим в
+// STAIR_TOP_BIT — перевёрнутые ступеньки (угол между потолком и стеной).
 function legacyStairData(data) {
+  let f;
   switch (data & 3) {
-    case 0: return 3; // south -> спуск на юг
-    case 1: return 2; // west -> спуск на запад
-    case 2: return 4; // north -> спуск на север
-    default: return 1; // east -> спуск на восток
+    case 0: f = 3; break; // south -> подъём на юг
+    case 1: f = 2; break; // west -> подъём на запад
+    case 2: f = 4; break; // north -> подъём на север
+    default: f = 1; break; // east -> подъём на восток
   }
+  return (data & 0x04) ? f | STAIR_TOP_BIT : f;
 }
 
 // Кнопка/рычаг в legacy Data: 0 вниз (потолок), 1 east, 2 west, 3 south,
@@ -1693,6 +1700,10 @@ function rotateData90(id, data) {
     if (data === 4) return 3;
     if (data === 3) return 5;
     return 2;
+  }
+  // Перевёрнутая ступенька: крутим только facing, бит half=top сохраняем.
+  if (id === OAK_STAIRS && (data & STAIR_TOP_BIT)) {
+    return rotateFacing90(data - STAIR_TOP_BIT) | STAIR_TOP_BIT;
   }
   if (id === TORCH || id === REDSTONE_TORCH || id === OAK_SIGN ||
       id === OAK_STAIRS || id === TRIPWIRE_HOOK || id === OAK_BUTTON) {
