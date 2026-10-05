@@ -56,7 +56,7 @@ import {
   loanLimit, loanQuote, loanMinRate, loanPayoff,
 } from "./city/city.js";
 import { yg } from "./yg.js";
-import { t, setLang, getLang, locale, typeName, tierName, mstoneName, blockName, blockNameSearch, tagName, tagNameSearch } from "./i18n.js";
+import { t, setLang, getLang, locale, typeName, tierName, mstoneName, blockName, blockNameSearch, tagName, tagNameSearch, schemeName, schemeNameSearch } from "./i18n.js";
 import schemesIndex from "../schemes/index.json";
 
 // Язык берём из SDK, когда он готов; до этого — по браузеру (см. yg.js).
@@ -2018,7 +2018,7 @@ function schemeMatches(item) {
     if (!item.tags.includes(tag)) return false;
   }
   const q = schemeFilter.q.trim().toLowerCase().replace(/^#+/, "");
-  if (q && !(item.name.toLowerCase().includes(q) ||
+  if (q && !(schemeNameSearch(item).toLowerCase().includes(q) ||
     item.tags.some((tg) => tg.includes(q) || tagNameSearch(tg).toLowerCase().includes(q)))) return false;
   return true;
 }
@@ -2145,8 +2145,8 @@ function renderSchemeTiles() {
       cheap: (a, b) => (schemeQuoteCached(a)?.cost ?? Infinity) - (schemeQuoteCached(b)?.cost ?? Infinity),
       exp: (a, b) => (schemeQuoteCached(b)?.cost ?? -1) - (schemeQuoteCached(a)?.cost ?? -1),
       big: (a, b) => schemeBlocksNum(b) - schemeBlocksNum(a),
-      housing: (a, b) => (schemeQuoteCached(b)?.housing || 0) - (schemeQuoteCached(a)?.housing || 0),
-      name: (a, b) => String(a.name).localeCompare(String(b.name), locale()),
+housing: (a, b) => (schemeQuoteCached(b)?.housing || 0) - (schemeQuoteCached(a)?.housing || 0),
+      name: (a, b) => schemeName(a).localeCompare(schemeName(b), locale()),
     };
     const cmp = by[schemeFilter.sort] || null;
     if (cmp) schemeShown = [...schemeShown].sort(cmp);
@@ -2205,10 +2205,11 @@ function createTile(item) {
     });
     tile.appendChild(fav);
     const base = item.file.replace(/\.(schem|schematic|nbt)$/i, "");
+    const dispName = schemeName(item);
     if (schemeThumbByFile[base]) {
       // Видимое окно маленькое — грузим сразу, очередь не нужна.
       const img = document.createElement("img");
-      img.alt = item.name;
+      img.alt = dispName;
       img.loading = "lazy";
       img.src = schemeThumbByFile[base];
       tile.appendChild(img);
@@ -2220,7 +2221,7 @@ function createTile(item) {
     }
     const nm = document.createElement("div");
     nm.className = "tn";
-    nm.textContent = item.name;
+    nm.textContent = dispName;
     nm.title = item.name;
     const dim = document.createElement("div");
     dim.className = "td";
@@ -2245,9 +2246,9 @@ function createTile(item) {
         if (s.income > 0) parts.push(`${t("tileIncome")}${s.income}`);
       }
       info.textContent = parts.join(" · ");
-      tile.title = `${item.name} · ${item.w}×${item.h}×${item.l} · ${t("tileBlocks")}: ${item.blocks} · ` + parts.join(" · ");
+      tile.title = `${dispName} · ${item.w}×${item.h}×${item.l} · ${t("tileBlocks")}: ${item.blocks} · ` + parts.join(" · ");
     } else {
-      tile.title = `${item.name} · ${item.w}×${item.h}×${item.l} · ${t("tileBlocks")}: ${item.blocks}`;
+      tile.title = `${dispName} · ${item.w}×${item.h}×${item.l} · ${t("tileBlocks")}: ${item.blocks}`;
     }
     tile.append(nm, dim, info);
     tile.dataset.file = item.file;
@@ -2270,7 +2271,7 @@ function createTile(item) {
       for (const t2 of schemeSpacerEl.children) {
         t2.classList.toggle("selected", t2.dataset.file === item.file);
       }
-      selectScheme(url, item.name);
+      selectScheme(url, dispName);
     });
     return tile;
 }

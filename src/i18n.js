@@ -1,5 +1,6 @@
 // Локализация: заявлены ru+en, язык берётся из SDK Яндекс Игр (п.2.14).
 // t("key", {var}) — подстановка {var}. Неизвестный ключ возвращает сам ключ.
+import schemeNamesRu from "../schemes/names-ru.json";
 export const STR = {
   ru: {
     pageTitle: "Воксель-Сити",
@@ -892,6 +893,18 @@ export function tagNameSearch(tag) {
   const a = STR[lang].schemeTags && STR[lang].schemeTags[tag];
   const b = STR.ru.schemeTags && STR.ru.schemeTags[tag];
   return a && b && a !== b ? (a + " " + b) : (a || b || tag);
+}
+// Название постройки из витрины: русский перевод по slug, иначе исходное имя.
+export function schemeName(item) {
+  if (!item) return "";
+  return schemeNamesRu[item.slug] || item.name || "";
+}
+// Оригинал + перевод — поиск по витрине должен работать в обоих написаниях.
+export function schemeNameSearch(item) {
+  if (!item) return "";
+  const ru = schemeNamesRu[item.slug];
+  const en = item.name || "";
+  return ru && en && ru !== en ? (ru + " " + en) : (ru || en);
 }
 export function tierName(tier) {
   return (STR[lang].tiers && STR[lang].tiers[tier]) || STR.ru.tiers[tier] || "";
