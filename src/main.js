@@ -237,11 +237,12 @@ function renderMsgLog() {
 
 // ---------- настройки подсказок (пауза; действуют на каждый новый мир) ----------
 const SETTINGS_KEY = "babylon-settings-v1";
-const settings = { tutorial: true, tabHint: true, lang: "auto" };
+const settings = { tutorial: true, tabHint: true, coach: true, lang: "auto" };
 try {
   const s = JSON.parse(localStorage.getItem(SETTINGS_KEY) || "{}");
   if (typeof s.tutorial === "boolean") settings.tutorial = s.tutorial;
   if (typeof s.tabHint === "boolean") settings.tabHint = s.tabHint;
+  if (typeof s.coach === "boolean") settings.coach = s.coach;
   if (s.lang === "ru" || s.lang === "en" || s.lang === "auto") settings.lang = s.lang;
 } catch (e) {}
 function saveSettings() {
@@ -265,6 +266,108 @@ if (setTabHintEl) {
     updateTabHint();
   });
 }
+const setCoachEl = document.getElementById("setCoach");
+if (setCoachEl) {
+  setCoachEl.checked = settings.coach;
+  setCoachEl.addEventListener("change", () => {
+    settings.coach = setCoachEl.checked;
+    saveSettings();
+    if (!settings.coach) coachHide();
+  });
+}
+// ---------- визуальные подсказки (coach marks) ----------
+// Большой текст + пульсирующая обводка цели + прыгающая стрелка.
+// Каждая подсказка показывается один раз за загрузку страницы
+// (после перезагрузки — снова) и отключается чекбоксом в меню.
+let coachSeen = new Set();
+function coachMarkSeen(id) {
+  coachSeen.add(id);
+}
+let coachTimer = null;
+let coachArmedAt = 0;
+function coachHide() {
+  const layer = document.getElementById("coach");
+  if (layer) layer.classList.remove("show", "aim");
+  if (coachTimer) { clearTimeout(coachTimer); coachTimer = null; }
+}
+function coachShow({ text, target } = {}) {
+  const layer = document.getElementById("coach");
+  const bubble = document.getElementById("coachBubble");
+  const ring = document.getElementById("coachRing");
+  const arrow = document.getElementById("coachArrow");
+  if (!layer || !bubble || !ring || !arrow) return false;
+  bubble.textContent = text;
+  const el = typeof target === "string" ? document.querySelector(target) : target;
+  const r = el && el.getBoundingClientRect ? el.getBoundingClientRect() : null;
+  const vw = window.innerWidth || 0, vh = window.innerHeight || 0;
+  const vis = r && r.width > 4 && r.height > 4 && r.bottom > 0 && r.top < vh && r.right > 0 && r.left < vw;
+  layer.classList.add("show");
+  if (!vis) {
+    // Цель не видна — большой текст по центру без стрелки и обводки.
+    layer.classList.remove("aim");
+    bubble.style.left = "50%";
+    bubble.style.top = "38%";
+    bubble.style.bottom = "auto";
+    bubble.style.transform = "translate(-50%, -50%)";
+  } else {
+    layer.classList.add("aim");
+    const pad = 8;
+    ring.style.left = Math.max(4, r.left - pad) + "px";
+    ring.style.top = Math.max(4, r.top - pad) + "px";
+    ring.style.width = (r.width + pad * 2) + "px";
+    ring.style.height = (r.height + pad * 2) + "px";
+    const bw = Math.min(520, vw * 0.88);
+    const cx = Math.min(Math.max(r.left + r.width / 2, bw / 2 + 12), vw - bw / 2 - 12);
+    const below = r.top > vh * 0.42;
+    bubble.style.transform = "translateX(-50%)";
+    bubble.style.left = cx + "px";
+    if (below) {
+      // Пузырь над целью, стрелка вниз.
+      bubble.style.top = "auto";
+      bubble.style.bottom = Math.max(12, vh - r.top + pad + 44) + "px";
+      arrow.textContent = "▼";
+      arrow.className = "down";
+      arrow.id = "coachArrow";
+      arrow.style.left = cx + "px";
+      arrow.style.top = (r.top - pad - 40) + "px";
+    } else {
+      // Пузырь под целью, стрелка вверх.
+      bubble.style.bottom = "auto";
+      bubble.style.top = (r.bottom + pad + 44) + "px";
+      arrow.textContent = "▲";
+      arrow.className = "up";
+      arrow.id = "coachArrow";
+      arrow.style.left = cx + "px";
+      arrow.style.top = (r.bottom + pad + 8) + "px";
+    }
+  }
+  coachArmedAt = Date.now();
+  if (coachTimer) clearTimeout(coachTimer);
+  coachTimer = setTimeout(coachHide, 9000);
+  return true;
+}
+// Показать один раз: пропуск, если выключено в меню или уже видели.
+// Если цель указана, но не видна — не показываем и не помечаем (попробуем позже).
+function coachOnce(id, opts) {
+  if (!settings.coach || coachSeen.has(id)) return false;
+  if (opts && opts.target) {
+    const el = typeof opts.target === "string" ? document.querySelector(opts.target) : opts.target;
+    if (!el) return false; // цель ещё не в DOM — попробуем позже
+    const r = el.getBoundingClientRect ? el.getBoundingClientRect() : null;
+    const vw = window.innerWidth || 0, vh = window.innerHeight || 0;
+    const vis = r && r.width > 4 && r.height > 4 && r.bottom > 0 && r.top < vh && r.right > 0 && r.left < vw;
+    if (!vis) return false;
+  }
+  if (!coachShow(opts)) return false;
+  coachMarkSeen(id);
+  return true;
+}
+window.addEventListener("pointerdown", () => {
+  if (Date.now() - coachArmedAt > 500) coachHide();
+}, true);
+window.addEventListener("keydown", () => {
+  if (Date.now() - coachArmedAt > 500) coachHide();
+}, true);
 // ---------- переключатель языка в паузе ----------
 // "auto" — язык платформы/браузера (yg.lang), ru/en — принудительно. Выбор
 // помнится в settings и переживает перезапуск, поэтому ручной выбор не
@@ -1030,7 +1133,6 @@ function renderLoans() {
         `${fmtMoney(p.amount)} · ${p.days} ${t("daysShort")} · ${loanMinRate(p.days)}%</button>`).join("")}</div>
       <div class="clquote" id="loanQuote">${t("loanQuote", { daily: fmtMoney(q.daily), total: fmtMoney(q.owed) })}<br>${t("loanLimit", { limit: fmtMoney(limit), rate: q.rate })}<br>${t("loanGraceHint", { days })}</div>
       <button data-loan-take=""${full ? " disabled" : ""}>${t("loanTake")}</button>
-      <div class="clquote clhint">${t("loanHint")}</div>
     </div>`;
   city.loans.forEach((l, i) => {
     const phase = l.graceLeft > 0
@@ -1043,6 +1145,7 @@ function renderLoans() {
   // Rewarded video: необязательный бонус в казну (п.4.5), прогресс не блокирует.
   html += `<div class="cbtake"><button data-rewarded="" title="${t("ygRewardTitle", { sum: fmtMoney(YG_REWARD) })}">${t("ygReward", { sum: fmtMoney(YG_REWARD) })}</button></div>`;
   el.innerHTML = html;
+  if (city.loans.length > 0) coachOnce("repay", { text: t("loanHint"), target: "#cityLoans [data-loan-repay]" });
 }
   if (city.buildings.length === 0) {
     document.getElementById("cityBldTypes").innerHTML = "";
@@ -1196,6 +1299,7 @@ cityPanelEl.addEventListener("click", async (e) => {
       ? t("loanTaken", { owed: Math.round(res.owed), money: fmtMoney(city.money) })
       : t("loanDenied", { reason: t(res.reason) }));
     if (res.ok) { loanDraft.amount = amount; loanDraft.days = days; }
+    if (res.ok) coachOnce("loan", { text: t("coachLoan", { n: days }), target: "#moneyBar" });
     refreshTileFunds();
     renderCity();
     return;
@@ -1208,6 +1312,7 @@ cityPanelEl.addEventListener("click", async (e) => {
       ? t("loanTaken", { owed: Math.round(res.owed), money: fmtMoney(city.money) })
       : t("loanDenied", { reason: t(res.reason) }));
     if (res.ok) loanDraft.amount = null; // новая сумма под новый лимит
+    if (res.ok) coachOnce("loan", { text: t("coachLoan", { n: loanDraft.days }), target: "#moneyBar" });
     refreshTileFunds();
     renderCity();
     return;
@@ -1812,6 +1917,7 @@ function openCommandMenu() {
   schemeListEl.scrollTop = schemeListScroll;
   updateBuildBar();
   renderCity();
+  coachOnce("schemes", { text: t("coachSchemes"), target: "#schemeList" });
   tutorialGain("city"); // шаг «Открой панель города» — панель даёт TAB
   if (document.pointerLockElement) {
     unlockForPanel = true;
@@ -1833,6 +1939,7 @@ function setPaused(on) {
   if (on) closePanels(); // пауза тоже ни с кем не делит экран
   pauseMenuEl.classList.toggle("show", on);
   if (on) refreshSaveInfo();
+  if (on) coachOnce("pause", { text: t("coachPause"), target: "#resumeBtn" });
   if (on) {
     yg.playStop();
     updateAuthUI();
@@ -1859,6 +1966,7 @@ function togglePicker() {
   pickSearchEl.value = "";
   pickFilter.q = "";
   renderPicker();
+  coachOnce("picker", { text: t("coachPicker"), target: "#pickGrid .pick" });
   if (document.pointerLockElement) {
     unlockForPanel = true;
     document.exitPointerLock();
@@ -1881,6 +1989,7 @@ function toggleSchemes() {
   buildSchemeList();
   schemeListEl.scrollTop = schemeListScroll;
   updateBuildBar();
+  coachOnce("schemes", { text: t("coachSchemes"), target: "#schemeList" });
   if (document.pointerLockElement) {
     unlockForPanel = true;
     document.exitPointerLock();
@@ -2081,7 +2190,7 @@ function buildSchemeChips() {
 // В DOM только видимое окно + overscan: 1160 тяжёлых плиток целиком не влезают.
 // Пикер блоков (46 штук без картинок) виртуализации не требует.
 const TILE_GAP = 8;
-const TILE_MIN_W = 148;
+const TILE_MIN_W = 176;
 const TILE_OVERSCAN_ROWS = 3;
 let schemeShown = [];
 let tileLayout = { cols: 1, tileW: 150, rowH: 260 };
@@ -2099,7 +2208,7 @@ function layoutTiles() {
   const w = contentWidth();
   const cols = Math.max(1, Math.floor((w + TILE_GAP) / (TILE_MIN_W + TILE_GAP)));
   const tileW = (w - (cols - 1) * TILE_GAP) / cols;
-  // медиабокс aspect 232/176 + текстовый блок (~72px); точную высоту калибруем замером
+  // медиабокс aspect 232/176 + текстовый блок (~90px); точную высоту калибруем замером
   tileLayout = { cols, tileW, rowH: tileW * (176 / 232) + 72, w };
 }
 
@@ -2413,6 +2522,7 @@ function updateBuildBar() {
 function closeSchemesToBuild() {
   closeCommandMenu();
   if (previewPlan) {
+    coachOnce("build", { text: t("coachBuild"), target: "#ghostBar" });
     const req = canvas.requestPointerLock?.();
     if (req && req.catch) req.catch(() => showMsg(t("clickToLock")));
   }

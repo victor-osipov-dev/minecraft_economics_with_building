@@ -8,24 +8,7 @@
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body { width: 100%; height: 100%; overflow: hidden; background: #000; }
     #scene { width: 100%; height: 100%; display: block; cursor: crosshair; }
-    #hud {
-      position: fixed;
-      top: 12px;
-      left: 50%;
-      transform: translateX(-50%);
-      color: #fff;
-      font-family: 'Segoe UI', Arial, sans-serif;
-      font-size: 13px;
-      background: rgba(0, 0, 0, 0.5);
-      padding: 8px 18px;
-      border-radius: 20px;
-      pointer-events: none;
-      user-select: none;
-      white-space: nowrap;
-      letter-spacing: 0.3px;
-      text-align: center;
-    }
-    #hud .block { color: #aaffaa; }
+    /* Минимальный размер шрифта интерфейса — 16px (читаемость для слабовидящих) */
     /* Баланс казны — всегда виден в левом верхнем углу */
     #moneyBar {
       position: fixed;
@@ -64,19 +47,19 @@
       letter-spacing: 6px;
       text-shadow: 0 0 24px rgba(255, 213, 74, 0.6), 0 3px 0 #000;
     }
-    #tabHint span { font: 15px 'Segoe UI', Arial, sans-serif; color: #fff; opacity: 0.85; }
+    #tabHint span { font: 18px 'Segoe UI', Arial, sans-serif; color: #fff; opacity: 0.85; }
     @keyframes tabPulse {
       0%, 100% { transform: translate(-50%, -50%) scale(1); }
       50% { transform: translate(-50%, -50%) scale(1.07); }
     }
     #msg {
       position: fixed;
-      bottom: 130px;
+      bottom: 150px;
       left: 50%;
       transform: translateX(-50%);
       background: rgba(0, 0, 0, 0.65);
       color: #fff;
-      font: 14px 'Segoe UI', Arial, sans-serif;
+      font: 16px 'Segoe UI', Arial, sans-serif;
       padding: 7px 16px;
       border-radius: 7px;
       opacity: 0;
@@ -102,7 +85,7 @@
     #msgLog .logItem {
       background: rgba(0, 0, 0, 0.55);
       color: rgba(255, 255, 255, 0.85);
-      font: 12px 'Segoe UI', Arial, sans-serif;
+      font: 16px 'Segoe UI', Arial, sans-serif;
       padding: 4px 10px;
       border-radius: 6px;
       border-left: 3px solid rgba(255, 213, 74, 0.6);
@@ -123,7 +106,7 @@
       left: 50%;
       transform: translateX(-50%);
       color: #ffd54a;
-      font: 15px 'Segoe UI', Arial, sans-serif;
+      font: 17px 'Segoe UI', Arial, sans-serif;
       background: rgba(0, 0, 0, 0.55);
       padding: 8px 22px;
       border-radius: 14px;
@@ -144,7 +127,7 @@
       border: 1px solid #ffd54a;
       border-radius: 8px;
       color: #eee;
-      font: 13px 'Segoe UI', Arial, sans-serif;
+      font: 16px 'Segoe UI', Arial, sans-serif;
       padding: 10px 14px;
       z-index: 40;
       display: none;
@@ -160,7 +143,7 @@
       border-radius: 5px;
       padding: 5px 12px;
       cursor: pointer;
-      font-size: 13px;
+      font-size: 16px;
       white-space: nowrap;
     }
     /* Настройки подсказок в паузе */
@@ -169,14 +152,14 @@
       align-items: center;
       justify-content: center;
       gap: 8px;
-      font-size: 13px;
+      font-size: 16px;
       margin: 4px 0;
       cursor: pointer;
     }
     .setrow input { accent-color: #ffd54a; }
     /* Переключатель языка в паузе */
     .langrow { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; }
-    .langrow .mbtn { display: inline-block; width: auto; flex: 1 1 auto; margin: 0; padding: 5px 10px; font-size: 12px; }
+    .langrow .mbtn { display: inline-block; width: auto; flex: 1 1 auto; margin: 0; padding: 5px 10px; font-size: 16px; }
     .langrow .mbtn.on { background: rgba(255,213,74,0.55); color: #fff; border-color: #ffd54a; font-weight: 600; }
     /* C11: обучение-чеклист */
     #tutorial {
@@ -187,7 +170,7 @@
       border: 1px solid rgba(255, 213, 74, 0.55);
       border-radius: 8px;
       color: #eee;
-      font: 12px 'Segoe UI', Arial, sans-serif;
+      font: 16px 'Segoe UI', Arial, sans-serif;
       padding: 10px 14px;
       z-index: 12;
       pointer-events: none;
@@ -196,7 +179,7 @@
       line-height: 1.9;
     }
     #tutorial.show { display: block; }
-    #tutorial h4 { color: #ffd54a; font-size: 13px; margin-bottom: 4px; }
+    #tutorial h4 { color: #ffd54a; font-size: 17px; margin-bottom: 4px; }
     #tutorial .done { color: #59ff73; text-decoration: line-through; opacity: 0.8; }
     #tutorial .reward { color: #ffd54a; }
     #hotbar {
@@ -211,8 +194,8 @@
       z-index: 12;
     }
     .hslot {
-      width: 58px;
-      height: 58px;
+      width: 88px;
+      height: 92px;
       background: rgba(0, 0, 0, 0.55);
       border: 2px solid rgba(255, 255, 255, 0.25);
       border-radius: 7px;
@@ -223,14 +206,14 @@
       position: relative;
       overflow: hidden;
       color: #eee;
-      font: 13px 'Segoe UI', Arial, sans-serif;
+      font: 16px 'Segoe UI', Arial, sans-serif;
       font-weight: 700;
     }
     .hslot.active { border-color: #ffd54a; box-shadow: 0 0 10px rgba(255, 213, 74, 0.6); }
     .hslot .sw { position: absolute; top: 6px; left: 6px; width: 14px; height: 14px; border-radius: 3px; border: 1px solid rgba(255, 255, 255, 0.35); }
     .hslot .tx { position: absolute; top: 3px; left: 50%; transform: translateX(-50%); width: 34px; height: 34px; border-radius: 4px; image-rendering: pixelated; }
     .hslot .cnt { padding-bottom: 3px; }
-    .hslot .nm { font-size: 9px; font-weight: 400; opacity: 0.9; padding: 0 2px 4px; text-align: center; line-height: 1.15; }
+    .hslot .nm { font-size: 16px; font-weight: 400; opacity: 0.9; padding: 0 3px 5px; text-align: center; line-height: 1.2; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
     #crosshair {
       position: fixed;
       top: 50%;
@@ -252,7 +235,7 @@
       transform: translate(-50%, -50%);
       background: rgba(0, 0, 0, 0.6);
       color: #ffd54a;
-      font: 14px 'Segoe UI', Arial, sans-serif;
+      font: 17px 'Segoe UI', Arial, sans-serif;
       padding: 10px 22px;
       border-radius: 20px;
       border: 1px solid rgba(255, 213, 74, 0.6);
@@ -266,14 +249,14 @@
     /* B6: полоса призрака — цена и управление у стройки, а не в hints */
     #ghostBar {
       position: fixed;
-      bottom: 84px;
+      top: 12px;
       left: 50%;
       transform: translateX(-50%);
       background: rgba(8, 10, 14, 0.85);
       border: 1px solid rgba(255, 213, 74, 0.55);
       border-radius: 8px;
       color: #eee;
-      font: 12px 'Segoe UI', Arial, sans-serif;
+      font: 16px 'Segoe UI', Arial, sans-serif;
       line-height: 1.6;
       padding: 7px 14px;
       pointer-events: none;
@@ -295,7 +278,7 @@
       border: 2px solid #ffd54a;
       border-radius: 10px;
       color: #eee;
-      font: 14px 'Segoe UI', Arial, sans-serif;
+      font: 17px 'Segoe UI', Arial, sans-serif;
       padding: 9px 16px;
       z-index: 12;
       display: none;
@@ -314,7 +297,7 @@
       border-radius: 6px;
       padding: 5px 14px;
       cursor: pointer;
-      font-size: 14px;
+      font-size: 16px;
       font-weight: 700;
       pointer-events: auto;
     }
@@ -329,7 +312,7 @@
       right: 12px;
       background: rgba(0, 0, 0, 0.55);
       color: #fff;
-      font: 12px 'Segoe UI', Arial, sans-serif;
+      font: 16px 'Segoe UI', Arial, sans-serif;
       border: 1px dashed rgba(255, 255, 255, 0.45);
       border-radius: 6px;
       padding: 6px 12px;
@@ -343,7 +326,7 @@
       right: 12px;
       background: rgba(0, 0, 0, 0.55);
       color: #fff;
-      font: 12px 'Segoe UI', Arial, sans-serif;
+      font: 16px 'Segoe UI', Arial, sans-serif;
       border: 1px solid rgba(255, 255, 255, 0.45);
       border-radius: 6px;
       padding: 6px 12px;
@@ -364,7 +347,7 @@
     .lvlOk { color: #7dff9b; font-weight: 600; }
     .lvlWarn { color: #ffd75e; font-weight: 600; }
     .lvlBad { color: #ff8080; font-weight: 600; }
-    .chint { opacity: 0.7; font-size: 12px; margin: 8px 0; }
+    .chint { opacity: 0.7; font-size: 16px; margin: 8px 0; }
     #cityBuildings { margin-top: 10px; display: flex; flex-direction: column; gap: 8px; }
     /* сортировка и фильтры построек города */
     #cityBldTools { display: flex; flex-direction: column; gap: 6px; margin: 8px 0 2px; }
@@ -375,7 +358,7 @@
       border: 1px solid rgba(255, 255, 255, 0.2);
       border-radius: 6px;
       padding: 4px 8px;
-      font-size: 12px;
+      font-size: 16px;
       outline: none;
     }
     #cityBldSort option { background: #14161c; }
@@ -386,7 +369,7 @@
       border: 1px solid rgba(255, 255, 255, 0.2);
       border-radius: 6px;
       padding: 4px 8px;
-      font-size: 12px;
+      font-size: 16px;
       outline: none;
     }
     #schemeSort option { background: #14161c; }
@@ -396,23 +379,23 @@
     .cbhead { display: flex; justify-content: space-between; gap: 8px; margin-bottom: 5px; }
     .cbar { height: 8px; background: rgba(0,0,0,0.55); border: 1px solid rgba(255,255,255,0.25); border-radius: 4px; overflow: hidden; }
     .cfill { height: 100%; background: #59ff73; }
-    .cbsub { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-top: 5px; font-size: 12px; opacity: 0.9; }
-    .cbsub button { background: rgba(255,213,74,0.2); color: #ffd54a; border: 1px solid rgba(255,213,74,0.5); border-radius: 5px; padding: 3px 10px; cursor: pointer; font-size: 12px; }
+    .cbsub { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-top: 5px; font-size: 16px; opacity: 0.9; }
+    .cbsub button { background: rgba(255,213,74,0.2); color: #ffd54a; border: 1px solid rgba(255,213,74,0.5); border-radius: 5px; padding: 3px 10px; cursor: pointer; font-size: 16px; }
     .cbsub button:disabled { opacity: 0.35; cursor: default; }
     .cbtake { display: flex; gap: 6px; flex-wrap: wrap; margin: 6px 0; }
-    .cbtake button { background: rgba(255,213,74,0.2); color: #ffd54a; border: 1px solid rgba(255,213,74,0.5); border-radius: 5px; padding: 3px 8px; cursor: pointer; font-size: 12px; }
+    .cbtake button { background: rgba(255,213,74,0.2); color: #ffd54a; border: 1px solid rgba(255,213,74,0.5); border-radius: 5px; padding: 3px 8px; cursor: pointer; font-size: 16px; }
     .cbtake button:disabled { opacity: 0.35; cursor: default; }
     .cbloan { display: block; margin: 6px 0; }
     .cbloan .clrow { display: flex; gap: 6px; flex-wrap: wrap; }
-    .cbloan label { flex: 1 1 90px; display: flex; flex-direction: column; gap: 2px; font-size: 11px; opacity: 0.85; }
-    .cbloan input { width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.35); border: 1px solid rgba(255,255,255,0.18); color: inherit; border-radius: 5px; padding: 4px 6px; font-size: 13px; }
-    .cbloan button { background: rgba(255,213,74,0.2); color: #ffd54a; border: 1px solid rgba(255,213,74,0.5); border-radius: 5px; padding: 4px 10px; cursor: pointer; font-size: 12px; }
+    .cbloan label { flex: 1 1 90px; display: flex; flex-direction: column; gap: 2px; font-size: 16px; opacity: 0.85; }
+    .cbloan input { width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.35); border: 1px solid rgba(255,255,255,0.18); color: inherit; border-radius: 5px; padding: 4px 6px; font-size: 16px; }
+    .cbloan button { background: rgba(255,213,74,0.2); color: #ffd54a; border: 1px solid rgba(255,213,74,0.5); border-radius: 5px; padding: 4px 10px; cursor: pointer; font-size: 16px; }
     .cbloan button:disabled { opacity: 0.35; cursor: default; }
-    .clquote { font-size: 11px; opacity: 0.75; margin: 4px 0; line-height: 1.4; }
+    .clquote { font-size: 16px; opacity: 0.75; margin: 4px 0; line-height: 1.4; }
     .clhint { opacity: 0.55; font-style: italic; }
-    .crow button { background: rgba(255,213,74,0.2); color: #ffd54a; border: 1px solid rgba(255,213,74,0.5); border-radius: 5px; padding: 2px 10px; cursor: pointer; font-size: 12px; }
+    .crow button { background: rgba(255,213,74,0.2); color: #ffd54a; border: 1px solid rgba(255,213,74,0.5); border-radius: 5px; padding: 2px 10px; cursor: pointer; font-size: 16px; }
     #labels { position: fixed; inset: 0; pointer-events: none; z-index: 11; overflow: hidden; }
-    .blabel { position: absolute; transform: translate(-50%, -100%); background: rgba(8, 10, 14, 0.82); border: 1px solid #fff; border-left-width: 4px; border-radius: 6px; color: #fff; font: 12px 'Segoe UI', Arial, sans-serif; padding: 4px 8px; white-space: nowrap; text-align: left; line-height: 1.45; }
+    .blabel { position: absolute; transform: translate(-50%, -100%); background: rgba(8, 10, 14, 0.82); border: 1px solid #fff; border-left-width: 4px; border-radius: 6px; color: #fff; font: 16px 'Segoe UI', Arial, sans-serif; padding: 4px 8px; white-space: nowrap; text-align: left; line-height: 1.45; }
     .panel {
       position: fixed;
       top: 50%;
@@ -427,7 +410,7 @@
       padding: 14px 16px;
       z-index: 30;
       color: #eee;
-      font: 13px 'Segoe UI', Arial, sans-serif;
+      font: 16px 'Segoe UI', Arial, sans-serif;
       display: none;
       user-select: none;
     }
@@ -445,12 +428,12 @@
     }
     #cityPanel.pinned h3:not(:first-child) { display: none; }
     #pauseMenu { text-align: center; min-width: 240px; }
-    #pauseMenu h3 { font-size: 18px; margin-bottom: 12px; }
-    .mbtn { display: block; width: 100%; margin: 6px 0; background: rgba(255,213,74,0.2); color: #ffd54a; border: 1px solid rgba(255,213,74,0.5); border-radius: 6px; padding: 8px 12px; cursor: pointer; font: 14px 'Segoe UI', Arial, sans-serif; }
+    #pauseMenu h3 { font-size: 20px; margin-bottom: 12px; }
+    .mbtn { display: block; width: 100%; margin: 6px 0; background: rgba(255,213,74,0.2); color: #ffd54a; border: 1px solid rgba(255,213,74,0.5); border-radius: 6px; padding: 8px 12px; cursor: pointer; font: 16px 'Segoe UI', Arial, sans-serif; }
     .mbtn:hover { background: rgba(255,213,74,0.35); }
     #pauseMenu .hint { margin-top: 10px; }
-    .panel h3 { margin: 0 0 10px; font-size: 14px; color: #ffd54a; font-weight: 600; }
-    .panel .hint { opacity: 0.7; font-size: 12px; margin-bottom: 10px; }
+    .panel h3 { margin: 0 0 10px; font-size: 18px; color: #ffd54a; font-weight: 600; }
+    .panel .hint { opacity: 0.7; font-size: 16px; margin-bottom: 10px; }
     #picker { max-width: min(800px, 94vw); }
     #pickCats { margin-bottom: 8px; }
     #pickGrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 6px; }
@@ -463,14 +446,14 @@
       border-radius: 6px;
       padding: 5px 7px;
       cursor: pointer;
-      font-size: 12px;
+      font-size: 16px;
     }
     .pick:hover { border-color: #ffd54a; }
     .pick .sw { width: 16px; height: 16px; border-radius: 3px; border: 1px solid rgba(255,255,255,0.35); flex-shrink: 0; }
     .pick { min-width: 0; }
     .pick .nm { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
     .pick .tx { width: 34px; height: 34px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.35); flex-shrink: 0; image-rendering: pixelated; background-color: rgba(0,0,0,0.35); }
-    #pickSearch { width: 100%; box-sizing: border-box; margin-bottom: 10px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; color: #eee; font: 13px 'Segoe UI', Arial, sans-serif; padding: 6px 10px; outline: none; }
+    #pickSearch { width: 100%; box-sizing: border-box; margin-bottom: 10px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; color: #eee; font: 16px 'Segoe UI', Arial, sans-serif; padding: 6px 10px; outline: none; }
     #pickSearch:focus { border-color: #ffd54a; }
     .schemeRow {
       display: flex;
@@ -484,7 +467,7 @@
     }
     .schemeRow.selected { border-color: #ffd54a; }
     .schemeRow .nm { flex: 1; }
-    .schemeRow .dim { opacity: 0.65; font-size: 12px; }
+    .schemeRow .dim { opacity: 0.65; font-size: 16px; }
     .schemeRow button {
       background: rgba(255, 213, 74, 0.2);
       color: #ffd54a;
@@ -492,7 +475,7 @@
       border-radius: 5px;
       padding: 4px 10px;
       cursor: pointer;
-      font-size: 12px;
+      font-size: 16px;
     }
     .schemeRow button:hover { background: rgba(255, 213, 74, 0.4); }
     .panel.wide { max-width: min(940px, 94vw); }
@@ -519,7 +502,7 @@
       border: 1px solid rgba(255, 255, 255, 0.2);
       border-radius: 6px;
       color: #eee;
-      font: 13px 'Segoe UI', Arial, sans-serif;
+      font: 16px 'Segoe UI', Arial, sans-serif;
       padding: 7px 10px;
       margin-bottom: 8px;
       outline: none;
@@ -533,7 +516,7 @@
       border: 1px solid rgba(255, 255, 255, 0.16);
       border-radius: 12px;
       color: #ddd;
-      font-size: 12px;
+      font-size: 16px;
       line-height: 1.6;
       padding: 3px 10px;
       cursor: pointer;
@@ -549,6 +532,10 @@
       overflow-x: hidden;
       padding-right: 2px;
     }
+    /* Один скролл в витрине: панель — flex-колонка без своего скролла,
+       шапка и фильтры закреплены, крутится только список плиток */
+    #schemesPanel.show { display: flex; flex-direction: column; overflow: hidden; }
+    #schemesPanel #schemeList.tiles { flex: 1 1 auto; min-height: 120px; max-height: none; }
     /* виртуализация: в DOM только видимое окно + overscan, высота — спейсером */
     #schemeSpacer { position: relative; }
     #schemeList.tiles .tile { position: absolute; top: 0; left: 0; }
@@ -579,9 +566,9 @@
       background: rgba(255, 255, 255, 0.04);
       border-radius: 5px;
     }
-    .tile .tn { font-size: 12px; font-weight: 600; margin: 5px 0 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .tile .td { font-size: 11px; opacity: 0.65; }
-    .tile .tt { font-size: 11px; color: #ffd54a; opacity: 0.9; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .tile .tn { font-size: 16px; font-weight: 600; margin: 5px 0 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .tile .td { font-size: 16px; opacity: 0.65; }
+    .tile .tt { font-size: 16px; color: #ffd54a; opacity: 0.9; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     /* B9: звезда избранного на плитке */
     .tile { position: relative; }
     .tile .fav {
@@ -594,7 +581,7 @@
       border: 1px solid rgba(255, 255, 255, 0.3);
       border-radius: 6px;
       color: #888;
-      font-size: 14px;
+      font-size: 16px;
       cursor: pointer;
       z-index: 2;
       line-height: 1;
@@ -614,7 +601,7 @@
       border-radius: 8px;
       padding: 8px 12px;
       margin-bottom: 8px;
-      font-size: 12px;
+      font-size: 16px;
     }
     #schemeBuildBar.show { display: flex; }
     #schemeBuildBar button {
@@ -624,7 +611,7 @@
       border-radius: 5px;
       padding: 4px 12px;
       cursor: pointer;
-      font-size: 12px;
+      font-size: 16px;
     }
     #schemeBuildBar button:hover { background: rgba(255, 213, 74, 0.4); }
     #dropOverlay {
@@ -642,6 +629,54 @@
       pointer-events: none;
     }
     #dropOverlay.show { display: flex; }
+    /* Визуальные одноразовые подсказки (coach marks): большой текст + стрелка + обводка цели */
+    #coach { position: fixed; inset: 0; z-index: 70; pointer-events: none; display: none; }
+    #coach.show { display: block; }
+    #coachRing {
+      position: fixed; display: none;
+      border: 3px solid #ffd54a; border-radius: 12px;
+      box-shadow: 0 0 0 4px rgba(255, 213, 74, 0.25), 0 0 26px rgba(255, 213, 74, 0.85);
+      animation: coachRing 1.1s ease-in-out infinite;
+    }
+    #coach.aim #coachRing { display: block; }
+    @keyframes coachRing {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.045); opacity: 0.8; }
+    }
+    #coachBubble {
+      position: fixed;
+      max-width: min(520px, 88vw);
+      background: rgba(8, 10, 14, 0.96);
+      border: 2px solid #ffd54a;
+      border-radius: 14px;
+      color: #fff;
+      font: 700 24px/1.35 'Segoe UI', Arial, sans-serif;
+      padding: 14px 20px;
+      text-align: center;
+      text-wrap: balance;
+      box-shadow: 0 6px 32px rgba(0, 0, 0, 0.6), 0 0 22px rgba(255, 213, 74, 0.35);
+      animation: coachPop 0.35s ease-out;
+    }
+    @keyframes coachPop {
+      from { transform: scale(0.7); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+    #coachArrow {
+      position: fixed; display: none;
+      color: #ffd54a; font-size: 36px; line-height: 1;
+      text-shadow: 0 0 12px rgba(255, 213, 74, 0.8), 0 2px 0 #000;
+    }
+    #coach.aim #coachArrow { display: block; }
+    #coach.aim #coachArrow.down { animation: coachBounceDown 0.8s ease-in-out infinite; }
+    #coach.aim #coachArrow.up { animation: coachBounceUp 0.8s ease-in-out infinite; }
+    @keyframes coachBounceDown {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(12px); }
+    }
+    @keyframes coachBounceUp {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-12px); }
+    }
   </style>
 </head>
 <body>
@@ -694,17 +729,16 @@
     <div class="hint" data-i18n="hintsLabel">Подсказки:</div>
     <label class="setrow"><input type="checkbox" id="setTutorial" checked /> <span data-i18n="setTut">Обучение «Первые шаги»</span></label>
     <label class="setrow"><input type="checkbox" id="setTabHint" checked /> <span data-i18n="setTab">Подсказка «Нажми TAB»</span></label>
+    <label class="setrow"><input type="checkbox" id="setCoach" checked /> <span data-i18n="setCoach">Большие подсказки</span></label>
     <div class="hint" data-i18n="langLabel">Язык интерфейса:</div>
     <div class="setrow langrow">
       <button class="mbtn langbtn" data-lang="auto" data-i18n="langAuto">Как в системе</button>
       <button class="mbtn langbtn" data-lang="ru" data-i18n="langRu">Русский</button>
       <button class="mbtn langbtn" data-lang="en" data-i18n="langEn">English</button>
     </div>
-    <div class="hint" data-i18n="pauseHint">TAB — постройки и город · E — блоки · V — подписи · G — рамки · P — пауза</div>
-  </div>
-  <div id="picker" class="panel">
+    </div>
+    <div id="picker" class="panel">
     <h3 data-i18n="blocksTitle">Блоки песочницы</h3>
-    <div class="hint" data-i18n="blocksHint">Клик — положить в выбранный слот (1–9) · E — закрыть</div>
     <div id="pickCats"></div>
     <input id="pickSearch" type="text" data-i18n-ph="blockSearchPh" placeholder="Поиск блока…" autocomplete="off" />
     <div id="pickGrid"></div>
@@ -726,11 +760,11 @@
     <div id="schemeEco" style="margin:8px 0"></div>
     <div id="schemeTags"></div>
     <div id="schemeBuildBar"></div>
-    <div class="hint" data-i18n="schemeHint">Клик — выбрать (панель остаётся, можно сравнить) · T — к строительству · R — поворот · ЛКМ — поставить · ПКМ — отмена · Q — выйти</div>
     <div id="schemeList" class="tiles"></div>
   </div>
   <input type="file" id="schemFile" accept=".schem,.schematic,.nbt" hidden />
   <div id="dropOverlay" data-i18n="dropOverlay">Перетащите файл схемы (.schem / .schematic / .nbt)</div>
+  <div id="coach"><div id="coachRing"></div><div id="coachBubble"></div><div id="coachArrow"></div></div>
   <canvas id="scene"></canvas>
 
   <script type="module" src="/src/main.js"></script>
