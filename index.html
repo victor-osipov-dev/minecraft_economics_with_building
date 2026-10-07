@@ -335,21 +335,6 @@
       0%, 100% { box-shadow: 0 0 0 rgba(255, 213, 74, 0); }
       50% { box-shadow: 0 0 18px rgba(255, 213, 74, 0.7); }
     }
-    #loadBtn {
-      position: fixed;
-      top: 12px;
-      right: 12px;
-      background: rgba(0, 0, 0, 0.55);
-      color: #fff;
-      font: 16px 'Segoe UI', Arial, sans-serif;
-      border: 1px dashed rgba(255, 255, 255, 0.45);
-      border-radius: 6px;
-      padding: 6px 12px;
-      cursor: pointer;
-      z-index: 14;
-      user-select: none;
-    }
-    #loadBtn:hover { background: rgba(255, 213, 74, 0.25); border-color: #ffd54a; }
     .topbtn {
       position: fixed;
       right: 12px;
@@ -365,11 +350,11 @@
     }
     .topbtn:hover { background: rgba(255, 213, 74, 0.25); border-color: #ffd54a; }
     .topbtn.active { background: rgba(255, 213, 74, 0.35); border-color: #ffd54a; color: #ffd54a; }
-    #viewBtn { top: 48px; }
-    #framesBtn { top: 84px; }
-    #blocksBtn { top: 120px; }
-    #schemesBtn { top: 156px; }
-    #cityBtn { top: 192px; }
+    #viewBtn { top: 12px; }
+    #framesBtn { top: 48px; }
+    #blocksBtn { top: 84px; }
+    #schemesBtn { top: 120px; }
+    #cityBtn { top: 156px; }
     .crow { display: flex; justify-content: space-between; gap: 10px; padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.07); }
     .crow b { font-weight: 600; }
     .cdim { opacity: 0.6; font-weight: 400; }
@@ -722,7 +707,6 @@
   <div id="ghostBar"></div>
   <div id="msg"></div>
   <div id="labels"></div>
-  <button id="loadBtn" data-i18n="loadScheme" data-i18n-title="loadSchemeTitle">Загрузить схему</button>
   <button id="viewBtn" class="topbtn active" data-i18n-title="labelsTitle">Подписи: вкл (V)</button>
   <button id="framesBtn" class="topbtn active" data-i18n-title="framesTitle">Рамки: вкл (G)</button>
   <button id="blocksBtn" class="topbtn" data-i18n="blocksBtn" data-i18n-title="blocksBtnTitle">Блоки (E)</button>

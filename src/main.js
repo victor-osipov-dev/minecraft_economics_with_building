@@ -73,6 +73,11 @@ function applyI18n() {
   for (const el of document.querySelectorAll("[data-i18n-ph]")) {
     el.placeholder = t(el.dataset.i18nPh);
   }
+  // Сброс кэшей динамических строк — перерисуются на новом языке сразу,
+  // даже на паузе (кадровый цикл кэширует деньги/день/верхний хинт).
+  lastMoneyBar = null;
+  lastDayBar = -1;
+  lastHint = null;
   setLabelsOn(labelsOn);
   setShowFrames(showFrames);
   renderTutorial();
@@ -88,8 +93,14 @@ function applyI18n() {
   renderPicker();
   if (typeof syncLangButtons === "function") syncLangButtons();
   if (cityPanelEl.classList.contains("show")) renderCity();
-  if (schemesPanelEl.classList.contains("show")) buildSchemeList();
+  if (schemesPanelEl.classList.contains("show")) { buildSchemeList(); updateBuildBar(); }
   updateMoneyBar();
+  updateHint(); // верхний контекстный хинт — сразу на новом языке
+  updateGhostBar(); // полоса призрака и баннер черновиков (видны и на паузе)
+  refreshSaveInfo(); // строка сейва в меню паузы
+  renderMsgLog(); // стек событий слева снизу
+  if (lastToast && msgEl.classList.contains("show")) msgEl.textContent = msgText(lastToast);
+  coachHide(); // висящий пузырь на старом языке — прячем
 }
 
 // Яндекс: кнопка входа (с объяснением выгоды, п.1.2.1) и имя игрока.
@@ -213,29 +224,46 @@ torchMat.backFaceCulling = false;
 
 // ---------- message toast ----------
 // C13: лог последних 5 сообщений (клик по записи повторяет тост).
+// Храним ключ+переменные (значения могут быть {key,vars} для вложенного
+// перевода) — стек и тост перерисовываются при смене языка.
 const msgEl = document.getElementById("msg");
 let msgTimer = null;
 const msgLogEl = document.getElementById("msgLog");
 const msgLog = [];
-function showMsg(text) {
+let lastToast = null;
+function renderMsgVars(vars) {
+  if (!vars) return vars;
+  const out = {};
+  for (const [k, v] of Object.entries(vars)) {
+    out[k] = (v && typeof v === "object" && typeof v.key === "string")
+      ? t(v.key, renderMsgVars(v.vars))
+      : v;
+  }
+  return out;
+}
+const msgText = (it) => t(it.key, renderMsgVars(it.vars));
+function showMsg(key, vars) {
+  const item = { key, vars: vars || null };
+  const text = msgText(item);
+  lastToast = item;
   msgEl.textContent = text;
   msgEl.classList.add("show");
   if (msgTimer) clearTimeout(msgTimer);
   msgTimer = setTimeout(() => msgEl.classList.remove("show"), 3200);
-  if (msgLog[0] !== text) {
-    msgLog.unshift(text);
+  if (msgLog.length === 0 || msgText(msgLog[0]) !== text) {
+    msgLog.unshift(item);
     if (msgLog.length > 5) msgLog.pop();
   }
   renderMsgLog();
 }
 function renderMsgLog() {
   msgLogEl.innerHTML = "";
-  msgLog.forEach((txt, i) => {
+  msgLog.forEach((it, i) => {
     const d = document.createElement("div");
     d.className = "logItem" + (i === 0 ? " fresh" : "");
-    d.textContent = txt;
+    d.textContent = msgText(it);
     d.title = t("showAgain");
-    d.addEventListener("click", () => showMsg(txt));
+    d.addEventListener("click", () => showMsg(it.key, it.vars));
     msgLogEl.appendChild(d);
   });
 }
@@ -427,9 +455,8 @@ function tutorialGain(id, silent) {
   if (n >= TUT_STEPS.length) tutorialComplete = true;
   renderTutorial();
   if (!silent) {
-    showMsg(n >= TUT_STEPS.length
-      ? t("tutDone")
-      : t("tutStep", { n, total: TUT_STEPS.length, reward: TUT_REWARD }));
+    if (n >= TUT_STEPS.length) showMsg("tutDone");
+    else showMsg("tutStep", { n, total: TUT_STEPS.length, reward: TUT_REWARD });
   }
 }
 // Проверка шагов по состоянию города; silent — для загрузки (без наград).
@@ -559,13 +586,13 @@ function placeSchematic(plan, cx, cz, floorY = 1, replaceWorld = false) {
 
 function importSchematicBytes(bytes, fileName) {
   if (!mapReady) {
-    showMsg(t("worldWait"));
+    showMsg("worldWait");
     return;
   }
   try {
     const plan = parseSchematicFile(bytes);
     if (!plan || plan.blocks.length === 0) {
-      showMsg(t("noBlocks"));
+      showMsg("noBlocks");
       return;
     }
     const cx = Math.round(player.x);
@@ -585,10 +612,10 @@ function importSchematicBytes(bytes, fileName) {
       placed: res.placed,
     });
     registerRecord(rec, resolveType({ file: fileName, name: fileName }));
-    showMsg(t("schemePlaced", { name: fileName, format: plan.format, n: res.placed, dims: `${plan.W}×${plan.H}×${plan.L}` }));
+    showMsg("schemePlaced", { name: fileName, format: plan.format, n: res.placed, dims: `${plan.W}×${plan.H}×${plan.L}` });
   } catch (err) {
     console.error(t("dbgSchemeLoad"), err);
-    showMsg(t("schemeLoadErr", { err: err.message }));
+    showMsg("schemeLoadErr", { err: err.message });
   }
 }
 
@@ -598,11 +625,11 @@ function readSchematicFile(file) {
     .then((buf) => importSchematicBytes(new Uint8Array(buf), file.name))
     .catch((error) => {
     console.error(t("dbgSchemeReadFile"), error);
-    showMsg(t("schemeReadErr", { err: error.message || t("schemeUnknownErr") }));
+    showMsg("schemeReadErr", { err: error.message || { key: "schemeUnknownErr" } });
     });
 }
 
-loadBtnEl.addEventListener("click", () => schemInputEl.click());
+if (loadBtnEl) loadBtnEl.addEventListener("click", () => schemInputEl.click());
 
 schemInputEl.addEventListener("change", () => {
   readSchematicFile(schemInputEl.files?.[0]);
@@ -1317,7 +1344,7 @@ cityPanelEl.addEventListener("click", async (e) => {
     showResidents = !showResidents;
     syncResidents();
     renderCity();
-    showMsg(showResidents ? t("residentsShown") : t("residentsHidden"));
+    showMsg(showResidents ? "residentsShown" : "residentsHidden");
     return;
   }
   // Фильтры построек: повторный клик по активному сбрасывает.
@@ -1339,9 +1366,8 @@ cityPanelEl.addEventListener("click", async (e) => {
   if (pre && !pre.disabled) {
     const [amount, days] = pre.dataset.loanPreset.split(",").map(Number);
     const res = takeLoan(city, { amount, days });
-    showMsg(res.ok
-      ? t("loanTaken", { owed: Math.round(res.owed), money: fmtMoney(city.money) })
-      : t("loanDenied", { reason: t(res.reason) }));
+    if (res.ok) showMsg("loanTaken", { owed: Math.round(res.owed), money: fmtMoney(city.money) });
+    else showMsg("loanDenied", { reason: { key: res.reason } });
     if (res.ok) { loanDraft.amount = amount; loanDraft.days = days; }
     if (res.ok) coachOnce("loan", { text: t("coachLoan", { n: days }), target: "#moneyBar" });
     refreshTileFunds();
@@ -1352,9 +1378,8 @@ cityPanelEl.addEventListener("click", async (e) => {
   if (take && !take.disabled) {
     loanDraftSync();
     const res = takeLoan(city, { amount: loanDraft.amount, days: loanDraft.days });
-    showMsg(res.ok
-      ? t("loanTaken", { owed: Math.round(res.owed), money: fmtMoney(city.money) })
-      : t("loanDenied", { reason: t(res.reason) }));
+    if (res.ok) showMsg("loanTaken", { owed: Math.round(res.owed), money: fmtMoney(city.money) });
+    else showMsg("loanDenied", { reason: { key: res.reason } });
     if (res.ok) loanDraft.amount = null; // новая сумма под новый лимит
     if (res.ok) coachOnce("loan", { text: t("coachLoan", { n: loanDraft.days }), target: "#moneyBar" });
     refreshTileFunds();
@@ -1364,7 +1389,8 @@ cityPanelEl.addEventListener("click", async (e) => {
   const pay = e.target.closest("[data-loan-repay]");
   if (pay && !pay.disabled) {
     const res = repayLoan(city, Number(pay.dataset.loanRepay));
-    showMsg(res.ok ? t("repaidEarly", { cost: fmtMoney(res.cost) }) : t("noMoney"));
+    if (res.ok) showMsg("repaidEarly", { cost: fmtMoney(res.cost) });
+    else showMsg("noMoney");
     renderCity();
     return;
   }
@@ -1374,9 +1400,9 @@ cityPanelEl.addEventListener("click", async (e) => {
     const earned = await yg.rewarded();
     if (earned) {
       city.money = Math.round((city.money + YG_REWARD) * 100) / 100;
-      showMsg(t("ygRewarded", { sum: fmtMoney(YG_REWARD) }));
+      showMsg("ygRewarded", { sum: fmtMoney(YG_REWARD) });
     } else {
-      showMsg(t("ygNoAdv"));
+      showMsg("ygNoAdv");
     }
     refreshTileFunds();
     renderCity();
@@ -1392,10 +1418,12 @@ cityPanelEl.addEventListener("click", async (e) => {
         restored = await restoreBuildingBlocks(rec);
         refreshRecordLabel(rec);
       }
-      showMsg(t("repaired", { cost: fmtMoney(res.cost) }) +
-        (restored > 0 ? t("repairedBlocks", { n: restored }) : ""));
+      showMsg("repaired", {
+        cost: fmtMoney(res.cost),
+        tail: restored > 0 ? { key: "repairedBlocks", vars: { n: restored } } : "",
+      });
     } else {
-      showMsg(t("noMoneyRepair"));
+      showMsg("noMoneyRepair");
     }
     renderCity();
     return;
@@ -1417,7 +1445,7 @@ cityPanelEl.addEventListener("change", (e) => {
   else if (id === "bizTaxRange") city.bizTax = rate;
   else city.indTax = rate;
   const key = id === "taxRange" ? "taxSet" : id === "bizTaxRange" ? "taxSetBiz" : "taxSetInd";
-  showMsg(t(key, { rate: rate.toFixed(2) }));
+  showMsg(key, { rate: rate.toFixed(2) });
   renderCity();
 });
 
@@ -1497,7 +1525,7 @@ async function demolishBuilding(id) {
   refreshTileFunds();
   syncResidents();
   if (cityPanelEl.classList.contains("show")) renderCity();
-  showMsg(t("demolished", { name, n: cleared, sum: fmtMoney(refund) }));
+  showMsg("demolished", { name, n: cleared, sum: fmtMoney(refund) });
 }
 
 const pauseMenuEl = document.getElementById("pauseMenu");
@@ -1547,7 +1575,7 @@ function resetGame() {
   closePanels();
   setPaused(false);
   refreshTileFunds();
-  showMsg(t("newGame")); // Новая игра: пустой мир и $10 000
+  showMsg("newGame"); // Новая игра: пустой мир и $10 000
 }
 
 // ---------- сохранение/загрузка (этап 24): город отдельно от блоков ----------
@@ -1592,12 +1620,12 @@ async function saveGame({ silent = false } = {}) {
     }
     // Автосейвы молчат; ошибку показываем всегда.
     if (!silent) {
-      showMsg(t(cloud ? "savedCloud" : "saved",
-        { day: city.day, n: city.buildings.length, kb: (json.length / 1024).toFixed(0) }));
+      if (cloud) showMsg("savedCloud", { day: city.day, n: city.buildings.length, kb: (json.length / 1024).toFixed(0) });
+      else showMsg("saved", { day: city.day, n: city.buildings.length, kb: (json.length / 1024).toFixed(0) });
     }
   } catch (e) {
     console.error(e);
-    showMsg(t("saveFail", { err: e.message || e }));
+    showMsg("saveFail", { err: e.message || e });
   }
   refreshSaveInfo();
 }
@@ -1663,10 +1691,10 @@ function applyCloudProfile(p) {
     checkTutorial(true);
     closePanels();
     setPaused(false);
-    showMsg(t("loaded", { day: city.day, n: 0 }));
+    showMsg("loaded", { day: city.day, n: 0 });
   } catch (e) {
     console.error(e);
-    showMsg(t("loadFail", { err: e.message || e }));
+    showMsg("loadFail", { err: e.message || e });
   }
   refreshSaveInfo();
 }
@@ -1688,14 +1716,14 @@ async function loadGame() {
         }
       }
       if (!parsed) {
-        showMsg(t("noSavesLoad"));
+        showMsg("noSavesLoad");
         return;
       }
     } else {
       parsed = parseSave(raw);
     }
   } catch (e) {
-    showMsg(t("loadErr", { err: e.message || e }));
+    showMsg("loadErr", { err: e.message || e });
     return;
   }
   try {
@@ -1763,10 +1791,10 @@ async function loadGame() {
     tutorialReset();
     checkTutorial(true); // загрузка: шаги отмечаем молча, без наград
     closePanels();
-    showMsg(t("loaded", { day: city.day, n: city.buildings.length }));
+    showMsg("loaded", { day: city.day, n: city.buildings.length });
   } catch (e) {
     console.error(e);
-    showMsg(t("loadFail", { err: e.message || e }));
+    showMsg("loadFail", { err: e.message || e });
   }
   refreshSaveInfo();
 }
@@ -1792,13 +1820,13 @@ function tickCity() {
     if (city.last.milestonesHit) {
       for (const mid of city.last.milestonesHit) {
         const def = MILESTONES.find((x) => x.id === mid);
-        showMsg(t("milestone", { name: mstoneName(mid), sum: fmtMoney(def ? def.bonus : 0) }));
+        showMsg("milestone", { name: mstoneName(mid), sum: fmtMoney(def ? def.bonus : 0) });
         yg.submitPopulation(city.population);
       }
     }
     if (city.last.fires) {
       for (const f of city.last.fires) {
-        showMsg(t("fire", { name: f.name, hp: Math.round(f.health) }));
+        showMsg("fire", { name: f.name, hp: Math.round(f.health) });
         const rec = buildings.find((b) => b.cityId === f.id);
         if (rec) refreshRecordLabel(rec);
       }
@@ -1813,7 +1841,7 @@ function tickCity() {
     yg.fullscreenAdv().then(() => {
       if (city === c && city.bankrupt && mapReady) {
         setPaused(true);
-        showMsg(t("bankrupt", { money: fmtMoney(city.money) }));
+        showMsg("bankrupt", { money: fmtMoney(city.money) });
       }
     });
   } else if (city.money >= BANKRUPT_AT) {
@@ -1830,20 +1858,20 @@ const warnLastDay = {};
 function cityWarnings() {
   const l = city.last;
   if (!l) return;
-  const say = (key, msg, every) => {
+  const say = (key, msgKey, vars, every) => {
     if (city.day - (warnLastDay[key] ?? -Infinity) < every) return false;
     warnLastDay[key] = city.day;
-    showMsg(msg);
+    showMsg(msgKey, vars);
     return true;
   };
-  if (l.hunger) { say("hunger", t("warnHunger"), 5); return; }
+  if (l.hunger) { say("hunger", "warnHunger", null, 5); return; }
   if (Number.isFinite(l.foodNet) && l.foodNet < 0 && city.population > 0) {
     const days = Math.floor(city.food / Math.max(1, city.population * FOOD_PER_CAPITA));
-    if (days <= 20 && say("food", t("warnFoodLow", { days }), 10)) return;
+    if (days <= 20 && say("food", "warnFoodLow", { days }, 10)) return;
   }
-  if (l.bankrupts > 0 && say("bankrupt", t("warnBankrupt", { n: l.bankrupts }), 10)) return;
-  if (city.energy <= 0 && say("energy", t("warnNoEnergy"), 10)) return;
-  if (city.water <= 0) say("water", t("warnNoWater"), 10);
+  if (l.bankrupts > 0 && say("bankrupt", "warnBankrupt", { n: l.bankrupts }, 10)) return;
+  if (city.energy <= 0 && say("energy", "warnNoEnergy", null, 10)) return;
+  if (city.water <= 0) say("water", "warnNoWater", null, 10);
 }
 
 // ---------- визуальные жители: кружочки, не источник истины ----------
@@ -1990,13 +2018,19 @@ function setPaused(on) {
     yg.playStart();
   }
   if (on && document.pointerLockElement) document.exitPointerLock();
+  // Кадровый цикл на паузе стоит (if (paused) return), поэтому синкаем
+  // оверлеи вручную — иначе хинты замирают на старом языке/видимости.
+  updateHint();
+  updateTabHint();
+  updateMoneyBar();
+  lockHintEl.classList.remove("show");
 }
 
 function resumeGame() {
   setPaused(false);
   const req = canvas.requestPointerLock?.();
   // Chrome запрещает захват сразу после выхода по Esc (~1.2 с): ловим отказ.
-  if (req && req.catch) req.catch(() => showMsg(t("waitResume")));
+  if (req && req.catch) req.catch(() => showMsg("waitResume"));
 }
 
 function togglePicker() {
@@ -2429,12 +2463,12 @@ function createTile(item) {
     tile.addEventListener("click", () => {
       const url = schemeUrlByFile[item.file];
       if (!url) {
-        showMsg(t("noFile"));
+        showMsg("noFile");
         return;
       }
       const live = schemeBuildCost(item, { W: item.w, H: item.h, L: item.l });
       if (live && live.cost > city.money) {
-        showMsg(t("needMoney", { need: fmtMoney(live.cost), have: fmtMoney(city.money) }));
+        showMsg("needMoney", { need: fmtMoney(live.cost), have: fmtMoney(city.money) });
         return;
       }
       selectedSchemeFile = item.file;
@@ -2505,7 +2539,7 @@ if (schemeSortEl) {
 }
 
 async function selectScheme(url, name) {
-  showMsg(t("reading"));
+  showMsg("reading");
   try {
     let plan = planCache.get(url);
     if (!plan) {
@@ -2516,7 +2550,7 @@ async function selectScheme(url, name) {
       planCache.set(url, plan);
     }
     if (!plan.blocks.length) {
-      showMsg(t("noBlocks"));
+      showMsg("noBlocks");
       return;
     }
     previewPlan = { plan, name, rot: 0, rotated: plan };
@@ -2532,10 +2566,10 @@ async function selectScheme(url, name) {
       buildSchemeLists();
       if (schemeFilter.list === "recent") renderSchemeTiles();
     }
-    showMsg(t("selectedHint", { name: previewDispName(), dims: `${plan.W}×${plan.H}×${plan.L}` }));
+    showMsg("selectedHint", { name: previewDispName(), dims: `${plan.W}×${plan.H}×${plan.L}` });
   } catch (err) {
     console.error(t("dbgSchemeRead"), err);
-    showMsg(t("schemeErr", { err: err.message }));
+    showMsg("schemeErr", { err: err.message });
   }
 }
 
@@ -2567,7 +2601,7 @@ function closeSchemesToBuild() {
   if (previewPlan) {
     coachOnce("build", { text: t("coachBuild"), target: "#ghostBar" });
     const req = canvas.requestPointerLock?.();
-    if (req && req.catch) req.catch(() => showMsg(t("clickToLock")));
+    if (req && req.catch) req.catch(() => showMsg("clickToLock"));
   }
 }
 
@@ -2630,7 +2664,7 @@ function activatePending() {
   placedStack = [];
   for (const rec of buildings) refreshRecordLabel(rec);
   if (cityPanelEl.classList.contains("show")) renderCity();
-  if (n > 0) showMsg(t("activated", { n }));
+  if (n > 0) showMsg("activated", { n });
 }
 
 // ПКМ в режиме построек: снести последнюю постановку целиком, вернуть деньги.
@@ -2642,12 +2676,12 @@ function undoLastPlaced() {
   if (ghostFixed) {
     ghostFixed = false;
     updateGhostBar();
-    showMsg(t("unpinned"));
+    showMsg("unpinned");
     return;
   }
   const u = placedStack.pop();
   if (!u) {
-    showMsg(t("nothingUndo"));
+    showMsg("nothingUndo");
     return;
   }
   let cleared = 0;
@@ -2668,8 +2702,10 @@ function undoLastPlaced() {
   updateGhostBar();
   if (cityPanelEl.classList.contains("show")) renderCity();
   const left = placedStack.length;
-  showMsg(t("undone", { name: bldName(u.rec), n: cleared, sum: fmtMoney(u.cost) }) +
-    (left > 0 ? t("undoneLeft", { left }) : ""));
+  showMsg("undone", {
+    name: bldName(u.rec), n: cleared, sum: fmtMoney(u.cost),
+    tail: left > 0 ? { key: "undoneLeft", vars: { left } } : "",
+  });
 }
 
 // B8: выравнивание площадки под фундамент (клавиша F).
@@ -2712,15 +2748,15 @@ function levelGround() {
   const lv = levelPreview();
   if (!b || !lv) return;
   if (lv.tooBig) {
-    showMsg(t("areaTooBig"));
+    showMsg("areaTooBig");
     return;
   }
   if (lv.cells === 0) {
-    showMsg(t("areaFlat"));
+    showMsg("areaFlat");
     return;
   }
   if (city.money < lv.cost) {
-    showMsg(t("noMoneyLevel", { need: fmtMoney(lv.cost), have: fmtMoney(city.money) }));
+    showMsg("noMoneyLevel", { need: fmtMoney(lv.cost), have: fmtMoney(city.money) });
     return;
   }
   for (let x = b.x0; x < b.x0 + b.W; x++) {
@@ -2738,7 +2774,7 @@ function levelGround() {
   world.flushMeshes(scene, blockMat, cutoutMat, alphaMat, torchMat);
   refreshTileFunds();
   updateGhostBar();
-  showMsg(t("leveled", { cut: lv.cut, fill: lv.fill, cost: fmtMoney(lv.cost) }));
+  showMsg("leveled", { cut: lv.cut, fill: lv.fill, cost: fmtMoney(lv.cost) });
 }
 
 // B6: полоса призрака — цена и управление видны в мире, а не в hints.
@@ -2791,7 +2827,7 @@ function exitBuildMode() {
   if (!previewPlan) return;
   const n = city.buildings.filter((b) => b.active === false).length;
   cancelPreview();
-  if (n === 0) showMsg(t("buildModeOff"));
+  if (n === 0) showMsg("buildModeOff");
 }
 
 function rotatePreview() {
@@ -2802,12 +2838,12 @@ function rotatePreview() {
   updateBuildBar();
   updateGhostBar();
   const r = previewPlan.rotated;
-  showMsg(t("rotated", { name: previewDispName(), deg: previewPlan.rot * 90, dims: `${r.W}×${r.H}×${r.L}` }));
+  showMsg("rotated", { name: previewDispName(), deg: previewPlan.rot * 90, dims: `${r.W}×${r.H}×${r.L}` });
 }
 
 function placePreview() {
   if (!previewAnchor) {
-    showMsg(t("aimBlock"));
+    showMsg("aimBlock");
     return;
   }
   try {
@@ -2818,7 +2854,7 @@ function placePreview() {
     const quote = schemeBuildCost(item, r);
     const typeId = quote ? quote.typeId : "generic";
     if (quote && city.money < quote.cost) {
-      showMsg(t("needMoneyCity", { need: fmtMoney(quote.cost), have: fmtMoney(city.money) }));
+      showMsg("needMoneyCity", { need: fmtMoney(quote.cost), have: fmtMoney(city.money) });
       return;
     }
     const res = pasteSchematic(world, r, previewAnchor.x, previewAnchor.z, previewAnchor.y, { clear: false });
@@ -2851,10 +2887,10 @@ function placePreview() {
     refreshTileFunds();
     updateGhostBar();
     checkTutorial();
-    showMsg(t("placed", { n: res.placed, type: typeName(typeId), cost: fmtMoney(quote ? quote.cost : 0) }));
+    showMsg("placed", { n: res.placed, type: typeName(typeId), cost: fmtMoney(quote ? quote.cost : 0) });
   } catch (err) {
     console.error(t("dbgSchemePlace"), err);
-    showMsg(t("placeErr", { err: err.message }));
+    showMsg("placeErr", { err: err.message });
   }
 }
 
@@ -2949,14 +2985,14 @@ window.addEventListener("keydown", (e) => {
     if (previewPlan) {
       const n = city.buildings.filter((b) => b.active === false).length;
       cancelPreview();
-      if (n === 0) showMsg(t("previewOff"));
+      if (n === 0) showMsg("previewOff");
     }
   } else if (e.code === "Space" && !e.repeat) {
     const now = performance.now();
     if (now - lastSpaceTap < 300) {
       flying = !flying;
       player.vy = 0;
-      showMsg(flying ? t("flyOn") : t("flyOff"));
+      showMsg(flying ? "flyOn" : "flyOff");
     }
     lastSpaceTap = now;
   }
@@ -2976,7 +3012,7 @@ canvas.addEventListener("pointerdown", (e) => {
       if (!ghostFixed && previewAnchor) {
         ghostFixed = true;
         updateGhostBar();
-        showMsg(t("fixedPos"));
+        showMsg("fixedPos");
       } else {
         placePreview();
       }
@@ -3050,7 +3086,7 @@ function syncLockUI() {
     // Потеря захвата без панелей и паузы (редкий случай — обычно это пауза):
     // подсказываем, что делать дальше.
     if (!locked && !paused && !anyPanelOpen() && mapReady) {
-      showMsg(t("ghostFree"));
+      showMsg("ghostFree");
     }
   }
   lockHintEl.classList.toggle("show", !locked && !paused && !anyPanelOpen() && mapReady && tabPressedWorld);
@@ -3097,7 +3133,7 @@ function breakOne(hit) {
       if (inst) {
         refreshRecordLabel(rec);
         if (inst.health <= 0) {
-          showMsg(t("destroyed", { name: bldName(inst) }));
+          showMsg("destroyed", { name: bldName(inst) });
         }
       }
     }
@@ -3158,7 +3194,7 @@ function handlePlace() {
   if (!hit) return;
   const id = creativeSlots[creativeSel];
   if (id == null) {
-    showMsg(t("pickBlock"));
+    showMsg("pickBlock");
     return;
   }
   const entry = { id, count: Infinity };
@@ -3441,7 +3477,7 @@ function initFlatWorld() {
   mapReady = true;
   camera.position.set(player.x, player.y + EYE, player.z);
   // Стартовый мир: пустая плоская местность.
-  showMsg(t("sandboxHint"));
+  showMsg("sandboxHint");
 }
 
 engine.runRenderLoop(() => scene.render());
@@ -3465,7 +3501,7 @@ document.getElementById("authBtn").addEventListener("click", async () => {
         }
       }
     } catch (e) {}
-    showMsg(t("ygHello", { name: yg.playerName || "…" }));
+    showMsg("ygHello", { name: yg.playerName || "…" });
   }
 });
 document.getElementById("mobileGo").addEventListener("click", () => {
