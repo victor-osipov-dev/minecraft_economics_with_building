@@ -58,7 +58,7 @@ export const STR = {
     // обучение
     tutTitle: "Первые шаги",
     tutSteps: {
-      house: "Поставь жильё (TAB → Жильё)", road: "Подведи дорогу (TAB → поиск #road)",
+      house: "Поставь жильё (TAB → Жильё)", road: "Подведи дорогу (TAB → поиск {tag})",
       food: "Добавь еду (TAB → Еда)", city: "Открой панель города (TAB)", pop: "Дождись первого жителя",
     },
     tutDone: "Обучение пройдено! Город твой 🏙️",
@@ -467,7 +467,7 @@ export const STR = {
     },
     tutTitle: "First steps",
     tutSteps: {
-      house: "Place housing (TAB → Housing)", road: "Connect a road (TAB → search #road)",
+      house: "Place housing (TAB → Housing)", road: "Connect a road (TAB → search {tag})",
       food: "Add food (TAB → Food)", city: "Open the city panel (TAB)", pop: "Wait for the first citizen",
     },
     tutDone: "Tutorial complete! The city is yours 🏙️",

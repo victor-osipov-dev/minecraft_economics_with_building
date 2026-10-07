@@ -84,6 +84,7 @@ function applyI18n() {
   if (typeof syncLangButtons === "function") syncLangButtons();
   if (cityPanelEl.classList.contains("show")) renderCity();
   if (schemesPanelEl.classList.contains("show")) buildSchemeList();
+  updateMoneyBar();
 }
 
 // Яндекс: кнопка входа (с объяснением выгоды, п.1.2.1) и имя игрока.
@@ -293,7 +294,13 @@ const TUT_REWARD = 200;
 const TUT_STEPS = [
   { id: "house" }, { id: "road" }, { id: "food" }, { id: "city" }, { id: "pop" },
 ];
-const tutText = (id) => t("tutSteps")[id] || id;
+const tutText = (id, vars) => {
+  const s = t("tutSteps")[id] || id;
+  if (typeof s !== "string") return s;
+  let out = s;
+  for (const [k, v] of Object.entries(vars || {})) out = out.split(`{${k}}`).join(String(v));
+  return out;
+};
 let tutorialComplete = false;
 let tutorialState = {};
 function tutorialReset() {
@@ -335,7 +342,7 @@ function renderTutorial() {
   }
   const n = TUT_STEPS.filter((s) => tutorialState[s.id]).length;
   el.innerHTML = `<h4>${t("tutTitle")} ${n}/${TUT_STEPS.length}</h4>` + TUT_STEPS.map((s) =>
-    `<div class="${tutorialState[s.id] ? "done" : ""}">${tutorialState[s.id] ? "✓" : "·"} ${tutText(s.id)}` +
+    `<div class="${tutorialState[s.id] ? "done" : ""}">${tutorialState[s.id] ? "✓" : "·"} ${tutText(s.id, { tag: "#" + tagName(s.id) })}` +
     (tutorialState[s.id] ? "" : ` <span class="reward">+$${TUT_REWARD}</span>`) + `</div>`
   ).join("");
   el.classList.add("show");
@@ -356,6 +363,18 @@ function updateHint() {
     hudSubEl.textContent = hint;
     hudSubEl.classList.toggle("show", hint !== "");
   }
+}
+
+// ---------- баланс казны в левом верхнем углу ----------
+// Перерисовываем только при смене значения — кадровый цикл дёшев.
+const moneyBarEl = document.getElementById("moneyBar");
+let lastMoneyBar = null;
+function updateMoneyBar() {
+  const txt = fmtMoney(city.money);
+  if (txt === lastMoneyBar) return;
+  lastMoneyBar = txt;
+  moneyBarEl.textContent = txt;
+  moneyBarEl.classList.toggle("neg", city.money < 0);
 }
 
 // ---------- импорт построек Minecraft (схематики) ----------
@@ -1045,8 +1064,8 @@ function renderLoans() {
     Object.entries(typeCounts).sort((a, b) => b[1] - a[1]).map(([typeId, n]) =>
       chip(`${typeName(typeId)} (${n})`, cityBldType === typeId, `data-cbtype="${typeId}"`)).join("");
   document.getElementById("cityBldTags").innerHTML =
-    Object.entries(tagCounts).sort((a, b) => b[1] - a[1]).map(([t, n]) =>
-      chip(`#${t} (${n})`, cityBldTag === t, `data-cbtag="${t}"`)).join("");
+    Object.entries(tagCounts).sort((a, b) => b[1] - a[1]).map(([tag, n]) =>
+      chip(`#${tagName(tag)} (${n})`, cityBldTag === tag, `data-cbtag="${tag}"`)).join("");
   const sorters = {
     name: (a, b) => String(a.name).localeCompare(String(b.name), locale()),
     health: (a, b) => a.health - b.health,
@@ -3247,6 +3266,7 @@ scene.registerBeforeRender(() => {
   syncLockUI();
   updateHint();
   updateTabHint();
+  updateMoneyBar();
 
   // ---- визуальные жители ----
   stepResidentMeshes(dt);

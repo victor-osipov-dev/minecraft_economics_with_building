@@ -26,6 +26,24 @@
       text-align: center;
     }
     #hud .block { color: #aaffaa; }
+    /* Баланс казны — всегда виден в левом верхнем углу */
+    #moneyBar {
+      position: fixed;
+      top: 12px;
+      left: 12px;
+      color: #ffd54a;
+      font: 700 16px 'Segoe UI', Arial, sans-serif;
+      background: rgba(0, 0, 0, 0.55);
+      border: 1px solid rgba(255, 213, 74, 0.5);
+      border-radius: 8px;
+      padding: 6px 13px;
+      z-index: 13;
+      pointer-events: none;
+      user-select: none;
+      white-space: nowrap;
+      letter-spacing: 0.3px;
+    }
+    #moneyBar.neg { color: #ff8080; border-color: rgba(255, 128, 128, 0.6); }
     /* Крупная подсказка TAB: вход в игру — через меню */
     #tabHint {
       position: fixed;
@@ -163,7 +181,7 @@
     /* C11: обучение-чеклист */
     #tutorial {
       position: fixed;
-      top: 12px;
+      top: 56px;
       left: 12px;
       background: rgba(8, 10, 14, 0.85);
       border: 1px solid rgba(255, 213, 74, 0.55);
@@ -417,10 +435,10 @@
     /* A2: планшет — панель города виджетом поверх игры (только чтение) */
     #cityPanel.pinned {
       left: 12px;
-      top: 12px;
+      top: 56px;
       transform: none;
       max-width: 300px;
-      max-height: 62vh;
+      max-height: calc(62vh - 44px);
       overflow: hidden;
       pointer-events: none;
       opacity: 0.93;
@@ -628,6 +646,7 @@
 </head>
 <body>
   <div id="hotbar"></div>
+  <div id="moneyBar"></div>
   <div id="hudSub"></div>
   <div id="tutorial"></div>
   <div id="msgLog"></div>
