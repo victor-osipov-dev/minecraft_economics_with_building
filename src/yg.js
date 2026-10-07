@@ -52,7 +52,6 @@ async function loadSdk() {
 export const yg = {
   ok: false, // SDK жив и инициализирован
   sdkUrl: "", // какой путь сработал
-  mock: false, // локальный dev-режим прокси: вызовы SDK заглушены
   ysdk: null,
   player: null,
   authorized: false,
@@ -71,13 +70,6 @@ export const yg = {
       if (!YG || typeof YG.init !== "function") return false;
       const ysdk = await YG.init();
       this.ysdk = ysdk;
-      // Локальный dev-режим (@yandex-games/sdk-dev-proxy --dev-mode):
-      // платформы за игрой нет, все ответы — моки.
-      try {
-        this.mock = !ysdk.environment.appId;
-      } catch (e) {
-        this.mock = true;
-      }
       // Язык интерфейса платформы -> язык игры (заявлены ru+en).
       try {
         const l = ysdk.environment && ysdk.environment.i18n && ysdk.environment.i18n.lang;
@@ -142,6 +134,8 @@ export const yg = {
 
   // Полноэкранная реклама в логической паузе. Возвращает Promise:
   // резолвится всегда (показана или нет), игра продолжается в .then().
+  // Форма колбэков — { callbacks: {...} } (так в доках sdk-adv и так читает
+  // мок прокси; плоская форма молча игнорируется: реклама есть, колбэков нет).
   fullscreenAdv() {
     if (!this.ok || !this.ysdk || !this.ysdk.adv || this.advOpen) return Promise.resolve(false);
     const adv = this.ysdk.adv;
@@ -156,9 +150,11 @@ export const yg = {
       try {
         this.advOpen = true;
         adv.showFullscreenAdv({
-          onOpen: () => {},
-          onClose: (wasShown) => fin(!!wasShown),
-          onError: () => fin(false),
+          callbacks: {
+            onOpen: () => {},
+            onClose: (wasShown) => fin(!!wasShown),
+            onError: () => fin(false),
+          },
         });
         // страховка: колбэки могут не прийти
         setTimeout(() => fin(false), 60000);
@@ -169,6 +165,8 @@ export const yg = {
   },
 
   // Rewarded: награда только в onRewarded (досмотр засчитан).
+  // Та же форма { callbacks: {...} } — иначе ни onRewarded, ни onClose
+  // не придут: ролик показывается, а бонус не начисляется и окно висит.
   rewarded() {
     if (!this.ok || !this.ysdk || !this.ysdk.adv || this.advOpen) return Promise.resolve(false);
     const adv = this.ysdk.adv;
@@ -184,12 +182,14 @@ export const yg = {
       try {
         this.advOpen = true;
         adv.showRewardedVideo({
-          onOpen: () => {},
-          onRewarded: () => {
-            earned = true;
+          callbacks: {
+            onOpen: () => {},
+            onRewarded: () => {
+              earned = true;
+            },
+            onClose: () => fin(),
+            onError: () => fin(),
           },
-          onClose: () => fin(),
-          onError: () => fin(),
         });
         setTimeout(fin, 120000);
       } catch (e) {

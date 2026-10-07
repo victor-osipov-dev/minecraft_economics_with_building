@@ -268,6 +268,45 @@ function renderMsgLog() {
   });
 }
 
+// Своя модалка вместо системных alert/confirm: тёмный оверлей, карточка
+// в стиле игры, крупные кнопки. Возвращает Promise<boolean>.
+const modalEl = document.getElementById("modal");
+const modalTextEl = document.getElementById("modalText");
+const modalOkEl = document.getElementById("modalOk");
+const modalCancelEl = document.getElementById("modalCancel");
+let modalResolve = null;
+const modalOpen = () => modalResolve !== null;
+function modalDone(v) {
+  if (!modalResolve) return;
+  const r = modalResolve;
+  modalResolve = null;
+  modalEl.classList.remove("show");
+  r(v);
+}
+function uiConfirm(text, opts = {}) {
+  if (modalResolve) modalDone(false); // один диалог за раз
+  modalTextEl.textContent = text;
+  modalOkEl.textContent = opts.ok || t("modalOk");
+  modalCancelEl.textContent = opts.cancel || t("modalCancel");
+  if (document.pointerLockElement) {
+    unlockForPanel = true;
+    document.exitPointerLock();
+  }
+  modalEl.classList.add("show");
+  return new Promise((resolve) => { modalResolve = resolve; });
+}
+modalEl.addEventListener("click", (e) => {
+  if (e.target === modalEl) modalDone(false);
+});
+modalOkEl.addEventListener("click", () => modalDone(true));
+modalCancelEl.addEventListener("click", () => modalDone(false));
+window.addEventListener("keydown", (e) => {
+  if (!modalOpen()) return;
+  e.stopPropagation(); // горячие клавиши игры за модалкой не срабатывают
+  if (e.code === "Escape") { e.preventDefault(); modalDone(false); }
+  else if (e.code === "Enter" || e.code === "NumpadEnter") { e.preventDefault(); modalDone(true); }
+}, true);
+
 // ---------- настройки подсказок (пауза; действуют на каждый новый мир) ----------
 const SETTINGS_KEY = "babylon-settings-v1";
 const settings = { tutorial: true, tabHint: true, coach: true, lang: "auto" };
@@ -1214,7 +1253,8 @@ function renderLoans() {
       `<button data-loan-repay="${i}"${city.money >= cost ? "" : " disabled"}>${t("repay")}</button></div>`;
   });
   // Rewarded video: необязательный бонус в казну (п.4.5), прогресс не блокирует.
-  html += `<div class="cbtake"><button data-rewarded="" title="${t("ygRewardTitle", { sum: fmtMoney(YG_REWARD) })}">${t("ygReward", { sum: fmtMoney(YG_REWARD) })}</button></div>`;
+  // Без SDK ролика не будет — кнопку не показываем, чтобы не дразнить.
+  if (yg.ok) html += `<div class="cbtake"><button data-rewarded="" title="${t("ygRewardTitle", { sum: fmtMoney(YG_REWARD) })}">${t("ygReward", { sum: fmtMoney(YG_REWARD) })}</button></div>`;
   el.innerHTML = html;
   if (city.loans.length > 0) coachOnce("repay", { text: t("loanHint"), target: "#cityLoans [data-loan-repay]" });
 }
@@ -1396,7 +1436,8 @@ cityPanelEl.addEventListener("click", async (e) => {
   }
   // Бонус за просмотр rewarded video (только досмотр засчитывает награду).
   const rw = e.target.closest("[data-rewarded]");
-  if (rw) {
+  if (rw && !rw.disabled) {
+    rw.disabled = true; // повторный клик во время ролика — игнор
     const earned = await yg.rewarded();
     if (earned) {
       city.money = Math.round((city.money + YG_REWARD) * 100) / 100;
@@ -1491,7 +1532,7 @@ async function demolishBuilding(id) {
   if (!inst) return;
   const isDraft = inst.active === false;
   const refund = isDraft ? inst.stats.buildCost : Math.floor(inst.stats.buildCost * 0.5);
-  if (!window.confirm(t("demolishAsk", { name: bldName(inst), sum: fmtMoney(refund) }))) return;
+  if (!(await uiConfirm(t("demolishAsk", { name: bldName(inst), sum: fmtMoney(refund) })))) return;
   const rec = buildings.find((b) => b.cityId === id);
   let cleared = 0;
   if (rec) {
@@ -1542,8 +1583,8 @@ window.addEventListener("beforeunload", () => {
   if (mapReady) saveGame({ silent: true });
 });
 document.getElementById("loadSaveBtn").addEventListener("click", loadGame);
-document.getElementById("newGameBtn").addEventListener("click", () => {
-  if (!window.confirm(t("newGameAsk"))) return;
+document.getElementById("newGameBtn").addEventListener("click", async () => {
+  if (!(await uiConfirm(t("newGameAsk")))) return;
   // Рестарт — логическая пауза: сначала полноэкранная реклама, потом мир.
   yg.playStop();
   yg.fullscreenAdv().then(() => {
@@ -1609,10 +1650,12 @@ async function saveGame({ silent = false } = {}) {
     };
     const json = JSON.stringify(data);
     localStorage.setItem(SAVE_KEY, json);
-    // Облако (только у авторизованных): полный сейв, если влезает в лимит
-    // setData (200 КБ по документации) с запасом — меряем БАЙТЫ, а не символы:
-    // кириллица в UTF-8 весит вдвое больше, char-длина врала бы.
-    // Иначе компактный профиль города. Настройки едут в облако в обоих видах.
+    // Облако (только у авторизованных): три яруса по размеру.
+    // setData (200 КБ по документации) с запасом 180 КБ — меряем БАЙТЫ:
+    // full (мир целиком) → city (всё важное без вокселей чанков) →
+    // profile (только экономика). Жертвуем вокселями в последнюю очередь,
+    // список построек сохраняем всегда, пока влезает.
+    const CLOUD_MAX = 180 * 1024;
     const bytes = new TextEncoder().encode(json).length;
     const cloudSettings = {
       lang: settings.lang, tutorial: settings.tutorial,
@@ -1620,9 +1663,15 @@ async function saveGame({ silent = false } = {}) {
     };
     let cloud = false;
     if (yg.authorized) {
-      const payload = bytes < 180 * 1024
-        ? { v: 1, kind: "full", save: data, settings: cloudSettings }
-        : { v: 1, kind: "profile", profile: cloudProfile(), settings: cloudSettings };
+      let payload;
+      if (bytes < CLOUD_MAX) {
+        payload = { v: 1, kind: "full", save: data, settings: cloudSettings };
+      } else {
+        const cityOnly = buildCloudCity();
+        payload = new TextEncoder().encode(JSON.stringify(cityOnly)).length < CLOUD_MAX
+          ? { v: 1, kind: "city", city: cityOnly, settings: cloudSettings }
+          : { v: 1, kind: "profile", profile: cloudProfile(), settings: cloudSettings };
+      }
       cloud = await yg.cloudSave({ citysave: payload });
     }
     // Автосейвы молчат; ошибку показываем всегда.
@@ -1649,6 +1698,41 @@ function cloudProfile() {
     day: city.day, taxRate: city.taxRate, bizTax: city.bizTax, indTax: city.indTax,
     milestones: city.milestones || [],
     best: ygBestPop,
+  };
+}
+
+// Средний ярус облака: всё важное, кроме вокселей чанков (терраин и ручные
+// блоки вне построек теряются). Постройки восстанавливаются полностью:
+// рамки/метки/экономика — сразу, воксели — докачкой схем из библиотеки.
+// Формат записей построек — как в полном сейве (см. serializeCity).
+function buildCloudCity() {
+  return {
+    money: city.money, population: city.population,
+    food: city.food, energy: city.energy,
+    water: city.water || 0, waste: city.waste || 0,
+    happiness: city.happiness, pollution: city.pollution,
+    day: city.day, nextId: city.nextId,
+    taxRate: city.taxRate, bizTax: city.bizTax, indTax: city.indTax,
+    milestones: city.milestones || [],
+    best: ygBestPop,
+    loans: (city.loans || []).map((l) => ({
+      owed: l.owed, total: l.total, daysLeft: l.daysLeft,
+      principal: l.principal, days: l.days, graceLeft: l.graceLeft, paid: l.paid,
+    })),
+    player: { x: player.x, y: player.y, z: player.z },
+    buildings: city.buildings.map((b) => ({
+      id: b.id,
+      typeId: TYPES[b.typeId] ? b.typeId : "generic",
+      name: String(b.name || ""),
+      file: typeof b.file === "string" ? b.file.slice(0, 200) : "",
+      rot: Number.isFinite(b.rot) ? b.rot : 0,
+      tier: b.tier === 3 ? 3 : b.tier === 2 ? 2 : 1,
+      x0: b.x0, y0: b.y0, z0: b.z0,
+      W: b.W, H: b.H, L: b.L,
+      health: Math.min(100, Math.max(0, b.health)),
+      placedBlocks: b.placedBlocks,
+      active: b.active !== false,
+    })),
   };
 }
 
@@ -1719,6 +1803,117 @@ function applyCloudProfile(p) {
   refreshSaveInfo();
 }
 
+// Загрузка яруса "city": экономика + кредиты + игрок + список построек.
+// Воксели построек докачиваются из библиотеки и вставляются как при стройке;
+// чанки терраина и ручные блоки вне построек не восстанавливаются.
+// Своих файлов (импорт) в библиотеке нет — для них остаётся рамка без вокселей.
+async function applyCloudCity(p) {
+  try {
+    world.clear();
+    clearBuildings();
+    nextBuildingId = 1;
+    city = newCityState();
+    const num = (v, d) => (Number.isFinite(v) ? v : d);
+    const loans = Array.isArray(p.loans) ? p.loans
+      .filter((l) => l && Number.isFinite(l.owed) && l.owed > 0).slice(0, 10)
+      .map((l) => ({
+        owed: l.owed,
+        total: Number.isFinite(l.total) && l.total > 0 ? l.total : l.owed,
+        daysLeft: Number.isFinite(l.daysLeft) ? Math.max(0, Math.floor(l.daysLeft)) : 0,
+        principal: Number.isFinite(l.principal) ? Math.max(0, l.principal) : 0,
+        days: Number.isFinite(l.days) && l.days > 0 ? Math.floor(l.days) : null,
+        graceLeft: Number.isFinite(l.graceLeft) ? Math.max(0, Math.floor(l.graceLeft)) : 0,
+        paid: Number.isFinite(l.paid) ? Math.max(0, l.paid) : 0,
+      })) : [];
+    Object.assign(city, {
+      money: num(p.money, city.money),
+      population: Math.max(0, Math.floor(num(p.population, 0))),
+      food: num(p.food, city.food), energy: num(p.energy, city.energy),
+      water: num(p.water, 0), waste: num(p.waste, 0),
+      happiness: Math.min(100, Math.max(0, num(p.happiness, city.happiness))),
+      pollution: num(p.pollution, 0),
+      day: Math.max(0, Math.floor(num(p.day, 0))),
+      nextId: Math.max(1, Math.floor(num(p.nextId, 1))),
+      taxRate: num(p.taxRate, city.taxRate),
+      bizTax: num(p.bizTax, city.bizTax),
+      indTax: num(p.indTax, city.indTax),
+      milestones: Array.isArray(p.milestones) ? p.milestones.filter((m) => typeof m === "string") : [],
+      loans,
+    });
+    if (Number.isFinite(p.best) && p.best > ygBestPop) {
+      ygBestPop = Math.floor(p.best);
+      try { localStorage.setItem("babylon-best-pop", String(ygBestPop)); } catch (e) {}
+    }
+    const pp = (p && p.player) || {};
+    const px = num(pp.x, 0.5), py = num(pp.y, 2), pz = num(pp.z, 0.5);
+    respawnPoint = { x: px, y: py, z: pz };
+    player.x = px; player.y = py; player.z = pz;
+    player.vy = 0; player.grounded = false;
+    world.ensureFlatAround(px, pz);
+    world.flushMeshes(scene, blockMat, cutoutMat, alphaMat, torchMat);
+    const list = Array.isArray(p.buildings) ? p.buildings : [];
+    const planCacheLocal = new Map();
+    for (const sb of list) {
+      if (!sb || typeof sb !== "object") continue;
+      const W = Math.max(1, Math.floor(num(sb.W, 0)));
+      const H = Math.max(1, Math.floor(num(sb.H, 0)));
+      const L = Math.max(1, Math.floor(num(sb.L, 0)));
+      if (!(W > 0 && H > 0 && L > 0)) continue;
+      if (![sb.x0, sb.y0, sb.z0].every(Number.isFinite)) continue;
+      const rec = recordBuilding({
+        name: typeof sb.name === "string" ? sb.name.slice(0, 80) : "",
+        file: typeof sb.file === "string" ? sb.file.slice(0, 200) : "",
+        x0: Math.floor(sb.x0), y0: Math.floor(sb.y0), z0: Math.floor(sb.z0),
+        W, H, L,
+        rot: [0, 1, 2, 3].includes(sb.rot) ? sb.rot : 0,
+        placed: Math.max(1, Math.floor(num(sb.placedBlocks, 1))),
+      });
+      const inst = registerRecord(rec,
+        (typeof sb.typeId === "string" && TYPES[sb.typeId]) ? sb.typeId : "generic",
+        sb.tier === 3 ? 3 : sb.tier === 2 ? 2 : 1);
+      if (Number.isFinite(sb.id)) inst.id = sb.id;
+      inst.health = Math.min(100, Math.max(0, num(sb.health, 100)));
+      inst.active = sb.active !== false;
+      rec.cityId = inst.id;
+      if (rec.file) {
+        const ck = rec.file + "|" + rec.rot;
+        let r = planCacheLocal.has(ck) ? planCacheLocal.get(ck)
+          : await getRotatedPlan(rec.file, rec.rot).catch(() => null);
+        planCacheLocal.set(ck, r);
+        if (r) {
+          const minY = r.minY ?? 0;
+          const res = pasteSchematic(world, r,
+            rec.x0 + Math.floor(r.W / 2), rec.z0 + Math.floor(r.L / 2), rec.y0 + minY,
+            { clear: false });
+          if (res && Number.isFinite(res.placed)) {
+            rec.placed = res.placed;
+            rec.labelBase = recordLabelBase(rec);
+          }
+        }
+      }
+      refreshRecordLabel(rec);
+    }
+    if (city.buildings.length > 0) {
+      city.nextId = Math.max(city.nextId,
+        ...city.buildings.map((b) => (Number.isFinite(b.id) ? b.id + 1 : 1)));
+    }
+    resetMapTransientState();
+    mapReady = true;
+    world.flushMeshes(scene, blockMat, cutoutMat, alphaMat, torchMat);
+    camera.position.set(player.x, player.y + EYE, player.z);
+    syncResidents();
+    tutorialReset();
+    checkTutorial(true);
+    closePanels();
+    setPaused(false);
+  } catch (e) {
+    console.error(e);
+    showMsg("loadFail", { err: e.message || e });
+    throw e;
+  }
+  refreshSaveInfo();
+}
+
 async function loadGame() {
   let parsed;
   let cloudSettings = null;
@@ -1732,6 +1927,13 @@ async function loadGame() {
         if (payload.kind === "full" && payload.save) {
           parsed = parseSave(JSON.stringify(payload.save));
           cloudSettings = payload.settings || null;
+        } else if (payload.kind === "city" && payload.city) {
+          await applyCloudCity(payload.city);
+          applyCloudSettings(payload.settings);
+          applyI18n();
+          refreshSaveInfo();
+          showMsg("loaded", { day: city.day, n: city.buildings.length });
+          return;
         } else if (payload.kind === "profile" && payload.profile) {
           applyCloudProfile(payload.profile);
           applyCloudSettings(payload.settings);
@@ -2069,7 +2271,6 @@ function togglePicker() {
   pickSearchEl.value = "";
   pickFilter.q = "";
   renderPicker();
-  coachOnce("picker", { text: t("coachPicker"), target: "#pickGrid .pick" });
   if (document.pointerLockElement) {
     unlockForPanel = true;
     document.exitPointerLock();

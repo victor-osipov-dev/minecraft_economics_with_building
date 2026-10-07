@@ -3,7 +3,7 @@
 import schemeNamesRu from "../schemes/names-ru.json";
 export const STR = {
   ru: {
-    pageTitle: "Воксель-Сити",
+    pageTitle: "Майн - готовые постройки",
     // имена блоков песочницы; индекс совпадает с BLOCKS[id] в blocks.js
     blockNames: [
       "Воздух", "Бетон", "Половая плитка", "Ржавый металл", "Тёмный металл", "Решётка",
@@ -209,6 +209,7 @@ export const STR = {
     speedTitle: "Скорость игры: 1× → 2× → 3×",
     tabHint: "НАЖМИ TAB", tabHintSub: "постройки и город",
     showAgain: "Показать снова",
+    modalOk: "Подтвердить", modalCancel: "Отмена",
     tileHousing: "жильё", tileJobs: "работы", tileFood: "еда +", tileEnergy: "энергия +",
     tileWater: "вода +", tileWaste: "мусор −", tileIncome: "доход $",
     tileBlocks: "блоков", ofCount: "· {a} из {b}",
@@ -224,10 +225,10 @@ export const STR = {
       fallbackName: "Постройка",
     },
     // Яндекс: вход, облако, реклама, рекорды, мобайл
-    ygLogin: "👤 Войти (Яндекс ID)", ygLoginWhy: "Облачные сейвы, имя в таблице рекордов",
+    ygLogin: "👤 Войти (Яндекс ID)", ygLoginWhy: "Войди — прогресс сохранится в облаке, а имя попадёт в таблицу рекордов",
     ygHello: "👤 {name}", ygLogout: "Выйти",
     ygSavedCloud: "☁ облако", ygSaveLocal: "локально",
-    ygReward: "📺 +{sum} (видео)",
+    ygReward: "📺 +{sum} (реклама)",
     ygRewardTitle: "Посмотреть рекламу и получить {sum} в казну",
     ygRewarded: "Награда: +{sum} в казну! Спасибо за просмотр",
     ygNoAdv: "Реклама недоступна (офлайн?)",
@@ -424,7 +425,7 @@ export const STR = {
     },
   },
   en: {
-    pageTitle: "Voxel City",
+    pageTitle: "Mine - Ready-Made Builds",
     // sandbox block names; index matches BLOCKS[id] in blocks.js
     blockNames: [
       "Air", "Concrete", "Floor Tile", "Rusted Metal", "Dark Metal", "Grating",
@@ -621,6 +622,7 @@ export const STR = {
     speedTitle: "Game speed: 1× → 2× → 3×",
     tabHint: "PRESS TAB", tabHintSub: "buildings and city",
     showAgain: "Show again",
+    modalOk: "Confirm", modalCancel: "Cancel",
     tileHousing: "housing", tileJobs: "jobs", tileFood: "food +", tileEnergy: "energy +",
     tileWater: "water +", tileWaste: "waste −", tileIncome: "income $",
     tileBlocks: "blocks", ofCount: "· {a} of {b}",
@@ -635,10 +637,10 @@ export const STR = {
       badId: "save: broken block id", badState: "save: broken state",
       fallbackName: "Building",
     },
-    ygLogin: "👤 Sign in (Yandex ID)", ygLoginWhy: "Cloud saves, name on the leaderboard",
+    ygLogin: "👤 Sign in (Yandex ID)", ygLoginWhy: "Sign in — progress is saved to the cloud, your name joins the leaderboard",
     ygHello: "👤 {name}", ygLogout: "Sign out",
     ygSavedCloud: "☁ cloud", ygSaveLocal: "local",
-    ygReward: "📺 +{sum} (video)",
+    ygReward: "📺 +{sum} (ad)",
     ygRewardTitle: "Watch an ad and get {sum} to the treasury",
     ygRewarded: "Reward: +{sum} to the treasury! Thanks for watching",
     ygNoAdv: "Ads unavailable (offline?)",

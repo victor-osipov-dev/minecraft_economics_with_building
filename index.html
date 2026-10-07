@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Воксель-Сити</title>
+  <title>Майн - готовые постройки</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body { width: 100%; height: 100%; overflow: hidden; background: #000; }
@@ -446,6 +446,19 @@
     .mbtn { display: block; width: 100%; margin: 6px 0; background: rgba(255,213,74,0.2); color: #ffd54a; border: 1px solid rgba(255,213,74,0.5); border-radius: 6px; padding: 8px 12px; cursor: pointer; font: 16px 'Segoe UI', Arial, sans-serif; }
     .mbtn:hover { background: rgba(255,213,74,0.35); }
     #pauseMenu .hint { margin-top: 10px; }
+    /* Вход через Яндекс ID: пульс кнопки + карточка выгод (п.1.2.1) */
+    #authBtn.attn { animation: authPulse 1.6s ease-in-out infinite; }
+    @keyframes authPulse {
+      0%, 100% { box-shadow: 0 0 0 rgba(255, 213, 74, 0); }
+      50% { box-shadow: 0 0 16px rgba(255, 213, 74, 0.85); }
+    }
+    #authInfo {
+      background: rgba(255, 213, 74, 0.08);
+      border: 1px solid rgba(255, 213, 74, 0.55);
+      border-radius: 8px;
+      padding: 8px 10px;
+      opacity: 1;
+    }
     .panel h3 { margin: 0 0 10px; font-size: 18px; color: #ffd54a; font-weight: 600; }
     .panel .hint { opacity: 0.7; font-size: 16px; margin-bottom: 10px; }
     #picker { max-width: min(800px, 94vw); }
@@ -643,6 +656,29 @@
       pointer-events: none;
     }
     #dropOverlay.show { display: flex; }
+    /* Своя модалка вместо системных alert/confirm: оверлей + карточка + кнопки */
+    #modal {
+      position: fixed; inset: 0; z-index: 60; display: none;
+      align-items: center; justify-content: center;
+      background: rgba(0, 0, 0, 0.6);
+      user-select: none;
+    }
+    #modal.show { display: flex; }
+    #modal .mbox {
+      max-width: min(460px, 90vw);
+      background: rgba(12, 14, 18, 0.97);
+      border: 2px solid #ffd54a;
+      border-radius: 12px;
+      padding: 18px 22px;
+      color: #eee;
+      font: 18px/1.45 'Segoe UI', Arial, sans-serif;
+      text-align: center;
+      box-shadow: 0 8px 40px rgba(0, 0, 0, 0.7), 0 0 20px rgba(255, 213, 74, 0.25);
+      animation: coachPop 0.25s ease-out;
+    }
+    #modal .mrow { display: flex; gap: 10px; margin-top: 16px; }
+    #modal .mrow .mbtn { margin: 0; font-size: 17px; }
+    #modal .mbtn.ghost { background: rgba(255, 255, 255, 0.06); color: #ddd; border-color: rgba(255, 255, 255, 0.3); }
     /* Визуальные одноразовые подсказки (coach marks): большой текст + стрелка + обводка цели */
     #coach { position: fixed; inset: 0; z-index: 70; pointer-events: none; display: none; }
     #coach.show { display: block; }
@@ -736,7 +772,7 @@
     <button id="saveBtn" class="mbtn" data-i18n="save">Сохранить игру</button>
     <button id="loadSaveBtn" class="mbtn" data-i18n="load">Загрузить игру</button>
     <button id="newGameBtn" class="mbtn" data-i18n="newGameBtn">Начать заново</button>
-    <button id="authBtn" class="mbtn" data-i18n="ygLogin">👤 Войти (Яндекс ID)</button>
+    <button id="authBtn" class="mbtn attn" data-i18n="ygLogin">👤 Войти (Яндекс ID)</button>
     <div class="hint" id="authInfo" data-i18n="ygLoginWhy">Облачные сейвы, имя в таблице рекордов</div>
     <div class="hint" id="saveInfo"></div>
     <div class="hint" data-i18n="hintsLabel">Подсказки:</div>
@@ -778,6 +814,10 @@
   <input type="file" id="schemFile" accept=".schem,.schematic,.nbt" hidden />
   <div id="dropOverlay" data-i18n="dropOverlay">Перетащите файл схемы (.schem / .schematic / .nbt)</div>
   <div id="coach"><div id="coachRing"></div><div id="coachBubble"></div><div id="coachArrow"></div></div>
+  <div id="modal"><div class="mbox" role="dialog" aria-modal="true">
+    <div id="modalText"></div>
+    <div class="mrow"><button id="modalOk" class="mbtn"></button><button id="modalCancel" class="mbtn ghost"></button></div>
+  </div></div>
   <canvas id="scene"></canvas>
 
   <script type="module" src="/src/main.js"></script>
