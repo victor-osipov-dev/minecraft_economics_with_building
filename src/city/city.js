@@ -175,7 +175,7 @@ export function repayLoan(state, idx) {
 }
 
 // Деньги: сначала пауза (graceLeft дни — платёжей нет), потом ежедневные
-// автоплатежи; просрочка растёт на 5% в день и бьёт по счастью.
+// автоплатежи; просрочка долг не увеличивает, но бьёт по счастью.
 function processLoans(state) {
   let paid = 0;
   let overdue = false;
@@ -193,7 +193,6 @@ function processLoans(state) {
       loan.daysLeft--;
     } else if (loan.owed > 0) {
       overdue = true;
-      loan.owed = Math.round(loan.owed * 1.05 * 100) / 100;
       const pay = state.money > 0 ? Math.min(state.money, loan.owed) : 0;
       loan.owed = Math.round((loan.owed - pay) * 100) / 100;
       state.money = Math.round((state.money - pay) * 100) / 100;

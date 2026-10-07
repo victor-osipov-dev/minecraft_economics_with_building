@@ -56,7 +56,7 @@ import {
   loanLimit, loanQuote, loanMinRate, loanPayoff,
 } from "./city/city.js";
 import { yg } from "./yg.js";
-import { t, setLang, getLang, locale, typeName, tierName, mstoneName, blockName, blockNameSearch, tagName, tagNameSearch, schemeName, schemeNameSearch } from "./i18n.js";
+import { t, setLang, getLang, locale, typeName, tierName, mstoneName, blockName, blockNameSearch, tagName, tagNameSearch, schemeName, schemeNameRu, schemeNameSearch } from "./i18n.js";
 import schemesIndex from "../schemes/index.json";
 
 // Язык берём из SDK, когда он готов; до этого — по браузеру (см. yg.js).
@@ -77,6 +77,11 @@ function applyI18n() {
   setShowFrames(showFrames);
   renderTutorial();
   updateAuthUI();
+  // Имена построек зависят от языка: перестраиваем метки рамок.
+  for (const rec of buildings) {
+    rec.labelBase = recordLabelBase(rec);
+    refreshRecordLabel(rec);
+  }
   // Имена блоков и названия типов зависят от языка — перерисовываем то, что видно.
   updateHotbar();
   renderPickChips();
@@ -471,14 +476,35 @@ function updateHint() {
 // ---------- баланс казны в левом верхнем углу ----------
 // Перерисовываем только при смене значения — кадровый цикл дёшев.
 const moneyBarEl = document.getElementById("moneyBar");
+const dayBarEl = document.getElementById("dayBar");
+const speedBtnEl = document.getElementById("speedBtn");
 let lastMoneyBar = null;
+let lastDayBar = -1;
 function updateMoneyBar() {
   const txt = fmtMoney(city.money);
-  if (txt === lastMoneyBar) return;
-  lastMoneyBar = txt;
-  moneyBarEl.textContent = txt;
-  moneyBarEl.classList.toggle("neg", city.money < 0);
+  if (txt !== lastMoneyBar) {
+    lastMoneyBar = txt;
+    moneyBarEl.textContent = txt;
+    moneyBarEl.classList.toggle("neg", city.money < 0);
+  }
+  if (city.day !== lastDayBar) {
+    lastDayBar = city.day;
+    dayBarEl.textContent = `${t("stDay")} ${city.day}`;
+  }
 }
+// Скорость времени: день длится 5с / скорость. Кнопка у денег: 1× → 2× → 3×.
+const SPEEDS = [1, 2, 3];
+let gameSpeed = 1;
+let dayTimer = null;
+function armDayTimer() {
+  if (dayTimer) clearInterval(dayTimer);
+  dayTimer = setInterval(() => { if (mapReady && !paused) tickCity(); }, Math.round(5000 / gameSpeed));
+}
+if (speedBtnEl) speedBtnEl.addEventListener("click", () => {
+  gameSpeed = SPEEDS[(SPEEDS.indexOf(gameSpeed) + 1) % SPEEDS.length];
+  speedBtnEl.textContent = `${gameSpeed}×`;
+  armDayTimer();
+});
 
 // ---------- импорт построек Minecraft (схематики) ----------
 const loadBtnEl = document.getElementById("loadBtn");
@@ -872,10 +898,7 @@ function recordBuilding({ name, file, x0, y0, z0, W, H, L, rot, placed }) {
   const label = document.createElement("div");
   label.className = "blabel";
   label.style.borderColor = col.css;
-  label.innerHTML =
-    `<b style="color:${col.css}">▮ ${name}</b><br>` +
-    `${W}×${H}×${L} · ${t("tileBlocks")}: ${placed}<br>` +
-    `x:${x0} y:${y0} z:${z0}` + (rot ? ` · ↻${rot * 90}°` : "");
+  label.innerHTML = recordLabelBase({ file, name, W, H, L, x0, y0, z0, rot, placed, css: col.css });
   label.style.display = "none";
   labelsEl.appendChild(label);
   const b = { id, name, file: file || "", x0, y0, z0, W, H, L, rot, placed, at: Date.now(), lines, fill, label, css: col.css };
@@ -928,6 +951,28 @@ if (cityBldSortEl) {
 
 function schemeMetaFor(file) {
   return allSchemeItems.find((i) => i.file === file) || null;
+}
+// Отображаемое имя постройки на текущем языке: для библиотечных схем —
+// schemeName(meta) (пересчитывается при смене языка), иначе stored name,
+// иначе имя типа. Хранимые name — лишь fallback (файлы вне каталога, сейвы).
+function bldName(b) {
+  if (!b) return "";
+  const meta = b.file ? schemeMetaFor(b.file) : null;
+  if (meta) return schemeName(meta);
+  return b.name || (b.typeId ? typeName(b.typeId) : "");
+}
+// Базовая часть метки рамки (без строки города): имя + размеры + координаты.
+function recordLabelBase(d) {
+  return `<b style="color:${d.css}">▮ ${bldName(d)}</b><br>` +
+    `${d.W}×${d.H}×${d.L} · ${t("tileBlocks")}: ${d.placed}<br>` +
+    `x:${d.x0} y:${d.y0} z:${d.z0}` + (d.rot ? ` · ↻${d.rot * 90}°` : "");
+}
+// Имя активного призрака на текущем языке (пересчёт при смене языка).
+function previewDispName() {
+  if (!previewPlan) return "";
+  const meta = selectedSchemeFile ? schemeMetaFor(selectedSchemeFile) : null;
+  if (meta) return schemeName(meta);
+  return previewPlan.name || "";
 }
 
 function schemeBuildCost(item, dims) {
@@ -1069,9 +1114,8 @@ function updateLoanQuote() {
   const a = Number.isFinite(loanDraft.amount) ? Math.max(0, loanDraft.amount) : 0;
   const q = loanQuote(a, d);
   box.innerHTML =
-    `${t("loanQuote", { daily: fmtMoney(q.daily), total: fmtMoney(q.owed) })}<br>` +
-    `${t("loanLimit", { limit: fmtMoney(loanLimit(city)), rate: q.rate })}<br>` +
-    t("loanGraceHint", { days: d });
+    `${t("loanQuote", { total: fmtMoney(q.owed), rate: q.rate })}<br>` +
+    t("loanGraceHint", { days: d, daily: fmtMoney(q.daily) });
   const amtEl = document.getElementById("loanAmount");
   if (amtEl) amtEl.max = loanLimit(city);
 }
@@ -1131,7 +1175,7 @@ function renderLoans() {
       <div class="cbtake">${LOAN_PRESETS.map((p) =>
         `<button data-loan-preset="${p.amount},${p.days}"${full || p.amount > limit ? " disabled" : ""} title="${t("loanPresetTitle")}">` +
         `${fmtMoney(p.amount)} · ${p.days} ${t("daysShort")} · ${loanMinRate(p.days)}%</button>`).join("")}</div>
-      <div class="clquote" id="loanQuote">${t("loanQuote", { daily: fmtMoney(q.daily), total: fmtMoney(q.owed) })}<br>${t("loanLimit", { limit: fmtMoney(limit), rate: q.rate })}<br>${t("loanGraceHint", { days })}</div>
+      <div class="clquote" id="loanQuote">${t("loanQuote", { total: fmtMoney(q.owed), rate: q.rate })}<br>${t("loanGraceHint", { days, daily: fmtMoney(q.daily) })}</div>
       <button data-loan-take=""${full ? " disabled" : ""}>${t("loanTake")}</button>
     </div>`;
   city.loans.forEach((l, i) => {
@@ -1170,7 +1214,7 @@ function renderLoans() {
     Object.entries(tagCounts).sort((a, b) => b[1] - a[1]).map(([tag, n]) =>
       chip(`#${tagName(tag)} (${n})`, cityBldTag === tag, `data-cbtag="${tag}"`)).join("");
   const sorters = {
-    name: (a, b) => String(a.name).localeCompare(String(b.name), locale()),
+    name: (a, b) => bldName(a).localeCompare(bldName(b), locale()),
     health: (a, b) => a.health - b.health,
     cost: (a, b) => b.stats.buildCost - a.stats.buildCost,
     housing: (a, b) => (b.stats.housing || 0) - (a.stats.housing || 0),
@@ -1198,7 +1242,7 @@ function renderLoans() {
     if (inst.stats.housing > 0) parts.push(`${t("residentsOf")} ${inst.residents || 0}/${inst.stats.housing}`);
     if (inst.stats.jobs > 0) parts.push(`${t("workersOf")} ${inst.workers}/${inst.stats.jobs}`);
     row.innerHTML =
-      `<div class="cbhead"><b>${inst.name}</b><span class="cdim">${typeName(inst.typeId)}${inst.tier > 1 ? ` · ${TIERS[inst.tier].icon} ${tierName(inst.tier)}` : ""}</span></div>` +
+      `<div class="cbhead"><b>${bldName(inst)}</b><span class="cdim">${typeName(inst.typeId)}${inst.tier > 1 ? ` · ${TIERS[inst.tier].icon} ${tierName(inst.tier)}` : ""}</span></div>` +
       `<div class="cbar"><div class="cfill" style="width:${hp}%;${hp < 35 ? "background:#ff5952;" : hp < 70 ? "background:#ffd54d;" : ""}"></div></div>` +
       `<div class="cbsub"><span>${parts.join(" · ")}</span>` +
       `<button data-repair="${inst.id}"${can ? "" : " disabled"}>${t("repair")} ${inst.health >= 100 ? "" : fmtMoney(cost)}</button>` +
@@ -1419,7 +1463,7 @@ async function demolishBuilding(id) {
   if (!inst) return;
   const isDraft = inst.active === false;
   const refund = isDraft ? inst.stats.buildCost : Math.floor(inst.stats.buildCost * 0.5);
-  if (!window.confirm(t("demolishAsk", { name: inst.name, sum: fmtMoney(refund) }))) return;
+  if (!window.confirm(t("demolishAsk", { name: bldName(inst), sum: fmtMoney(refund) }))) return;
   const rec = buildings.find((b) => b.cityId === id);
   let cleared = 0;
   if (rec) {
@@ -1433,7 +1477,7 @@ async function demolishBuilding(id) {
   }
   const ci = city.buildings.findIndex((b) => b.id === id);
   if (ci < 0) return;
-  const name = inst.name;
+  const name = bldName(inst);
   if (isDraft) {
     city.buildings.splice(ci, 1);
     city.money = Math.round((city.money + refund) * 100) / 100;
@@ -1778,7 +1822,7 @@ function tickCity() {
   if (cityPanelEl.classList.contains("show")) renderCity();
   cityWarnings();
 }
-setInterval(() => { if (mapReady && !paused) tickCity(); }, 5000);
+armDayTimer(); // день тикает каждые 5с / скорость (кнопка 1× у денег)
 
 // Тосты о кризисах ресурсов: не чаще раза в несколько игровых дней,
 // иначе сообщение заедает остальные тосты.
@@ -1939,7 +1983,6 @@ function setPaused(on) {
   if (on) closePanels(); // пауза тоже ни с кем не делит экран
   pauseMenuEl.classList.toggle("show", on);
   if (on) refreshSaveInfo();
-  if (on) coachOnce("pause", { text: t("coachPause"), target: "#resumeBtn" });
   if (on) {
     yg.playStop();
     updateAuthUI();
@@ -2350,7 +2393,7 @@ function createTile(item) {
     const nm = document.createElement("div");
     nm.className = "tn";
     nm.textContent = dispName;
-    nm.title = item.name;
+    nm.title = getLang() === "en" ? schemeNameRu(item) : item.name;
     const dim = document.createElement("div");
     dim.className = "td";
     dim.textContent = `${item.w}×${item.h}×${item.l} · ${item.blocks}`;
@@ -2489,7 +2532,7 @@ async function selectScheme(url, name) {
       buildSchemeLists();
       if (schemeFilter.list === "recent") renderSchemeTiles();
     }
-    showMsg(t("selectedHint", { name, dims: `${plan.W}×${plan.H}×${plan.L}` }));
+    showMsg(t("selectedHint", { name: previewDispName(), dims: `${plan.W}×${plan.H}×${plan.L}` }));
   } catch (err) {
     console.error(t("dbgSchemeRead"), err);
     showMsg(t("schemeErr", { err: err.message }));
@@ -2509,7 +2552,7 @@ function updateBuildBar() {
   const q = schemeBuildCost(item, { W: r.W, H: r.H, L: r.L });
   schemeBuildBarEl.innerHTML = "";
   const info = document.createElement("span");
-  info.innerHTML = `<b>${previewPlan.name}</b> · ${r.W}×${r.H}×${r.L}` +
+  info.innerHTML = `<b>${previewDispName()}</b> · ${r.W}×${r.H}×${r.L}` +
     (q ? ` · ${fmtMoney(q.cost)}${q.tier > 1 ? ` · ${TIERS[q.tier].icon} ${tierName(q.tier)}` : ""}` : "");
   const go = document.createElement("button");
   go.textContent = t("toBuild");
@@ -2625,7 +2668,7 @@ function undoLastPlaced() {
   updateGhostBar();
   if (cityPanelEl.classList.contains("show")) renderCity();
   const left = placedStack.length;
-  showMsg(t("undone", { name: u.name, n: cleared, sum: fmtMoney(u.cost) }) +
+  showMsg(t("undone", { name: bldName(u.rec), n: cleared, sum: fmtMoney(u.cost) }) +
     (left > 0 ? t("undoneLeft", { left }) : ""));
 }
 
@@ -2712,7 +2755,7 @@ function updateGhostBar() {
   const lvl = levelPreview();
   const n = placedStack.length;
   ghostBarEl.innerHTML =
-    `<b>${previewPlan.name}</b> · ${r.W}×${r.H}×${r.L}` +
+    `<b>${previewDispName()}</b> · ${r.W}×${r.H}×${r.L}` +
     (q ? ` · ${fmtMoney(q.cost)}${q.tier > 1 ? ` · ${TIERS[q.tier].icon} ${tierName(q.tier)}` : ""}` : "") +
     (n > 0 ? ` · ${t("placedCount", { n })}` : "") +
     (lvl && lvl.cells > 0 ? ` · <b>${t("levelBtn", { cost: fmtMoney(lvl.cost) })}</b>` : "") +
@@ -2759,7 +2802,7 @@ function rotatePreview() {
   updateBuildBar();
   updateGhostBar();
   const r = previewPlan.rotated;
-  showMsg(t("rotated", { name: previewPlan.name, deg: previewPlan.rot * 90, dims: `${r.W}×${r.H}×${r.L}` }));
+  showMsg(t("rotated", { name: previewDispName(), deg: previewPlan.rot * 90, dims: `${r.W}×${r.H}×${r.L}` }));
 }
 
 function placePreview() {
@@ -3054,7 +3097,7 @@ function breakOne(hit) {
       if (inst) {
         refreshRecordLabel(rec);
         if (inst.health <= 0) {
-          showMsg(t("destroyed", { name: inst.name }));
+          showMsg(t("destroyed", { name: bldName(inst) }));
         }
       }
     }

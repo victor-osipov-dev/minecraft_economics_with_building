@@ -101,9 +101,9 @@ export const STR = {
     loanNone: "нет такого займа", loanMany: "слишком много займов",
     loanAmountLbl: "Сумма", loanDaysLbl: "Срок, дней",
     loanTake: "Взять кредит",
-    loanQuote: "платёж {daily}/день · к возврату {total}",
+    loanQuote: "к возврату {total} · ставка {rate}%",
     loanLimit: "лимит {limit} · ставка {rate}%",
-    loanGraceHint: "первые {days} дн не платишь — потом {days} дн платишь",
+    loanGraceHint: "первые {days} дн не платишь — потом {days} дн платишь {daily}/день",
     loanGraceLeft: "пауза {n} дн",
     loanPresetTitle: "Взять кредит сразу с этими условиями",
     loanHint: "Досрочно: долг + проценты за прожитые дни",
@@ -206,6 +206,7 @@ export const STR = {
     framesOn: "Рамки: вкл (G)", framesOff: "Рамки: выкл (G)", framesTitle: "Показать или скрыть рамки построек (G)",
     blocksBtn: "Блоки (E)", blocksBtnTitle: "Выбор блоков (E)",
     lockHint: "Кликните по миру, чтобы играть",
+    speedTitle: "Скорость игры: 1× → 2× → 3×",
     tabHint: "НАЖМИ TAB", tabHintSub: "постройки и город",
     showAgain: "Показать снова",
     tileHousing: "жильё", tileJobs: "работы", tileFood: "еда +", tileEnergy: "энергия +",
@@ -513,9 +514,9 @@ export const STR = {
     loanNone: "no such loan", loanMany: "too many loans",
     loanAmountLbl: "Amount", loanDaysLbl: "Term, days",
     loanTake: "Take loan",
-    loanQuote: "payment {daily}/day · repay {total}",
+    loanQuote: "repay {total} · rate {rate}%",
     loanLimit: "limit {limit} · rate {rate}%",
-    loanGraceHint: "first {days} d you pay nothing — then {days} d of payments",
+    loanGraceHint: "first {days} d you pay nothing — then {days} d you pay {daily}/day",
     loanGraceLeft: "pause {n} d",
     loanPresetTitle: "Take this loan right away",
     loanHint: "Early close: debt + interest for days lived",
@@ -617,6 +618,7 @@ export const STR = {
     framesOn: "Frames: on (G)", framesOff: "Frames: off (G)", framesTitle: "Show or hide building frames (G)",
     blocksBtn: "Blocks (E)", blocksBtnTitle: "Pick blocks (E)",
     lockHint: "Click the world to play",
+    speedTitle: "Game speed: 1× → 2× → 3×",
     tabHint: "PRESS TAB", tabHintSub: "buildings and city",
     showAgain: "Show again",
     tileHousing: "housing", tileJobs: "jobs", tileFood: "food +", tileEnergy: "energy +",
@@ -906,8 +908,15 @@ export function tagNameSearch(tag) {
   const b = STR.ru.schemeTags && STR.ru.schemeTags[tag];
   return a && b && a !== b ? (a + " " + b) : (a || b || tag);
 }
-// Название постройки из витрины: русский перевод по slug, иначе исходное имя.
+// Название постройки из витрины на текущем языке: в ru — русский перевод
+// по slug, в en — исходное английское имя. Иначе исходное имя.
 export function schemeName(item) {
+  if (!item) return "";
+  if (lang === "en") return item.name || "";
+  return schemeNamesRu[item.slug] || item.name || "";
+}
+// Русский перевод названия (для подсказок в en-режиме).
+export function schemeNameRu(item) {
   if (!item) return "";
   return schemeNamesRu[item.slug] || item.name || "";
 }
