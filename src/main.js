@@ -1610,18 +1610,25 @@ async function saveGame({ silent = false } = {}) {
     const json = JSON.stringify(data);
     localStorage.setItem(SAVE_KEY, json);
     // Облако (только у авторизованных): полный сейв, если влезает в лимит
-    // SDK (~180 КБ), иначе компактный профиль города.
+    // setData (200 КБ по документации) с запасом — меряем БАЙТЫ, а не символы:
+    // кириллица в UTF-8 весит вдвое больше, char-длина врала бы.
+    // Иначе компактный профиль города. Настройки едут в облако в обоих видах.
+    const bytes = new TextEncoder().encode(json).length;
+    const cloudSettings = {
+      lang: settings.lang, tutorial: settings.tutorial,
+      tabHint: settings.tabHint, coach: settings.coach,
+    };
     let cloud = false;
     if (yg.authorized) {
-      const payload = json.length < 180 * 1024
-        ? { v: 1, kind: "full", save: data }
-        : { v: 1, kind: "profile", profile: cloudProfile() };
+      const payload = bytes < 180 * 1024
+        ? { v: 1, kind: "full", save: data, settings: cloudSettings }
+        : { v: 1, kind: "profile", profile: cloudProfile(), settings: cloudSettings };
       cloud = await yg.cloudSave({ citysave: payload });
     }
     // Автосейвы молчат; ошибку показываем всегда.
     if (!silent) {
-      if (cloud) showMsg("savedCloud", { day: city.day, n: city.buildings.length, kb: (json.length / 1024).toFixed(0) });
-      else showMsg("saved", { day: city.day, n: city.buildings.length, kb: (json.length / 1024).toFixed(0) });
+      if (cloud) showMsg("savedCloud", { day: city.day, n: city.buildings.length, kb: (bytes / 1024).toFixed(0) });
+      else showMsg("saved", { day: city.day, n: city.buildings.length, kb: (bytes / 1024).toFixed(0) });
     }
   } catch (e) {
     console.error(e);
@@ -1631,6 +1638,8 @@ async function saveGame({ silent = false } = {}) {
 }
 
 // Компактный профиль для облака (кросс-девайс), когда мир не влезает в лимит.
+// Только экономика/день/население: воксели и список построек в 200 КБ не
+// влезают и не восстанавливаются — город продолжает жить с нуля застройки.
 function cloudProfile() {
   return {
     money: city.money, population: city.population,
@@ -1640,11 +1649,22 @@ function cloudProfile() {
     day: city.day, taxRate: city.taxRate, bizTax: city.bizTax, indTax: city.indTax,
     milestones: city.milestones || [],
     best: ygBestPop,
-    buildings: city.buildings.map((b) => ({
-      typeId: b.typeId, name: b.name,
-      x0: b.x0, y0: b.y0, z0: b.z0, W: b.W, H: b.H, L: b.L, health: b.health,
-    })),
   };
+}
+
+// Настройки из облачного сейва (при явной загрузке): язык, тумблеры.
+function applyCloudSettings(s) {
+  if (!s || typeof s !== "object") return;
+  if (s.lang === "ru" || s.lang === "en" || s.lang === "auto") settings.lang = s.lang;
+  for (const k of ["tutorial", "tabHint", "coach"]) {
+    if (typeof s[k] === "boolean") settings[k] = s[k];
+  }
+  saveSettings();
+  if (setTutorialEl) setTutorialEl.checked = settings.tutorial;
+  if (setTabHintEl) setTabHintEl.checked = settings.tabHint;
+  if (setCoachEl) setCoachEl.checked = settings.coach;
+  setLang(resolvedLang());
+  syncLangButtons();
 }
 
 // Рекорд населения: локально всегда, в лидерборд — авторизованным.
@@ -1701,6 +1721,7 @@ function applyCloudProfile(p) {
 
 async function loadGame() {
   let parsed;
+  let cloudSettings = null;
   try {
     const raw = localStorage.getItem(SAVE_KEY);
     if (!raw) {
@@ -1710,8 +1731,11 @@ async function loadGame() {
         const payload = cloud.citysave;
         if (payload.kind === "full" && payload.save) {
           parsed = parseSave(JSON.stringify(payload.save));
+          cloudSettings = payload.settings || null;
         } else if (payload.kind === "profile" && payload.profile) {
           applyCloudProfile(payload.profile);
+          applyCloudSettings(payload.settings);
+          applyI18n();
           return;
         }
       }
@@ -1791,6 +1815,8 @@ async function loadGame() {
     tutorialReset();
     checkTutorial(true); // загрузка: шаги отмечаем молча, без наград
     closePanels();
+    applyCloudSettings(cloudSettings);
+    applyI18n();
     showMsg("loaded", { day: city.day, n: city.buildings.length });
   } catch (e) {
     console.error(e);

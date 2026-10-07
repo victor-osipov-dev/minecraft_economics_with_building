@@ -143,7 +143,7 @@ export const yg = {
   // Полноэкранная реклама в логической паузе. Возвращает Promise:
   // резолвится всегда (показана или нет), игра продолжается в .then().
   fullscreenAdv() {
-    if (!this.ok || !this.ysdk || !this.ysdk.adv) return Promise.resolve(false);
+    if (!this.ok || !this.ysdk || !this.ysdk.adv || this.advOpen) return Promise.resolve(false);
     const adv = this.ysdk.adv;
     return new Promise((resolve) => {
       let done = false;
@@ -170,7 +170,7 @@ export const yg = {
 
   // Rewarded: награда только в onRewarded (досмотр засчитан).
   rewarded() {
-    if (!this.ok || !this.ysdk || !this.ysdk.adv) return Promise.resolve(false);
+    if (!this.ok || !this.ysdk || !this.ysdk.adv || this.advOpen) return Promise.resolve(false);
     const adv = this.ysdk.adv;
     return new Promise((resolve) => {
       let done = false;
