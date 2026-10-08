@@ -6,6 +6,28 @@
   <title>Майн - готовые постройки</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
+    /* Экран загрузки: виден сразу (ещё до JS), вместо чёрного экрана */
+    #loader {
+      position: fixed; inset: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: center;
+      background: radial-gradient(ellipse at center, #1a1d24 0%, #000 75%);
+      transition: opacity 0.5s;
+    }
+    #loader.hide { opacity: 0; pointer-events: none; }
+    #loader .lbox { text-align: center; padding: 0 20px; }
+    #loader .ltitle {
+      font: 700 30px 'Segoe UI', Arial, sans-serif;
+      color: #ffd54a; letter-spacing: 1px; margin-bottom: 20px;
+      text-shadow: 0 0 24px rgba(255, 213, 74, 0.45), 0 3px 0 #000;
+    }
+    #loader .spin {
+      width: 54px; height: 54px; margin: 0 auto 20px;
+      border: 5px solid rgba(255, 213, 74, 0.25);
+      border-top-color: #ffd54a; border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    #loadStatus { font: 18px 'Segoe UI', Arial, sans-serif; color: #eee; opacity: 0.85; }
     html, body { width: 100%; height: 100%; overflow: hidden; background: #000; }
     #scene { width: 100%; height: 100%; display: block; cursor: crosshair; }
     /* Минимальный размер шрифта интерфейса — 16px (читаемость для слабовидящих) */
@@ -731,6 +753,11 @@
 </head>
 <body>
   <div id="hotbar"></div>
+  <div id="loader"><div class="lbox">
+    <div class="ltitle" data-i18n="pageTitle">Майн - готовые постройки</div>
+    <div class="spin"></div>
+    <div id="loadStatus" data-i18n="loading">Загрузка…</div>
+  </div></div>
   <div id="topLeft"><div id="moneyBar"></div><div id="dayBar"></div><button id="speedBtn" data-i18n-title="speedTitle">1×</button></div>
   <div id="hudSub"></div>
   <div id="tutorial"></div>

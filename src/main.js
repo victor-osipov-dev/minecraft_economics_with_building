@@ -1644,6 +1644,7 @@ async function saveGame({ silent = false } = {}) {
   // Дни тикают вместе с экономикой, на паузе и без изменений писать нечего.
   // Ручное сохранение по кнопке — всегда.
   if (silent && city.day <= lastSaveDay) return;
+  submitBestScore(false); // рекорд в лидерборд — заодно с сейвом, best effort
   try {
     const data = {
       v: SAVE_VERSION,
@@ -1758,15 +1759,25 @@ function applyCloudSettings(s) {
   syncLangButtons();
 }
 
-// Рекорд населения: локально всегда, в лидерборд — авторизованным.
+// Рекорд населения: локально всегда, в лидерборд — авторизованным,
+// отправка не чаще раза в минуту (лимиты SDK); при неудаче — повтор позже.
 let ygBestPop = 0;
 try { ygBestPop = Math.max(0, Math.floor(Number(localStorage.getItem("babylon-best-pop")) || 0)); } catch (e) {}
+let ygBestSubmitted = 0;
+let lastLbSubmit = 0;
+function submitBestScore(force) {
+  if (!yg.authorized || ygBestPop <= ygBestSubmitted) return;
+  if (!force && Date.now() - lastLbSubmit < 60000) return;
+  lastLbSubmit = Date.now();
+  ygBestSubmitted = ygBestPop;
+  yg.submitPopulation(ygBestPop).then((ok) => { if (!ok) ygBestSubmitted = 0; });
+}
 function notePopulation() {
   if (city.population > ygBestPop) {
     ygBestPop = city.population;
     try { localStorage.setItem("babylon-best-pop", String(ygBestPop)); } catch (e) {}
-    yg.submitPopulation(ygBestPop);
   }
+  submitBestScore(false);
 }
 
 // Профиль из облака: свежая местность + экономика/день/население.
@@ -3718,7 +3729,32 @@ function initFlatWorld() {
 }
 
 engine.runRenderLoop(() => scene.render());
-initFlatWorld();
+// Экран загрузки вместо чёрного экрана: статичный HTML виден ещё до JS,
+// здесь обновляем статус и прячем после первого отрисованного кадра.
+// Генерация мира — тяжёлый синхронный блок, перед ним даём браузеру кадр.
+const loaderEl = document.getElementById("loader");
+const loadStatusEl = document.getElementById("loadStatus");
+function hideLoader() {
+  if (!loaderEl || loaderEl.classList.contains("hide")) return;
+  loaderEl.classList.add("hide");
+  setTimeout(() => loaderEl.remove(), 600);
+}
+window.addEventListener("error", () => {
+  try {
+    if (!mapReady && loadStatusEl) loadStatusEl.textContent = t("loadError");
+  } catch (e) {}
+});
+window.addEventListener("unhandledrejection", () => {
+  try {
+    if (!mapReady && loadStatusEl) loadStatusEl.textContent = t("loadError");
+  } catch (e) {}
+});
+(async () => {
+  if (loadStatusEl) loadStatusEl.textContent = t("loadingWorld");
+  await new Promise((r) => setTimeout(r, 30));
+  initFlatWorld();
+  requestAnimationFrame(() => requestAnimationFrame(() => hideLoader()));
+})();
 window.addEventListener("resize", () => engine.resize());
 
 // ---------- Яндекс Игры: платформа ----------
