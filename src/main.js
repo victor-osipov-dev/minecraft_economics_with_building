@@ -1598,6 +1598,7 @@ function resetGame() {
   clearBuildings();
   nextBuildingId = 1;
   city = newCityState();
+  lastSaveDay = -1; // новый мир — прогресса ещё нет
   respawnPoint = { x: 0.5, y: 2, z: 0.5 };
   player.x = respawnPoint.x;
   player.y = respawnPoint.y;
@@ -1637,7 +1638,12 @@ function refreshSaveInfo() {
   }
 }
 
+let lastSaveDay = -1; // день мира в последнем сейве: без прогресса автосейвы пропускаем
 async function saveGame({ silent = false } = {}) {
+  // Тихие автосейвы — только если мир продвинулся со прошлого сейва.
+  // Дни тикают вместе с экономикой, на паузе и без изменений писать нечего.
+  // Ручное сохранение по кнопке — всегда.
+  if (silent && city.day <= lastSaveDay) return;
   try {
     const data = {
       v: SAVE_VERSION,
@@ -1650,6 +1656,7 @@ async function saveGame({ silent = false } = {}) {
     };
     const json = JSON.stringify(data);
     localStorage.setItem(SAVE_KEY, json);
+    lastSaveDay = city.day;
     // Облако (только у авторизованных): три яруса по размеру.
     // setData (200 КБ по документации) с запасом 180 КБ — меряем БАЙТЫ:
     // full (мир целиком) → city (всё важное без вокселей чанков) →
@@ -1796,6 +1803,7 @@ function applyCloudProfile(p) {
     closePanels();
     setPaused(false);
     showMsg("loaded", { day: city.day, n: 0 });
+    lastSaveDay = -1;
   } catch (e) {
     console.error(e);
     showMsg("loadFail", { err: e.message || e });
@@ -1933,6 +1941,7 @@ async function loadGame() {
           applyI18n();
           refreshSaveInfo();
           showMsg("loaded", { day: city.day, n: city.buildings.length });
+          lastSaveDay = -1;
           return;
         } else if (payload.kind === "profile" && payload.profile) {
           applyCloudProfile(payload.profile);
@@ -2018,6 +2027,7 @@ async function loadGame() {
     checkTutorial(true); // загрузка: шаги отмечаем молча, без наград
     closePanels();
     applyCloudSettings(cloudSettings);
+    lastSaveDay = -1; // загруженный мир — следующий автосейв его закрепит
     applyI18n();
     showMsg("loaded", { day: city.day, n: city.buildings.length });
   } catch (e) {
