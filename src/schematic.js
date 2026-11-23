@@ -45,6 +45,8 @@ import {
   REDSTONE_TORCH,
   TRIPWIRE_HOOK,
   WATER,
+  GOLD_BLOCK,
+  PINK_WOOL,
   BLOCKS,
   TORCH_FLOOR,
   SIGN_STANDING,
@@ -556,6 +558,8 @@ const EXACT_BLOCKS = new Map([
   ["blue_wool", BLUE_WOOL],
   ["red_wool", RED_WOOL],
   ["yellow_wool", YELLOW_WOOL],
+  ["pink_wool", PINK_WOOL],
+  ["gold_block", GOLD_BLOCK],
   ["bookshelf", BOOKSHELF],
   ["cauldron", CAULDRON],
   ["chest", CHEST],
@@ -839,7 +843,9 @@ export function mapBlockState(rawName, properties, stats) {
   if (name.includes("blue_wool")) return { id: BLUE_WOOL, data: 0 };
   if (name.includes("red_wool")) return { id: RED_WOOL, data: 0 };
   if (name.includes("yellow_wool")) return { id: YELLOW_WOOL, data: 0 };
+  if (name.includes("pink_wool")) return { id: PINK_WOOL, data: 0 };
   if (name.includes("wool") || name.includes("shulker")) return { id: WALL_CONCRETE, data: 0 };
+  if (name.includes("gold_block")) return { id: GOLD_BLOCK, data: 0 };
   if (name.includes("bookshelf")) return { id: BOOKSHELF, data: 0 };
   if (name === "bricks") return { id: RED_TERRACOTTA, data: 0 };
   if (name.includes("note_block")) return { id: WOOD, data: 0 };
@@ -1491,6 +1497,8 @@ export function mapLegacyId(id, data, stats) {
     return { id: AIR, data: 0 };
   }
   const meta = Number.isSafeInteger(data) ? data & 0xff : 0;
+  // Розовая шерсть (legacy wool metadata 6) — коллекционная награда.
+  if (id === 35 && meta === 6) return { id: PINK_WOOL, data: 0 };
   // Факелы и редстоун-факелы несут направление в метаданных.
   if (id === 50) return { id: TORCH, data: legacyTorchData(meta) };
   if (id === 75 || id === 76) return { id: REDSTONE_TORCH, data: legacyTorchData(meta) };

@@ -46,6 +46,9 @@ export const TORCH = 42;
 export const REDSTONE_TORCH = 43;
 export const TRIPWIRE_HOOK = 44;
 export const WATER = 45;
+// Коллекционные блоки (добавлены в конец, чтобы не сдвинуть id старых сейвов).
+export const GOLD_BLOCK = 46;
+export const PINK_WOOL = 47;
 
 const T = {
   concrete: { up: 0, side: 0, down: 0 },
@@ -94,6 +97,8 @@ const T = {
   redstoneTorch: { up: 43, side: 43, down: 43 },
   tripwireHook: { up: 44, side: 44, down: 44 },
   water: { up: 45, side: 45, down: 45 },
+  gold: { up: 54, side: 54, down: 54 },
+  pinkWool: { up: 55, side: 55, down: 55 },
   // Верх и бок нажимной плиты (вид сверху/сбоку). Используются только плитами.
   oakPlateTop: { up: 46, side: 46, down: 46 },
   oakPlateSide: { up: 47, side: 47, down: 47 },
@@ -215,6 +220,8 @@ export const BLOCKS = [
   block("Красный камень", { cat: "decor", solid: false, transparent: true, shape: "torch", tiles: T.redstoneTorch, hardness: 0.1, color: "#d43c35", light: 5 }),
   block("Крюк натянутой проволоки", { cat: "mech", solid: false, transparent: true, shape: "hook", tiles: T.wood, hardness: 0.4, color: "#7a5833" }),
   block("Вода", { cat: "nature", solid: false, transparent: true, blend: true, tiles: T.water, hardness: 0, color: "#3f83c5" }),
+  block("Золотой блок", { cat: "build", tiles: T.gold, hardness: 3, toolPower: 1.5, color: "#ffd54a" }),
+  block("Розовая шерсть", { cat: "decor", tiles: T.pinkWool, hardness: 0.6, color: "#ff9ec4" }),
 ];
 
 const TILE = 64;
@@ -222,7 +229,7 @@ export const ATLAS_COLS = 4;
 // Тайлы 46..53 (верх/бок нажимных плит, верх травы) живут за пределами
 // BLOCKS, поэтому высота атласа считается от максимального индекса тайла,
 // а не от числа блоков.
-const MAX_TILE_INDEX = 53;
+const MAX_TILE_INDEX = 55;
 export const ATLAS_ROWS = Math.ceil((MAX_TILE_INDEX + 1) / ATLAS_COLS);
 // Keep the physical texture dimensions in lockstep with the UV grid.  A
 // 1024px square with 4x12 UVs would sample only the top-left quarter of
@@ -520,6 +527,18 @@ function paintIronBlock(ctx, ox, oy) {
   ctx.strokeRect(ox + 1, oy + 1, TILE - 2, TILE - 2);
   ctx.fillStyle = "rgba(255,255,255,0.28)";
   for (let i = 0; i < 6; i++) ctx.fillRect(ox + 4, oy + 6 + i * 10, TILE - 8, 1);
+}
+
+function paintGold(ctx, ox, oy) {
+  ctx.fillStyle = "#ffd54a";
+  ctx.fillRect(ox, oy, TILE, TILE);
+  noiseFill(ctx, ox, oy, [255, 213, 74], 22);
+  ctx.strokeStyle = "#c9991f";
+  ctx.lineWidth = 3;
+  ctx.strokeRect(ox + 1.5, oy + 1.5, TILE - 3, TILE - 3);
+  ctx.fillStyle = "rgba(255,255,230,0.45)";
+  ctx.fillRect(ox + 8, oy + 8, 10, 4);
+  ctx.fillRect(ox + 44, oy + 46, 12, 4);
 }
 
 function paintIronDoor(ctx, ox, oy) {
@@ -861,6 +880,8 @@ export function createAtlas(scene) {
   paintBedTop(ctx, 192, 768); // 51: верх кровати
   paintBedSide(ctx, 0, 832); // 52: бок кровати
   paintGrassTop(ctx, 64, 832); // 53: верх травы
+  paintGold(ctx, 128, 832); // 54: золотой блок (коллекции)
+  paintWool(ctx, 192, 832, "#ff9ec4"); // 55: розовая шерсть (коллекции)
   dt.update(false);
   dt.hasAlpha = true;
   dt.wrapU = BABYLON.Texture.CLAMP_ADDRESSMODE;

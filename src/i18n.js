@@ -15,7 +15,7 @@ export const STR = {
       "Табличка", "Дубовые ступени", "Дубовой люк", "Поршень", "Кварцевый блок",
       "Красная кровать", "Красная терракота", "Песчаник", "Гладкая каменная плита",
       "Каменные кирпичи", "Каменная нажимная плита", "Факел", "Красный камень",
-      "Крюк натянутой проволоки", "Вода",
+      "Крюк натянутой проволоки", "Вода", "Золотой блок", "Розовая шерсть",
     ],
     // типы зданий [имя, описание]
     types: {
@@ -39,6 +39,7 @@ export const STR = {
       road: ["Инфраструктура", "Дороги и транспорт: связывают город"],
       decor: ["Декор", "Украшение: чуть счастья"],
       generic: ["Постройка", "Без специализации"],
+      collectible: ["Коллекция", "Награда за достижение: ничего не производит, ничего не потребляет"],
     },
     tiers: { 1: "Обычная", 2: "Элита", 3: "Легенда" },
     // категории блоков песочницы
@@ -49,7 +50,61 @@ export const STR = {
       housing: "Жильё", food: "Еда", water: "Вода", energy: "Электричество",
       waste: "Мусор", jobs: "Работа", happy: "Счастье", safety: "Защита",
     },
-    lists: { all: "Всё", fav: "⭐ Избранное", recent: "🕘 Недавние" },
+    lists: { all: "Всё", fav: "⭐ Избранное", recent: "🕘 Недавние", gifts: "🎁 Коллекция" },
+
+    // --- достижения и коллекционные постройки ---
+    achNames: {
+      tutorial: "Выпускник",
+      all_types: "На все руки мастер",
+      negative: "Финансовая дыра",
+      bankrupt: "Банкрот по призванию",
+      tax_tyrant: "Налоговый тиран",
+      roadless: "Бездорожье",
+      fireman: "Пожарный",
+      collector: "Коллекционер",
+      smog: "Эколог наоборот",
+      debtor: "В долгах как в шелках",
+    },
+    achDesc: {
+      tutorial: "Пройти обучение «Первые шаги»",
+      all_types: "Построить все 19 типов зданий",
+      negative: "Уйти в минус (казна < $0)",
+      bankrupt: "Дойти до банкротства (казна < −$5000)",
+      tax_tyrant: "Держать все три налога на 100% три дня подряд",
+      roadless: "Иметь 10 активных зданий без дороги",
+      fireman: "Починить здание после пожара",
+      collector: "Поставить 50 различных схем",
+      smog: "Достичь загрязнения 50+",
+      debtor: "Взять три кредита одновременно",
+    },
+    collNames: {
+      casino: "🎰 Казино", townhall: "🏛 Золотая мэрия",
+      pink_memorial: "🩷 Памятник из розовой шерсти", gold_toilet: "🚽 Золотой унитаз",
+      gold_throne: "👑 Золотой трон", puddle: "🕳 Грязная лужа",
+      barbecue: "🔥 Шашлык на костре", piggy: "🐷 Свинья-копилка",
+      smokestack: "🏭 Дымящая труба", loan_bank: "🏦 Банк «Три кредита»",
+    },
+    achievement: "🏆 Достижение: {name} → награда {reward} (вкладка 🎁 Коллекция)",
+    achievementLocked: "🔒 Нужно достижение «{name}»",
+    collectibleFree: "🎁 Бесплатно",
+    achTitle: "🏆 Достижения",
+    achHint: "Награды — коллекционные постройки. Ничего не производят, но очень гордят.",
+    achOpen: "🏆 Достижения ({n}/{total})",
+    achClose: "Закрыть",
+    achLocked: "🔒 Не получено",
+    achDone: "✓ Получено",
+    achReward: "Награда: {reward}",
+    casinoTitle: "🎰 Казино",
+    casinoHint: "Однорукий бандит. Постройка ничего не даёт — деньги только перекочёвывают в казну и обратно.",
+    casinoBet: "Ставка:",
+    casinoSpin: "Крутить!",
+    casinoClose: "Выйти",
+    casinoResult: "{icon} {text}",
+    casinoWin: "Выигрыш +${sum}!",
+    casinoLose: "Мимо. −${sum}",
+    casinoNoMoney: "В казне недостаточно средств — не во что играть",
+    casinoPlay: "🎰 Сыграть",
+    casinoNotFound: "Подойди к казино и нажми C — или нажми кнопку в списке построек.",
     // вехи
     mstones: {
       m50: "Посёлок (50 жителей)", m200: "Городок (200 жителей)",
@@ -439,7 +494,7 @@ export const STR = {
       "Sign", "Oak Stairs", "Oak Trapdoor", "Piston", "Quartz Block",
       "Red Bed", "Red Terracotta", "Sandstone", "Smooth Stone Slab",
       "Stone Bricks", "Stone Pressure Plate", "Torch", "Redstone Torch",
-      "Tripwire Hook", "Water",
+      "Tripwire Hook", "Water", "Gold Block", "Pink Wool",
     ],
     types: {
       house: ["House", "Homes for citizens"],
@@ -462,6 +517,7 @@ export const STR = {
       road: ["Infrastructure", "Roads and transit: connect the city"],
       decor: ["Decor", "Decoration: a bit of happiness"],
       generic: ["Building", "No specialization"],
+      collectible: ["Collectible", "Achievement reward: produces nothing, consumes nothing"],
     },
     tiers: { 1: "Common", 2: "Elite", 3: "Legend" },
     blockCats: { build: "Build", nature: "Nature", decor: "Decor", parts: "Parts", mech: "Gadgets" },
@@ -470,7 +526,61 @@ export const STR = {
       housing: "Housing", food: "Food", water: "Water", energy: "Power",
       waste: "Waste", jobs: "Jobs", happy: "Happy", safety: "Safety",
     },
-    lists: { all: "All", fav: "⭐ Favorites", recent: "🕘 Recent" },
+    lists: { all: "All", fav: "⭐ Favorites", recent: "🕘 Recent", gifts: "🎁 Collection" },
+
+    // --- achievements and collectible builds ---
+    achNames: {
+      tutorial: "Graduate",
+      all_types: "Jack of all trades",
+      negative: "Financial hole",
+      bankrupt: "Born bankrupt",
+      tax_tyrant: "Tax tyrant",
+      roadless: "Roadless",
+      fireman: "Firefighter",
+      collector: "Collector",
+      smog: "Reverse ecologist",
+      debtor: "Debt up to my ears",
+    },
+    achDesc: {
+      tutorial: "Complete the First Steps tutorial",
+      all_types: "Build all 19 specialized building types",
+      negative: "Go into the red (treasury < $0)",
+      bankrupt: "Go bankrupt (treasury < −$5000)",
+      tax_tyrant: "Keep all three taxes at 100% for 3 days",
+      roadless: "Have 10 active buildings with no road access",
+      fireman: "Repair a building after a fire",
+      collector: "Place 50 different schematics",
+      smog: "Reach pollution 50+",
+      debtor: "Take out three loans at the same time",
+    },
+    collNames: {
+      casino: "🎰 Casino", townhall: "🏛 Golden Town Hall",
+      pink_memorial: "🩷 Pink Wool Monument", gold_toilet: "🚽 Golden Toilet",
+      gold_throne: "👑 Golden Throne", puddle: "🕳 Muddy Puddle",
+      barbecue: "🔥 Campfire BBQ", piggy: "🐷 Piggy Bank",
+      smokestack: "🏭 Smokestack", loan_bank: "🏦 Three Loans Bank",
+    },
+    achievement: "🏆 Achievement: {name} → reward {reward} (🎁 Collection tab)",
+    achievementLocked: "🔒 Requires achievement «{name}»",
+    collectibleFree: "🎁 Free",
+    achTitle: "🏆 Achievements",
+    achHint: "Rewards are collectible builds. They produce nothing, but look glorious.",
+    achOpen: "🏆 Achievements ({n}/{total})",
+    achClose: "Close",
+    achLocked: "🔒 Locked",
+    achDone: "✓ Unlocked",
+    achReward: "Reward: {reward}",
+    casinoTitle: "🎰 Casino",
+    casinoHint: "One-armed bandit. The building gives nothing — money just moves to and from the treasury.",
+    casinoBet: "Bet:",
+    casinoSpin: "Spin!",
+    casinoClose: "Leave",
+    casinoResult: "{icon} {text}",
+    casinoWin: "You win +${sum}!",
+    casinoLose: "No luck. −${sum}",
+    casinoNoMoney: "The treasury is empty — nothing to bet",
+    casinoPlay: "🎰 Play",
+    casinoNotFound: "Stand near the casino and press C — or use the button in the building list.",
     mstones: {
       m50: "Village (50 citizens)", m200: "Town (200 citizens)",
       m500: "City (500 citizens)", m1000: "Metropolis (1000 citizens)",
@@ -918,6 +1028,7 @@ export function tagNameSearch(tag) {
 // по slug, в en — исходное английское имя. Иначе исходное имя.
 export function schemeName(item) {
   if (!item) return "";
+  if (item._locName) return item._locName[lang] || item._locName.ru || item.name || "";
   if (lang === "en") return item.name || "";
   return schemeNamesRu[item.slug] || item.name || "";
 }
@@ -929,6 +1040,7 @@ export function schemeNameRu(item) {
 // Оригинал + перевод — поиск по витрине должен работать в обоих написаниях.
 export function schemeNameSearch(item) {
   if (!item) return "";
+  if (item._locName) return `${item._locName.ru || ""} ${item._locName.en || ""}`.trim();
   const ru = schemeNamesRu[item.slug];
   const en = item.name || "";
   return ru && en && ru !== en ? (ru + " " + en) : (ru || en);

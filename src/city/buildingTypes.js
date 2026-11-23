@@ -163,6 +163,14 @@ export const TYPES = {
     foodProd: 0, energyProd: 0, energyCons: 0,
     income: 0, happiness: 1, entertainment: 0, safety: 0, pollution: 0,
   },
+  // Коллекционные награды: в казну не дают и из казны не едят.
+  collectible: {
+    buildCost: 0, maintenance: 0,
+    housing: 0, jobs: 0,
+    foodProd: 0, energyProd: 0, energyCons: 0,
+    waterProd: 0, waterCons: 0, wasteProd: 0, wasteCap: 0,
+    income: 0, happiness: 0, entertainment: 0, safety: 0, pollution: 0,
+  },
 };
 
 // Масштаб от габаритов схемы: крупные постройки дают больше.

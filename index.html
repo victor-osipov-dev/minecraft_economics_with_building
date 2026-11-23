@@ -701,6 +701,29 @@
     #modal .mrow { display: flex; gap: 10px; margin-top: 16px; }
     #modal .mrow .mbtn { margin: 0; font-size: 17px; }
     #modal .mbtn.ghost { background: rgba(255, 255, 255, 0.06); color: #ddd; border-color: rgba(255, 255, 255, 0.3); }
+    /* Достижения и казино — коллекционные награды */
+    #achPanel { z-index: 62; max-width: min(620px, 94vw); }
+    #achPanel h3 { margin-bottom: 6px; }
+    .achrow { border: 1px solid rgba(255,255,255,0.16); border-radius: 8px; padding: 8px 10px; margin: 6px 0; background: rgba(255,255,255,0.04); }
+    .achrow.done { border-color: rgba(255,213,74,0.6); background: rgba(255,213,74,0.09); }
+    .achrow b { color: #ffd54a; font-size: 17px; }
+    .achrow .achstate { float: right; font-size: 16px; opacity: 0.8; }
+    .achrow .achd { opacity: 0.78; font-size: 16px; margin: 3px 0; }
+    .achrow .achr { color: #ffd54a; font-size: 16px; }
+    .tile.coll .tileph { display: flex; align-items: center; justify-content: center; font-size: 68px; background: linear-gradient(160deg, rgba(255,213,74,0.16), rgba(255,158,196,0.10)); }
+    .tile.locked { filter: grayscale(0.85); opacity: 0.62; }
+    .tile.locked:hover { border-color: rgba(255,255,255,0.2); }
+    .tile.locked::after { content: "🔒"; position: absolute; right: 8px; bottom: 6px; font-size: 26px; }
+    #casino { position: fixed; inset: 0; z-index: 61; display: none; align-items: center; justify-content: center; background: rgba(0,0,0,0.68); user-select: none; }
+    #casino.show { display: flex; }
+    #casino .cbox { max-width: min(500px, 92vw); background: rgba(12,14,18,0.98); border: 2px solid #ffd54a; border-radius: 12px; padding: 18px 22px; color: #eee; font: 17px/1.45 'Segoe UI', Arial, sans-serif; text-align: center; box-shadow: 0 8px 40px rgba(0,0,0,0.7), 0 0 24px rgba(255,213,74,0.25); animation: coachPop 0.25s ease-out; }
+    #casino h3 { margin: 0 0 8px; color: #ffd54a; font-size: 22px; }
+    #casino .chint { opacity: 0.75; font-size: 16px; margin-bottom: 12px; }
+    #casino .reel { font-size: 70px; line-height: 1.1; min-height: 78px; margin: 8px 0; }
+    #casino .bets { display: flex; gap: 8px; justify-content: center; margin: 12px 0; }
+    #casino .bets .mbtn { width: auto; flex: 0 1 auto; margin: 0; }
+    #casino .bets .mbtn.on { background: rgba(255,213,74,0.5); color: #fff; font-weight: 700; }
+    #casino .cresult { min-height: 28px; font-size: 18px; font-weight: 600; color: #ffd54a; }
     /* Визуальные одноразовые подсказки (coach marks): большой текст + стрелка + обводка цели */
     #coach { position: fixed; inset: 0; z-index: 70; pointer-events: none; display: none; }
     #coach.show { display: block; }
@@ -749,6 +772,276 @@
       0%, 100% { transform: translateY(0); }
       50% { transform: translateY(-12px); }
     }
+    /* ================= WINDOWS XP LUNA SKIN ================= */
+    /* Косметика поверх старых правил: позиции/z-index/display не трогаем. */
+    :root {
+      --xp-font: Tahoma, "Trebuchet MS", Verdana, sans-serif;
+      --xp-face: #ece9d8;
+      --xp-face-light: #f8f7f2;
+      --xp-blue-dark: #0a246a;
+      --xp-blue: #316ac5;
+      --xp-border: #7f9db9;
+      --xp-balloon: #ffffe1;
+      --xp-orange: #e59a00;
+    }
+    html, body, button, input, select { font-family: var(--xp-font); }
+    button, input, select { font-size: 12px; }
+
+    /* --- стандартная XP-кнопка (все кнопки интерфейса) --- */
+    .mbtn, .topbtn, #speedBtn, #draftBar button, #schemeBuildBar button,
+    .cbsub button, .cbtake button, .cbloan button, .crow button,
+    .schemeRow button, #mobileNote button, .tile .fav, #achClose,
+    #casino .bets .mbtn {
+      background: linear-gradient(180deg, #fff 0%, #f5f3ea 45%, #e3dfd2 100%);
+      color: #000;
+      border: 1px solid #003c74;
+      border-radius: 3px;
+      box-shadow: inset 1px 1px 0 #fff, inset -1px -1px 0 #b8b4a6;
+      font: 12px var(--xp-font);
+      padding: 4px 10px;
+      cursor: pointer;
+      text-shadow: none;
+    }
+    .mbtn:hover, .topbtn:hover, #speedBtn:hover, #draftBar button:hover,
+    #schemeBuildBar button:hover, .cbsub button:hover, .cbtake button:hover,
+    .cbloan button:hover, .crow button:hover, .schemeRow button:hover,
+    #mobileNote button:hover, .tile .fav:hover, #achClose:hover,
+    #casino .bets .mbtn:hover {
+      background: linear-gradient(180deg, #fff 0%, #ffeec2 55%, #ffd87a 100%);
+      border-color: var(--xp-orange);
+      color: #000;
+    }
+    .topbtn.active, .mbtn.on, #casino .bets .mbtn.on, .chip.active {
+      background: linear-gradient(180deg, #5a8fd8 0%, #2a5fb0 50%, #0a246a 100%);
+      color: #fff;
+      border-color: #0a246a;
+      font-weight: bold;
+    }
+    .mbtn:active, .topbtn:active, .cbsub button:active, .chip:active {
+      background: #ded9c9;
+      box-shadow: inset 2px 2px 4px rgba(0,0,0,0.3);
+    }
+    .mbtn:disabled, .cbsub button:disabled, .cbtake button:disabled, .cbloan button:disabled {
+      opacity: 0.45; cursor: default; filter: grayscale(0.5);
+    }
+    .langrow .mbtn { padding: 3px 8px; }
+    #authBtn.attn { animation: none; box-shadow: 0 0 0 2px #ffb000; }
+    #authInfo { background: #fff; border: 1px solid var(--xp-border); border-radius: 3px; color: #333; }
+
+    /* --- окна --- */
+    .panel {
+      background: var(--xp-face);
+      border: 1px solid #0054e3;
+      border-radius: 8px 8px 2px 2px;
+      box-shadow: 2px 4px 14px rgba(0,0,0,0.55), inset 0 0 0 1px #fff;
+      color: #000;
+      font: 12px var(--xp-font);
+      padding: 10px 12px 12px;
+    }
+    .panel h3 {
+      background: linear-gradient(180deg, #0a246a 0%, #3a6ea5 55%, #a6caf0 100%);
+      color: #fff;
+      border: 1px solid #0a246a;
+      border-radius: 2px;
+      font: bold 12px var(--xp-font);
+      padding: 4px 8px;
+      margin: 0 0 10px;
+      text-shadow: 0 1px 1px rgba(0,0,0,0.45);
+    }
+    .panel h3::before { content: "▣ "; color: #cfe4ff; }
+    .panel .hint { color: #444; opacity: 1; font-size: 12px; margin-bottom: 8px; }
+    #pauseMenu { min-width: 260px; }
+    #pauseMenu h3 { font-size: 12px; }
+    #cityPanel.pinned { opacity: 0.96; }
+
+    /* --- диалоги --- */
+    #modal .mbox, #casino .cbox {
+      position: relative;
+      background:
+        linear-gradient(180deg, #0a246a 0%, #3a6ea5 55%, #a6caf0 100%) top / 100% 26px no-repeat,
+        var(--xp-face);
+      border: 1px solid #0054e3;
+      border-radius: 8px 8px 2px 2px;
+      box-shadow: 2px 4px 16px rgba(0,0,0,0.6), inset 0 0 0 1px #fff;
+      color: #000;
+      font: 12px var(--xp-font);
+      text-align: left;
+      padding: 32px 16px 14px;
+      animation: coachPop 0.18s ease-out;
+    }
+    #modal .mbox::before {
+      content: "Сообщение";
+      position: absolute; top: 5px; left: 10px;
+      color: #fff; font: bold 12px var(--xp-font);
+      text-shadow: 0 1px 1px rgba(0,0,0,0.5);
+    }
+    #casino .cbox::before {
+      content: "🎰 Казино";
+      position: absolute; top: 4px; left: 10px;
+      color: #fff; font: bold 12px var(--xp-font);
+      text-shadow: 0 1px 1px rgba(0,0,0,0.5);
+    }
+    #modalText { font-size: 13px; line-height: 1.5; color: #000; }
+    #modal .mrow .mbtn { font-size: 12px; padding: 5px 14px; }
+    #modal .mbtn.ghost, #achClose { background: linear-gradient(#fff,#e8e5d9); color: #000; border-color: var(--xp-border); }
+    #casino .cbox { text-align: center; }
+    #casino h3 { display: none; } /* заголовок уже в синей строке окна */
+    #casino .chint { color: #555; opacity: 1; font-size: 12px; }
+    #casino .reel {
+      background: #fff; border: 1px solid var(--xp-border); border-radius: 3px;
+      box-shadow: inset 2px 2px 6px rgba(0,0,0,0.25);
+      font-size: 52px; min-height: 66px; margin: 6px 0;
+    }
+    #casino .cresult { color: var(--xp-blue-dark); font: bold 14px var(--xp-font); }
+    #casino .bets .mbtn { padding: 4px 8px; }
+
+    /* --- HUD и уведомления --- */
+    #moneyBar, #dayBar {
+      background: #fff; border: 1px solid var(--xp-border); border-radius: 2px;
+      box-shadow: inset 1px 1px 0 #fff, 1px 1px 2px rgba(0,0,0,0.3);
+      color: #000; padding: 4px 9px; font: bold 13px var(--xp-font);
+    }
+    #moneyBar.neg { background: #ffe4e4; border-color: #c00000; color: #a00000; }
+    #speedBtn { padding: 4px 9px; font-weight: bold; }
+    #hudSub, #ghostBar, #draftBar, #msg, #lockHint, #coachBubble {
+      background: var(--xp-balloon);
+      color: #000;
+      border: 1px solid #000;
+      border-radius: 4px;
+      box-shadow: 2px 2px 8px rgba(0,0,0,0.45);
+      font: 12px var(--xp-font);
+      text-shadow: none;
+      opacity: 1;
+    }
+    #hudSub { padding: 5px 12px; }
+    #msg { padding: 6px 12px 6px 30px; }
+    #msg::before { content: "ⓘ"; position: absolute; left: 9px; top: 4px; color: var(--xp-blue-dark); font-size: 17px; }
+    #ghostBar { padding: 6px 12px; }
+    #ghostBar b, #draftBar b { color: var(--xp-blue-dark); }
+    #draftBar { border-color: var(--xp-orange); animation: none; padding: 7px 12px; }
+    #lockHint { padding: 7px 14px; border-radius: 4px; }
+    #msgLog .logItem {
+      background: #fff; color: #000; opacity: 1;
+      border: 1px solid var(--xp-border); border-left: 3px solid var(--xp-blue-dark);
+      border-radius: 2px; font: 11px var(--xp-font); padding: 3px 8px;
+    }
+    #msgLog .logItem:hover, #msgLog .logItem.fresh { background: var(--xp-balloon); }
+    #tabHint {
+      background: var(--xp-balloon); border: 2px solid var(--xp-blue-dark);
+      border-radius: 6px; padding: 10px 18px;
+      box-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+    }
+    #tabHint b { color: var(--xp-blue-dark); font: bold 34px var(--xp-font); text-shadow: 1px 1px 0 #fff; letter-spacing: 2px; }
+    #tabHint span { color: #000; font: 12px var(--xp-font); opacity: 1; }
+    #coachBubble { font: bold 14px/1.35 var(--xp-font); padding: 10px 16px; }
+    #coachRing { border: 3px dashed var(--xp-blue-dark); box-shadow: 0 0 0 4px rgba(10,36,106,0.2); }
+    #coachArrow { color: var(--xp-blue-dark); text-shadow: 1px 1px 0 #fff; }
+
+    /* --- обучение, хотбар, лейблы --- */
+    #tutorial {
+      background: var(--xp-face); border: 1px solid #0054e3; border-radius: 6px;
+      box-shadow: 2px 2px 8px rgba(0,0,0,0.4);
+      color: #000; font: 12px var(--xp-font); padding: 8px 10px; line-height: 1.6;
+    }
+    #tutorial h4 {
+      background: linear-gradient(180deg, #0a246a, #3a6ea5 55%, #a6caf0);
+      color: #fff; font: bold 12px var(--xp-font);
+      margin: -8px -10px 5px; padding: 4px 8px; text-shadow: 0 1px 1px rgba(0,0,0,0.45);
+    }
+    #tutorial .done { color: #2a7a2a; }
+    #tutorial .reward { color: #b06000; }
+    #hotbar { bottom: 18px; }
+    .hslot {
+      width: 72px; height: 78px;
+      background: linear-gradient(180deg, #fff, #e9e5d8);
+      border: 1px solid var(--xp-border); border-radius: 3px;
+      box-shadow: inset 1px 1px 0 #fff, inset -1px -1px 0 #b8b4a6;
+      color: #000; font: bold 11px var(--xp-font);
+    }
+    .hslot.active {
+      border: 2px solid var(--xp-blue-dark);
+      background: linear-gradient(180deg, #dce9ff, #a6caf0);
+      box-shadow: 0 0 6px var(--xp-blue);
+    }
+    .hslot .nm { font-size: 11px; font-weight: normal; }
+    .hslot .sw, .hslot .tx { border-color: var(--xp-border); }
+    .blabel {
+      background: var(--xp-balloon); color: #000; border: 1px solid #000;
+      border-left-width: 4px; border-radius: 2px; font: 11px var(--xp-font);
+      box-shadow: 1px 2px 5px rgba(0,0,0,0.4);
+    }
+    #msgLog { bottom: 12px; }
+    #msg { bottom: 150px; }
+    #mobileNote { bottom: 12px; background: var(--xp-face); border: 1px solid #0054e3; border-radius: 6px; color: #000; font: 12px var(--xp-font); }
+
+    /* --- панель города / списки / поля --- */
+    .crow { border-bottom: 1px solid #d6d2c4; color: #000; }
+    .cdim { color: #666; }
+    .lvlOk { color: #1a7a1a; } .lvlWarn { color: #b06000; } .lvlBad { color: #c00000; }
+    .chint { color: #555; opacity: 1; }
+    .cbld { background: #fff; border: 1px solid var(--xp-border); border-radius: 3px; }
+    .cbar { background: #fff; border: 1px solid var(--xp-border); border-radius: 2px; }
+    .cfill { background: linear-gradient(180deg, #8ce08c, #2ea82e); }
+    #cityBldSort, #schemeSort, #pickSearch, #schemeSearch, .cbloan input {
+      background: #fff; color: #000; border: 1px solid var(--xp-border);
+      border-radius: 2px; font: 12px var(--xp-font);
+      box-shadow: inset 1px 1px 2px rgba(0,0,0,0.15); outline: none;
+    }
+    #cityBldSort option, #schemeSort option { background: #fff; color: #000; }
+    #pickSearch:focus, #schemeSearch:focus { border-color: var(--xp-blue-dark); box-shadow: 0 0 0 2px #a6caf0; }
+    .chip {
+      background: linear-gradient(180deg, #fff, #e8e5d9);
+      border: 1px solid var(--xp-border); border-radius: 3px;
+      color: #000; font: 11px var(--xp-font); padding: 2px 7px; line-height: 1.5;
+    }
+    .chip:hover { border-color: var(--xp-orange); background: linear-gradient(#fff,#ffe9b0); }
+    .chip.active { border-color: var(--xp-blue-dark); }
+    .pick, .schemeRow {
+      background: #fff; border: 1px solid var(--xp-border); border-radius: 2px; color: #000;
+    }
+    .pick:hover, .schemeRow.selected { border-color: var(--xp-blue); background: #f0f6ff; }
+    .schemeRow .dim { color: #666; }
+
+    /* --- витрина построек --- */
+    .tile {
+      background: #fff; border: 1px solid var(--xp-border); border-radius: 3px;
+      box-shadow: inset 1px 1px 0 #fff;
+    }
+    .tile:hover { border-color: var(--xp-orange); }
+    .tile.selected { border: 2px solid var(--xp-blue-dark); box-shadow: 0 0 0 1px #a6caf0; }
+    .tile.poor { filter: grayscale(0.9); opacity: 0.5; }
+    .tile img, .tile .tileph { background: #f4f2e9; border: 1px solid #d6d2c4; border-radius: 2px; }
+    .tile .tn { color: #000; font: bold 12px var(--xp-font); }
+    .tile .td { color: #666; font: 11px var(--xp-font); }
+    .tile .tt { color: var(--xp-blue-dark); font: 11px var(--xp-font); }
+    .tile .fav { width: 22px; height: 22px; font-size: 14px; }
+    .tile .fav.on { color: var(--xp-orange); border-color: var(--xp-orange); }
+    .tile.locked { filter: grayscale(0.9); opacity: 0.55; }
+    .tile.coll .tileph { background: linear-gradient(135deg, #fff8e0, #ffe4ef); font-size: 56px; }
+    #schemeBuildBar {
+      background: linear-gradient(180deg, #ffffe1, #fff3c0);
+      border: 1px solid var(--xp-orange); border-radius: 3px;
+      color: #000; font: 12px var(--xp-font);
+    }
+
+    /* --- достижения --- */
+    .achrow { background: #fff; border: 1px solid var(--xp-border); border-radius: 3px; }
+    .achrow.done { background: #f0f7ee; border-color: #4a9a4a; }
+    .achrow b { color: var(--xp-blue-dark); font: bold 12px var(--xp-font); }
+    .achrow .achstate, .achrow .achd, .achrow .achr { color: #333; opacity: 1; font: 11px var(--xp-font); }
+    .achrow .achr { color: var(--xp-blue-dark); }
+
+    /* --- загрузка, оверлеи, скроллбары --- */
+    #loader { background: linear-gradient(180deg, #0a246a 0%, #3a6ea5 55%, #7ba2d0 100%); }
+    #loader .ltitle { color: #fff; font: bold 26px var(--xp-font); text-shadow: 1px 2px 3px rgba(0,0,0,0.5); }
+    #loadStatus { color: #dce9ff; font: 12px var(--xp-font); }
+    #loader .spin { border-color: rgba(255,255,255,0.35); border-top-color: #fff; }
+    #dropOverlay { background: rgba(236,233,216,0.88); border: 3px dashed var(--xp-blue-dark); color: var(--xp-blue-dark); font: bold 16px var(--xp-font); }
+    *::-webkit-scrollbar { width: 16px; height: 16px; }
+    *::-webkit-scrollbar-track { background: #d6d2c4; border-left: 1px solid #fff; }
+    *::-webkit-scrollbar-thumb { background: linear-gradient(90deg, #fff, #d6d2c4); border: 1px solid var(--xp-border); border-radius: 3px; }
+    *::-webkit-scrollbar-thumb:hover { background: linear-gradient(90deg, #fff, #ffe9b0); }
+    *::-webkit-scrollbar-button { background: linear-gradient(#fff, #e0ddd2); border: 1px solid var(--xp-border); height: 15px; }
   </style>
 </head>
 <body>
@@ -799,6 +1092,7 @@
     <button id="saveBtn" class="mbtn" data-i18n="save">Сохранить игру</button>
     <button id="loadSaveBtn" class="mbtn" data-i18n="load">Загрузить игру</button>
     <button id="newGameBtn" class="mbtn" data-i18n="newGameBtn">Начать заново</button>
+    <button id="achBtn" class="mbtn">🏆 Достижения</button>
     <button id="authBtn" class="mbtn attn" data-i18n="ygLogin">👤 Войти (Яндекс ID)</button>
     <div class="hint" id="authInfo" data-i18n="ygLoginWhy">Облачные сейвы, имя в таблице рекордов</div>
     <div class="hint" id="saveInfo"></div>
@@ -845,6 +1139,23 @@
     <div id="modalText"></div>
     <div class="mrow"><button id="modalOk" class="mbtn"></button><button id="modalCancel" class="mbtn ghost"></button></div>
   </div></div>
+  <div id="achPanel" class="panel">
+    <h3 data-i18n="achTitle">🏆 Достижения</h3>
+    <div class="hint" data-i18n="achHint"></div>
+    <div id="achList"></div>
+    <button id="achClose" class="mbtn ghost" data-i18n="achClose">Закрыть</button>
+  </div>
+  <div id="casino">
+    <div class="cbox">
+      <h3 data-i18n="casinoTitle">🎰 Казино</h3>
+      <div class="chint" data-i18n="casinoHint"></div>
+      <div id="casinoReel" class="reel">🎰</div>
+      <div id="casinoResult" class="cresult"></div>
+      <div class="bets" id="casinoBets"></div>
+      <button id="casinoSpin" class="mbtn" data-i18n="casinoSpin">Крутить!</button>
+      <button id="casinoClose" class="mbtn ghost" data-i18n="casinoClose">Выйти</button>
+    </div>
+  </div>
   <canvas id="scene"></canvas>
 
   <script type="module" src="/src/main.js"></script>
